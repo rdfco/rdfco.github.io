@@ -5,6 +5,45 @@ const setText = (selector, value, index = 0) => {
   if (element && value) element.textContent = value
 }
 
+const ensureNavigationItems = (listSelector) => {
+  const list = document.querySelector(listSelector)
+  if (!list) return
+
+  while (list.children.length < siteData.navigation.length) {
+    const template = list.lastElementChild
+    if (!template) break
+    const item = template.cloneNode(true)
+    item.querySelector('.active')?.classList.remove('active')
+    item.dataset.configGenerated = 'true'
+    list.appendChild(item)
+  }
+}
+
+const animateNavbarTo = (target) => {
+  const navList = document.querySelector('#header .container-menu ul')
+  const navbar = document.querySelector('#header nav .navbar')
+  const label = target?.matches?.('span') ? target : target?.querySelector?.('span')
+  if (!navList || !navbar || !label) return
+
+  const labelRect = label.getBoundingClientRect()
+  const listRect = navList.getBoundingClientRect()
+  const scale = labelRect.width / (navbar.offsetWidth || 1)
+  navbar.style.transition = 'transform 600ms cubic-bezier(.2,.8,.2,1)'
+  navbar.style.transform = `translate3d(${labelRect.left - listRect.left}px, 0, 0) scaleX(${scale})`
+}
+
+const setupGeneratedNavigationHover = () => {
+  const activeLabel = () => document.querySelector('#header .nav-link.active span')
+  document.querySelectorAll('#header li[data-config-generated="true"] .nav-link').forEach((link) => {
+    if (link.dataset.hoverReady) return
+    link.dataset.hoverReady = 'true'
+    link.addEventListener('mouseenter', () => animateNavbarTo(link))
+    link.addEventListener('mouseleave', () => animateNavbarTo(activeLabel()))
+    link.addEventListener('focus', () => animateNavbarTo(link))
+    link.addEventListener('blur', () => animateNavbarTo(activeLabel()))
+  })
+}
+
 const replaceLogo = (selector, source, className) => {
   if (!source) return
   const current = document.querySelector(selector)
@@ -20,11 +59,15 @@ const applySiteData = () => {
   document.title = siteData.seo.title
   document.querySelector('meta[name="description"]')?.setAttribute('content', siteData.seo.description)
 
+  ensureNavigationItems('#header .menu-links-w > ul')
+  ensureNavigationItems('.montfort-menu nav > ul')
+
   document.querySelectorAll('#header .menu-links-w .nav-link').forEach((link, index) => {
     const item = siteData.navigation[index]
     if (!item) return
     link.querySelector('span').textContent = item.label
     if (item.href) link.href = item.href
+    link.classList.toggle('active', Boolean(item.active))
   })
 
   document.querySelectorAll('.montfort-menu nav .nav-link').forEach((link, index) => {
@@ -32,7 +75,9 @@ const applySiteData = () => {
     if (!item) return
     link.querySelector('.text-content span').textContent = item.label
     if (item.href) link.href = item.href
+    link.classList.toggle('active', Boolean(item.active))
   })
+  setupGeneratedNavigationHover()
 
   setText('main h2', siteData.introduction.title)
   const introParagraphs = document.querySelectorAll('main .description .inner p')

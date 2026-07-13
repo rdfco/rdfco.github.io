@@ -29,12 +29,18 @@ const initial = await page.evaluate(() => ({
   buttons: document.querySelectorAll('main .read-more-button').length,
   height: document.documentElement.scrollHeight,
   viewport: innerHeight,
+  navigation: [...document.querySelectorAll('#header .menu-links-w .nav-link span')].map(node => node.textContent.trim()),
   header: {
     className: document.querySelector('#header')?.className,
     theme: document.querySelector('#header')?.dataset.theme,
     color: getComputedStyle(document.querySelector('#header .nav-link')).color,
   },
 }))
+
+const navbarBefore = await page.$eval('#header .navbar', node => getComputedStyle(node).transform)
+await page.hover('#header .menu-links-w li:last-child .nav-link')
+await new Promise(resolve => setTimeout(resolve, 700))
+const navbarAfter = await page.$eval('#header .navbar', node => getComputedStyle(node).transform)
 
 await page.evaluate(() => scrollTo(0, 1200))
 await new Promise(resolve => setTimeout(resolve, 500))
@@ -46,5 +52,5 @@ const scrolledHeader = await page.evaluate(() => ({
 }))
 await page.screenshot({ path: 'browser-check.png', fullPage: false })
 
-console.log(JSON.stringify({ initial, scrollY, scrolledHeader, errors }, null, 2))
+console.log(JSON.stringify({ initial, navbarHoverMoved: navbarBefore !== navbarAfter, scrollY, scrolledHeader, errors }, null, 2))
 await browser.close()

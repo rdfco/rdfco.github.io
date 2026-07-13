@@ -11,11 +11,12 @@ export const siteData = {
   },
   
   navigation: [
-    { label: 'Montfort Group', href: '#' },
-    { label: 'Montfort Trading', href: '#' },
-    { label: 'Montfort Capital', href: '#' },
-    { label: 'Montfort Maritime', href: '#' },
-    { label: 'Fort Energy', href: '#hero', active: true }
+    { label: 'Knowing FARA', href: '#' },
+    { label: 'Solution', href: '#' },
+    { label: 'Consulting', href: '#' },
+    { label: 'Industries', href: '#' },
+    { label: 'Case studies', href: '#hero', active: true },
+    { label: 'Think together', href: '#'}
   ],
   hero: { eyebrow: 'Montfort', title: 'FORT ENERGY', scrollLabel: 'Scroll down to discover' },
   introduction: {
