@@ -44,6 +44,98 @@ const setupGeneratedNavigationHover = () => {
   })
 }
 
+const createExpandableCard = ({ title, text }, modifier = '') => {
+  const card = document.createElement('article')
+  card.className = `fara-card ${modifier}`.trim()
+
+  const heading = document.createElement('h3')
+  heading.textContent = title
+  const copy = document.createElement('p')
+  copy.textContent = text
+  const button = document.createElement('button')
+  button.type = 'button'
+  button.className = 'fara-expand'
+  button.setAttribute('aria-label', `Read more about ${title}`)
+  button.setAttribute('aria-expanded', 'false')
+  button.innerHTML = '<span></span>'
+
+  button.addEventListener('click', () => {
+    const expanded = card.classList.toggle('expanded')
+    button.setAttribute('aria-expanded', String(expanded))
+  })
+
+  card.append(heading, copy, button)
+  return card
+}
+
+const renderFaraSections = () => {
+  const grid = document.querySelector('main #grid')
+  const content = siteData.faraSections
+  if (!grid || !content) return
+
+  document.querySelector('.hero .scroll-to-cta')?.classList.add('fara-hidden')
+  grid.querySelector(':scope > h2')?.classList.add('fara-hidden')
+  grid.querySelector(':scope > .description')?.classList.add('fara-hidden')
+  grid.querySelector('.icon-wrapper')?.classList.add('fara-hidden')
+  grid.querySelector('.separator')?.classList.add('fara-hidden')
+  grid.querySelector('.advantages-informations')?.classList.add('fara-hidden')
+  grid.querySelector('.advantages-container')?.classList.add('fara-hidden')
+  grid.lastElementChild?.classList.add('fara-hidden')
+
+  let sections = grid.querySelector('.fara-sections')
+  if (sections) sections.remove()
+  sections = document.createElement('div')
+  sections.className = 'fara-sections'
+
+  const about = document.createElement('section')
+  about.className = 'fara-row fara-about'
+  const aboutTitle = document.createElement('h2')
+  aboutTitle.textContent = siteData.introduction.title
+  const aboutCopy = createExpandableCard({ title: '', text: siteData.introduction.body }, 'about-copy')
+  about.append(aboutTitle, aboutCopy)
+
+  const solutions = document.createElement('section')
+  solutions.className = 'fara-row fara-solutions'
+  const solutionsHeader = document.createElement('header')
+  solutionsHeader.innerHTML = `<h2>${siteData.advantage.title}</h2><p>${siteData.advantage.lead}</p>`
+  const solutionsGrid = document.createElement('div')
+  solutionsGrid.className = 'fara-card-grid solutions-grid'
+  content.solutions.forEach(item => solutionsGrid.appendChild(createExpandableCard(item)))
+  solutions.append(solutionsHeader, solutionsGrid)
+
+  const ai = document.createElement('section')
+  ai.className = 'fara-row fara-ai'
+  const aiHeader = document.createElement('header')
+  aiHeader.innerHTML = `<h2>${content.ai.title}</h2><p>${content.ai.subtitle}</p>`
+  ai.append(aiHeader, createExpandableCard({ title: '', text: content.ai.text }, 'ai-copy'))
+
+  const industries = document.createElement('section')
+  industries.className = 'fara-row fara-industries'
+  const industriesHeader = document.createElement('header')
+  industriesHeader.innerHTML = '<h2>Industries FARA Serves:</h2><p>FARA Industries</p>'
+  const industriesGrid = document.createElement('div')
+  industriesGrid.className = 'fara-card-grid industries-grid'
+  content.industries.forEach(item => industriesGrid.appendChild(createExpandableCard(item)))
+  industries.append(industriesHeader, industriesGrid)
+
+  sections.append(about, solutions, ai, industries)
+  grid.appendChild(sections)
+}
+
+const renderHeroCopy = () => {
+  document.querySelectorAll('.hero .logo').forEach((logo) => {
+    if (logo.classList.contains('fara-hero-copy')) return
+    const copy = document.createElement('div')
+    copy.className = `${logo.className.baseVal || logo.className} fara-hero-copy`
+    const title = document.createElement('h1')
+    title.textContent = siteData.hero.title
+    const subtitle = document.createElement('p')
+    subtitle.textContent = siteData.hero.subtitle
+    copy.append(title, subtitle)
+    logo.replaceWith(copy)
+  })
+}
+
 const replaceLogo = (selector, source, className) => {
   if (!source) return
   const current = document.querySelector(selector)
@@ -105,8 +197,8 @@ const applySiteData = () => {
   }
   setText('#footer .copyright-info p', siteData.footer.copyright)
 
-  replaceLogo('.hero .logo-dk', siteData.brand.desktopLogo, 'logo-dk')
-  replaceLogo('.hero .logo-mb', siteData.brand.mobileLogo, 'logo-mb')
+  renderHeroCopy()
+  renderFaraSections()
 }
 
 applySiteData()

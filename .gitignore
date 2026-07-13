@@ -11,6 +11,7 @@ gspa-site/.git.local-backup/
 gspa-site/browser-check.png
 gspa-site/preview.png
 gspa-site/preview-final.png
+gspa-site/qa-*.png
 
 # Redundant copies from the original site mirror
 gspa-site/public/legacy/
