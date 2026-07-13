@@ -18,7 +18,7 @@ page.on('response', response => {
   if (response.status() >= 400) errors.push(`${response.status()}: ${response.url()}`)
 })
 
-await page.goto('http://127.0.0.1:4174/', { waitUntil: 'domcontentloaded', timeout: 60000 })
+await page.goto(process.env.SITE_URL || 'http://127.0.0.1:4174/', { waitUntil: 'domcontentloaded', timeout: 60000 })
 await new Promise(resolve => setTimeout(resolve, 4000))
 
 const initial = await page.evaluate(() => ({
@@ -47,6 +47,7 @@ const initial = await page.evaluate(() => ({
   },
   menu: {
     hiddenItems: [...document.querySelectorAll('.montfort-menu nav li')].filter(node => getComputedStyle(node).display === 'none').map(node => node.textContent.trim()),
+    hiddenHeaderItems: [...document.querySelectorAll('#header .menu-links-w li')].filter(node => getComputedStyle(node).display === 'none').map(node => node.textContent.trim()),
     termsDisabled: [...document.querySelectorAll('.montfort-menu .terms-link a')].every(node => node.getAttribute('aria-disabled') === 'true' && !node.hasAttribute('href')),
   },
   header: {
@@ -57,9 +58,19 @@ const initial = await page.evaluate(() => ({
 }))
 
 const navbarBefore = await page.$eval('#header .navbar', node => getComputedStyle(node).transform)
-await page.hover('#header .menu-links-w li:last-child .nav-link')
+await page.hover('#header .menu-links-w li:first-child .nav-link')
 await new Promise(resolve => setTimeout(resolve, 700))
 const navbarAfter = await page.$eval('#header .navbar', node => getComputedStyle(node).transform)
+
+await page.click('.menu-cta')
+await new Promise(resolve => setTimeout(resolve, 500))
+const generatedItemMenuState = await page.evaluate(() => ({
+  headerClass: document.querySelector('#header')?.className,
+  items: [...document.querySelectorAll('#header li[data-config-generated="true"]')].map(node => ({ opacity: getComputedStyle(node).opacity, visibility: getComputedStyle(node).visibility })),
+}))
+const generatedItemsFadeWithMenu = generatedItemMenuState.items.length > 0 && generatedItemMenuState.items.every(item => item.opacity === '0' && item.visibility === 'hidden')
+await page.click('.menu-cta')
+await new Promise(resolve => setTimeout(resolve, 500))
 
 await page.evaluate(() => scrollTo(0, 1200))
 await new Promise(resolve => setTimeout(resolve, 500))
@@ -86,5 +97,5 @@ const mobile = await page.evaluate(() => ({
 }))
 await page.screenshot({ path: 'footer-mobile.png', fullPage: false })
 
-console.log(JSON.stringify({ initial, navbarHoverMoved: navbarBefore !== navbarAfter, scrollY, scrolledHeader, mobile, errors }, null, 2))
+console.log(JSON.stringify({ initial, navbarHoverMoved: navbarBefore !== navbarAfter, generatedItemMenuState, generatedItemsFadeWithMenu, scrollY, scrolledHeader, mobile, errors }, null, 2))
 await browser.close()
