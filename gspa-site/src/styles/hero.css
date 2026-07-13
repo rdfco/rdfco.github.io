@@ -1,0 +1,35 @@
+.hero .configurable-logo { object-fit: contain; }
+.fara-hidden { display: none !important; }
+.hero .fara-hero-copy {
+  position: absolute !important;
+  inset: 0 !important;
+  grid-column: 1 / -1 !important;
+  display: none !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  padding: 0 2rem !important;
+  color: #fff;
+  text-align: center;
+}
+.hero .fara-hero-copy.logo-dk { display: flex !important; }
+.hero .fara-hero-copy h1 {
+  font-family: "Josefin Sans", sans-serif;
+  font-size: clamp(4.5rem, 10vw, 10rem);
+  font-weight: 300;
+  line-height: .9;
+  letter-spacing: .04em;
+  text-transform: none;
+}
+.hero .fara-hero-copy p {
+  max-width: 48rem;
+  margin-top: 2rem;
+  font-family: "Century Gothic", sans-serif;
+  font-size: clamp(.75rem, 1.15vw, 1.15rem);
+  line-height: 1.7;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}

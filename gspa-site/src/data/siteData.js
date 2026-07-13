@@ -11,15 +11,26 @@ export const siteData = {
   },
   
   navigation: [
-    { label: 'Knowing FARA', href: '#' },
-    { label: 'Solution', href: '#' },
-    { label: 'Consulting', href: '#' },
-    { label: 'Industries', href: '#' },
-    { label: 'Case studies', href: '#hero', active: true },
-    { label: 'Think together', href: '#'}
+    { label: 'Home', href: '#', active: true, enabled: true, showInMenu: true },
+    { label: 'Knowing FARA', href: '#', enabled: false, showInMenu: true },
+    { label: 'Solution', href: '#', enabled: false, showInMenu: true },
+    { label: 'Consulting', href: '#', enabled: false, showInMenu: true },
+    { label: 'Industries', href: '#', enabled: false, showInMenu: true },
+    { label: 'Case studies', href: '#hero', enabled: false, showInMenu: false },
+    { label: 'Think together', href: '#', enabled: false, showInMenu: false }
   ],
+  menuSettings: {
+    enableLegalLinks: false
+  },
+  sectionOrder: ['about', 'solutions', 'ai', 'industries'],
+  sectionVisibility: {
+    about: true,
+    solutions: true,
+    ai: true,
+    industries: true
+  },
   hero: {
-    title: 'FARA is in',
+    title: 'FARA IS IN',
     subtitle: 'We Provide AI & Technology Consulting And Results-Oriented Solution.',
     scrollLabel: '',
   },
@@ -96,6 +107,23 @@ export const siteData = {
       }
     ]
   },
+  sectionLabels: {
+    industries: {
+      title: 'Industries FARA Serves:',
+      subtitle: 'FARA Industries'
+    }
+  },
   cta: { label: 'Visit Fort Energy', href: 'https://www.fortenergy.com' },
-  footer: { copyright: '(c) 2021 | Montfort - All rights reserved', offices: ['Geneva, Switzerland', 'Dubai, UAE', 'Singapore'] }
+  footer: {
+    eyebrow: 'Proven Impact',
+    title: 'FARA Case Studies',
+    copyright: '© 2026 | FARA - All rights reserved',
+    caseStudies: [
+      'پتروشیمی مارون / پتروشیمی بندر امام',
+      'توسعه آهن و فولاد گل‌گهر',
+      'ایرانسل',
+      'استیل پاسارگاد',
+      'کرمان موتور'
+    ]
+  }
 }

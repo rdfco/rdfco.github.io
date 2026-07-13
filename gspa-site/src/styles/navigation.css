@@ -1,0 +1,18 @@
+/* Header and overlay-menu states. */
+#header .nav-link,
+#header .news-w p,
+#header .menu-cta p { transition: color 300ms linear; }
+#header .news-w { display: none !important; }
+#header .nav-link.is-disabled,
+.montfort-menu .nav-link.is-disabled { cursor: default; }
+.montfort-menu .fara-menu-hidden { display: none !important; }
+.montfort-menu .terms-link a[aria-disabled="true"] { cursor: default; }
+#header:not(.top)[data-theme="light"] .nav-link,
+#header:not(.top)[data-theme="light"] .news-w p,
+#header:not(.top)[data-theme="light"] .menu-cta p { color: #fff; }
+#header.top .nav-link,
+#header.top .news-w p,
+#header.top .menu-cta p { color: #2d628c; }
+#header.top .navbar,
+#header.top .news-w::before,
+#header.top .menu-cta .dot { background: #2d628c; }

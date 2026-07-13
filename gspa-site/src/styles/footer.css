@@ -1,0 +1,56 @@
+.fara-footer {
+  position: relative;
+  z-index: 10;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: clamp(4rem, 7vw, 7rem) max(1.25rem, calc((100% - 1540px) / 2)) !important;
+  color: #111 !important;
+  overflow: hidden;
+  background: #fff !important;
+}
+.fara-footer::before { display: none; }
+.fara-footer-shell { position: relative; display: block; }
+.fara-footer header { padding: 0; text-align: center; }
+.fara-footer header p,
+.fara-footer header h2 { margin: 0; color: inherit !important; font-family: "Century Gothic", sans-serif; }
+.fara-footer header p { font-size: clamp(1.8rem, 3vw, 3.25rem); font-weight: 700; line-height: 1.05; }
+.fara-footer header h2 { margin-top: .65rem; color: #111 !important; font-size: clamp(1rem, 1.4vw, 1.35rem); font-weight: 400; }
+.fara-case-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(2rem, 4vw, 5rem) clamp(1.5rem, 4vw, 4rem);
+  width: 100%;
+  margin-top: clamp(4rem, 7vw, 7rem);
+}
+.fara-case-item {
+  display: flex;
+  min-height: 3.75rem;
+  padding: 0 0 1.25rem;
+  align-items: flex-end;
+  justify-content: flex-start;
+  grid-column: span 2;
+  color: #111 !important;
+  font-family: Tahoma, Arial, sans-serif;
+  font-size: clamp(.9rem, 1.1vw, 1.05rem);
+  line-height: 1.8;
+  text-align: right;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(45, 98, 140, .38);
+}
+.fara-case-item:nth-child(n + 4) { grid-column: span 3; }
+.fara-case-item strong { width: 100%; color: #111 !important; font-weight: 400; }
+.fara-footer-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-top: clamp(2rem, 3vw, 3rem);
+  margin-top: clamp(4rem, 7vw, 7rem);
+  border-top: 1px solid rgba(45, 98, 140, .28);
+}
+.fara-footer-signature { display: flex; flex-direction: column; color: #111; font-family: "Century Gothic", sans-serif; }
+.fara-footer-signature strong { font-size: clamp(1.4rem, 2.3vw, 2.25rem); line-height: 1.1; }
+.fara-footer-signature span { margin-top: .35rem; font-size: clamp(.8rem, 1vw, 1rem); }
+.fara-footer-copyright { margin: 0; color: #111 !important; font-family: "Century Gothic", sans-serif; font-size: clamp(.7rem, .9vw, .85rem); white-space: nowrap; }
