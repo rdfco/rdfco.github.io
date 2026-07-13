@@ -63,14 +63,14 @@ await new Promise(resolve => setTimeout(resolve, 700))
 const navbarAfter = await page.$eval('#header .navbar', node => getComputedStyle(node).transform)
 
 await page.click('.menu-cta')
-await new Promise(resolve => setTimeout(resolve, 500))
+await new Promise(resolve => setTimeout(resolve, 1200))
 const generatedItemMenuState = await page.evaluate(() => ({
   headerClass: document.querySelector('#header')?.className,
   items: [...document.querySelectorAll('#header li[data-config-generated="true"]')].map(node => ({ opacity: getComputedStyle(node).opacity, visibility: getComputedStyle(node).visibility })),
 }))
 const generatedItemsFadeWithMenu = generatedItemMenuState.items.length > 0 && generatedItemMenuState.items.every(item => item.opacity === '0' && item.visibility === 'hidden')
 await page.click('.menu-cta')
-await new Promise(resolve => setTimeout(resolve, 500))
+await new Promise(resolve => setTimeout(resolve, 1200))
 
 await page.evaluate(() => scrollTo(0, 1200))
 await new Promise(resolve => setTimeout(resolve, 500))
