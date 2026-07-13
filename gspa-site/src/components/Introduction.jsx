@@ -1,0 +1,1 @@
+export default function Introduction({ data }) { return <section id="introduction" className="relative z-10 min-h-screen px-8 py-40 text-white lg:px-[18vw]"><h2 className="max-w-4xl font-century text-4xl uppercase leading-tight lg:text-7xl">{data.title}</h2><p className="mt-16 max-w-2xl font-josefin text-xl font-light leading-relaxed text-white/75">{data.body}</p></section> }

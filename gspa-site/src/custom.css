@@ -1,0 +1,28 @@
+/* Navigation is white over the dark hero and blue over its white floating panel. */
+#header .nav-link,
+#header .news-w p,
+#header .menu-cta p {
+  transition: color 300ms linear;
+}
+
+#header:not(.top)[data-theme="light"] .nav-link,
+#header:not(.top)[data-theme="light"] .news-w p,
+#header:not(.top)[data-theme="light"] .menu-cta p {
+  color: #fff;
+}
+
+#header.top .nav-link,
+#header.top .news-w p,
+#header.top .menu-cta p {
+  color: #2d628c;
+}
+
+#header.top .navbar,
+#header.top .news-w::before,
+#header.top .menu-cta .dot {
+  background: #2d628c;
+}
+
+.hero .configurable-logo {
+  object-fit: contain;
+}
