@@ -6,15 +6,9 @@ const setText = (selector, value, index = 0) => {
 }
 
 const replaceLogo = (selector, source, className) => {
+  if (!source) return
   const current = document.querySelector(selector)
   if (!current) return
-  if (!source) {
-    const logo = document.createElement('div')
-    logo.className = `logo configurable-logo text-logo ${className}`
-    logo.innerHTML = `<strong>${siteData.brand.logoText}</strong><span>${siteData.brand.tagline}</span>`
-    current.replaceWith(logo)
-    return
-  }
   const image = document.createElement('img')
   image.src = source
   image.alt = siteData.brand.logoText
@@ -61,7 +55,6 @@ const applySiteData = () => {
 
   const cta = document.querySelector('main .link-block.energy')
   if (cta) {
-    cta.id = 'case-studies'
     cta.href = siteData.cta.href
     cta.querySelector('.link-block-label').textContent = siteData.cta.label
   }

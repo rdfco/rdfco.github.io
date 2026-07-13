@@ -1,66 +1,53 @@
 export const siteData = {
-  seo: {
-    title: 'FARA — Intelligence. Innovation. Impact.',
-    description: 'AI, technology and innovation management consulting.',
-  },
+  seo: { title: 'Fort Energy', description: 'Advancing Innovation in Energy Investments' },
   brand: {
-    groupName: 'FARA',
-    divisionName: 'FARA',
-    logoText: 'FARA',
-    tagline: 'We Provide AI & Technology Consulting And Results-Oriented Solutions.',
+    groupName: 'Montfort',
+    divisionName: 'Fort Energy',
+    logoText: 'FORT ENERGY',
     // فایل لوگو را داخل public/assets/logos بگذارید و مسیرش را اینجا بنویسید.
-    // وقتی مسیر خالی است، لوگوی متنی FARA نمایش داده می‌شود.
-    desktopLogo: '',
-    mobileLogo: '',
+    // خالی بماند، لوگوی SVG اصلی سایت نمایش داده می‌شود.
+    desktopLogo: '', // مثال: '/assets/logos/fort-energy-desktop.svg'
+    mobileLogo: '',  // مثال: '/assets/logos/fort-energy-mobile.svg'
   },
+  
   navigation: [
-    { label: 'Knowing FARA', href: '#grid' },
-    { label: 'Solutions', href: '#advantages' },
-    { label: 'Consulting', href: '#advantages' },
-    { label: 'Industries', href: '#advantages' },
-    { label: 'Case Studies', href: '#case-studies', active: true },
+    { label: 'Montfort Group', href: '#' },
+    { label: 'Montfort Trading', href: '#' },
+    { label: 'Montfort Capital', href: '#' },
+    { label: 'Montfort Maritime', href: '#' },
+    { label: 'Fort Energy', href: '#hero', active: true }
   ],
-  hero: {
-    eyebrow: 'FARA is in',
-    title: 'FARA',
-    scrollLabel: 'Scroll down to discover',
-  },
+  hero: { eyebrow: 'Montfort', title: 'FORT ENERGY', scrollLabel: 'Scroll down to discover' },
   introduction: {
-    title: 'Intelligence. Innovation. Impact.',
-    body: "We are a consulting firm specializing in Technology and Innovation Management. Our edge? We integrate artificial intelligence into everything we do—from opportunity scouting and product development to capability building. By combining AI-powered analytics with deep industry expertise and international standards, we help you cut through complexity, seize high-value opportunities, and future-proof your organization. At FARA, we don't just talk about AI—we put it to work for you.",
+    title: 'Advancing Innovation in Energy Investments',
+    body: "As the dedicated investment division of the Montfort Group, Fort Energy supports Montfort's oil trading success through strategic expansions in the midstream and downstream sectors. Functioning as both an investor and an operator, Fort Energy invests in supply chain infrastructure and oil marketing businesses, enabling access to dynamic markets while creating a competitive advantage for its trading activity. Through well-identified strategies and a disciplined approach, Fort Energy invests in markets and businesses with high growth potential."
   },
   advantage: {
-    title: 'By FARA',
-    lead: "Don’t just adapt to the future; define it.",
+    title: 'The Fort Energy Advantage',
+    lead: "The company's portfolio consists of six companies in the refining, storage, and distribution sectors.",
     items: [
       {
-        title: 'Insight by FARA',
-        text: 'INSIGHT by FARA provides technology data analytics—turning trends, patents, and market signals into actionable insights for strategic decision-making in technology and R&D.',
+        title: 'Leadership driving growth and innovation',
+        text: "Fort Energy's greatest strength lies in the synergy between its talented team and robust operating platform. The leadership team plays a pivotal role in managing a diverse portfolio of investments and companies, driving growth and innovation. With a shared vision, the team navigates the complexities of today's dynamic business landscape, guiding investments to flourish and sustain lasting returns."
       },
       {
-        title: 'Infinity by FARA',
-        text: 'INFINITY by FARA focuses on digital transformation and smart enablement, helping organizations streamline, digitize, and optimize their processes.',
+        title: 'Strategic relationships',
+        text: 'Fort Energy prioritizes relationship building within the downstream and other relevant sectors, while simultaneously exploring new partnerships and investment opportunities across the entire value chain.'
       },
       {
-        title: 'Inception by FARA',
-        text: 'INCEPTION by FARA delivers technology and innovation management services, supporting organizations in identifying opportunities, developing new products, and building robust innovation systems.',
+        title: 'Empowering communities through social responsibility',
+        text: 'In addition to its business operations, Fort Energy is committed to empowering communities through initiatives that include alleviating poverty, supporting education, and empowering women, all in collaboration with local NGOs and non-profit organizations.'
       },
       {
-        title: 'AI by FARA — Smarter with AI. Better with Human.',
-        text: 'In the world of AI and emerging tech, speed to value is everything. FARA helps you cut through the hype and identify which technologies actually solve real business problems—not which ones look good on a slide. From generative AI and computer vision to predictive analytics and automation, we design practical, deployable solutions that integrate with your existing systems, not replace them overnight. No black-box promises.',
+        title: 'Preferential market access',
+        text: "Courtesy of Montfort's wide net cast across geographies, Fort Energy is able to capitalize on opportunities to receive exclusive access to a diverse array of market opportunities and deal flow, allowing for a tactical advantage."
       },
       {
-        title: 'Industries FARA Serves',
-        text: "METALS — In metals, the margin between leading and lagging is razor-thin. FARA helps you spot innovation opportunities others miss, modernize legacy processes, and adopt smart technologies that work on the shop floor.\n\nOIL & GAS — We combine deep tech expertise with a pragmatic understanding of real-world challenges, turning global best practices into strategies and deployable tools that improve asset performance across upstream, midstream, and downstream operations.\n\nMANUFACTURING — We uncover innovation opportunities hidden in operations, modernize outdated processes, and deliver data-backed roadmaps that boost throughput, reduce downtime, and improve quality.\n\nAUTOMOTIVE — We help you navigate electrification, software-defined vehicles, and autonomous driving—from accelerating R&D cycles to integrating AI-driven quality systems on the production line.\n\nHEALTHCARE — We harness AI, data analytics, and digital health technologies to improve patient outcomes, streamline clinical workflows, and reduce operational burdens without compromising safety or trust.",
-      },
-    ],
+        title: 'Corporate governance and global compliance',
+        text: 'Fort Energy operates under an integrated ESG management framework and adheres to strict corporate governance principles. Compliance with all relevant laws and regulations across global operations means that products are delivered responsibly and reliably, with health, safety, environmental, and social considerations taken into all activities.'
+      }
+    ]
   },
-  cta: {
-    label: 'FARA CASE STUDIES — Irancell · Golgohar · Marun Petrochemical · Bandar Imam Petrochemical · Kerman Motor · Pasteur Institute',
-    href: '#case-studies',
-  },
-  footer: {
-    copyright: '© FARA — All rights reserved',
-    offices: [],
-  },
+  cta: { label: 'Visit Fort Energy', href: 'https://www.fortenergy.com' },
+  footer: { copyright: '(c) 2021 | Montfort - All rights reserved', offices: ['Geneva, Switzerland', 'Dubai, UAE', 'Singapore'] }
 }
