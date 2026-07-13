@@ -61,6 +61,9 @@ const createExpandableCard = ({ title, text }, modifier = '') => {
 
   button.addEventListener('click', () => {
     const expanded = card.classList.toggle('expanded')
+    const lineHeight = Number.parseFloat(getComputedStyle(copy).lineHeight) || 27
+    const collapsedHeight = lineHeight * 4
+    copy.style.maxHeight = `${expanded ? copy.scrollHeight : collapsedHeight}px`
     button.setAttribute('aria-expanded', String(expanded))
   })
 

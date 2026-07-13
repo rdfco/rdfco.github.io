@@ -173,13 +173,12 @@ main #grid {
   line-height: 1.7;
   letter-spacing: .035em;
   opacity: .92;
-  transition: max-height 1200ms cubic-bezier(.4, 0, .1, 1), opacity 700ms ease;
+  transition: max-height 1800ms cubic-bezier(.4, 0, .1, 1), opacity 1800ms ease;
   mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
 }
 
 .fara-card.expanded p {
-  max-height: 60rem;
   mask-image: none;
   -webkit-mask-image: none;
 }
@@ -196,7 +195,7 @@ main #grid {
   background: transparent;
   border: 2px solid #8cb4d5;
   border-radius: 50%;
-  transition: background-color .4s ease, border-color .4s ease, transform 900ms cubic-bezier(.4, 0, .1, 1);
+  transition: background-color .4s ease, border-color .4s ease, transform 1800ms cubic-bezier(.4, 0, .1, 1);
   transform: translateX(-50%);
 }
 
@@ -209,7 +208,7 @@ main #grid {
   content: "";
   border-right: 1px solid #fff;
   border-bottom: 1px solid #fff;
-  transition: transform 900ms cubic-bezier(.4, 0, .1, 1);
+  transition: transform 1800ms cubic-bezier(.4, 0, .1, 1);
   transform: translate(-50%, -50%) rotate(45deg);
 }
 
@@ -245,6 +244,10 @@ main #grid {
 .fara-industries > header {
   margin-bottom: 5rem;
   text-align: center;
+}
+
+.fara-industries {
+  margin-top: 2000px;
 }
 
 .industries-grid {
@@ -285,6 +288,10 @@ main #grid {
     grid-template-columns: 1fr;
     gap: 3rem;
   }
+
+  .fara-industries {
+    margin-top: 1200px;
+  }
 }
 
 @media (max-width: 767px) {
@@ -315,6 +322,10 @@ main #grid {
     right: 1.25rem;
     left: 1.25rem;
     gap: 600px;
+  }
+
+  .fara-industries {
+    margin-top: 800px;
   }
 
   .fara-row > header {
