@@ -53,6 +53,7 @@ The active site is a **Phase 1 React wrapper around the unmodified mirrored Astr
 
 ## Safe workflow for a content change
 
+
 1. Edit only the intended text, URL, or same-path asset in `public/legacy/fort-energy/index.html` or `public/assets/`.
 2. Do not rename or delete classes, ids, `data-*` attributes, canvas markup, or cards.
 3. Run `npm.cmd run build`.
