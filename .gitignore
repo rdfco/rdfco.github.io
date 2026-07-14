@@ -16,7 +16,6 @@ gspa-site/footer-*.png
 gspa-site/work/
 
 # Redundant copies from the original site mirror
-gspa-site/public/legacy/
 gspa-site/public/site/
 gspa-site/public/fort-energy/
 gspa-site/public/consent.cookiebot.com/

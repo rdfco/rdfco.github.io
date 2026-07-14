@@ -1,9 +1,5 @@
-import { useEffect } from 'react'
+import LegacySite from './components/LegacySite'
 
 export default function App() {
-  useEffect(() => {
-    window.location.replace('/fort-energy/')
-  }, [])
-
-  return null
+  return <LegacySite />
 }
