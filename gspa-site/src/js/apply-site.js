@@ -1,5 +1,4 @@
 import { setText } from './core/dom.js'
-import { renderFooter } from './components/footer.js'
 import { renderHero } from './components/hero.js'
 import { renderSections } from './components/sections.js'
 import { renderNavigation } from './navigation.js'
@@ -38,5 +37,5 @@ export const applySiteData = siteData => {
   updateLegacyContent(siteData)
   renderHero(siteData)
   renderSections(siteData)
-  renderFooter(siteData.footer)
+  // Keep the legacy footer layout intact; it is customized separately.
 }

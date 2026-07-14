@@ -1,5 +1,0 @@
-import { useEffect, useRef } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-gsap.registerPlugin(ScrollTrigger)
-export default function Advantage({ data }) { const root=useRef(); useEffect(()=>{const ctx=gsap.context(()=>gsap.from('.advantage-card',{opacity:0,y:70,stagger:.12,scrollTrigger:{trigger:root.current,start:'top 70%'}}),root); return()=>ctx.revert()},[]); return <section ref={root} className="relative z-10 bg-[#071a29]/85 px-8 py-32 text-white backdrop-blur-sm lg:px-[14vw]"><h2 className="font-century text-4xl uppercase lg:text-6xl">{data.title}</h2><p className="mt-8 max-w-2xl text-xl text-ice">{data.lead}</p><div className="mt-20 grid gap-px bg-white/15 lg:grid-cols-2">{data.items.map((item,i)=><article className="advantage-card bg-ink/90 p-8 lg:p-12" key={item.title}><span className="text-xs text-ice">0{i+1}</span><h3 className="mt-8 text-xl uppercase leading-snug">{item.title}</h3><p className="mt-5 leading-7 text-white/60">{item.text}</p></article>)}</div></section> }

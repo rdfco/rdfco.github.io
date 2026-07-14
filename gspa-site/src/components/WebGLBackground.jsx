@@ -1,2 +1,0 @@
-import { useEffect } from 'react'
-export default function WebGLBackground() { useEffect(()=>{let active=true; const webgl='/legacy/_astro/WebGL.js',layout='/legacy/_astro/Layout.js'; (async()=>{await import(/* @vite-ignore */ webgl); if(active) await import(/* @vite-ignore */ layout)})().catch(console.error); return()=>{active=false}},[]); return <div id="canvas-wrapper" aria-hidden="true" className="fixed inset-0 z-0"><canvas/></div> }
