@@ -1,3 +1,2 @@
-import { SectionHeading } from '../components/ui/SectionHeading'
 import { content } from '../data/content'
-export function AboutSection(){return <section id="knowing-fara" className="section light about reveal"><SectionHeading eyebrow="ABOUT FARA">Intelligence.<br/>Innovation. Impact.</SectionHeading><p>{content.introduction.body}</p></section>}
+export function AboutSection() { return <section id="knowing-fara" className="fara-row fara-about reveal"><h2>{content.introduction.title}</h2><article className="fara-card is-static about-copy"><p>{content.introduction.body}</p></article></section> }

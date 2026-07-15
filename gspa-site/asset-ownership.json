@@ -1,6 +1,13 @@
 {
-  "policy": "No mirrored asset may be promoted into the native application without explicit approval.",
-  "assets": [],
-  "legacyAssetRoots": ["public/assets", "public/_astro", "public/legacy"],
-  "nativeAssetRoots": ["src/assets"]
+  "policy": "Every runtime asset must be local and have an explicit project provenance declaration.",
+  "assets": {
+    "/assets/models/fort-energy/fort-energy.glb": { "provenance": "project-provided legacy migration", "approved": true },
+    "/assets/models/fort-energy/energy-chapter.glb": { "provenance": "project-provided legacy migration", "approved": true },
+    "/assets/models/mountains.glb": { "provenance": "project-provided legacy migration", "approved": true },
+    "/assets/textures/noise.webp": { "provenance": "project-provided legacy migration", "approved": true },
+    "/assets/textures/envmap-min.exr": { "provenance": "project-provided legacy migration", "approved": true },
+    "/assets/fonts/CenturyGothic.woff2": { "provenance": "project-provided brand font", "approved": true },
+    "/assets/fonts/CenturyGothic-Bold.woff2": { "provenance": "project-provided brand font", "approved": true },
+    "/assets/fonts/JosefinSans-Light.woff2": { "provenance": "project-provided brand font", "approved": true }
+  }
 }

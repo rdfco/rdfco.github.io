@@ -5,7 +5,6 @@ uniform vec2 uResolution, uTranslate;
 uniform vec3 uLineColor, uBackgroundColor, uAccentColor, uPointColor;
 uniform sampler2D tNoise, tMouseComputation;
 varying vec2 vUv;
-#define saturate(a) clamp(a, 0.0, 1.0)
 #include <common>
 #include <dithering_pars_fragment>
 void main() {

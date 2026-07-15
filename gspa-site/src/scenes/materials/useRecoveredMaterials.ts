@@ -8,6 +8,7 @@ import glowVert from '../shaders/legacy/Glow/Glow.vert?raw';import glowFrag from
 import powerLineVert from '../shaders/legacy/PowerLine/PowerLine.vert?raw';import powerLineFrag from '../shaders/legacy/PowerLine/PowerLine.frag?raw'
 import hologramsVert from '../shaders/legacy/Holograms/Holograms.vert?raw';import hologramsFrag from '../shaders/legacy/Holograms/Holograms.frag?raw'
 import gridVert from '../shaders/legacy/Grid/Grid.vert?raw';import gridFrag from '../shaders/legacy/Grid/Grid.frag?raw'
+import lineVert from '../shaders/legacy/Line/Line.vert?raw';import lineFrag from '../shaders/legacy/Line/Line.frag?raw'
 
 const light=new Color('#3e9bb7'),dark=new Color('#081219')
 const emptyMouseTexture = new DataTexture(new Uint8Array([0]), 1, 1, RedFormat)
@@ -19,6 +20,7 @@ if(name==='EnergyBg')next=shader(energyBgVert,energyBgFrag,common,false)
 if(name==='EnergyCone')next=shader(energyConeVert,energyConeFrag,{...common,uColor:{value:new Color(10605311)},iSteps:{value:2},uSpeed:{value:.08},uHeadLength:{value:.1},uLineCount:{value:30},uOpacity:{value:.5}})
 if(name==='Glow')next=shader(glowVert,glowFrag,common)
 if(name==='PowerLine')next=shader(powerLineVert,powerLineFrag,common)
+if(mesh.name.startsWith('Line'))next=shader(lineVert,lineFrag,{uTime:{value:0},uColor:{value:new Color('#84d5ff')},uFade:{value:1}},false)
 if(name==='Holograms')next=shader(hologramsVert,hologramsFrag,{...common,tMap:{value:previous.map??null},tMouse:{value:emptyMouseTexture},uMobile:{value:0},uDpr:{value:gl.getPixelRatio()},uColor:{value:new Color('#8fc1e5')},uGlowColor:{value:new Color('#6bfeff')},uFade:{value:1},uOffset:{value:0}},false)
 if(name==='Grid')next=shader(gridVert,gridFrag,{...common,tMouseComputation:{value:emptyMouseTexture},uGridScale:{value:150},uLineWidth:{value:.01},uCrossSize:{value:.2},uPointSize:{value:0},uSpeed:{value:0},uBackgroundNoise:{value:1},uBrightness:{value:1.6},uBackgroundColor:{value:new Color('#1a697f')},uPointColor:{value:new Color('#519abc')},uAccentColor:{value:new Color('#7a9fb6')},uLineColor:{value:new Color('#4e8399')},uDepth:{value:100},uFade:{value:1},uTranslate:{value:new Vector2()}},false)
 if(next){next.name=previous.name;mesh.material=next;mesh.frustumCulled=false;created.push(next)}});return created},[roots,noise,size.width,size.height,gl]);useFrame(({clock,size:frameSize})=>{for(const material of materials){if(material.uniforms.uTime)material.uniforms.uTime.value=clock.elapsedTime;if(material.uniforms.uResolution)(material.uniforms.uResolution.value as Vector2).set(frameSize.width,frameSize.height)}});return materials}

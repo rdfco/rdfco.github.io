@@ -42,6 +42,12 @@ jobs:
       - name: Unit tests
         working-directory: gspa-site
         run: npm run test
+      - name: Audit domains and asset provenance
+        working-directory: gspa-site
+        run: npm run audit:runtime
+      - name: Enforce bundle budgets
+        working-directory: gspa-site
+        run: npm run check:bundle
       - name: Migration dashboard
         working-directory: gspa-site
         run: npm run migration:status >> $GITHUB_STEP_SUMMARY
