@@ -1,5 +1,5 @@
 {
-  "overall": 46,
+  "overall": 55,
   "sections": {
     "header": "native-preview",
     "hero": "native-preview",
@@ -11,11 +11,14 @@
     "footer": "native-preview"
   },
   "capabilities": {
-    "centralData": "complete",
+    "centralData": "schema-and-registry-complete",
     "reactSections": "complete-in-preview",
     "gsapLifecycle": "complete-in-preview",
     "r3fScene": "complete-in-preview",
     "nativeRouting": "pending",
+    "developerTooling": "complete",
+    "tests": "foundation-complete",
+    "webglDocumentation": "initial-recovery-complete",
     "visualParity": "in-progress",
     "legacyRemoval": "blocked-by-visual-parity"
   },

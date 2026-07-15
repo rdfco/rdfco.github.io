@@ -1,0 +1,6 @@
+dist
+node_modules
+public/_astro
+public/legacy
+work
+package-lock.json
