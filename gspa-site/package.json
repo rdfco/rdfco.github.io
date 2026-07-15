@@ -18,6 +18,7 @@
     "migration:status": "node scripts/migration-dashboard.mjs",
     "assets:inspect": "node scripts/inspect-glb.mjs",
     "shaders:extract": "node scripts/extract-shaders.mjs",
+    "shaders:recover": "node scripts/recover-material-shaders.mjs",
     "visual:baseline": "node scripts/capture-baseline.mjs",
     "visual:compare": "node scripts/compare-baseline.mjs"
     ,"visual:contract": "npm run build && node scripts/capture-contract.mjs"
