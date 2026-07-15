@@ -1,8 +1,13 @@
+import { useRef, useState } from 'react'
+
 /**
  * Phase 1 boundary: the mirrored Astro document owns its own DOM and runtime.
  * Do not add markup inside this component or manipulate the frame document.
  */
 export default function LegacySite() {
+  const timerRef = useRef()
+  const [status, setStatus] = useState('loading')
+
   const updateFooter = document => {
     const footer = document?.querySelector('#footer')
     if (!footer) return
@@ -34,19 +39,45 @@ export default function LegacySite() {
 
   const onLoad = event => {
     const frameDocument = event.currentTarget.contentDocument
-    if (!frameDocument) return
+    if (!frameDocument) {
+      setStatus('failed')
+      return
+    }
     updateFooter(frameDocument)
     // The legacy page applies its existing content customizer after load.
     // Re-apply only the requested footer changes after that work completes.
     frameDocument.defaultView?.setTimeout(() => updateFooter(frameDocument), 1000)
+
+    const startedAt = Date.now()
+    const waitUntilCustomized = () => {
+      if (frameDocument.documentElement.dataset.faraReady === 'true') {
+        window.clearTimeout(timerRef.current)
+        setStatus('ready')
+        return
+      }
+      if (Date.now() - startedAt >= 5000) {
+        setStatus('failed')
+        return
+      }
+      timerRef.current = window.setTimeout(waitUntilCustomized, 50)
+    }
+    waitUntilCustomized()
   }
 
   return (
-    <iframe
-      className="legacy-site"
-      title="Fort Energy"
-      src="/legacy/fort-energy/index.html"
-      onLoad={onLoad}
-    />
+    <div className="legacy-shell" data-status={status}>
+      {status !== 'ready' && (
+        <div className="site-gate" role={status === 'failed' ? 'alert' : 'status'}>
+          {status === 'failed' ? 'FARA could not be loaded. Please refresh the page.' : 'Loading FARA…'}
+        </div>
+      )}
+      <iframe
+        className="legacy-site"
+        title="FARA"
+        src="/legacy/fort-energy/index.html"
+        sandbox="allow-scripts allow-same-origin"
+        onLoad={onLoad}
+      />
+    </div>
   )
 }

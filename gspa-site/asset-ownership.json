@@ -1,0 +1,6 @@
+{
+  "policy": "No mirrored asset may be promoted into the native application without explicit approval.",
+  "assets": [],
+  "legacyAssetRoots": ["public/assets", "public/_astro", "public/legacy"],
+  "nativeAssetRoots": ["src/assets"]
+}

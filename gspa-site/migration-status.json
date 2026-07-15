@@ -1,0 +1,28 @@
+{
+  "overall": 46,
+  "sections": {
+    "header": "native-preview",
+    "hero": "native-preview",
+    "about": "native-preview",
+    "solutions": "native-preview",
+    "ai": "native-preview",
+    "industries": "native-preview",
+    "caseStudies": "native-preview",
+    "footer": "native-preview"
+  },
+  "capabilities": {
+    "centralData": "complete",
+    "reactSections": "complete-in-preview",
+    "gsapLifecycle": "complete-in-preview",
+    "r3fScene": "complete-in-preview",
+    "nativeRouting": "pending",
+    "visualParity": "in-progress",
+    "legacyRemoval": "blocked-by-visual-parity"
+  },
+  "remainingLegacyDependencies": [
+    "src/components/LegacySite.jsx",
+    "src/site-customizer.js",
+    "public/legacy",
+    "public/_astro"
+  ]
+}

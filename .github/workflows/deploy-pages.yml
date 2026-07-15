@@ -1,4 +1,4 @@
-name: Deploy Fort Energy site
+name: Deploy FARA site
 
 on:
   push:
@@ -30,6 +30,15 @@ jobs:
       - name: Build
         working-directory: gspa-site
         run: npm run build
+      - name: Verify native migration boundaries
+        working-directory: gspa-site
+        run: npm run check:native
+      - name: Typecheck
+        working-directory: gspa-site
+        run: npm run typecheck
+      - name: Migration dashboard
+        working-directory: gspa-site
+        run: npm run migration:status >> $GITHUB_STEP_SUMMARY
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

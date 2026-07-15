@@ -1,9 +1,9 @@
 export const siteData = {
-  seo: { title: 'Fort Energy', description: 'Advancing Innovation in Energy Investments' },
+  seo: { title: 'FARA', description: 'AI, technology and innovation consulting' },
   brand: {
-    groupName: 'Montfort',
-    divisionName: 'Fort Energy',
-    logoText: 'FORT ENERGY',
+    groupName: 'FARA',
+    divisionName: 'FARA',
+    logoText: 'FARA',
     // فایل لوگو را داخل public/assets/logos بگذارید و مسیرش را اینجا بنویسید.
     // خالی بماند، لوگوی SVG اصلی سایت نمایش داده می‌شود.
     desktopLogo: '', // مثال: '/assets/logos/fort-energy-desktop.svg'
@@ -43,24 +43,24 @@ export const siteData = {
     lead: "Don’t just adapt to the future; Define it.",
     items: [
       {
-        title: 'Leadership driving growth and innovation',
-        text: "Fort Energy's greatest strength lies in the synergy between its talented team and robust operating platform. The leadership team plays a pivotal role in managing a diverse portfolio of investments and companies, driving growth and innovation. With a shared vision, the team navigates the complexities of today's dynamic business landscape, guiding investments to flourish and sustain lasting returns."
+        title: 'Technology and innovation strategy',
+        text: 'FARA turns technology signals and business priorities into practical innovation roadmaps with clear outcomes, ownership, and measurable value.'
       },
       {
-        title: 'Strategic relationships',
-        text: 'Fort Energy prioritizes relationship building within the downstream and other relevant sectors, while simultaneously exploring new partnerships and investment opportunities across the entire value chain.'
+        title: 'AI-enabled decision making',
+        text: 'We combine human expertise with AI-powered analytics to identify opportunities, reduce uncertainty, and support faster strategic decisions.'
       },
       {
-        title: 'Empowering communities through social responsibility',
-        text: 'In addition to its business operations, Fort Energy is committed to empowering communities through initiatives that include alleviating poverty, supporting education, and empowering women, all in collaboration with local NGOs and non-profit organizations.'
+        title: 'Deployable solutions',
+        text: 'Our work moves beyond presentations into tools, pilots, and operating solutions designed to integrate with real organizational processes.'
       },
       {
-        title: 'Preferential market access',
-        text: "Courtesy of Montfort's wide net cast across geographies, Fort Energy is able to capitalize on opportunities to receive exclusive access to a diverse array of market opportunities and deal flow, allowing for a tactical advantage."
+        title: 'Industry-focused expertise',
+        text: 'FARA adapts global methods to the operational realities of energy, metals, manufacturing, automotive, and healthcare organizations.'
       },
       {
-        title: 'Corporate governance and global compliance',
-        text: 'Fort Energy operates under an integrated ESG management framework and adheres to strict corporate governance principles. Compliance with all relevant laws and regulations across global operations means that products are delivered responsibly and reliably, with health, safety, environmental, and social considerations taken into all activities.'
+        title: 'Capability that lasts',
+        text: 'We build internal skills, governance, and repeatable systems so innovation and digital transformation continue after each engagement ends.'
       }
     ]
   },
@@ -113,7 +113,7 @@ export const siteData = {
       subtitle: 'FARA Industries'
     }
   },
-  cta: { label: 'Visit Fort Energy', href: 'https://www.fortenergy.com' },
+  cta: { label: 'Work with FARA', href: '#footer' },
   footer: {
     eyebrow: 'Proven Impact',
     title: 'FARA Case Studies',
