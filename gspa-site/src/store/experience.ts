@@ -1,0 +1,4 @@
+import { create } from 'zustand'
+type Tier='high'|'medium'|'low'|'fallback'
+type ExperienceState={activeSection:string;scrollProgress:number;sceneProgress:number;menuOpen:boolean;webglReady:boolean;performanceTier:Tier;setActiveSection:(value:string)=>void;setScrollProgress:(value:number)=>void;setSceneProgress:(value:number)=>void;setMenuOpen:(value:boolean)=>void;setWebglReady:(value:boolean)=>void;setPerformanceTier:(value:Tier)=>void}
+export const useExperienceStore=create<ExperienceState>(set=>({activeSection:'home',scrollProgress:0,sceneProgress:0,menuOpen:false,webglReady:false,performanceTier:'high',setActiveSection:activeSection=>set({activeSection}),setScrollProgress:scrollProgress=>set({scrollProgress}),setSceneProgress:sceneProgress=>set({sceneProgress}),setMenuOpen:menuOpen=>set({menuOpen}),setWebglReady:webglReady=>set({webglReady}),setPerformanceTier:performanceTier=>set({performanceTier})}))

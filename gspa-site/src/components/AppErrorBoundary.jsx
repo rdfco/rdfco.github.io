@@ -1,0 +1,2 @@
+import { Component } from 'react'
+export default class AppErrorBoundary extends Component { state={failed:false};static getDerivedStateFromError(){return{failed:true}}componentDidCatch(error){console.error('FARA application error',error)}render(){return this.state.failed?<main role="alert"><h1>FARA</h1><p>The experience could not be loaded. Please refresh the page.</p></main>:this.props.children} }
