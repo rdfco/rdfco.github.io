@@ -1,0 +1,2 @@
+import { CardGrid } from '../components/ui/CardGrid';import { SectionHeading } from '../components/ui/SectionHeading';import { content } from '../data/content'
+export function SolutionsSection(){return <section id="solution" className="section navy reveal"><SectionHeading eyebrow="SOLUTIONS BY FARA">Don’t just adapt to the future;<br/>Define it.</SectionHeading><CardGrid items={content.faraSections.solutions}/></section>}
