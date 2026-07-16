@@ -9,11 +9,21 @@ validateSiteData(siteData)
 
 let requestedPath = null
 
+const updateMonochromeScrollProfile = () => {
+  document.body.classList.toggle(
+    'fara-home-scrolled',
+    document.body.dataset.faraPage === 'home' && window.scrollY > window.innerHeight * 0.5,
+  )
+}
+
+window.addEventListener('scroll', updateMonochromeScrollProfile, { passive: true })
+
 const refreshSite = () => {
   const navigationItem = getNavigationItem(requestedPath || '/')
   const currentPage = getPage(navigationItem.key)
   currentPage.data.href = navigationItem.href
   applySiteData(siteData, currentPage)
+  updateMonochromeScrollProfile()
   if (requestedPath !== null) document.documentElement.dataset.faraReady = 'true'
   window.setTimeout(() => applySiteData(siteData, currentPage), 150)
   window.setTimeout(() => applySiteData(siteData, currentPage), 800)

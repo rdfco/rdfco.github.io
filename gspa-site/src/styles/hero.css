@@ -12,7 +12,7 @@
   max-width: none !important;
   height: 100% !important;
   padding: 0 2rem !important;
-  color: #fff;
+  color: gold;
   text-align: center;
 }
 .hero .fara-hero-copy.logo-dk { display: flex !important; }
@@ -32,4 +32,18 @@
   line-height: 1.7;
   letter-spacing: .12em;
   text-transform: uppercase;
+}
+/* Home-only monochrome palette for the legacy WebGL scene. */
+body[data-fara-page='home'] #canvas-wrapper {
+  background: #000;
+}
+body[data-fara-page='home'] #canvas-wrapper > canvas {
+  /* Hero: keep the sky black and the energy/stars white. */
+  filter: grayscale(1) contrast(1.8) brightness(1.12);
+  transition: filter 350ms linear;
+}
+body[data-fara-page='home'].fara-home-scrolled #canvas-wrapper > canvas {
+  /* Scrolled chapters: lift dim model and square-grid lines before restoring
+     contrast, so technical shapes remain readable against the black field. */
+  filter: grayscale(1) brightness(1.65) contrast(1.45);
 }
