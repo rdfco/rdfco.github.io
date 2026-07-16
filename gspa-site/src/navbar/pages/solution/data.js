@@ -1,0 +1,1 @@
+export const data = {"key":"solution","title":"Solution","introduction":"This page is ready for future solution components and service data.","sections":[]}

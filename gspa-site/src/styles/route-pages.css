@@ -1,0 +1,6 @@
+.fara-route-page {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  background: #d9d9d9;
+}

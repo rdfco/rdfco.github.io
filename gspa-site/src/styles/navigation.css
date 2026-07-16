@@ -2,10 +2,67 @@
 #header .nav-link,
 #header .news-w p,
 #header .menu-cta p { transition: color 300ms linear; }
+#header .menu-links-w .navbar {
+  transform: var(--fara-navbar-transform) !important;
+}
 #header .news-w { display: none !important; }
 #header .nav-link.is-disabled,
 .montfort-menu .nav-link.is-disabled { cursor: default; }
 .montfort-menu .fara-menu-hidden { display: none !important; }
+
+/* The legacy GSAP timeline only captures the five server-rendered items.
+   Drive every item from one shared animation so dynamically added entries
+   inherit the same menu behaviour automatically. */
+@keyframes fara-menu-item-in {
+  from { opacity: 0; transform: translate3d(0, 20px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes fara-menu-item-out {
+  from { opacity: 1; transform: translate3d(0, 0, 0); }
+  to { opacity: 0; transform: translate3d(0, 20px, 0); }
+}
+.montfort-menu .grid-nav nav > ul > li {
+  animation: fara-menu-item-out 450ms cubic-bezier(.4, 0, .1, 1) both;
+}
+.montfort-menu.active .grid-nav nav > ul > li {
+  animation-name: fara-menu-item-in;
+  animation-duration: 800ms;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.montfort-menu.active .grid-nav nav > ul > li:nth-child(1) { animation-delay: 0ms; }
+.montfort-menu.active .grid-nav nav > ul > li:nth-child(2) { animation-delay: 90ms; }
+.montfort-menu.active .grid-nav nav > ul > li:nth-child(3) { animation-delay: 180ms; }
+.montfort-menu.active .grid-nav nav > ul > li:nth-child(4) { animation-delay: 270ms; }
+.montfort-menu.active .grid-nav nav > ul > li:nth-child(5) { animation-delay: 360ms; }
+.montfort-menu.active .grid-nav nav > ul > li:nth-child(6) { animation-delay: 450ms; }
+.montfort-menu.active .grid-nav nav > ul > li:nth-child(7) { animation-delay: 540ms; }
+.montfort-menu:not(.active) .grid-nav nav > ul > li:nth-child(1) { animation-delay: 360ms; }
+.montfort-menu:not(.active) .grid-nav nav > ul > li:nth-child(2) { animation-delay: 300ms; }
+.montfort-menu:not(.active) .grid-nav nav > ul > li:nth-child(3) { animation-delay: 240ms; }
+.montfort-menu:not(.active) .grid-nav nav > ul > li:nth-child(4) { animation-delay: 180ms; }
+.montfort-menu:not(.active) .grid-nav nav > ul > li:nth-child(5) { animation-delay: 120ms; }
+.montfort-menu:not(.active) .grid-nav nav > ul > li:nth-child(6) { animation-delay: 60ms; }
+.montfort-menu:not(.active) .grid-nav nav > ul > li:nth-child(7) { animation-delay: 0ms; }
+
+@media (max-height: 50rem) {
+  .montfort-menu .grid-nav nav {
+    max-height: calc(100dvh - 7rem);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+  .montfort-menu.active .grid-nav nav { scrollbar-color: #a9bfd2 transparent; }
+  .montfort-menu .grid-nav nav::-webkit-scrollbar { width: 4px; }
+  .montfort-menu .grid-nav nav::-webkit-scrollbar-track { background: transparent; }
+  .montfort-menu .grid-nav nav::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 999px;
+    transition: background-color 300ms linear 500ms;
+  }
+  .montfort-menu.active .grid-nav nav::-webkit-scrollbar-thumb { background: #a9bfd2; }
+}
 #header li[data-config-generated="true"] {
   transition: opacity 300ms linear, visibility 300ms linear;
 }
@@ -13,6 +70,29 @@
   visibility: hidden;
   opacity: 0;
 }
+@keyframes fara-header-item-in {
+  from { opacity: 0; visibility: hidden; transform: translate3d(-8px, 0, 0); }
+  to { opacity: 1; visibility: visible; transform: translate3d(0, 0, 0); }
+}
+@keyframes fara-header-item-out {
+  from { opacity: 1; visibility: visible; transform: translate3d(0, 0, 0); }
+  to { opacity: 0; visibility: hidden; transform: translate3d(-8px, 0, 0); }
+}
+#header .menu-links-w > ul > li {
+  animation: fara-header-item-in 420ms ease-out both;
+}
+#header.menu-open .menu-links-w > ul > li {
+  animation-name: fara-header-item-out;
+  animation-duration: 260ms;
+  animation-delay: 0ms;
+}
+#header:not(.menu-open) .menu-links-w > ul > li:nth-child(1) { animation-delay: 0ms; }
+#header:not(.menu-open) .menu-links-w > ul > li:nth-child(2) { animation-delay: 70ms; }
+#header:not(.menu-open) .menu-links-w > ul > li:nth-child(3) { animation-delay: 140ms; }
+#header:not(.menu-open) .menu-links-w > ul > li:nth-child(4) { animation-delay: 210ms; }
+#header:not(.menu-open) .menu-links-w > ul > li:nth-child(5) { animation-delay: 280ms; }
+#header:not(.menu-open) .menu-links-w > ul > li:nth-child(6) { animation-delay: 350ms; }
+#header:not(.menu-open) .menu-links-w > ul > li:nth-child(7) { animation-delay: 420ms; }
 .montfort-menu .terms-link a[aria-disabled="true"] { cursor: default; }
 #header:not(.top)[data-theme="light"] .nav-link,
 #header:not(.top)[data-theme="light"] .news-w p,

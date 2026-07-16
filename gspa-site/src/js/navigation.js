@@ -20,19 +20,31 @@ const animateNavbarTo = target => {
   const labelRect = label.getBoundingClientRect()
   const listRect = navList.getBoundingClientRect()
   navbar.style.transition = 'transform 600ms cubic-bezier(.2,.8,.2,1)'
-  navbar.style.transform = `translate3d(${labelRect.left - listRect.left}px, 0, 0) scaleX(${labelRect.width / (navbar.offsetWidth || 1)})`
+  navbar.style.setProperty('--fara-navbar-transform', `translate3d(${labelRect.left - listRect.left}px, 0, 0) scaleX(${labelRect.width / (navbar.offsetWidth || 1)})`)
 }
 
 const setupHover = () => {
   const activeLabel = () => document.querySelector('#header .nav-link.active span')
-  document.querySelectorAll('#header li[data-config-generated="true"] .nav-link').forEach(link => {
+  const navList = document.querySelector('#header .menu-links-w > ul')
+  if (navList && !navList.dataset.activeReturnReady) {
+    navList.dataset.activeReturnReady = 'true'
+    navList.addEventListener('mouseleave', () => window.setTimeout(() => animateNavbarTo(activeLabel()), 120))
+    navList.addEventListener('focusout', event => {
+      if (!navList.contains(event.relatedTarget)) window.setTimeout(() => animateNavbarTo(activeLabel()), 120)
+    })
+  }
+  document.querySelectorAll('#header .menu-links-w .nav-link').forEach(link => {
     if (link.dataset.hoverReady) return
     link.dataset.hoverReady = 'true'
     link.addEventListener('mouseenter', () => animateNavbarTo(link))
-    link.addEventListener('mouseleave', () => animateNavbarTo(activeLabel()))
     link.addEventListener('focus', () => animateNavbarTo(link))
-    link.addEventListener('blur', () => animateNavbarTo(activeLabel()))
   })
+}
+
+const syncNavbarToActiveItem = () => {
+  const activeLink = document.querySelector('#header .menu-links-w .nav-link.active')
+  if (!activeLink) return
+  window.requestAnimationFrame(() => animateNavbarTo(activeLink))
 }
 
 const disableLink = link => {
@@ -44,7 +56,7 @@ const disableLink = link => {
   link.addEventListener('click', event => event.preventDefault())
 }
 
-export const renderNavigation = siteData => {
+export const renderNavigation = (siteData, currentPath = '/') => {
   ensureItems('#header .menu-links-w > ul', siteData.navigation.length)
   ensureItems('.montfort-menu nav > ul', siteData.navigation.length)
 
@@ -52,23 +64,26 @@ export const renderNavigation = siteData => {
     const item = siteData.navigation[index]
     if (!item) return
     link.querySelector('span').textContent = item.label
-    link.classList.toggle('active', Boolean(item.active))
+    link.classList.toggle('active', item.href === currentPath)
     link.classList.toggle('is-disabled', item.enabled === false)
-    item.enabled === false ? disableLink(link) : link.setAttribute('href', item.href || '#')
+    link.dataset.faraRoute = item.href
+    item.enabled === false ? disableLink(link) : link.setAttribute('href', item.href || '/')
   })
 
   document.querySelectorAll('.montfort-menu nav .nav-link').forEach((link, index) => {
     const item = siteData.navigation[index]
     if (!item) return
     link.querySelector('.text-content span').textContent = item.label
-    link.classList.toggle('active', Boolean(item.active))
+    link.classList.toggle('active', item.href === currentPath)
     link.classList.toggle('is-disabled', item.enabled === false)
     link.closest('li')?.classList.toggle('fara-menu-hidden', item.showInMenu === false)
-    item.enabled === false ? disableLink(link) : link.setAttribute('href', item.href || '#')
+    link.dataset.faraRoute = item.href
+    item.enabled === false ? disableLink(link) : link.setAttribute('href', item.href || '/')
   })
 
   document.querySelectorAll('.montfort-menu .terms-link a').forEach(link => {
     if (siteData.menuSettings.enableLegalLinks === false) disableLink(link)
   })
   setupHover()
+  syncNavbarToActiveItem()
 }

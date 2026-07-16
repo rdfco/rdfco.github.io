@@ -9,6 +9,7 @@ const legacyRuntimeFiles = [
   'data',
   'js',
   'styles',
+  'navbar',
 ]
 
 function copyLegacyRuntime() {

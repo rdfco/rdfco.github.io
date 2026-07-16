@@ -1,3 +1,5 @@
+import { navigationItems } from '../navbar/navigation.js'
+
 export const siteData = {
   seo: { title: 'FARA', description: 'AI, technology and innovation consulting' },
   brand: {
@@ -10,15 +12,7 @@ export const siteData = {
     mobileLogo: '',  // مثال: '/assets/logos/fort-energy-mobile.svg'
   },
   
-  navigation: [
-    { label: 'Home', href: '#', active: true, enabled: true, showInMenu: true },
-    { label: 'Knowing FARA', href: '#', enabled: false, showInMenu: true },
-    { label: 'Solution', href: '#', enabled: false, showInMenu: true },
-    { label: 'Consulting', href: '#', enabled: false, showInMenu: true },
-    { label: 'Industries', href: '#', enabled: false, showInMenu: true },
-    { label: 'Case studies', href: '#hero', enabled: false, showInMenu: false },
-    { label: 'Think together', href: '#', enabled: false, showInMenu: false }
-  ],
+  navigation: navigationItems,
   menuSettings: {
     enableLegalLinks: false
   },

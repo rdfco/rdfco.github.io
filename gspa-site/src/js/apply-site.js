@@ -2,6 +2,7 @@ import { setText } from './core/dom.js'
 import { renderHero } from './components/hero.js'
 import { renderSections } from './components/sections.js'
 import { renderNavigation } from './navigation.js'
+import { renderCurrentPage } from '../navbar/pages/render-page.js'
 
 const updateLegacyContent = siteData => {
   setText('main h2', siteData.introduction.title)
@@ -30,12 +31,13 @@ const updateLegacyContent = siteData => {
   }
 }
 
-export const applySiteData = siteData => {
+export const applySiteData = (siteData, currentPage) => {
   document.title = siteData.seo.title
   document.querySelector('meta[name="description"]')?.setAttribute('content', siteData.seo.description)
-  renderNavigation(siteData)
+  renderNavigation(siteData, currentPage.data.href)
   updateLegacyContent(siteData)
   renderHero(siteData)
   renderSections(siteData)
+  renderCurrentPage(currentPage.data.key)
   // Keep the legacy footer layout intact; it is customized separately.
 }

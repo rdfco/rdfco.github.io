@@ -1,0 +1,1 @@
+export const data = {"key":"case-studies","title":"Case studies","introduction":"This page is ready for future case-study collections, filters and detail components.","sections":[]}

@@ -1,27 +1,35 @@
-import { useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-/**
- * Phase 1 boundary: the mirrored Astro document owns its own DOM and runtime.
- * Do not add markup inside this component or manipulate the frame document.
- */
 export default function LegacySite() {
+  const location = useLocation()
+  const navigate = useNavigate()
   const timerRef = useRef()
   const [status, setStatus] = useState('loading')
+
+  useLayoutEffect(() => {
+    window.clearTimeout(timerRef.current)
+    setStatus('loading')
+  }, [location.pathname])
+
+  useEffect(() => {
+    const onMessage = event => {
+      if (event.origin !== window.location.origin || event.data?.type !== 'fara:navigate') return
+      navigate(event.data.pathname)
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [navigate])
 
   const updateFooter = document => {
     const footer = document?.querySelector('#footer')
     if (!footer) return
-
-    // Preserve the legacy footer DOM and selectors while removing the retired brand menu.
-    const brandMenu = footer.querySelector('.menu-links')
-    brandMenu?.replaceChildren()
-
+    footer.querySelector('.menu-links')?.replaceChildren()
     const logo = footer.querySelector('.legal-info-container .logo')
     if (logo?.tagName.toLowerCase() === 'svg') {
       logo.replaceChildren()
       logo.setAttribute('viewBox', '0 0 667 80')
       logo.setAttribute('aria-label', 'FARA')
-
       const label = document.createElementNS('http://www.w3.org/2000/svg', 'text')
       label.setAttribute('x', '0')
       label.setAttribute('y', '58')
@@ -32,7 +40,6 @@ export default function LegacySite() {
       label.textContent = 'FARA'
       logo.append(label)
     }
-
     const copyright = footer.querySelector('.copyright-info p')
     if (copyright) copyright.textContent = '© 2026 | FARA - All rights reserved'
   }
@@ -43,9 +50,11 @@ export default function LegacySite() {
       setStatus('failed')
       return
     }
+    frameDocument.defaultView?.postMessage(
+      { type: 'fara:set-route', pathname: location.pathname },
+      window.location.origin,
+    )
     updateFooter(frameDocument)
-    // The legacy page applies its existing content customizer after load.
-    // Re-apply only the requested footer changes after that work completes.
     frameDocument.defaultView?.setTimeout(() => updateFooter(frameDocument), 1000)
 
     const startedAt = Date.now()
@@ -68,10 +77,17 @@ export default function LegacySite() {
     <div className="legacy-shell" data-status={status}>
       {status !== 'ready' && (
         <div className="site-gate" role={status === 'failed' ? 'alert' : 'status'}>
-          {status === 'failed' ? 'FARA could not be loaded. Please refresh the page.' : 'Loading FARA…'}
+          {status === 'failed' ? (
+            'FARA could not be loaded. Please refresh the page.'
+          ) : (
+            <div className="site-loader" aria-label="Loading FARA">
+              <span className="site-loader__spinner" aria-hidden="true" />
+            </div>
+          )}
         </div>
       )}
       <iframe
+        key={location.pathname}
         className="legacy-site"
         title="FARA"
         src="/legacy/fort-energy/index.html"
