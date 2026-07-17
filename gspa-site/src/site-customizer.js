@@ -9,6 +9,12 @@ validateSiteData(siteData)
 
 let requestedPath = null
 
+const normalizeRoute = value => {
+  const [path, query = ''] = value.split('?')
+  const normalizedPath = path === '/' ? '/' : path.replace(/\/+$/, '')
+  return query ? `${normalizedPath}?${query}` : normalizedPath
+}
+
 const refreshSite = () => {
   const navigationItem = getNavigationItem(requestedPath || '/')
   const currentPage = getPageForPath(requestedPath || '/', navigationItem.key)
@@ -27,7 +33,7 @@ const refreshSite = () => {
 
 window.addEventListener('message', event => {
   if (event.origin !== window.location.origin || event.data?.type !== 'fara:set-route') return
-  requestedPath = event.data.pathname || '/'
+  requestedPath = normalizeRoute(event.data.pathname || '/')
   refreshSite()
 })
 
