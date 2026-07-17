@@ -23,6 +23,23 @@
 .montfort-menu.active .grid-nav nav a {
   pointer-events: auto !important;
 }
+.montfort-menu .grid-nav .nav-link {
+  transition: color 400ms linear;
+}
+.montfort-menu .grid-nav .nav-link .text-content {
+  transition: transform 600ms cubic-bezier(.4, 0, .1, 1);
+}
+.montfort-menu .grid-nav .nav-link .svg-container {
+  transition: background 400ms linear, color 400ms linear, transform 400ms cubic-bezier(.4, 0, .1, 1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .montfort-menu .grid-nav .nav-link:hover { color: #2d628c; }
+  .montfort-menu .grid-nav .nav-link:hover .text-content { transform: translate3d(0, 0, 0); }
+  .montfort-menu .grid-nav .nav-link:hover .svg-container { transform: scale3d(1, 1, 1); }
+}
+.montfort-menu .grid-nav .nav-link:focus-visible { color: #2d628c; }
+.montfort-menu .grid-nav .nav-link:focus-visible .text-content { transform: translate3d(0, 0, 0); }
+.montfort-menu .grid-nav .nav-link:focus-visible .svg-container { transform: scale3d(1, 1, 1); }
 html.fara-menu-open { overflow: hidden; }
 
 /* The legacy GSAP timeline only captures the five server-rendered items.
