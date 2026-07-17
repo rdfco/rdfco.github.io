@@ -23,27 +23,14 @@ const animateNavbarTo = target => {
   navbar.style.setProperty('--fara-navbar-transform', `translate3d(${labelRect.left - listRect.left}px, 0, 0) scaleX(${labelRect.width / (navbar.offsetWidth || 1)})`)
 }
 
-const animateNavbarAcrossList = () => {
-  const navList = document.querySelector('#header .container-menu ul')
-  const navbar = document.querySelector('#header nav .navbar')
-  if (!navList || !navbar) return
-  navbar.style.transition = 'transform 600ms cubic-bezier(.2,.8,.2,1)'
-  navbar.style.setProperty('--fara-navbar-transform', 'translate3d(0, 0, 0) scaleX(1)')
-}
-
-const restoreNavbar = () => {
-  const header = document.querySelector('#header')
-  const activeLabel = document.querySelector('#header .nav-link.active span')
-  header?.dataset.faraFullNavbar === 'true' ? animateNavbarAcrossList() : animateNavbarTo(activeLabel)
-}
-
 const setupHover = () => {
+  const activeLabel = () => document.querySelector('#header .nav-link.active span')
   const navList = document.querySelector('#header .menu-links-w > ul')
   if (navList && !navList.dataset.activeReturnReady) {
     navList.dataset.activeReturnReady = 'true'
-    navList.addEventListener('mouseleave', () => window.setTimeout(restoreNavbar, 120))
+    navList.addEventListener('mouseleave', () => window.setTimeout(() => animateNavbarTo(activeLabel()), 120))
     navList.addEventListener('focusout', event => {
-      if (!navList.contains(event.relatedTarget)) window.setTimeout(restoreNavbar, 120)
+      if (!navList.contains(event.relatedTarget)) window.setTimeout(() => animateNavbarTo(activeLabel()), 120)
     })
   }
   document.querySelectorAll('#header .menu-links-w .nav-link').forEach(link => {
@@ -55,7 +42,9 @@ const setupHover = () => {
 }
 
 const syncNavbarToActiveItem = () => {
-  window.requestAnimationFrame(restoreNavbar)
+  const activeLink = document.querySelector('#header .menu-links-w .nav-link.active')
+  if (!activeLink) return
+  window.requestAnimationFrame(() => animateNavbarTo(activeLink))
 }
 
 const disableLink = link => {
@@ -86,8 +75,6 @@ const configureLegalLink = link => {
 export const renderNavigation = (siteData, currentPath = '/') => {
   ensureItems('#header .menu-links-w > ul', siteData.navigation.length)
   ensureItems('.montfort-menu nav > ul', siteData.navigation.length)
-  const header = document.querySelector('#header')
-  if (header) header.dataset.faraFullNavbar = String(['/privacy-policy', '/terms-of-use'].includes(currentPath))
 
   document.querySelectorAll('#header .menu-links-w .nav-link').forEach((link, index) => {
     const item = siteData.navigation[index]
