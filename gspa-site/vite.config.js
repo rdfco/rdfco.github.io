@@ -12,6 +12,19 @@ const legacyRuntimeFiles = [
   'navbar',
 ]
 
+const pageRoutes = [
+  'knowing-fara',
+  'solution',
+  'consulting',
+  'industries',
+  'case-studies',
+  'think-together',
+  'privacy-policy',
+  'terms-of-use',
+  'news',
+  ...Array.from({ length: 21 }, (_, index) => `news/fara-insight-${String(index + 1).padStart(2, '0')}`),
+]
+
 function copyLegacyRuntime() {
   return {
     name: 'copy-legacy-runtime',
@@ -21,6 +34,13 @@ function copyLegacyRuntime() {
       mkdirSync(targetRoot, { recursive: true })
       legacyRuntimeFiles.forEach(file => {
         cpSync(resolve(sourceRoot, file), resolve(targetRoot, file), { recursive: true })
+      })
+      const appShell = resolve(process.cwd(), 'dist', 'index.html')
+      cpSync(appShell, resolve(process.cwd(), 'dist', '404.html'))
+      pageRoutes.forEach(route => {
+        const routeRoot = resolve(process.cwd(), 'dist', route)
+        mkdirSync(routeRoot, { recursive: true })
+        cpSync(appShell, resolve(routeRoot, 'index.html'))
       })
     },
   }
