@@ -9,6 +9,8 @@ export default function LegacySite() {
 
   useLayoutEffect(() => {
     window.clearTimeout(timerRef.current)
+    // The legacy iframe is intentionally reset whenever React Router changes route.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setStatus('loading')
   }, [location.pathname])
 
