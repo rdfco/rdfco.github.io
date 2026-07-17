@@ -41,6 +41,10 @@ const patchShader = source => {
   // Hologram body and halo.
   if (source.includes('intensity * mix(uColor, .5 * uGlowColor')) source = source
     .replace('mix(uColor, .5 * uGlowColor, smoothstep(1., 2., intensity))', `mix(vec3(${litRgb('hologram', '#8fc1e5')}), .5 * vec3(${litRgb('hologramGlow', '#6bfeff')}), smoothstep(1., 2., intensity))`)
+  // The right side of this atlas contains only the two ship holograms.
+  // Mask that atlas region without changing the grid or any other WebGL layer.
+  if (source.includes('float boats = step(.62, vUv.x);')) source = source
+    .replace(/alpha\s*\*=\s*0\.85\s*;/, match => `${match}\n    alpha *= 1. - boats;`)
   return source
 }
 const linearChannel = value => value <= .04045 ? value / 12.92 : Math.pow((value + .055) / 1.055, 2.4)

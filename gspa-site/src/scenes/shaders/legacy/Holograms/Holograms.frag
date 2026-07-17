@@ -45,6 +45,7 @@ void main() {
 
     float alpha = smoothstep(0., .1, length(data.rgb));
     alpha *= 0.85;
+    alpha *= 1. - boats;
 
     gl_FragColor = vec4(color.rgb, alpha) * smoothstep(0.2, .8, uFade + .4 * data.b);
     
