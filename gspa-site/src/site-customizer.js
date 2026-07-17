@@ -13,7 +13,13 @@ const refreshSite = () => {
   const navigationItem = getNavigationItem(requestedPath || '/')
   const currentPage = getPageForPath(requestedPath || '/', navigationItem.key)
   currentPage.data.href ||= navigationItem.href
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   applySiteData(siteData, currentPage)
+  window.requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    window.dispatchEvent(new Event('scroll'))
+    window.dispatchEvent(new Event('resize'))
+  })
   if (requestedPath !== null) document.documentElement.dataset.faraReady = 'true'
   window.setTimeout(() => applySiteData(siteData, currentPage), 150)
   window.setTimeout(() => applySiteData(siteData, currentPage), 800)

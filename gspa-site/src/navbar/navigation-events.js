@@ -22,11 +22,13 @@ export const setupNavigationEvents = () => {
       menu?.classList.remove('closing')
       menu?.classList.add('active')
       header?.classList.add('menu-open')
+      header?.classList.remove('fara-nav-surface')
     } else if (menu?.classList.contains('active')) {
       menu.classList.add('closing')
-      header?.classList.remove('menu-open')
       closeTimer = window.setTimeout(() => {
         menu.classList.remove('active', 'closing')
+        header?.classList.remove('menu-open')
+        header?.classList.toggle('fara-nav-surface', window.scrollY > 80)
         document.documentElement.classList.remove('fara-menu-open')
       }, 1100)
     }

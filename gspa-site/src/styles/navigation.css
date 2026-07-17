@@ -2,23 +2,26 @@
 #header {
   transition: transform 650ms cubic-bezier(.4, 0, .1, 1), opacity 450ms linear;
 }
-#header nav::before {
+#header::before {
   position: absolute;
   z-index: -1;
-  inset: -1.25rem -1.5rem;
+  top: 1.3rem;
+  right: clamp(1.5rem, 2.25vw, 2.25rem);
+  left: clamp(1.5rem, 2.25vw, 2.25rem);
+  height: 5.125rem;
   content: '';
   background: #fff;
-  border-radius: .35rem;
+  border-radius: .5rem;
   opacity: 0;
   transition: opacity 650ms cubic-bezier(.4, 0, .1, 1);
 }
-#header nav { position: relative; }
 #header.fara-nav-hidden {
   opacity: 0;
   pointer-events: none;
   transform: translate3d(0, -110%, 0);
 }
-#header.fara-nav-surface nav::before { opacity: 1; }
+#header.fara-nav-surface:not(.menu-open)::before { opacity: 1; }
+#header.menu-open::before { opacity: 0; transition: none; }
 #header.fara-nav-surface .nav-link,
 #header.fara-nav-surface .menu-cta p { color: #2d628c !important; }
 #header.fara-nav-surface .navbar,
@@ -132,13 +135,6 @@ html.fara-menu-open { overflow: hidden; }
     transition: background-color 300ms linear 500ms;
   }
   .montfort-menu.active .grid-nav nav::-webkit-scrollbar-thumb { background: #a9bfd2; }
-}
-#header li[data-config-generated="true"] {
-  transition: opacity 300ms linear, visibility 300ms linear;
-}
-#header.menu-open li[data-config-generated="true"] {
-  visibility: hidden;
-  opacity: 0;
 }
 @keyframes fara-header-item-in {
   from { opacity: 0; visibility: hidden; transform: translate3d(-8px, 0, 0); }
