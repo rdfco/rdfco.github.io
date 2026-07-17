@@ -1,0 +1,37 @@
+export const legalPages = {
+  'privacy-policy': {
+    key: 'privacy-policy',
+    href: '/privacy-policy',
+    title: 'Privacy Policy',
+    intro: 'This policy explains how FARA handles information shared through its website and digital services.',
+    sections: [
+      ['1. Introduction', 'FARA values privacy and processes personal information responsibly. This notice describes the categories of information that may be collected, why they are used, and the choices available to visitors.'],
+      ['2. Consent and choices', 'By using this website, visitors acknowledge this policy. Consent may be withdrawn where applicable by contacting FARA through the published communication channels.'],
+      ['3. Information we collect', 'Information may include contact details supplied voluntarily, basic device and browser data, service interactions, and records required to respond to enquiries.'],
+      ['3.1. Technical information', 'Technical logs can include browser type, approximate location, referring pages, timestamps, and security events used to maintain a reliable service.'],
+      ['3.2. Information you provide', 'When a visitor contacts FARA, the submitted name, organisation, email address, message, and related correspondence may be retained to manage the request.'],
+      ['4. Use and disclosure', 'Information is used for legitimate operational, security, analytical, and communication purposes. It is shared only with authorised service providers or when required by law.'],
+      ['5. Data retention and security', 'Records are retained only for as long as reasonably necessary. Appropriate organisational and technical safeguards are used to reduce the risk of unauthorised access.'],
+      ['6. External links', 'This website may link to third-party services. Their privacy practices are governed by their own notices and are outside FARA’s control.'],
+      ['7. Your rights', 'Depending on applicable law, individuals may request access, correction, restriction, deletion, or a copy of personal information associated with them.'],
+      ['8. Contact', 'Questions about this policy or privacy requests may be sent through the Think Together page.'],
+    ],
+  },
+  'terms-of-use': {
+    key: 'terms-of-use',
+    href: '/terms-of-use',
+    title: 'Terms of Use',
+    intro: 'These terms govern access to and use of the FARA website.',
+    sections: [
+      ['Status of information', 'Website materials are provided for general information. They are not professional advice and should not be the sole basis for a commercial, technical, or investment decision.'],
+      ['Terms and conditions', 'Visitors may browse the website and retain a reasonable personal reference copy. Content may not be republished, sold, misrepresented, or used to create a competing service without permission.'],
+      ['Intellectual property', 'Names, marks, text, graphics, interfaces, and other website materials belong to FARA or their respective licensors unless expressly stated otherwise.'],
+      ['Acceptable use', 'Visitors must not interfere with the website, attempt unauthorised access, introduce malicious code, scrape protected information, or use the service unlawfully.'],
+      ['Changes to these terms', 'FARA may update these terms when services, technology, or legal requirements change. Continued use after publication indicates acceptance of the revised terms.'],
+      ['Website availability', 'The website may be modified, suspended, or withdrawn for maintenance, security, operational, or business reasons without guarantee of uninterrupted availability.'],
+      ['Data protection', 'Personal information associated with website use is handled according to the FARA Privacy Policy and applicable data protection requirements.'],
+      ['External links', 'Links to external websites are provided for convenience. FARA does not control and is not responsible for their content, availability, or practices.'],
+      ['Contact and jurisdiction', 'Questions may be submitted through the Think Together page. Applicable law and competent courts will govern any dispute, subject to mandatory local rights.'],
+    ],
+  },
+}

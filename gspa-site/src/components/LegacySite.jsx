@@ -12,7 +12,7 @@ export default function LegacySite() {
     // The legacy iframe is intentionally reset whenever React Router changes route.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setStatus('loading')
-  }, [location.pathname])
+  }, [location.pathname, location.search])
 
   useEffect(() => {
     const onMessage = event => {
@@ -53,7 +53,7 @@ export default function LegacySite() {
       return
     }
     frameDocument.defaultView?.postMessage(
-      { type: 'fara:set-route', pathname: location.pathname },
+      { type: 'fara:set-route', pathname: `${location.pathname}${location.search}` },
       window.location.origin,
     )
     updateFooter(frameDocument)
@@ -89,7 +89,7 @@ export default function LegacySite() {
         </div>
       )}
       <iframe
-        key={location.pathname}
+        key={`${location.pathname}${location.search}`}
         className="legacy-site"
         title="FARA"
         src="/legacy/fort-energy/index.html"

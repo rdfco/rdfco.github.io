@@ -58,16 +58,16 @@ html.fara-menu-open { overflow: hidden; }
 }
 .montfort-menu.active .grid-nav nav > ul > li {
   animation-name: fara-menu-item-in;
-  animation-duration: 800ms;
+  animation-duration: 550ms;
   animation-timing-function: cubic-bezier(.2, .8, .2, 1);
 }
 .montfort-menu.active .grid-nav nav > ul > li:nth-child(1) { animation-delay: 0ms; }
-.montfort-menu.active .grid-nav nav > ul > li:nth-child(2) { animation-delay: 90ms; }
-.montfort-menu.active .grid-nav nav > ul > li:nth-child(3) { animation-delay: 180ms; }
-.montfort-menu.active .grid-nav nav > ul > li:nth-child(4) { animation-delay: 270ms; }
-.montfort-menu.active .grid-nav nav > ul > li:nth-child(5) { animation-delay: 360ms; }
-.montfort-menu.active .grid-nav nav > ul > li:nth-child(6) { animation-delay: 450ms; }
-.montfort-menu.active .grid-nav nav > ul > li:nth-child(7) { animation-delay: 540ms; }
+.montfort-menu.active .grid-nav nav > ul > li:nth-child(2) { animation-delay: 50ms; }
+.montfort-menu.active .grid-nav nav > ul > li:nth-child(3) { animation-delay: 100ms; }
+.montfort-menu.active .grid-nav nav > ul > li:nth-child(4) { animation-delay: 150ms; }
+.montfort-menu.active .grid-nav nav > ul > li:nth-child(5) { animation-delay: 200ms; }
+.montfort-menu.active .grid-nav nav > ul > li:nth-child(6) { animation-delay: 250ms; }
+.montfort-menu.active .grid-nav nav > ul > li:nth-child(7) { animation-delay: 300ms; }
 .montfort-menu:not(.active) .grid-nav nav > ul > li:nth-child(1) { animation-delay: 360ms; }
 .montfort-menu:not(.active) .grid-nav nav > ul > li:nth-child(2) { animation-delay: 300ms; }
 .montfort-menu:not(.active) .grid-nav nav > ul > li:nth-child(3) { animation-delay: 240ms; }

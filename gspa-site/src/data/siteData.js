@@ -14,7 +14,7 @@ export const siteData = {
   
   navigation: navigationItems,
   menuSettings: {
-    enableLegalLinks: false
+    enableLegalLinks: true
   },
   sectionOrder: ['about', 'solutions', 'ai', 'industries'],
   sectionVisibility: {

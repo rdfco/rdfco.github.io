@@ -10,6 +10,7 @@
 @import './styles/industries.css';
 @import './styles/footer.css';
 @import './styles/responsive.css';
+@import './styles/content-pages.css';
 
 /* The mirrored document must never reveal its source content before FARA customization succeeds. */
 html:not([data-fara-ready='true']) body { visibility: hidden !important; }

@@ -56,6 +56,22 @@ const disableLink = link => {
   link.addEventListener('click', event => event.preventDefault())
 }
 
+const legalRoutes = new Map([
+  ['privacy policy', '/privacy-policy'],
+  ['terms of use', '/terms-of-use'],
+])
+
+const configureLegalLink = link => {
+  const label = link.textContent.trim().replace(/\s+/g, ' ').toLowerCase()
+  const route = [...legalRoutes].find(([name]) => label.includes(name))?.[1]
+  if (!route) return false
+  link.href = route
+  link.dataset.faraRoute = route
+  link.removeAttribute('aria-disabled')
+  link.removeAttribute('tabindex')
+  return true
+}
+
 export const renderNavigation = (siteData, currentPath = '/') => {
   ensureItems('#header .menu-links-w > ul', siteData.navigation.length)
   ensureItems('.montfort-menu nav > ul', siteData.navigation.length)
@@ -82,8 +98,9 @@ export const renderNavigation = (siteData, currentPath = '/') => {
   })
 
   document.querySelectorAll('.montfort-menu .terms-link a').forEach(link => {
-    if (siteData.menuSettings.enableLegalLinks === false) disableLink(link)
+    if (!configureLegalLink(link) && siteData.menuSettings.enableLegalLinks === false) disableLink(link)
   })
+  document.querySelectorAll('#footer .legals-links a').forEach(link => configureLegalLink(link))
   setupHover()
   syncNavbarToActiveItem()
 }

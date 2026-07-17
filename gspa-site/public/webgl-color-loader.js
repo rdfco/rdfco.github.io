@@ -22,6 +22,7 @@ const patchShader = source => {
   if (source.includes('Fort energy stars')) source = source
     .replace(/vec3 color = mix\(uDarkColor, uLightColor \+ \.08 \* homepage, clamp\(value, 0\., 1\.\)\);/, `vec3 color = mix(vec3(${litRgb('skyDark', '#081219')}), vec3(${litRgb('skyLight', '#3e9bb7')}), clamp(value, 0., 1.));`)
     .replace(/color \+= stars \* \(\.4 \+ uLightColor\) \* fortEnergy;/, `color += stars * vec3(${litRgb('stars', '#ffffff')}) * fortEnergy;`)
+    .replace(/gl_FragColor\s*=\s*vec4\(color,\s*1\.\);/, `float faraTerrainMask = smoothstep(.46, .54, vUv.y);\n\tcolor = mix(color, vec3(${litRgb('terrainBase', '#020605')}), fortEnergy * faraTerrainMask);\n\tgl_FragColor = vec4(color, 1.);`)
   if (source.includes('float hills = smoothstep') && source.includes('uLightColor * height')) source = source
     .replace('vec3 color = uDarkColor;', `vec3 color = vec3(${litRgb('fixedHills', '#081219')});`)
     .replace('2. * uLightColor * height', `2. * vec3(${litRgb('horizonGlow', '#3e9bb7')}) * height`)
