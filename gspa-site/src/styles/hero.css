@@ -1,6 +1,8 @@
 .hero .configurable-logo { object-fit: contain; }
 .fara-hidden { display: none !important; }
 .hero .fara-hero-copy {
+  --fara-hero-title-color: #fff;
+  --fara-hero-subtitle-color: #fff;
   position: absolute !important;
   inset: 0 !important;
   grid-column: 1 / -1 !important;
@@ -12,11 +14,19 @@
   max-width: none !important;
   height: 100% !important;
   padding: 0 2rem !important;
-  color: gold;
+  color: var(--fara-hero-title-color);
   text-align: center;
 }
 .hero .fara-hero-copy.logo-dk { display: flex !important; }
 .hero .fara-hero-copy h1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  width: min(52rem, 58%);
+  transform: translate(-50%, -50%);
   font-family: "Josefin Sans", sans-serif;
   font-size: clamp(4.5rem, 10vw, 10rem);
   font-weight: 300;
@@ -24,9 +34,19 @@
   letter-spacing: .04em;
   text-transform: none;
 }
+.hero .fara-hero-word { display: block; text-align: center; }
+.hero .fara-hero-word-1 { grid-column: 1; }
+.hero .fara-hero-word-2 { grid-column: 2; }
+.hero .fara-hero-word-3 { grid-column: 3; }
 .hero .fara-hero-copy p {
+  position: absolute;
+  top: 68%;
+  left: 50%;
+  width: min(48rem, calc(100% - 3rem));
+  color: var(--fara-hero-subtitle-color);
+  transform: translateX(-50%);
   max-width: 48rem;
-  margin-top: 2rem;
+  margin-top: 0;
   font-family: "Century Gothic", sans-serif;
   font-size: clamp(.75rem, 1.15vw, 1.15rem);
   line-height: 1.7;
