@@ -22,6 +22,7 @@ const patchShader = source => {
   if (source.includes('Fort energy stars')) source = source
     .replace(/vec3 color = mix\(uDarkColor, uLightColor \+ \.08 \* homepage, clamp\(value, 0\., 1\.\)\);/, `vec3 color = mix(vec3(${litRgb('skyDark', '#081219')}), vec3(${litRgb('skyLight', '#3e9bb7')}), clamp(value, 0., 1.));`)
     .replace(/color \+= stars \* \(\.4 \+ uLightColor\) \* fortEnergy;/, `color += stars * vec3(${litRgb('stars', '#ffffff')}) * fortEnergy;`)
+    .replace(/gl_FragColor\s*=\s*vec4\(color,\s*1\.\);/, `float faraTerrainMask = smoothstep(.46, .54, vUv.y);\n\tcolor = mix(color, vec3(${litRgb('terrainBase', '#020605')}), fortEnergy * faraTerrainMask);\n\tgl_FragColor = vec4(color, 1.);`)
   if (source.includes('float hills = smoothstep') && source.includes('uLightColor * height')) source = source
     .replace('vec3 color = uDarkColor;', `vec3 color = vec3(${litRgb('fixedHills', '#081219')});`)
     .replace('2. * uLightColor * height', `2. * vec3(${litRgb('horizonGlow', '#3e9bb7')}) * height`)
@@ -40,6 +41,10 @@ const patchShader = source => {
   // Hologram body and halo.
   if (source.includes('intensity * mix(uColor, .5 * uGlowColor')) source = source
     .replace('mix(uColor, .5 * uGlowColor, smoothstep(1., 2., intensity))', `mix(vec3(${litRgb('hologram', '#8fc1e5')}), .5 * vec3(${litRgb('hologramGlow', '#6bfeff')}), smoothstep(1., 2., intensity))`)
+  // The right side of this atlas contains only the two ship holograms.
+  // Mask that atlas region without changing the grid or any other WebGL layer.
+  if (source.includes('float boats = step(.62, vUv.x);')) source = source
+    .replace(/alpha\s*\*=\s*0\.85\s*;/, match => `${match}\n    alpha *= 1. - boats;`)
   return source
 }
 const linearChannel = value => value <= .04045 ? value / 12.92 : Math.pow((value + .055) / 1.055, 2.4)

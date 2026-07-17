@@ -2,7 +2,7 @@ import { siteData } from './data/siteData.js'
 import { validateSiteData } from './data/validateSiteData.js'
 import { applySiteData } from './js/apply-site.js'
 import { getNavigationItem } from './navbar/navigation.js'
-import { getPage } from './navbar/pages/registry.js'
+import { getPageForPath } from './navbar/pages/registry.js'
 import { setupNavigationEvents } from './navbar/navigation-events.js'
 
 validateSiteData(siteData)
@@ -11,9 +11,15 @@ let requestedPath = null
 
 const refreshSite = () => {
   const navigationItem = getNavigationItem(requestedPath || '/')
-  const currentPage = getPage(navigationItem.key)
-  currentPage.data.href = navigationItem.href
+  const currentPage = getPageForPath(requestedPath || '/', navigationItem.key)
+  currentPage.data.href ||= navigationItem.href
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   applySiteData(siteData, currentPage)
+  window.requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    window.dispatchEvent(new Event('scroll'))
+    window.dispatchEvent(new Event('resize'))
+  })
   if (requestedPath !== null) document.documentElement.dataset.faraReady = 'true'
   window.setTimeout(() => applySiteData(siteData, currentPage), 150)
   window.setTimeout(() => applySiteData(siteData, currentPage), 800)

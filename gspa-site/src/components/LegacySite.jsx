@@ -5,14 +5,19 @@ export default function LegacySite() {
   const location = useLocation()
   const navigate = useNavigate()
   const timerRef = useRef()
+  const frameRef = useRef()
   const [status, setStatus] = useState('loading')
 
-  useLayoutEffect(() => {
-    window.clearTimeout(timerRef.current)
-    // The legacy iframe is intentionally reset whenever React Router changes route.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setStatus('loading')
-  }, [location.pathname])
+  useLayoutEffect(() => () => window.clearTimeout(timerRef.current), [])
+
+  useEffect(() => {
+    const frameWindow = frameRef.current?.contentWindow
+    if (!frameWindow || status === 'loading') return
+    frameWindow.postMessage(
+      { type: 'fara:set-route', pathname: `${location.pathname}${location.search}` },
+      window.location.origin,
+    )
+  }, [location.pathname, location.search, status])
 
   useEffect(() => {
     const onMessage = event => {
@@ -53,7 +58,7 @@ export default function LegacySite() {
       return
     }
     frameDocument.defaultView?.postMessage(
-      { type: 'fara:set-route', pathname: location.pathname },
+      { type: 'fara:set-route', pathname: `${location.pathname}${location.search}` },
       window.location.origin,
     )
     updateFooter(frameDocument)
@@ -89,7 +94,7 @@ export default function LegacySite() {
         </div>
       )}
       <iframe
-        key={location.pathname}
+        ref={frameRef}
         className="legacy-site"
         title="FARA"
         src="/legacy/fort-energy/index.html"

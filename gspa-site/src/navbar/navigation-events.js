@@ -11,10 +11,13 @@ export const setupNavigationEvents = () => {
   }, true)
 
   const menu = document.querySelector('.montfort-menu')
+  const header = document.querySelector('#header')
   const menuButton = document.querySelector('#header .menu-cta')
   const setMenuOpen = open => {
     menu?.classList.toggle('active', open)
-    document.querySelector('#header')?.classList.toggle('menu-open', open)
+    header?.classList.toggle('menu-open', open)
+    if (open) header?.classList.remove('top', 'fade')
+    else if (window.scrollY > 20) header?.classList.add('top')
     menuButton?.setAttribute('aria-expanded', String(open))
     document.documentElement.classList.toggle('fara-menu-open', open)
   }
@@ -31,5 +34,24 @@ export const setupNavigationEvents = () => {
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') setMenuOpen(false)
     })
+  }
+
+  if (header && !header.dataset.faraScrollReady) {
+    header.dataset.faraScrollReady = 'true'
+    let previousY = window.scrollY
+    window.addEventListener('scroll', () => {
+      const currentY = window.scrollY
+      const delta = currentY - previousY
+      previousY = currentY
+      if (header.classList.contains('menu-open')) return
+      if (currentY < 20) {
+        header.classList.remove('top', 'fade')
+      } else if (delta > 4) {
+        header.classList.add('fade')
+      } else if (delta < -4) {
+        header.classList.add('top')
+        header.classList.remove('fade')
+      }
+    }, { passive: true })
   }
 }

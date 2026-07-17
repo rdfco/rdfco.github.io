@@ -57,4 +57,11 @@ export const renderSections = siteData => {
     if (siteData.sectionVisibility[sectionName] !== false && sectionMap[sectionName]) sections.appendChild(sectionMap[sectionName])
   })
   grid.appendChild(sections)
+  const fitStageToContent = () => {
+    const safeFooterGap = Math.max(360, Math.min(560, window.innerHeight * .55))
+    const contentBottom = sections.getBoundingClientRect().bottom - grid.getBoundingClientRect().top
+    grid.style.minHeight = `${contentBottom + safeFooterGap}px`
+  }
+  window.requestAnimationFrame(fitStageToContent)
+  window.setTimeout(fitStageToContent, 500)
 }

@@ -38,6 +38,6 @@ export const applySiteData = (siteData, currentPage) => {
   updateLegacyContent(siteData)
   renderHero(siteData)
   renderSections(siteData)
-  renderCurrentPage(currentPage.data.key)
+  renderCurrentPage(currentPage)
   // Keep the legacy footer layout intact; it is customized separately.
 }

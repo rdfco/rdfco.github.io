@@ -18,10 +18,15 @@ export const renderHero = siteData => {
     if (replaceWithImage(logo, source, siteData.brand.logoText, isMobile ? 'logo-mb' : 'logo-dk')) return
 
     const copy = createElement('div', { className: `${logo.className.baseVal || logo.className} fara-hero-copy` })
-    copy.append(
-      createElement('h1', { text: siteData.hero.title }),
-      createElement('p', { text: siteData.hero.subtitle }),
-    )
+    const title = createElement('h1', { attributes: { 'aria-label': siteData.hero.title } })
+    ;['FARA', 'IS', 'IN'].forEach((word, index) => {
+      title.append(createElement('span', {
+        className: `fara-hero-word fara-hero-word-${index + 1}`,
+        text: word,
+        attributes: { 'aria-hidden': 'true' },
+      }))
+    })
+    copy.append(title, createElement('p', { text: siteData.hero.subtitle }))
     logo.replaceWith(copy)
   })
 }

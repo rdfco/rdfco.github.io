@@ -5,6 +5,8 @@ import { page as consulting } from './consulting/component.js'
 import { page as industries } from './industries/component.js'
 import { page as caseStudies } from './case-studies/component.js'
 import { page as thinkTogether } from './think-together/component.js'
+import { getContentPage } from './content/component.js'
 
 export const pages = { home, 'knowing-fara': knowingFara, solution, consulting, industries, 'case-studies': caseStudies, 'think-together': thinkTogether }
 export const getPage = key => pages[key] || pages.home
+export const getPageForPath = (pathname, fallbackKey) => getContentPage(pathname) || getPage(fallbackKey)

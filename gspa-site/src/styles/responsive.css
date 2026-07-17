@@ -12,8 +12,9 @@
 @media (max-width: 767px) {
   .hero .fara-hero-copy.logo-dk { display: none !important; }
   .hero .fara-hero-copy.logo-mb { display: flex !important; }
-  .hero .fara-hero-copy { align-items: flex-start; padding: 0 1.5rem !important; text-align: left; }
-  .hero .fara-hero-copy h1 { font-size: clamp(3.6rem, 19vw, 6rem); }
+  .hero .fara-hero-copy { padding: 0 1rem !important; }
+  .hero .fara-hero-copy h1 { top: 50%; width: calc(100% - 1rem); font-size: clamp(2.25rem, 12vw, 4.25rem); }
+  .hero .fara-hero-copy p { top: 69%; text-align: center; }
   main #grid { min-height: 8600px; }
   .fara-sections { top: 1250px; right: 1.25rem; left: 1.25rem; gap: 600px; }
   .fara-industries { margin-top: 0; }
