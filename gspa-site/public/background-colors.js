@@ -1,20 +1,22 @@
 
+/* global window */
 // فقط کدهای رنگ و عددهای brightness را در این فایل تغییر بدهید.
 // مقدار اشتباه نادیده گرفته می‌شود تا بک‌گراند WebGL از کار نیفتد.
 window.FARA_BACKGROUND_COLORS = {
   sceneBackground: '#000000', // فضای خالی/مشکی پشت صحنه‌های میانی و مدل‌ها
   skyLight: '#000000',       // بخش روشن و پایین آسمان Hero (علامت # الزامی است)
   skyDark: '#000000',        // آسمان مشکی
-  stars: '#ffffff',          // ستاره‌ها سفید
+  stars: '#00ff66',          // ستاره‌ها سبز
   aurora: '#000000',         // هاله آسمان مشکی
-  mountain: '#ffffff',       // بافت خود کوه؛ سفید ظاهر اصلی را حفظ می‌کند
+  mountain: '#777777',       // بافت مدل سه‌بعدی کوه در بخش‌های دیگر سایت
+  fixedHills: '#ff4fd8',     // سیلوئت تپه ثابت Hero؛ مستقل از هاله، افق و نگه‌داشتن موس
   mountainFog: '#000000',    // مه اطراف کوه مشکی
-  mountainBackGlow: '#000000', // هاله پشت کوه مشکی
-  horizonGlow: '#ffffff',    // نوار نورانی افقی زیر سیلوئت کوه (قسمت مشخص‌شده در تصویر)
+  mountainBackGlow: '#ffffff', // هاله سفید و پرنور وسط، پشت کوه و خطوط
+  horizonGlow: '#000000',    // نوار افقی زیر سیلوئت مشکی
   horizonDark: '#000000',    // بخش تیره زیر همان نوار افقی
-  risingLines: '#ffffff',    // نورهای عمودی و رو به بالا سفید
-  powerLines: '#ffffff',     // پرتوهای باریک متحرک سفید
-  pathLines: '#ffffff',      // خطوط مسیر روی زمین سفید
+  risingLines: '#00ff66',    // نورهای عمودی و رو به بالا سبز
+  powerLines: '#00ff66',     // پرتوهای باریک متحرک سبز
+  pathLines: '#00ff66',      // امتداد و انعکاس خطوط انرژی سبز
   hologram: '#ffffff',       // مدل‌های سیمی و شکل‌ها سفید
   hologramGlow: '#ffffff',   // هاله مدل‌ها سفید
   gridBackground: '#000000', // سطح/هاله زیر شبکه؛ مشکی، بدون حذف خطوط شبکه
@@ -31,13 +33,14 @@ window.FARA_BACKGROUND_COLORS = {
     stars: 2,
     aurora: 1,
     mountain: 1,
+    fixedHills: 1,
     mountainFog: 1,
-    mountainBackGlow: 1,
+    mountainBackGlow: 3,
     horizonGlow: 1,
     horizonDark: 1,
-    risingLines: 1,
-    powerLines: 1,
-    pathLines: 1,
+    risingLines: 1.6,
+    powerLines: 1.6,
+    pathLines: 1.3,
     hologram: 1,
     hologramGlow: 1,
     gridBackground: 1,
