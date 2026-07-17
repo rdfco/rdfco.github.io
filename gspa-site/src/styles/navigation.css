@@ -9,6 +9,21 @@
 #header .nav-link.is-disabled,
 .montfort-menu .nav-link.is-disabled { cursor: default; }
 .montfort-menu .fara-menu-hidden { display: none !important; }
+.montfort-menu.active {
+  display: block !important;
+  width: 100%;
+  height: 100dvh;
+  pointer-events: auto !important;
+  background: #fff;
+  overflow: auto;
+}
+.montfort-menu.active .grid-nav,
+.montfort-menu.active .grid-nav nav,
+.montfort-menu.active .grid-nav nav ul,
+.montfort-menu.active .grid-nav nav a {
+  pointer-events: auto !important;
+}
+html.fara-menu-open { overflow: hidden; }
 
 /* The legacy GSAP timeline only captures the five server-rendered items.
    Drive every item from one shared animation so dynamically added entries

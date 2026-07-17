@@ -17,16 +17,10 @@ const replacements = [
   [/this\.background=new ce\(0\)/g, `this.background=new ce("${color('sceneBackground', '#000000')}")`],
   [/new ce\(4103095\)/g, `new ce("${color('skyLight', '#3e9bb7')}")`],
   [/new ce\(528921\)/g, `new ce("${color('skyDark', '#081219')}")`],
-  [/vec3 color = mix\(uDarkColor, uLightColor \+ \.08 \* homepage, clamp\(value, 0\., 1\.\)\);/g, `vec3 color = mix(vec3(${rgb(color('skyDark', '#081219'))}), vec3(${rgb(color('skyLight', '#3e9bb7'))}), clamp(value, 0., 1.));`],
-  [/#8fc1e5/gi, color('hologram', '#8fc1e5')], [/#6bfeff/gi, color('hologramGlow', '#6bfeff')],
-  [/#84d5ff/gi, color('pathLines', '#84d5ff')], [/#1a697f/gi, color('gridBackground', '#1a697f')],
-  [/#4e8399/gi, color('gridLines', '#4e8399')], [/#7a9fb6/gi, color('gridAccent', '#7a9fb6')],
-  [/#519abc/gi, color('gridPoints', '#519abc')],
-  [/color \+= stars \* \(\.4 \+ uLightColor\) \* fortEnergy;/g, `color += stars * vec3(${rgb(color('stars', '#ffffff'))}) * fortEnergy;`],
 ]
 const patchShader = source => {
   if (source.includes('Fort energy stars')) source = source
-    .replace(/vec3 color = mix\(uDarkColor, uLightColor \+ \.08 \* homepage, clamp\(value, 0\., 1\.\)\);/, `vec3 color = mix(vec3(${rgb(color('skyDark', '#081219'))}), vec3(${rgb(color('skyLight', '#3e9bb7'))}), clamp(value, 0., 1.));`)
+    .replace(/vec3 color = mix\(uDarkColor, uLightColor \+ \.08 \* homepage, clamp\(value, 0\., 1\.\)\);/, `vec3 color = mix(vec3(${litRgb('skyDark', '#081219')}), vec3(${litRgb('skyLight', '#3e9bb7')}), clamp(value, 0., 1.));`)
     .replace(/color \+= stars \* \(\.4 \+ uLightColor\) \* fortEnergy;/, `color += stars * vec3(${litRgb('stars', '#ffffff')}) * fortEnergy;`)
   if (source.includes('float hills = smoothstep') && source.includes('uLightColor * height')) source = source
     .replace('vec3 color = uDarkColor;', `vec3 color = vec3(${litRgb('fixedHills', '#081219')});`)
@@ -45,7 +39,7 @@ const patchShader = source => {
     .replace('vec3 color=uColor*(glow+lines)', `vec3 color=vec3(${litRgb('pathLines', '#84d5ff')})*(glow+lines)`)
   // Hologram body and halo.
   if (source.includes('intensity * mix(uColor, .5 * uGlowColor')) source = source
-    .replace('mix(uColor, .5 * uGlowColor, smoothstep(1., 2., intensity))', `mix(vec3(${rgb(color('hologram', '#8fc1e5'))}), .5 * vec3(${rgb(color('hologramGlow', '#6bfeff'))}), smoothstep(1., 2., intensity))`)
+    .replace('mix(uColor, .5 * uGlowColor, smoothstep(1., 2., intensity))', `mix(vec3(${litRgb('hologram', '#8fc1e5')}), .5 * vec3(${litRgb('hologramGlow', '#6bfeff')}), smoothstep(1., 2., intensity))`)
   return source
 }
 const linearChannel = value => value <= .04045 ? value / 12.92 : Math.pow((value + .055) / 1.055, 2.4)
@@ -87,7 +81,8 @@ try {
     applied.push(before === source ? 0 : 1)
   }
   window.__FARA_COLOR_DEBUG = { config, applied, skyLight: color('skyLight', '#3e9bb7'), skyDark: color('skyDark', '#081219'), stars: color('stars', '#ffffff') }
-  source = source.replaceAll('from"./', 'from"/_astro/').replaceAll('import"./', 'import"/_astro/')
+  const astroBase = `${window.location.origin}/_astro/`
+  source = source.replaceAll('from"./', `from"${astroBase}`).replaceAll('import"./', `import"${astroBase}`)
   module = await import(URL.createObjectURL(new Blob([source], { type: 'text/javascript' })))
 } catch (error) {
   console.warn('Custom WebGL colors failed; using the original background.', error)
