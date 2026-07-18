@@ -6,6 +6,7 @@ export default function LegacySite() {
   const navigate = useNavigate()
   const timerRef = useRef()
   const frameRef = useRef()
+  const lastRouteRef = useRef()
   const [status, setStatus] = useState('loading')
 
   useLayoutEffect(() => () => window.clearTimeout(timerRef.current), [])
@@ -13,8 +14,11 @@ export default function LegacySite() {
   useEffect(() => {
     const frameWindow = frameRef.current?.contentWindow
     if (!frameWindow || status === 'loading') return
+    const route = `${location.pathname}${location.search}`
+    if (lastRouteRef.current === route) return
+    lastRouteRef.current = route
     frameWindow.postMessage(
-      { type: 'fara:set-route', pathname: `${location.pathname}${location.search}` },
+      { type: 'fara:set-route', pathname: route },
       window.location.origin,
     )
   }, [location.pathname, location.search, status])
@@ -57,8 +61,10 @@ export default function LegacySite() {
       setStatus('failed')
       return
     }
+    const route = `${location.pathname}${location.search}`
+    lastRouteRef.current = route
     frameDocument.defaultView?.postMessage(
-      { type: 'fara:set-route', pathname: `${location.pathname}${location.search}` },
+      { type: 'fara:set-route', pathname: route },
       window.location.origin,
     )
     updateFooter(frameDocument)

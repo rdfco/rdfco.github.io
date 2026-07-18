@@ -127,6 +127,14 @@ for (const [key, pathname] of routes) {
 }
 
 await new Promise(resolve => setTimeout(resolve, 1_200))
+const fullNavbarTransform = await frame.$eval('#header .navbar', node => getComputedStyle(node).transform)
+await frame.hover('#header .menu-links-w .nav-link[data-fara-route="/"]')
+await new Promise(resolve => setTimeout(resolve, 700))
+const itemNavbarTransform = await frame.$eval('#header .navbar', node => getComputedStyle(node).transform)
+await page.mouse.move(100, 500)
+await new Promise(resolve => setTimeout(resolve, 800))
+const restoredNavbarTransform = await frame.$eval('#header .navbar', node => getComputedStyle(node).transform)
+const fullNavbarBehaviourPass = fullNavbarTransform !== itemNavbarTransform && restoredNavbarTransform === fullNavbarTransform
 await page.screenshot({ path: 'navigation-after-menu-click.png' })
 const routeCyclesPass = routeCycles.every(cycle =>
   !cycle.menuActive &&
@@ -142,7 +150,7 @@ const longTasks = await frame.evaluate(() => ({
   maxDuration: Math.max(0, ...window.__faraLongTasks),
 }))
 
-console.log(JSON.stringify({ menuItems, hitboxesMatch, homeHoverWorks, state, routeCycles, routeCyclesPass, longTasks, errors }, null, 2))
+console.log(JSON.stringify({ menuItems, hitboxesMatch, homeHoverWorks, state, routeCycles, routeCyclesPass, fullNavbarBehaviourPass, longTasks, errors }, null, 2))
 await browser.close()
 
 if (
@@ -158,6 +166,7 @@ if (
   !hitboxesMatch ||
   !homeHoverWorks ||
   !routeCyclesPass ||
+  !fullNavbarBehaviourPass ||
   longTasks.maxDuration > 200 ||
   errors.length
 ) {

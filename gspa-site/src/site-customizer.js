@@ -8,6 +8,7 @@ import { setupNavigationEvents } from './navbar/navigation-events.js'
 validateSiteData(siteData)
 
 let requestedPath = null
+let appliedPath = null
 
 const normalizeRoute = value => {
   const [path, query = ''] = value.split('?')
@@ -16,6 +17,8 @@ const normalizeRoute = value => {
 }
 
 const refreshSite = () => {
+  if (requestedPath === appliedPath && document.documentElement.dataset.faraReady === 'true') return
+  appliedPath = requestedPath
   window.dispatchEvent(new CustomEvent('fara:close-menu'))
   const navigationItem = getNavigationItem(requestedPath || '/')
   const currentPage = getPageForPath(requestedPath || '/', navigationItem.key)
@@ -25,7 +28,6 @@ const refreshSite = () => {
   window.requestAnimationFrame(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
     window.dispatchEvent(new Event('scroll'))
-    window.dispatchEvent(new Event('resize'))
   })
   if (requestedPath !== null) document.documentElement.dataset.faraReady = 'true'
 }

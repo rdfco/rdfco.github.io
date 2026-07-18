@@ -19,32 +19,67 @@ const animateNavbarTo = target => {
   if (!navList || !navbar || !label) return
   const labelRect = label.getBoundingClientRect()
   const listRect = navList.getBoundingClientRect()
+  navbar.style.opacity = '1'
   navbar.style.transition = 'transform 600ms cubic-bezier(.2,.8,.2,1)'
   navbar.style.setProperty('--fara-navbar-transform', `translate3d(${labelRect.left - listRect.left}px, 0, 0) scaleX(${labelRect.width / (navbar.offsetWidth || 1)})`)
 }
 
+let navbarFrame = 0
+let navbarRestoreTimer = 0
+const scheduleNavbarUpdate = update => {
+  window.cancelAnimationFrame(navbarFrame)
+  navbarFrame = window.requestAnimationFrame(update)
+}
+
+const animateNavbarFull = () => {
+  const navList = document.querySelector('#header .menu-links-w > ul')
+  const navbar = document.querySelector('#header nav .navbar')
+  if (!navList || !navbar) return
+  const listRect = navList.getBoundingClientRect()
+  navbar.style.opacity = '1'
+  navbar.style.transition = 'transform 600ms cubic-bezier(.2,.8,.2,1)'
+  navbar.style.setProperty('--fara-navbar-transform', `translate3d(0, 0, 0) scaleX(${listRect.width / (navbar.offsetWidth || 1)})`)
+}
+
+const restoreNavbar = () => {
+  const isHome = document.body.dataset.faraPage === 'home'
+  const activeLabel = document.querySelector('#header .nav-link.active span')
+  isHome ? animateNavbarTo(activeLabel) : animateNavbarFull()
+}
+
 const setupHover = () => {
-  const activeLabel = () => document.querySelector('#header .nav-link.active span')
   const navList = document.querySelector('#header .menu-links-w > ul')
   if (navList && !navList.dataset.activeReturnReady) {
     navList.dataset.activeReturnReady = 'true'
-    navList.addEventListener('mouseleave', () => window.setTimeout(() => animateNavbarTo(activeLabel()), 120))
-    navList.addEventListener('focusout', event => {
-      if (!navList.contains(event.relatedTarget)) window.setTimeout(() => animateNavbarTo(activeLabel()), 120)
+    navList.addEventListener('mouseleave', () => {
+      window.clearTimeout(navbarRestoreTimer)
+      navbarRestoreTimer = window.setTimeout(() => scheduleNavbarUpdate(restoreNavbar), 120)
     })
+    navList.addEventListener('focusout', event => {
+      if (!navList.contains(event.relatedTarget)) {
+        window.clearTimeout(navbarRestoreTimer)
+        navbarRestoreTimer = window.setTimeout(() => scheduleNavbarUpdate(restoreNavbar), 120)
+      }
+    })
+    window.addEventListener('resize', () => {
+      scheduleNavbarUpdate(restoreNavbar)
+    }, { passive: true })
   }
   document.querySelectorAll('#header .menu-links-w .nav-link').forEach(link => {
     if (link.dataset.hoverReady) return
     link.dataset.hoverReady = 'true'
-    link.addEventListener('mouseenter', () => animateNavbarTo(link))
-    link.addEventListener('focus', () => animateNavbarTo(link))
+    const showItem = () => {
+      window.clearTimeout(navbarRestoreTimer)
+      scheduleNavbarUpdate(() => animateNavbarTo(link))
+    }
+    link.addEventListener('mouseenter', showItem)
+    link.addEventListener('focus', showItem)
   })
 }
 
-const syncNavbarToActiveItem = () => {
+const syncNavbar = currentPath => {
   const activeLink = document.querySelector('#header .menu-links-w .nav-link.active')
-  if (!activeLink) return
-  window.requestAnimationFrame(() => animateNavbarTo(activeLink))
+  scheduleNavbarUpdate(() => currentPath === '/' ? animateNavbarTo(activeLink) : animateNavbarFull())
 }
 
 const disableLink = link => {
@@ -106,5 +141,5 @@ export const renderNavigation = (siteData, currentPath = '/') => {
   })
   document.querySelectorAll('#footer .legals-links a').forEach(link => configureLegalLink(link))
   setupHover()
-  syncNavbarToActiveItem()
+  syncNavbar(currentPath)
 }

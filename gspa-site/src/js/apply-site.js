@@ -39,9 +39,12 @@ export const applySiteData = (siteData, currentPage) => {
     document.querySelectorAll('audio').forEach(audio => audio.pause())
   }
   renderNavigation(siteData, currentPage.data.href)
-  updateLegacyContent(siteData)
-  renderHero(siteData)
-  renderSections(siteData)
+  if (document.documentElement.dataset.faraStaticContentReady !== 'true') {
+    updateLegacyContent(siteData)
+    renderHero(siteData)
+    renderSections(siteData)
+    document.documentElement.dataset.faraStaticContentReady = 'true'
+  }
   renderCurrentPage(currentPage)
   // Keep the legacy footer layout intact; it is customized separately.
 }
