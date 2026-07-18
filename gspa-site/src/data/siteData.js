@@ -16,6 +16,11 @@ export const siteData = {
   menuSettings: {
     enableLegalLinks: true
   },
+  features: {
+    // Keep the legacy audio asset/runtime available for the final launch.
+    // Switch this back to true when the site soundtrack is ready to return.
+    sound: false,
+  },
   sectionOrder: ['about', 'solutions', 'ai', 'industries'],
   sectionVisibility: {
     about: true,

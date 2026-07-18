@@ -16,6 +16,7 @@ const normalizeRoute = value => {
 }
 
 const refreshSite = () => {
+  window.dispatchEvent(new CustomEvent('fara:close-menu'))
   const navigationItem = getNavigationItem(requestedPath || '/')
   const currentPage = getPageForPath(requestedPath || '/', navigationItem.key)
   currentPage.data.href ||= navigationItem.href
@@ -27,8 +28,6 @@ const refreshSite = () => {
     window.dispatchEvent(new Event('resize'))
   })
   if (requestedPath !== null) document.documentElement.dataset.faraReady = 'true'
-  window.setTimeout(() => applySiteData(siteData, currentPage), 150)
-  window.setTimeout(() => applySiteData(siteData, currentPage), 800)
 }
 
 window.addEventListener('message', event => {

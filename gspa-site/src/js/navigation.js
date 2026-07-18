@@ -56,6 +56,10 @@ const disableLink = link => {
   link.addEventListener('click', event => event.preventDefault())
 }
 
+const setupRouteLink = (link, route) => {
+  link.dataset.faraRoute = route
+}
+
 const legalRoutes = new Map([
   ['privacy policy', '/privacy-policy'],
   ['terms of use', '/terms-of-use'],
@@ -65,8 +69,8 @@ const configureLegalLink = link => {
   const label = link.textContent.trim().replace(/\s+/g, ' ').toLowerCase()
   const route = [...legalRoutes].find(([name]) => label.includes(name))?.[1]
   if (!route) return false
-  link.href = route
-  link.dataset.faraRoute = route
+  link.href = '#'
+  setupRouteLink(link, route)
   link.removeAttribute('aria-disabled')
   link.removeAttribute('tabindex')
   return true
@@ -82,8 +86,8 @@ export const renderNavigation = (siteData, currentPath = '/') => {
     link.querySelector('span').textContent = item.label
     link.classList.toggle('active', item.href === currentPath)
     link.classList.toggle('is-disabled', item.enabled === false)
-    link.dataset.faraRoute = item.href
-    item.enabled === false ? disableLink(link) : link.setAttribute('href', item.href || '/')
+    setupRouteLink(link, item.href)
+    item.enabled === false ? disableLink(link) : link.setAttribute('href', '#')
   })
 
   document.querySelectorAll('.montfort-menu nav .nav-link').forEach((link, index) => {
@@ -93,8 +97,8 @@ export const renderNavigation = (siteData, currentPath = '/') => {
     link.classList.toggle('active', item.href === currentPath)
     link.classList.toggle('is-disabled', item.enabled === false)
     link.closest('li')?.classList.toggle('fara-menu-hidden', item.showInMenu === false)
-    link.dataset.faraRoute = item.href
-    item.enabled === false ? disableLink(link) : link.setAttribute('href', item.href || '/')
+    setupRouteLink(link, item.href)
+    item.enabled === false ? disableLink(link) : link.setAttribute('href', '#')
   })
 
   document.querySelectorAll('.montfort-menu .terms-link a').forEach(link => {

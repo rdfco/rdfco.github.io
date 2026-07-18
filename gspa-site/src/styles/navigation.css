@@ -10,6 +10,7 @@
 .montfort-menu .nav-link.is-disabled { cursor: default; }
 .montfort-menu .fara-menu-hidden { display: none !important; }
 .montfort-menu.active {
+  z-index: 11;
   display: block !important;
   width: 100%;
   height: 100dvh;
@@ -29,10 +30,21 @@
 }
 .montfort-menu .grid-terms {
   position: relative;
-  z-index: 1;
+  z-index: 3;
+  pointer-events: none;
 }
+.montfort-menu .grid-terms a { pointer-events: auto; }
 .montfort-menu .grid-nav .nav-link {
+  pointer-events: auto !important;
   transition: color 400ms linear;
+}
+.montfort-menu .grid-nav .nav-link .text-content,
+.montfort-menu .grid-nav .nav-link .text-content *,
+.montfort-menu .grid-nav .nav-link .svg-container {
+  pointer-events: none;
+}
+.montfort-menu .grid-nav .nav-link.active {
+  pointer-events: auto;
 }
 .montfort-menu .grid-nav .nav-link .text-content {
   transition: transform 600ms cubic-bezier(.4, 0, .1, 1);
@@ -40,15 +52,14 @@
 .montfort-menu .grid-nav .nav-link .svg-container {
   transition: background 400ms linear, color 400ms linear, transform 400ms cubic-bezier(.4, 0, .1, 1);
 }
-@media (hover: hover) and (pointer: fine) {
-  .montfort-menu .grid-nav .nav-link:hover { color: #2d628c; }
-  .montfort-menu .grid-nav .nav-link:hover .text-content { transform: translate3d(0, 0, 0); }
-  .montfort-menu .grid-nav .nav-link:hover .svg-container { transform: scale3d(1, 1, 1); }
-}
+.montfort-menu .grid-nav .nav-link:hover { color: #2d628c; }
+.montfort-menu .grid-nav .nav-link:hover .text-content { transform: translate3d(0, 0, 0) !important; }
+.montfort-menu .grid-nav .nav-link:hover .svg-container { transform: scale3d(1, 1, 1) !important; }
 .montfort-menu .grid-nav .nav-link:focus-visible { color: #2d628c; }
 .montfort-menu .grid-nav .nav-link:focus-visible .text-content { transform: translate3d(0, 0, 0); }
 .montfort-menu .grid-nav .nav-link:focus-visible .svg-container { transform: scale3d(1, 1, 1); }
 html.fara-menu-open { overflow: hidden; }
+html.fara-sound-disabled .buttons-container .sound { display: none !important; }
 
 /* The legacy GSAP timeline only captures the five server-rendered items.
    Drive every item from one shared animation so dynamically added entries
@@ -61,10 +72,10 @@ html.fara-menu-open { overflow: hidden; }
   from { opacity: 1; transform: translate3d(0, 0, 0); }
   to { opacity: 0; transform: translate3d(0, 20px, 0); }
 }
-.montfort-menu .grid-nav nav > ul > li {
+.montfort-menu .grid-nav nav > ul > li[data-config-generated="true"] {
   animation: fara-menu-item-out 700ms cubic-bezier(.4, 0, .1, 1) both;
 }
-.montfort-menu.active .grid-nav nav > ul > li {
+.montfort-menu.active .grid-nav nav > ul > li[data-config-generated="true"] {
   animation-name: fara-menu-item-in;
   animation-duration: 900ms;
   animation-timing-function: cubic-bezier(.2, .8, .2, 1);
@@ -111,13 +122,25 @@ html.fara-menu-open { overflow: hidden; }
   from { opacity: 1; visibility: visible; transform: translate3d(0, 0, 0); }
   to { opacity: 0; visibility: hidden; transform: translate3d(-8px, 0, 0); }
 }
-#header .menu-links-w > ul > li {
+#header .menu-links-w > ul > li[data-config-generated="true"] {
   animation: fara-header-item-in 800ms cubic-bezier(.2, .8, .2, 1) both;
 }
-#header.menu-open .menu-links-w > ul > li {
+#header.menu-open .menu-links-w > ul > li[data-config-generated="true"] {
   animation-name: fara-header-item-out;
   animation-duration: 260ms;
   animation-delay: 0ms;
+}
+#header.menu-open .menu-links-w,
+#header.menu-open .menu-links-w * { pointer-events: none !important; }
+#header.menu-open nav { pointer-events: none; }
+#header.menu-open {
+  z-index: auto;
+  pointer-events: none;
+}
+#header.menu-open .menu-cta {
+  position: relative;
+  z-index: 12;
+  pointer-events: auto;
 }
 #header:not(.menu-open) .menu-links-w > ul > li:nth-child(1) { animation-delay: 400ms; }
 #header:not(.menu-open) .menu-links-w > ul > li:nth-child(2) { animation-delay: 500ms; }

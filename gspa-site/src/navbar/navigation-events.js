@@ -2,17 +2,10 @@ export const setupNavigationEvents = () => {
   if (document.documentElement.dataset.faraNavigationReady === 'true') return
   document.documentElement.dataset.faraNavigationReady = 'true'
 
-  document.addEventListener('click', event => {
-    const link = event.target.closest?.('a[data-fara-route]')
-    if (!link) return
-    event.preventDefault()
-    event.stopImmediatePropagation()
-    window.parent.postMessage({ type: 'fara:navigate', pathname: link.dataset.faraRoute }, window.location.origin)
-  }, true)
-
   const menu = document.querySelector('.montfort-menu')
   const header = document.querySelector('#header')
   const menuButton = document.querySelector('#header .menu-cta')
+  let closingViaRoute = false
   const setMenuOpen = open => {
     menu?.classList.toggle('active', open)
     header?.classList.toggle('menu-open', open)
@@ -21,18 +14,33 @@ export const setupNavigationEvents = () => {
     menuButton?.setAttribute('aria-expanded', String(open))
     document.documentElement.classList.toggle('fara-menu-open', open)
   }
+  const closeMenu = () => {
+    const legacyMenuIsOpen = menuButton?.classList.contains('close')
+    if (legacyMenuIsOpen && !closingViaRoute) {
+      closingViaRoute = true
+      menuButton.click()
+      closingViaRoute = false
+    }
+    setMenuOpen(false)
+    if (menu) menu.style.display = 'none'
+  }
+  window.addEventListener('fara:close-menu', closeMenu)
   if (menu && menuButton) {
     menuButton.setAttribute('aria-controls', 'fara-overlay-menu')
     menuButton.setAttribute('aria-expanded', 'false')
     menu.id = 'fara-overlay-menu'
     menuButton.addEventListener('click', event => {
       event.preventDefault()
+      if (closingViaRoute) {
+        setMenuOpen(false)
+        return
+      }
       setMenuOpen(!menu.classList.contains('active'))
     })
-    menu.querySelector('.overlay')?.addEventListener('click', () => setMenuOpen(false))
-    menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setMenuOpen(false)))
+    menu.querySelector('.overlay')?.addEventListener('click', closeMenu)
+    menu.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu))
     document.addEventListener('keydown', event => {
-      if (event.key === 'Escape') setMenuOpen(false)
+      if (event.key === 'Escape') closeMenu()
     })
   }
 

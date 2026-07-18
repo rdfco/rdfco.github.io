@@ -34,6 +34,10 @@ const updateLegacyContent = siteData => {
 export const applySiteData = (siteData, currentPage) => {
   document.title = siteData.seo.title
   document.querySelector('meta[name="description"]')?.setAttribute('content', siteData.seo.description)
+  document.documentElement.classList.toggle('fara-sound-disabled', siteData.features?.sound === false)
+  if (siteData.features?.sound === false) {
+    document.querySelectorAll('audio').forEach(audio => audio.pause())
+  }
   renderNavigation(siteData, currentPage.data.href)
   updateLegacyContent(siteData)
   renderHero(siteData)
