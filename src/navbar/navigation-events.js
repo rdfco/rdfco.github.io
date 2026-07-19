@@ -28,6 +28,7 @@ export const setupNavigationEvents = () => {
   let closingViaRoute = false
   const setMenuOpen = open => {
     if (open) {
+      header?.classList.add('menu-cycle-started')
       window.clearTimeout(menuCloseTimer)
       window.clearTimeout(headerRevealTimer)
       menu?.classList.remove('is-closing')

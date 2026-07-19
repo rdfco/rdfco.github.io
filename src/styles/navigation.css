@@ -241,6 +241,12 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
 #header.menu-revealing .menu-links-w > ul > li:nth-child(5) { animation-delay: 400ms !important; }
 #header.menu-revealing .menu-links-w > ul > li:nth-child(6) { animation-delay: 500ms !important; }
 #header.menu-revealing .menu-links-w > ul > li:nth-child(7) { animation-delay: 600ms !important; }
+#header.menu-cycle-started:not(.menu-open):not(.menu-revealing) .menu-links-w > ul > li[data-config-generated="true"] {
+  visibility: visible;
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  animation: none !important;
+}
 #header.menu-revealing .menu-links-w .navbar,
 #header.menu-revealing .menu-w {
   animation: fara-navbar-control-reveal 800ms cubic-bezier(.2, .8, .2, 1) 400ms both !important;
