@@ -1,101 +1,58 @@
-# FARA website
+# FARA 3D platform
 
-Vite project using React, Tailwind CSS, JavaScript, and GSAP. The mirrored 3D/GSAP shell is preserved, while FARA content is rendered from one central data file and small feature modules.
+FARA is a React, Vite, Three.js/R3F, and GSAP application undergoing a guarded migration from a visually approved legacy Astro/WebGL experience to a native React architecture.
 
-## Start the site
+## Runtime modes
 
-```bash
-npm install
-npm run dev
-```
+| Route | Renderer | Status |
+|---|---|---|
+| `/` and public content routes | `LegacySite` iframe plus FARA customization runtime | Production visual oracle |
+| `/native-preview` | Native React sections, R3F scene, and scoped GSAP | Migration preview; not approved for production |
 
-Production check:
+Do not treat these modes as interchangeable. Production remains protected until native visual, interaction, route, brand-safety, and performance contracts pass.
 
-```bash
-npm run check
-```
+## Start and verify
 
-## Edit content
-
-All frequently edited content lives in `src/data/siteData.js`:
-
-- `seo`: browser title and description.
-- `brand`: text label and optional desktop/mobile logo files.
-- `navigation`: menu labels, active state, click state, and overlay visibility.
-- `hero`: hero title, subtitle, and scroll label.
-- `introduction`: About title/body and optional media.
-- `faraSections.solutions`: service cards.
-- `faraSections.ai`: AI section.
-- `faraSections.industries`: expandable industry cards.
-- `sectionOrder`: order of the four main sections.
-- `sectionVisibility`: show/hide a full section.
-- `footer`: heading, company list, and copyright.
-
-### Add or remove an item
-
-Add/remove/reorder objects inside an array. The renderer recalculates the DOM and grid automatically. An item may be temporarily hidden with `enabled: false`.
-
-```js
-{
-  title: 'New industry',
-  text: 'Description shown in the expandable card.',
-  enabled: true,
-  media: {
-    src: '/assets/images/new-industry.webp',
-    alt: 'Accessible image description'
-  }
-}
-```
-
-Footer entries can remain simple strings or use objects:
-
-```js
-{ name: 'Company name', direction: 'rtl', enabled: true }
-```
-
-### Change the logo
-
-Put files in `public/assets/logos/`, then set:
-
-```js
-brand: {
-  desktopLogo: '/assets/logos/fara-desktop.svg',
-  mobileLogo: '/assets/logos/fara-mobile.svg'
-}
-```
-
-Keep both values empty to preserve the current text hero.
-
-## Edit styles
-
-`src/custom.css` is only the ordered stylesheet entry point. Edit the relevant file:
-
-- `src/styles/navigation.css`
-- `src/styles/hero.css`
-- `src/styles/sections.css`
-- `src/styles/cards.css`
-- `src/styles/industries.css`
-- `src/styles/footer.css`
-- `src/styles/responsive.css`
-
-The import order in `custom.css` is intentional. Tailwind remains configured for React/JSX components in `src/**/*.{js,jsx}`.
-
-## JavaScript structure
-
-- `src/site-customizer.js`: small bootstrap only.
-- `src/js/apply-site.js`: coordinates a full render.
-- `src/js/navigation.js`: navigation cloning and states.
-- `src/js/components/`: Hero, sections, cards, and footer.
-- `src/js/core/`: shared DOM utilities.
-- `src/data/validateSiteData.js`: catches missing required content early.
-
-## Visual regression contract
-
-The reference is stored in `work/baseline/`. To capture a candidate and compare it:
+Use Windows PowerShell from the repository root, where `package.json` is located:
 
 ```powershell
-$env:BASELINE_DIR='work/after'; npm run visual:baseline
-npm run visual:compare
+npm.cmd install
+npm.cmd run dev
+npm.cmd run verify
 ```
 
-The comparison checks visible text, item counts, section positions/sizes, computed styles, page height, browser errors, and horizontal overflow at desktop, tablet, and mobile widths.
+`verify` runs TypeScript, ESLint, Vitest, native-boundary checks, runtime URL auditing, the production build, brand-safety checks, and bundle budgets. Build success does not replace browser or visual verification.
+
+## Find the right file
+
+| Change | Current source | Important boundary |
+|---|---|---|
+| Public production behavior | `src/components/LegacySite.jsx`, `src/site-customizer.js`, `src/js/`, `src/navbar/` | Preserve iframe selectors and compare against M0 |
+| Native preview UI | `src/native/`, `src/sections/`, `src/components/` | React owns the DOM; no imperative replacement |
+| Native R3F scene | `src/scenes/`, `src/native/FaraScene.tsx` | R3F owns the canvas; preserve camera and shader contracts |
+| Shared content | `src/data/` | Zod-validated for native; legacy adapters still exist |
+| Runtime assets | `public/assets/` | Register provenance and usage before replacement |
+| Legacy visual oracle | `public/legacy/`, `public/_astro/` | Protected/generated; do not hand-edit generated bundles |
+| Baseline contract | `docs/baselines/m0/` | Versioned metrics and acceptance rules; screenshots remain local in ignored `work/` |
+
+## Documentation
+
+- [Current project map](PROJECT_MAP.md)
+- [Architecture overview](docs/architecture/overview.md)
+- [Target folder architecture](docs/architecture/target-folder-architecture.md)
+- [Folder ownership](docs/architecture/folder-ownership.md)
+- [Dependency rules](docs/architecture/dependency-rules.md)
+- [Runtime flows](docs/architecture/runtime-flows.md)
+- [Development guides](docs/DEVELOPMENT.md)
+- [Migration gates](docs/MIGRATION.md)
+- [WebGL preservation contract](docs/WEBGL.md)
+- [M0 baseline contract](docs/baselines/m0/README.md)
+- [Refactoring status](docs/migration/REFACTORING-STATUS.md)
+
+## Safety rules
+
+1. Do not change production appearance, selectors, behavior, or assets as part of structural refactoring.
+2. Keep native work behind `/native-preview` until explicit parity approval.
+3. Never hand-edit `public/_astro/` or `dist/`.
+4. Do not remove Legacy until production cutover has remained stable and an explicit removal approval is given.
+5. Implement one milestone at a time and validate it against the M0 contract.

@@ -24,7 +24,8 @@
     "visual:baseline": "node scripts/capture-baseline.mjs",
     "visual:compare": "node scripts/compare-baseline.mjs",
     "visual:contract": "npm run build && node scripts/capture-contract.mjs",
-    "visual:native": "node scripts/capture-native-contract.mjs"
+    "visual:native": "node scripts/capture-native-contract.mjs",
+    "baseline:performance": "node scripts/capture-performance-baseline.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

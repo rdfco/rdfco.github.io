@@ -1,10 +1,28 @@
-# Migration gates
+# FARA migration gates
 
-1. Preserve the current iframe build as the visual oracle.
-2. Rebuild DOM sections in React behind a preview flag.
-3. Port the existing GLB scene, camera curves, shaders and GSAP timelines without redesign.
-4. Compare reference frames and interactions.
-5. Switch production only after parity approval.
-6. Remove `LegacySite`, `site-customizer`, `public/legacy` and `public/_astro` in one final cleanup change.
+Migration is milestone-driven and gate-approved. Complete and validate one milestone at a time; approve a gate only after every milestone in that phase passes independently.
 
-The procedural preview scene is exploratory and is not an approved replacement for the production WebGL.
+## Permanent safety boundary
+
+- Production public routes remain on `LegacySite` through M15.
+- Native work remains on `/native-preview` through M15.
+- M16 switches production with an intact Legacy failback.
+- M17 removes Legacy only after a stable production period and explicit removal approval.
+
+## Gates
+
+| Gate | Required milestones | Approval question |
+|---|---|---|
+| Gate A | M0, M1, M2 | Are baseline, documentation, ownership rules, and target skeleton trustworthy? |
+| Gate B | M3, M4, M5 | Are asset, content, and configuration sources predictable and validated? |
+| Gate C | M6–M12 | Are app, feature, scene, model, camera, material, shader, and GSAP boundaries complete without parity loss? |
+| Gate D | M13, M14 | Are automated enforcement and measured performance acceptable? |
+| Gate E | M15 | Is Native visually, behaviorally, operationally, and performance-equivalent enough for production? |
+
+## Current progress
+
+See `migration/REFACTORING-STATUS.md`. Gate A is not ready until M2 is complete.
+
+## Rollback principle
+
+Each milestone is an independent change. A failed milestone returns to the previous validated milestone; it does not redefine the M0 baseline. Baseline replacement requires explicit approval and its own recorded reason.

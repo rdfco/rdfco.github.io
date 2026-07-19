@@ -1,7 +1,29 @@
-# Development
+# Development guide index
 
-Run `npm run dev` for local work and `npm run verify` before every push. `verify` performs typecheck, lint, unit tests, native-boundary checks and production build.
+## Standard workflow
 
-Content belongs in `src/data`; never hard-code business copy into scene code. New UI belongs in a component or section and must not use `innerHTML` or global DOM selectors. Add assets to the registry with ownership status before importing them.
+```powershell
+npm.cmd install
+npm.cmd run dev
+npm.cmd run verify
+```
 
-The stable production rollback is tagged `rollback-stable-fara-2026-07-15`. Migration work stays on `migration/react-native-architecture` until visual approval.
+Run commands from the repository root containing `package.json`. Use `npm.cmd` in PowerShell. For UI, iframe, WebGL, GSAP, routing, or asset work, verify real browser behavior in addition to the automated pipeline.
+
+## Task guides
+
+- `development/add-a-page.md`
+- `development/add-a-scene.md`
+- `development/add-a-model.md`
+- `development/add-an-asset.md`
+
+These guides describe the target workflow. Until the relevant migration milestone is complete, do not create missing target folders or bypass current adapters.
+
+## Definition of done
+
+- Scope is limited to one approved milestone.
+- Production appearance and behavior match M0 unless a change was explicitly approved.
+- Typecheck, lint, tests, native-boundary audit, runtime audit, build, brand-safety, and bundle budget pass.
+- Browser behavior is checked at the affected routes and viewports.
+- Documentation and registries affected by the change are updated.
+- Rollback is possible without recovering unrelated changes.
