@@ -1,6 +1,7 @@
 # Gate A review package
 
-- Status: Ready for user review; not yet approved
+- Status: Approved
+- Approved: 2026-07-19
 - Scope: M0 Baseline, M1 Documentation, M2 Target Skeleton
 - Branch: `codex/fara-refactor-roadmap`
 
@@ -49,4 +50,6 @@ This tooling debt does not indicate a runtime regression from M2, but it should 
 
 ## Gate A decision
 
-Approve Gate A only if the baseline policy, source-of-truth documentation, ownership rules, target tree, empty public boundaries, and single `@/*` alias are acceptable. Approval authorizes M3 planning/implementation; it does not authorize later milestones or production cutover.
+Gate A passed a clean-branch audit, independent filesystem and documentation checks, the complete verification pipeline, and fresh Production/Native browser smoke checks at all M0 viewports. The baseline policy, source-of-truth documentation, ownership rules, target tree, empty public boundaries, and single `@/*` alias are accepted.
+
+Approval authorizes M3 planning/implementation in a future session. It does not authorize later milestones, production cutover, or Legacy removal.

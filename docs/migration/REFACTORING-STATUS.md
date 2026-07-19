@@ -2,7 +2,7 @@
 
 ## Current position
 
-**M2 — Target Architecture Skeleton: complete**
+**Gate A — Architecture Foundation: approved**
 
 Runtime implementation has not moved. M0 established rollback-safe measurable contracts. M1 documented the current and target architecture. M2 materialized the target ownership skeleton, empty public boundaries, and a consistent `@/*` source alias without changing active runtime imports.
 
@@ -21,9 +21,10 @@ Runtime implementation has not moved. M0 established rollback-safe measurable co
 - [x] M2 target `src`, `src/three`, `public/assets`, `docs`, and `tests` skeleton
 - [x] M2 local ownership README files and empty public boundaries
 - [x] M2 TypeScript, Vite, and Vitest `@/*` alias with resolver test
+- [x] Gate A independent audit, full verification pipeline, and browser smoke approval
 
 ## Next
 
-- [ ] **Gate A — Architecture foundation approval**
+- [ ] **M3 — Asset Inventory and Asset Registry**
 
-Gate A is ready for review after M2 validation. No Gate B implementation may begin until Gate A is explicitly approved.
+Gate A is approved. M3 is the next milestone but has not started. Gate B remains unavailable until M3, M4, and M5 independently pass validation.
