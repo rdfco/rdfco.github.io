@@ -88,6 +88,10 @@ try {
   window.__FARA_COLOR_DEBUG = { config, applied, skyLight: color('skyLight', '#3e9bb7'), skyDark: color('skyDark', '#081219'), stars: color('stars', '#ffffff') }
   const astroBase = `${window.location.origin}/_astro/`
   source = source.replaceAll('from"./', `from"${astroBase}`).replaceAll('import"./', `import"${astroBase}`)
+  source = source.replace(
+    'n.name.startsWith("Line")&&this.lines.push(n)',
+    '(n.name==="Line.002"&&(n.visible=!1),n.name.startsWith("Line")&&this.lines.push(n))',
+  )
   module = await import(URL.createObjectURL(new Blob([source], { type: 'text/javascript' })))
 } catch (error) {
   console.warn('Custom WebGL colors failed; using the original background.', error)

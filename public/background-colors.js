@@ -13,17 +13,17 @@ window.FARA_BACKGROUND_COLORS = {
   horizonGlow: '#37b478',      // روشنایی و سایه داخل سطح تپه
   risingLines: '#37b478',      // نوارهای انرژی رو به بالا
   powerLines: '#37b478',       // پرتوهای باریک متحرک
-  pathLines: '#37b478',        // خطوط کشیده روی زمین
-  terrainBase: '#020605',      // رنگ مستقل پایین تپه و زمین؛ از skyLight/skyDark تأثیر نمی‌گیرد
+  pathLines: '#ffffff',        // خطوط کشیده روی زمین
+  terrainBase: '#000000',      // رنگ مستقل پایین تپه و زمین؛ از skyLight/skyDark تأثیر نمی‌گیرد
 
   // بخش‌های پایین‌تر سایت ــ برای دیدن تغییر باید اسکرول کنید.
   mountain: '#000000',         // بافت مدل سه‌بعدی کوه در فصل‌های دیگر
-  hologram: '#ffffff',         // بدنه مدل‌های سیمی
-  hologramGlow: '#ffffff',     // هاله مدل‌های سیمی
+  hologram: '#37b478',         // بدنه مدل‌های سیمی
+  hologramGlow: '#37b478',     // هاله مدل‌های سیمی
   gridBackground: '#000000',   // سطح زیر شبکه
-  gridLines: '#55a078',        // خط‌های شبکه مربعی
-  gridAccent: '#8ccda5',       // تقاطع‌ها و خانه‌های تأکیدی
-  gridPoints: '#b4dcc3',       // نقاط نورانی شبکه
+  gridLines: '#ffffff',        // خط‌های شبکه مربعی
+  gridAccent: '#ffffff',       // تقاطع‌ها و خانه‌های تأکیدی
+  gridPoints: '#ffffff',       // نقاط نورانی شبکه
 
   // روشنایی مستقل هر بخش: 1 = عادی، 0.5 = نصف، 2 = دو برابر
   brightness: {
