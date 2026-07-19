@@ -1,2 +1,2 @@
-// Public asset-definition boundary. Registry exports are introduced in M3.
-export {}
+export { assetRegistryDocument, assets, assetsById, assetsByPath, getAsset } from './asset-registry'
+export type { AssetApproval, AssetKind, AssetLifecycle, AssetRecord, AssetRegistryDocument, AssetScope } from './asset.types'

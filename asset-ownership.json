@@ -1,13 +1,5 @@
 {
-  "policy": "Every runtime asset must be local and have an explicit project provenance declaration.",
-  "assets": {
-    "/assets/models/fort-energy/fort-energy.glb": { "provenance": "project-provided legacy migration", "approved": true },
-    "/assets/models/fort-energy/energy-chapter.glb": { "provenance": "project-provided legacy migration", "approved": true },
-    "/assets/models/mountains.glb": { "provenance": "project-provided legacy migration", "approved": true },
-    "/assets/textures/noise.webp": { "provenance": "project-provided legacy migration", "approved": true },
-    "/assets/textures/envmap-min.exr": { "provenance": "project-provided legacy migration", "approved": true },
-    "/assets/fonts/CenturyGothic.woff2": { "provenance": "project-provided brand font", "approved": true },
-    "/assets/fonts/CenturyGothic-Bold.woff2": { "provenance": "project-provided brand font", "approved": true },
-    "/assets/fonts/JosefinSans-Light.woff2": { "provenance": "project-provided brand font", "approved": true }
-  }
+  "policy": "Every runtime asset must be local and have explicit ownership, provenance, and approval metadata.",
+  "registry": "src/assets/asset-registry.json",
+  "note": "Compatibility pointer only. The typed asset registry is the single source of truth."
 }

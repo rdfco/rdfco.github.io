@@ -2,29 +2,31 @@
 
 ## Current position
 
-**Gate A — Architecture Foundation: approved**
+**M3 — Asset Inventory and Asset Registry: complete**
 
-Runtime implementation has not moved. M0 established rollback-safe measurable contracts. M1 documented the current and target architecture. M2 materialized the target ownership skeleton, empty public boundaries, and a consistent `@/*` source alias without changing active runtime imports.
+Gate A is approved. M0 established rollback-safe measurable contracts, M1 documented
+the current and target architecture, and M2 materialized the target ownership skeleton.
+M3 has now established one complete, typed asset registry without relocating assets or
+changing public URLs.
 
 ## Completed
 
 - [x] Dedicated branch: `fara/refactoring-roadmap`
-- [x] M0 production contract at desktop, tablet, and mobile
-- [x] M0 native-preview snapshot at desktop, tablet, and mobile
-- [x] M0 performance and WebGL environment snapshot
-- [x] M0 acceptance and reproduction contract
-- [x] M1 current project map and documentation index
-- [x] M1 target folder architecture and folder ownership rules
-- [x] M1 dependency rules and runtime flows
-- [x] M1 page, scene, model, and asset guides
-- [x] M1 ADR-001 Legacy/Native boundary
-- [x] M2 target `src`, `src/three`, `public/assets`, `docs`, and `tests` skeleton
-- [x] M2 local ownership README files and empty public boundaries
-- [x] M2 TypeScript, Vite, and Vitest `@/*` alias with resolver test
+- [x] M0 production and native-preview contracts at desktop, tablet, and mobile
+- [x] M0 performance, WebGL environment, acceptance, and reproduction contracts
+- [x] M1 current/target architecture, ownership rules, runtime flows, and ADR-001
+- [x] M2 target folder skeleton, public boundaries, and `@/*` alias
 - [x] Gate A independent audit, full verification pipeline, and browser smoke approval
+- [x] M3 complete inventory of all 50 physical runtime assets
+- [x] M3 typed canonical registry with ownership, consumers, provenance, and lifecycle
+- [x] M3 compatibility adapter preserving current scene asset paths
+- [x] M3 registry validator, generated size inventory, and runtime-audit integration
+- [x] M3 asset naming, placement, lifecycle, and replacement governance
+- [x] M3 full verification pipeline and production/native browser contract
 
 ## Next
 
-- [ ] **M3 — Asset Inventory and Asset Registry**
+- [ ] **M4 — Configuration and Content Boundaries**
+- [ ] M5 — Shared Three.js Runtime Foundations
 
-Gate A is approved. M3 is the next milestone but has not started. Gate B remains unavailable until M3, M4, and M5 independently pass validation.
+Gate B remains unavailable until M3, M4, and M5 independently pass validation.
