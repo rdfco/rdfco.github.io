@@ -8,7 +8,7 @@ Runtime implementation has not moved. M0 established rollback-safe measurable co
 
 ## Completed
 
-- [x] Dedicated branch: `codex/fara-refactor-roadmap`
+- [x] Dedicated branch: `fara/refactoring-roadmap`
 - [x] M0 production contract at desktop, tablet, and mobile
 - [x] M0 native-preview snapshot at desktop, tablet, and mobile
 - [x] M0 performance and WebGL environment snapshot

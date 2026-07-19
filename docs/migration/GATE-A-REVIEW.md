@@ -3,7 +3,7 @@
 - Status: Approved
 - Approved: 2026-07-19
 - Scope: M0 Baseline, M1 Documentation, M2 Target Skeleton
-- Branch: `codex/fara-refactor-roadmap`
+- Branch: `fara/refactoring-roadmap`
 
 ## M0 evidence
 

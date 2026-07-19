@@ -1,6 +1,6 @@
 # M0 baseline contract
 
-Captured on 2026-07-19 from branch `codex/fara-refactor-roadmap` at the start of the refactoring roadmap.
+Captured on 2026-07-19 from the dedicated refactoring branch, now named `fara/refactoring-roadmap`.
 
 ## Purpose
 
