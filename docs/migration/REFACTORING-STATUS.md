@@ -2,9 +2,9 @@
 
 ## Current position
 
-**M1 — Documentation Source of Truth: complete**
+**M2 — Target Architecture Skeleton: complete**
 
-Runtime refactoring has not started. M0 established the rollback-safe branch and measurable contracts. M1 documented the current architecture, approved destination, ownership rules, dependency direction, runtime flows, development workflows, and the Legacy/Native decision.
+Runtime implementation has not moved. M0 established rollback-safe measurable contracts. M1 documented the current and target architecture. M2 materialized the target ownership skeleton, empty public boundaries, and a consistent `@/*` source alias without changing active runtime imports.
 
 ## Completed
 
@@ -18,10 +18,12 @@ Runtime refactoring has not started. M0 established the rollback-safe branch and
 - [x] M1 dependency rules and runtime flows
 - [x] M1 page, scene, model, and asset guides
 - [x] M1 ADR-001 Legacy/Native boundary
+- [x] M2 target `src`, `src/three`, `public/assets`, `docs`, and `tests` skeleton
+- [x] M2 local ownership README files and empty public boundaries
+- [x] M2 TypeScript, Vite, and Vitest `@/*` alias with resolver test
 
 ## Next
 
-- [ ] **M2 — Target Architecture Skeleton**
-- [ ] Gate A — Architecture foundation approval
+- [ ] **Gate A — Architecture foundation approval**
 
-Gate A is not ready. It occurs only after M1 and M2 have independently passed validation.
+Gate A is ready for review after M2 validation. No Gate B implementation may begin until Gate A is explicitly approved.

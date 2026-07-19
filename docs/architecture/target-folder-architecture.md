@@ -1,6 +1,6 @@
 # Target folder architecture
 
-This tree is the approved destination. M2 creates only the skeleton; later milestones move responsibilities into it.
+This tree is the approved destination. M2 created its ownership skeleton and empty public boundaries; later milestones move responsibilities into it.
 
 ```text
 src/
@@ -78,3 +78,11 @@ Prefer colocation when a file has one clear owner. A shader, material, camera co
 ## Public binaries versus source definitions
 
 `public/assets/` contains files fetched by URL. `src/assets/` and `src/three/models/` contain typed metadata, ownership, transforms, loading policy, and validation. Binary files must not be imported as business configuration.
+
+## M2 implementation status
+
+- Target folders are present and explain ownership through local README files.
+- Aggregate boundaries that will be consumed across domains have empty `index.ts` public entry points.
+- `@/*` resolves to `src/*` in TypeScript, Vite, and Vitest.
+- No production or Native Preview import was rewritten.
+- Current/transitional directories remain in place until their dedicated milestone.

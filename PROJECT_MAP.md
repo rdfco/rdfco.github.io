@@ -67,4 +67,6 @@ Do not structurally change `public/legacy/fort-energy/index.html` without visual
 
 ## Where work belongs now
 
-Before M2 creates the target skeleton, follow the current ownership table above. Do not create target folders early. After M2, use the target rules and migrate files only in their approved milestone.
+M2 created the documented target skeleton and ownership README files, but it did not move any runtime implementation. Existing files remain owned by the current-path table above until their dedicated milestone. New work may use a target folder only when that folder's README and the approved milestone assign ownership to it.
+
+The `@/*` alias resolves to `src/*` consistently in TypeScript, Vite, and Vitest. Existing runtime imports remain unchanged; modules adopt the alias only as they migrate.
