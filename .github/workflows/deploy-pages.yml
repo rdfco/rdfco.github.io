@@ -23,38 +23,29 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: gspa-site/package-lock.json
+          cache-dependency-path: package-lock.json
       - name: Install dependencies
-        working-directory: gspa-site
         run: npm ci
       - name: Build
-        working-directory: gspa-site
         run: npm run build
       - name: Verify native migration boundaries
-        working-directory: gspa-site
         run: npm run check:native
       - name: Typecheck
-        working-directory: gspa-site
         run: npm run typecheck
       - name: Lint
-        working-directory: gspa-site
         run: npm run lint
       - name: Unit tests
-        working-directory: gspa-site
         run: npm run test
       - name: Audit domains and asset provenance
-        working-directory: gspa-site
         run: npm run audit:runtime
       - name: Enforce bundle budgets
-        working-directory: gspa-site
         run: npm run check:bundle
       - name: Migration dashboard
-        working-directory: gspa-site
         run: npm run migration:status >> $GITHUB_STEP_SUMMARY
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: gspa-site/dist
+          path: dist
 
   deploy:
     environment:

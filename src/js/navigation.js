@@ -104,7 +104,7 @@ const configureLegalLink = link => {
   const label = link.textContent.trim().replace(/\s+/g, ' ').toLowerCase()
   const route = [...legalRoutes].find(([name]) => label.includes(name))?.[1]
   if (!route) return false
-  link.href = '#'
+  link.href = route
   setupRouteLink(link, route)
   link.removeAttribute('aria-disabled')
   link.removeAttribute('tabindex')

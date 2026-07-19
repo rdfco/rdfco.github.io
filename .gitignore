@@ -1,25 +1,19 @@
-# Only the application folder belongs to this repository.
-/*
-!/.gitignore
-!/gspa-site/
-!/.github/
-
 # Local and generated application files
-gspa-site/node_modules/
-gspa-site/dist/
-gspa-site/.git.local-backup/
-gspa-site/browser-check.png
-gspa-site/preview.png
-gspa-site/preview-final.png
-gspa-site/qa*.png
-gspa-site/footer-*.png
-gspa-site/work/
+node_modules/
+dist/
+.git.local-backup/
+browser-check.png
+preview.png
+preview-final.png
+qa*.png
+footer-*.png
+work/
 
 # Redundant copies from the original site mirror
-gspa-site/public/site/
-gspa-site/public/fort-energy/
-gspa-site/public/consent.cookiebot.com/
-gspa-site/public/cdn-cgi/
+public/site/
+public/fort-energy/
+public/consent.cookiebot.com/
+public/cdn-cgi/
 
 *.log
 .DS_Store
