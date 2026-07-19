@@ -9,12 +9,12 @@
   padding: clamp(11rem, 18vw, 17rem) 0 clamp(7rem, 12vw, 12rem);
   margin: 0 auto;
   color: #2d628c;
-  font-family: "Century Gothic", sans-serif;
+  font-family: "FARA Gotham";
 }
 .fara-route-intro h1 {
   max-width: 62rem;
   margin: 0;
-  font-family: "Josefin Sans", sans-serif;
+  font-family: "FARA Gotham";
   font-size: clamp(2.75rem, 5.3vw, 5.5rem);
   font-weight: 300;
   line-height: 1.04;

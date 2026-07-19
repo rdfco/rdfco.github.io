@@ -2,6 +2,7 @@
  * FARA site styles entry point.
  * Keep this import order: later files contain intentional responsive overrides.
  */
+@import './styles/fonts.css';
 @import './styles/navigation.css';
 @import './styles/route-pages.css';
 @import './styles/hero.css';

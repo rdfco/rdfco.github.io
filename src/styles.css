@@ -1,3 +1,5 @@
+@import './styles/fonts.css';
+
 html,
 body,
 #root,
@@ -11,7 +13,7 @@ body,
 .legacy-shell { position: relative; overflow: hidden; background: #071d2e; }
 .legacy-site { opacity: 0; transition: opacity 180ms ease; }
 .legacy-shell[data-status='ready'] .legacy-site { opacity: 1; }
-.site-gate { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; padding: 2rem; color: #fff; background: #071d2e; font: 500 1rem/1.5 Arial, sans-serif; text-align: center; }
+.site-gate { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; padding: 2rem; color: #fff; background: #071d2e; font: 500 1rem/1.5 "FARA Gotham"; text-align: center; }
 .site-loader { display: grid; place-items: center; }
 .site-loader__spinner { width: 3rem; height: 3rem; border: 2px solid rgba(255, 255, 255, .2); border-top-color: #fff; border-radius: 50%; animation: fara-loader-spin 800ms linear infinite; }
 @keyframes fara-loader-spin { to { transform: rotate(360deg); } }

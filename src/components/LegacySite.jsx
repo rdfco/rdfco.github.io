@@ -45,7 +45,7 @@ export default function LegacySite() {
       label.setAttribute('x', '0')
       label.setAttribute('y', '58')
       label.setAttribute('fill', '#2D628C')
-      label.setAttribute('font-family', 'Century Gothic, Arial, sans-serif')
+      label.setAttribute('font-family', 'FARA Gotham')
       label.setAttribute('font-size', '52')
       label.setAttribute('letter-spacing', '12')
       label.textContent = 'FARA'

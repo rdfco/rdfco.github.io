@@ -13,7 +13,7 @@
 .fara-footer-shell { position: relative; display: block; }
 .fara-footer header { padding: 0; text-align: center; }
 .fara-footer header p,
-.fara-footer header h2 { margin: 0; color: inherit !important; font-family: "Century Gothic", sans-serif; }
+.fara-footer header h2 { margin: 0; color: inherit !important; font-family: "FARA Gotham"; }
 .fara-footer header p { font-size: clamp(1.8rem, 3vw, 3.25rem); font-weight: 700; line-height: 1.05; }
 .fara-footer header h2 { margin-top: .65rem; color: #111 !important; font-size: clamp(1rem, 1.4vw, 1.35rem); font-weight: 400; }
 .fara-case-grid {
@@ -31,7 +31,7 @@
   justify-content: flex-start;
   grid-column: span 2;
   color: #111 !important;
-  font-family: Tahoma, Arial, sans-serif;
+  font-family: "FARA Gotham";
   font-size: clamp(.9rem, 1.1vw, 1.05rem);
   line-height: 1.8;
   text-align: right;
@@ -50,7 +50,7 @@
   margin-top: clamp(4rem, 7vw, 7rem);
   border-top: 1px solid rgba(45, 98, 140, .28);
 }
-.fara-footer-signature { display: flex; flex-direction: column; color: #111; font-family: "Century Gothic", sans-serif; }
+.fara-footer-signature { display: flex; flex-direction: column; color: #111; font-family: "FARA Gotham"; }
 .fara-footer-signature strong { font-size: clamp(1.4rem, 2.3vw, 2.25rem); line-height: 1.1; }
 .fara-footer-signature span { margin-top: .35rem; font-size: clamp(.8rem, 1vw, 1rem); }
-.fara-footer-copyright { margin: 0; color: #111 !important; font-family: "Century Gothic", sans-serif; font-size: clamp(.7rem, .9vw, .85rem); white-space: nowrap; }
+.fara-footer-copyright { margin: 0; color: #111 !important; font-family: "FARA Gotham"; font-size: clamp(.7rem, .9vw, .85rem); white-space: nowrap; }

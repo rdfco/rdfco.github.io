@@ -20,7 +20,7 @@ main #grid { min-height: 7400px; }
 }
 .fara-about > h2 {
   color: #fff;
-  font-family: "Josefin Sans", sans-serif;
+  font-family: "FARA Gotham";
   font-size: clamp(2.5rem, 4.2vw, 4.75rem);
   font-weight: 300;
   line-height: 1.08;
@@ -31,13 +31,13 @@ main #grid { min-height: 7400px; }
 .fara-row > header h2,
 .fara-card h3 {
   color: #fff;
-  font-family: "Josefin Sans", sans-serif;
+  font-family: "FARA Gotham";
   font-weight: 300;
 }
 .fara-row > header h2 { font-size: clamp(2.25rem, 4vw, 4.5rem); line-height: 1; }
 .fara-row > header p {
   margin-top: .8rem;
-  font-family: "Century Gothic", sans-serif;
+  font-family: "FARA Gotham";
   font-size: clamp(1rem, 1.6vw, 1.5rem);
   line-height: 1.5;
 }

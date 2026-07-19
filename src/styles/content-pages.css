@@ -18,13 +18,13 @@
   width: min(1180px, calc(100% - 3rem));
   padding: clamp(11rem, 18vw, 17rem) 0 clamp(7rem, 12vw, 12rem);
   margin: 0 auto;
-  font-family: "Century Gothic", sans-serif;
+  font-family: "FARA Gotham";
 }
 .fara-content-title {
   max-width: 62rem;
   margin: 0;
   color: #2d628c;
-  font-family: "Josefin Sans", sans-serif;
+  font-family: "FARA Gotham";
   font-size: clamp(2.75rem, 5.3vw, 5.5rem);
   font-weight: 300;
   line-height: 1.04;
