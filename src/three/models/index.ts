@@ -1,2 +1,2 @@
-// Public model boundary. Registry and loader exports are introduced in M9.
-export {}
+export { faraModelIds, getModelDefinition, modelRegistry } from './model-registry'
+export type { ModelDefinition } from './model-registry'

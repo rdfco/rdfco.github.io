@@ -39,7 +39,6 @@ if (/from ['"]@react-three\/fiber['"]/.test(nativeScene) || /<Canvas/.test(nativ
 const deferredBoundaries = [
   'src/three/camera/index.ts',
   'src/three/materials/index.ts',
-  'src/three/models/index.ts',
 ]
 for (const file of deferredBoundaries) {
   const source = await readFile(file, 'utf8')
