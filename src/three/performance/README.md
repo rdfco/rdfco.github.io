@@ -1,3 +1,7 @@
 # Three performance
 
-Quality tiers, renderer policies, monitoring, budgets, and measured performance controls. Optimization must be supported by M0-compatible evidence and belongs to M14.
+Owns typed quality tiers and their renderer-facing DPR/antialias policies. M5 defines
+the policy vocabulary and preserves `high` as the active M0 tier.
+
+Automatic tier selection, runtime monitoring, optimization, and budget changes require
+measured evidence and remain in M14.

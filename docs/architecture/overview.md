@@ -48,6 +48,10 @@ M4 materializes the content and application-configuration portion of this target
 See `content-and-configuration.md` for the canonical sources, compatibility adapters,
 and protected Legacy datasets.
 
+M5 materializes the shared Canvas lifecycle, renderer configuration, runtime types, and
+quality-tier vocabulary. See `three-runtime-foundations.md`; scene-specific systems stay
+deferred to M8–M12.
+
 ## Data flow
 
 ```text

@@ -1,2 +1,10 @@
-// Public Three.js subsystem boundary. Scene APIs are introduced in M8.
-export {}
+export { ThreeCanvas, threeRuntimeConfig } from './core'
+export { defaultPerformanceTier, getQualityTier, qualityTiers } from './performance'
+export type { QualityTierDefinition } from './performance'
+export type {
+  DprRange,
+  FogDefinition,
+  PerformanceTier,
+  PerspectiveCameraDefinition,
+  ThreeRuntimeConfig,
+} from './types'
