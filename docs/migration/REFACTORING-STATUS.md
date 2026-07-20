@@ -2,7 +2,7 @@
 
 ## Current position
 
-**M11 — Material and Shader Boundaries: complete**
+**M12 — GSAP and Animation Boundaries: complete**
 
 Gate A is approved. M0 established rollback-safe measurable contracts, M1 documented
 the current and target architecture, and M2 materialized the target ownership skeleton.
@@ -53,9 +53,13 @@ contract. Gate B independently approved those sources and rollback boundaries.
 - [x] M11 scene-owned recovered material runtime and compatibility adapter
 - [x] M11 shared ShaderMaterial factory and typed active-shader manifest
 - [x] M11 material/shader validator and full production/native browser contract
+- [x] M12 shared GSAP/ScrollTrigger registration and public animation runtime
+- [x] M12 feature-owned reveal configuration, lifecycle, and cleanup
+- [x] M12 animation validator and full production/native browser contract
 
 ## Next
 
-- [ ] **M12 — GSAP and Animation Boundaries**
+- [ ] **Gate C — Runtime Ownership Review**
 
-Gate B is approved. Gate C remains locked until M6–M12 independently pass validation.
+M6–M12 independently passed validation. Gate C is ready for review but is not yet
+approved or merged.
