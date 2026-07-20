@@ -1,5 +1,13 @@
 # Content
 
-Validated business content, navigation copy, SEO, locales, and local/CMS adapters. Content must not import React components or Three.js implementations.
+This folder owns validated shared FARA copy, UI labels, navigation labels, footer
+content, content schemas, and the content-source ownership registry.
 
-Current sources remain under `src/data` until M4. The canonical content API will be exposed from `index.ts` after migration.
+`site-data.js` is the canonical shared source consumed by both the preserved Legacy
+runtime and Native Preview. TypeScript consumers use the validated `content` export
+from this folder's public `index.ts`. Files under `src/data` are compatibility adapters
+only and must not receive new content.
+
+Route-specific content under `src/navbar/pages` remains `legacy-protected`. It is
+registered in `content-sources.json` and migrates with its owning route, not globally.
+Content modules must not import React UI, routes, scenes, or browser APIs.

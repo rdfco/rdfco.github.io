@@ -44,6 +44,10 @@ Key principles:
 7. Legacy adapters are explicit, temporary, and forbidden as dependencies of native modules.
 8. Pages compose; features own domain behavior; components remain reusable.
 
+M4 materializes the content and application-configuration portion of this target.
+See `content-and-configuration.md` for the canonical sources, compatibility adapters,
+and protected Legacy datasets.
+
 ## Data flow
 
 ```text

@@ -1,3 +1,2 @@
-import { siteData } from './siteData.js'
-import { siteContentSchema } from './schema'
-export const content = siteContentSchema.parse(siteData)
+// M4 compatibility adapter. Import new code from @/content.
+export { content } from '../content/site-content'

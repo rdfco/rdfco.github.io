@@ -24,7 +24,9 @@ index.html
 | Path | Current responsibility | Classification |
 |---|---|---|
 | `src/components/` | Shared/native UI plus the transitional `LegacySite` bridge | Mixed; source-owned |
-| `src/data/` | Site content, schemas, footer data, and initial asset registry | Source-owned; awaiting M4/M5 separation |
+| `src/content/` | Canonical shared copy, schemas, footer metadata, and content ownership registry | Source-owned; public API established in M4 |
+| `src/config/` | Routes, environment gates, and Legacy shell protocol/timing | Source-owned; public API established in M4 |
+| `src/data/` | Compatibility adapters for pre-M4 content/schema import paths | Transitional; do not add new data |
 | `src/hooks/` | Shared React hooks such as reduced-motion | Source-owned |
 | `src/js/` | Imperative FARA customization inside the legacy iframe | Transitional legacy adapter |
 | `src/native/` | Native preview composition and Canvas entry | Source-owned migration code |

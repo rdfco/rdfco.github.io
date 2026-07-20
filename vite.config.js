@@ -7,6 +7,7 @@ const legacyRuntimeFiles = [
   'site-customizer.js',
   'custom.css',
   'data',
+  'content',
   'js',
   'styles',
   'navbar',

@@ -1,2 +1,4 @@
-// Public content boundary. Canonical exports are introduced in M4.
-export {}
+export { footerOffices, legalLinks } from './footer-content'
+export { content } from './site-content'
+export { cardSchema, navigationItemSchema, siteContentSchema } from './site-content.schema'
+export type { SiteContent } from './site-content.schema'

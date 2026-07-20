@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "policy": "Shared FARA copy is canonical under src/content. Route-specific Legacy content remains protected until its owning route migrates.",
+  "sources": [
+    { "path": "src/content/site-data.js", "ownership": "canonical-shared", "consumers": ["legacy-runtime", "native-preview"] },
+    { "path": "src/content/footer-content.ts", "ownership": "canonical-native", "consumers": ["native-preview"] },
+    { "path": "src/navbar/navigation.js", "ownership": "legacy-protected", "consumers": ["legacy-runtime", "shared-site-content"] },
+    { "path": "src/navbar/pages/home/data.json", "ownership": "legacy-protected", "consumers": ["legacy-home-route"] },
+    { "path": "src/navbar/pages/knowing-fara/data.json", "ownership": "legacy-protected", "consumers": ["legacy-knowing-fara-route"] },
+    { "path": "src/navbar/pages/solution/data.json", "ownership": "legacy-protected", "consumers": ["legacy-solution-route"] },
+    { "path": "src/navbar/pages/consulting/data.json", "ownership": "legacy-protected", "consumers": ["legacy-consulting-route"] },
+    { "path": "src/navbar/pages/industries/data.json", "ownership": "legacy-protected", "consumers": ["legacy-industries-route"] },
+    { "path": "src/navbar/pages/case-studies/data.json", "ownership": "legacy-protected", "consumers": ["legacy-case-studies-route"] },
+    { "path": "src/navbar/pages/think-together/data.json", "ownership": "legacy-protected", "consumers": ["legacy-think-together-route"] },
+    { "path": "src/navbar/pages/content/data/legal-data.js", "ownership": "legacy-protected", "consumers": ["legacy-legal-routes"] },
+    { "path": "src/navbar/pages/content/data/news-data.js", "ownership": "legacy-protected", "consumers": ["legacy-news-routes"] }
+  ]
+}

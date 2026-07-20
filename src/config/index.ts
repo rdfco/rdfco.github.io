@@ -1,2 +1,2 @@
-// Public configuration boundary. Typed exports are introduced in M5.
-export {}
+export { appConfig } from './app-config'
+export type { AppConfig } from './app-config'
