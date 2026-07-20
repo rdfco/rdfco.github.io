@@ -2,7 +2,7 @@
 
 ## Current position
 
-**M6 — Application and Routing Boundaries: complete**
+**M7 — Feature and UI Composition Boundaries: complete**
 
 Gate A is approved. M0 established rollback-safe measurable contracts, M1 documented
 the current and target architecture, and M2 materialized the target ownership skeleton.
@@ -40,9 +40,11 @@ contract. Gate B independently approved those sources and rollback boundaries.
 - [x] Gate B full verification pipeline and built-Production/Native browser contract
 - [x] M6 application bootstrap, provider, route, guard, and page ownership boundaries
 - [x] M6 full verification and production/native browser contract
+- [x] M7 home and navigation feature ownership with compatibility section adapters
+- [x] M7 full verification and production/native browser contract
 
 ## Next
 
-- [ ] **M7 — Feature and UI Composition Boundaries**
+- [ ] **M8 — Scene Registry and Scene Ownership**
 
 Gate B is approved. Gate C remains locked until M6–M12 independently pass validation.
