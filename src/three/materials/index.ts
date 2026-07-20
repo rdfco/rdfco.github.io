@@ -1,2 +1,1 @@
-// Public shared-material boundary. Runtime exports are introduced in M11.
-export {}
+export { createShaderMaterial } from './create-shader-material'

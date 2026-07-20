@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { Color, Material, Mesh, Object3D } from 'three'
-import { useRecoveredMaterials } from '../../../scenes/materials/useRecoveredMaterials'
 import { preloadRegisteredGLTF, useRegisteredGLTF } from '../../loaders'
 import { faraModelIds } from '../../models'
 import { BackgroundColorKey, configuredColor } from './background-colors'
 import { FaraCameraRig } from './FaraCameraRig'
+import { useRecoveredMaterials } from './materials/useRecoveredMaterials'
 
 function tintMountains(root:Object3D){root.traverse(object=>{const mesh=object as Mesh;if(!mesh.isMesh)return;const label=`${mesh.name} ${(mesh.material as Material)?.name??''}`.toLowerCase();let key:BackgroundColorKey|undefined;if(label.includes('mountain'))key='mountain';else if(label.includes('star'))key='stars';else if(label.includes('aurora')||label.includes('cloud'))key='aurora';else if(label.includes('sun')||label.includes('backglow'))key='mountainBackGlow';else if(label.includes('transition'))key='transition';if(!key)return;const tint=configuredColor(key);const materials=Array.isArray(mesh.material)?mesh.material:[mesh.material];const cloned=materials.map(material=>{const copy=material.clone() as Material&{color?:Color};if(copy.color)copy.color.multiply(tint);return copy});mesh.material=Array.isArray(mesh.material)?cloned:cloned[0]})}
 

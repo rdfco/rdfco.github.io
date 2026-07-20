@@ -36,9 +36,7 @@ if (/from ['"]@react-three\/fiber['"]/.test(nativeScene) || /<Canvas/.test(nativ
   violations.push('FARA scene still owns the R3F Canvas lifecycle')
 }
 
-const deferredBoundaries = [
-  'src/three/materials/index.ts',
-]
+const deferredBoundaries = []
 for (const file of deferredBoundaries) {
   const source = await readFile(file, 'utf8')
   if (!source.includes('export {}')) violations.push(`${file} was implemented before its approved milestone`)
@@ -46,5 +44,5 @@ for (const file of deferredBoundaries) {
 
 if (violations.length) throw new Error(`Three.js foundation validation failed:\n- ${violations.join('\n- ')}`)
 console.log(
-  `Three.js foundations valid: ${files.length} shared files, one active Canvas consumer, and the remaining deferred boundary preserved.`,
+  `Three.js foundations valid: ${files.length} shared files, one active Canvas consumer, and all approved boundaries implemented.`,
 )

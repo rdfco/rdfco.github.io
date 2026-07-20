@@ -2,7 +2,7 @@
 
 ## Current position
 
-**M10 — Camera Runtime and Path Extraction: complete**
+**M11 — Material and Shader Boundaries: complete**
 
 Gate A is approved. M0 established rollback-safe measurable contracts, M1 documented
 the current and target architecture, and M2 materialized the target ownership skeleton.
@@ -50,9 +50,12 @@ contract. Gate B independently approved those sources and rollback boundaries.
 - [x] M10 shared camera-path extraction and normalized scroll contracts
 - [x] M10 scene-owned camera configuration and isolated frame runtime
 - [x] M10 camera boundary validator and full production/native browser contract
+- [x] M11 scene-owned recovered material runtime and compatibility adapter
+- [x] M11 shared ShaderMaterial factory and typed active-shader manifest
+- [x] M11 material/shader validator and full production/native browser contract
 
 ## Next
 
-- [ ] **M11 — Material and Shader Boundaries**
+- [ ] **M12 — GSAP and Animation Boundaries**
 
 Gate B is approved. Gate C remains locked until M6–M12 independently pass validation.
