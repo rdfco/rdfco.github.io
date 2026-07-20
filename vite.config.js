@@ -7,6 +7,7 @@ const legacyRuntimeFiles = [
   'site-customizer.js',
   'custom.css',
   'data',
+  'content',
   'js',
   'styles',
   'navbar',
@@ -48,5 +49,6 @@ function copyLegacyRuntime() {
 
 export default defineConfig({
   plugins: [react(), copyLegacyRuntime()],
+  resolve: { alias: { '@': resolve(process.cwd(), 'src') } },
   server: { port: 5173, open: true },
 })

@@ -1,72 +1,75 @@
-# Project map - Fort Energy
+# FARA current project map
 
-## Read this first
+This file describes the repository as it exists now. It is not the target folder tree. See `docs/architecture/target-folder-architecture.md` for the approved destination.
 
-The active site is a **Phase 1 React wrapper around the unmodified mirrored Astro page**. React does not render the site sections yet.
+## Application entry and routes
 
-- React starts at `src/main.jsx`, renders `src/App.jsx`, and hosts `src/components/LegacySite.jsx`.
-- The browser-visible page is the document loaded by the iframe: `public/legacy/fort-energy/index.html`.
-- Keep its element hierarchy, `id` values, classes, and `data-*` attributes unchanged. WebGL, GSAP, and direct DOM code select those exact elements.
-- Files with a content-hashed name in `public/_astro/` are generated Astro build artifacts. Do not hand-edit them.
+```text
+index.html
+└── src/main.tsx
+    └── src/App.tsx
+        ├── public routes → src/components/LegacySite.jsx
+        │   └── public/legacy/fort-energy/index.html (iframe)
+        │       ├── public/_astro/* (generated Astro/WebGL/GSAP runtime)
+        │       └── src/site-customizer.js → src/js/* + src/navbar/* + src/data/*
+        └── /native-preview → src/native/NativeApp.tsx
+            ├── src/components/* + src/sections/* + src/data/*
+            └── src/native/FaraScene.tsx → src/scenes/* → public/assets/*
+```
 
-## Quick edit guide
+`src/main.tsx` mounts React and the application error boundary. `src/App.tsx` owns route selection. Public routes currently render the protected legacy iframe. Native preview is enabled in development or with `VITE_ENABLE_NATIVE_PREVIEW=true`.
 
-| I want to change | Edit here | Notes |
+## Current folder responsibilities
+
+| Path | Current responsibility | Classification |
 |---|---|---|
-| Text, labels, addresses, ordinary links | `public/legacy/fort-energy/index.html` | Change text or an existing `href` only; preserve tags, classes, ids, and data attributes. |
-| Hero/footer logo | Inline SVG in `public/legacy/fort-energy/index.html` | There is no active standalone logo asset at present. Replace only after visual testing. |
-| 3D scene/model | `public/assets/models/` | Keep file names and formats unless the WebGL runtime is updated and tested too. |
-| 3D textures/environment maps | `public/assets/textures/` | Same path/name contract applies. |
-| Sound | `public/assets/sounds/sound.mp3` | Safe asset replacement if the format and path remain compatible. |
-| Fonts | `public/assets/fonts/` | Referenced by generated CSS; do not rename casually. |
-| Page styling | `public/_astro/_slug_.B97dlsMJ.css` | Generated artifact: inspect only. Add a separate override only with visual regression testing. |
-| WebGL / GSAP / scroll behavior | `public/_astro/*.js` | Generated artifacts: do not edit. |
+| `src/components/` | Shared/native UI plus the transitional `LegacySite` bridge | Mixed; source-owned |
+| `src/content/` | Canonical shared copy, schemas, footer metadata, and content ownership registry | Source-owned; public API established in M4 |
+| `src/config/` | Routes, environment gates, and Legacy shell protocol/timing | Source-owned; public API established in M4 |
+| `src/three/` | Shared Canvas lifecycle, renderer contract, runtime types, and performance tiers | Foundation established in M5; scene/model/camera/material migrations remain deferred |
+| `src/data/` | Compatibility adapters for pre-M4 content/schema import paths | Transitional; do not add new data |
+| `src/hooks/` | Shared React hooks such as reduced-motion | Source-owned |
+| `src/js/` | Imperative FARA customization inside the legacy iframe | Transitional legacy adapter |
+| `src/native/` | Native preview composition and Canvas entry | Source-owned migration code |
+| `src/navbar/` | Legacy iframe navigation, route pages, and data | Transitional legacy adapter |
+| `src/scenes/` | Native R3F scene, recovered materials, colors, and shaders | Source-owned migration code |
+| `src/sections/` | Native semantic home sections | Source-owned migration code |
+| `src/store/` | Initial Zustand experience state | Source-owned; target is `src/stores/` |
+| `src/styles/` | Legacy-customizer CSS modules | Transitional styling |
+| `src/test/` | Vitest setup | Source-owned test infrastructure |
+| `public/assets/` | Runtime models, textures, fonts, audio, and reserved logos | Protected runtime assets |
+| `public/legacy/` | Mirrored HTML visual oracle | Protected legacy |
+| `public/_astro/` | Generated Astro bundles used by the legacy iframe | Generated/read-only |
+| `scripts/` | Build, audit, migration, browser, visual, shader, and asset tools | Developer tooling |
+| `docs/baselines/m0/` | M0 machine-readable contracts and acceptance rules | Architecture evidence |
+| `dist/` | Vite build output | Generated/read-only |
 
-## Section map
+## Public production routes
 
-| Section | Source HTML and text | Images / logo | Styles | Animation / WebGL / GSAP | Safe edits |
-|---|---|---|---|---|---|
-| Global cursor | `public/legacy/fort-energy/index.html` (`.cursor`) | None | `public/_astro/_slug_.B97dlsMJ.css` | `public/_astro/GlobalApp.vK8XqYB9.js` | None; preserve the full DOM. |
-| Header and primary navigation | `public/legacy/fort-energy/index.html` (`#header`, `.menu-links-w`) | No image; text is inline | Generated CSS above | `GlobalApp…js`, `index.Brfk6Bdo.js` | Navigation labels and existing link URLs only. |
-| Overlay menu | `public/legacy/fort-energy/index.html` (`.montfort-menu`) | Inline arrow SVGs | Generated CSS above | `GlobalApp…js`, `index.Brfk6Bdo.js` | Existing menu text/URLs only. Do not remove menu items or classes. |
-| Fixed controls: scroll top and sound | `public/legacy/fort-energy/index.html` (`.buttons-container`) | `public/assets/sounds/sound.mp3`; inline SVG | Generated CSS above | `GlobalApp…js` | The sound file can be replaced; do not rename controls/canvas ids. |
-| Hero | `public/legacy/fort-energy/index.html` (`section.hero`, `data-chapter="Hero"`) | Hero logo is inline SVG (`.logo-mb`, `.logo-dk`) | Generated CSS above | `public/_astro/WebGL.astro_astro_type_script_index_0_lang.ClLv70z8.js` loads the scene; supporting code is in `GlobalApp.vK8XqYB9.js` | Hero labels and CTA text/link target only. Do not alter `#canvas-wrapper`, `canvas`, `data-chapter`, or logo containers. |
-| Intro / company description | `public/legacy/fort-energy/index.html` (`#grid`, `data-chapter="FortEnergyChapter"`) | Inline decorative SVG | Generated CSS above | `GlobalApp…js`; read-more behavior is selector-based | Heading/body text and existing link URL only. Preserve `.read-more`, `.content-wrapper`, `.inner`, and `data-animation`. |
-| Fort Energy Advantage cards | `public/legacy/fort-energy/index.html` (`.advantages-informations`, `.advantages-container`) | Inline decorative SVG | Generated CSS above | `GlobalApp…js`, `ScrollTrigger.6qCihK2t.js` | Card titles/body text and external Fort Energy URL only. Do not add/remove/reorder cards in Phase 1. |
-| Footer | `public/legacy/fort-energy/index.html` (`#footer`) | Footer brand is inline SVG (`#footer .logo`) | Generated CSS above | `Layout.astro_astro_type_script_index_0_lang.DbdhcTQd.js`, `GlobalApp…js` | Office text, telephone links, and existing URLs only. Keep footer ids/classes and inline script. |
+`/`, `/knowing-fara`, `/solution`, `/consulting`, `/industries`, `/case-studies`, `/think-together`, `/privacy-policy`, `/terms-of-use`, `/news`, and `/news/:slug` currently render `LegacySite`.
 
-## Assets by responsibility
+The iframe and React Router synchronize route state through same-origin `postMessage`. `vite.config.js` copies the legacy customization modules to `dist/src` and creates static route entry files for GitHub Pages.
 
-| Path | Responsibility | Status |
-|---|---|---|
-| `public/assets/models/` | GLB/GLTF 3D models for scenes | Source asset; replace cautiously. |
-| `public/assets/textures/` | WebGL textures, EXR environment maps, normals/lightmaps | Source asset; replace cautiously. |
-| `public/assets/sounds/sound.mp3` | Sound-control audio | Source asset; safe to replace at the same path. |
-| `public/assets/fonts/` | Site fonts | Source asset; retain names/formats. |
-| `public/assets/logos/` | Reserved asset folder | Not currently used for the visible hero/footer logo. |
-| `public/_astro/` | Mirrored generated Astro CSS and JavaScript bundles | Generated artifact; never manually edit. |
-| `dist/` | Vite production output | Generated artifact; never edit. Recreated by `npm run build`. |
+## Native preview flow
 
-## Files deliberately not used to render the current page
+`src/native/NativeApp.tsx` renders the native header, content sections, footer, and a lazy R3F scene. `src/native/FaraScene.tsx` owns the Canvas configuration. `src/scenes/fara/FaraLegacyScene.tsx` loads GLBs, derives camera curves, applies recovered materials, and maps scroll progress to scene visibility and camera state.
 
-`src/data/`, `src/js/`, `src/site-customizer.js`, and `src/custom.css` are legacy/refactor remnants. They are not the source of the document currently shown by `LegacySite.jsx`; editing them is not a reliable way to change the live page.
+Native preview is a migration implementation, not the approved production renderer.
 
-## Safe workflow for a content change
+## Generated and protected paths
 
+Do not manually edit:
 
-1. Edit only the intended text, URL, or same-path asset in `public/legacy/fort-energy/index.html` or `public/assets/`.
-2. Do not rename or delete classes, ids, `data-*` attributes, canvas markup, or cards.
-3. Run `npm.cmd run build`.
-4. Check desktop and mobile manually, including initial hero load, scrolling, menu open/close, sound, and expandable text.
-5. For any CSS, WebGL, GSAP, DOM-structure, or asset-path change, capture and compare visual regression screenshots before shipping.
-
-## Generated/runtime files — do not modify
-
-- `public/_astro/_slug_.B97dlsMJ.css`
-- `public/_astro/WebGL.astro_astro_type_script_index_0_lang.ClLv70z8.js`
-- `public/_astro/GlobalApp.vK8XqYB9.js`
-- `public/_astro/ScrollTrigger.6qCihK2t.js`
-- Other files in `public/_astro/`
+- `public/_astro/`
 - `dist/`
+- versioned M0 reports in `docs/baselines/m0/` without an explicitly approved baseline reset
 
-These files encode the legacy Astro runtime, WebGL setup, GSAP/ScrollTrigger behavior, and compiled styling. Any modification can cause selector, animation, or rendering regressions.
+Visual screenshots are generated locally under the Git-ignored `work/` directory. They are review artifacts, not repository content.
+
+Do not structurally change `public/legacy/fort-energy/index.html` without visual and interaction evidence. Generated bundles depend on its ids, classes, `data-*` attributes, canvas containers, and section order.
+
+## Where work belongs now
+
+M2 created the documented target skeleton and ownership README files, but it did not move any runtime implementation. Existing files remain owned by the current-path table above until their dedicated milestone. New work may use a target folder only when that folder's README and the approved milestone assign ownership to it.
+
+The `@/*` alias resolves to `src/*` consistently in TypeScript, Vite, and Vitest. Existing runtime imports remain unchanged; modules adopt the alias only as they migrate.

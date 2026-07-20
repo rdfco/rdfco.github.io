@@ -1,14 +1,14 @@
-# FARA architecture
+# FARA architecture index
 
-Production remains on the visually approved legacy boundary while native React sections are developed on the migration branch. No native component may replace production until desktop, tablet and mobile visual contracts pass.
+This file is the stable entry point for architecture documentation.
 
-## Target boundaries
+- `architecture/overview.md`: current runtime and target design.
+- `architecture/target-folder-architecture.md`: complete destination tree and responsibility of each folder.
+- `architecture/folder-ownership.md`: owners, allowed contents, and placement decisions.
+- `architecture/dependency-rules.md`: allowed and forbidden dependency directions.
+- `architecture/runtime-flows.md`: production, native, content, and rendering flows.
+- `decisions/ADR-001-legacy-native-boundary.md`: decision to preserve Legacy until native parity and cutover approval.
+- `WEBGL.md`: visual preservation requirements for camera, shaders, models, and animation.
+- `baselines/m0/README.md`: measurable acceptance contract.
 
-- `src/components`: reusable UI without page content.
-- `src/sections`: semantic page sections.
-- `src/scenes`: R3F scenes, materials and shaders.
-- `src/data`: validated content and asset registry.
-- `src/hooks`: lifecycle-safe GSAP, media and WebGL hooks.
-- `src/pages`: route composition only.
-
-React owns DOM. R3F owns the canvas. GSAP animations must be created through scoped contexts and reverted on cleanup. Direct DOM replacement is forbidden in native code.
+The target architecture is a migration destination, not a claim that those folders already exist. `PROJECT_MAP.md` remains the source of truth for the current filesystem until each milestone updates it.

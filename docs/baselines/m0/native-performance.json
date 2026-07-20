@@ -1,0 +1,119 @@
+{
+  "desktop": {
+    "viewport": {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    "navigationMs": 3205,
+    "document": {
+      "width": 1440,
+      "height": 9530
+    },
+    "canvasCount": 1,
+    "webgl": [
+      {
+        "width": 1440,
+        "height": 900,
+        "context": "webgl2",
+        "vendor": "Google Inc. (NVIDIA)",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3070 Laptop GPU (0x0000249D) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      }
+    ],
+    "animation": {
+      "sampleMs": 2000,
+      "frameCount": 289,
+      "averageFrameMs": 6.94,
+      "approximateFps": 144,
+      "framesOver32Ms": 0
+    },
+    "resources": {
+      "count": 71,
+      "transferBytes": 15913495,
+      "decodedBytes": 15892195
+    },
+    "heap": {
+      "usedBytes": 38624289,
+      "totalBytes": 46408845
+    },
+    "errors": []
+  },
+  "tablet": {
+    "viewport": {
+      "name": "tablet",
+      "width": 768,
+      "height": 1024
+    },
+    "navigationMs": 2139,
+    "document": {
+      "width": 768,
+      "height": 10605
+    },
+    "canvasCount": 1,
+    "webgl": [
+      {
+        "width": 768,
+        "height": 1024,
+        "context": "webgl2",
+        "vendor": "Google Inc. (NVIDIA)",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3070 Laptop GPU (0x0000249D) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      }
+    ],
+    "animation": {
+      "sampleMs": 2000,
+      "frameCount": 289,
+      "averageFrameMs": 6.94,
+      "approximateFps": 144,
+      "framesOver32Ms": 0
+    },
+    "resources": {
+      "count": 70,
+      "transferBytes": 15300,
+      "decodedBytes": 15886965
+    },
+    "heap": {
+      "usedBytes": 40481466,
+      "totalBytes": 47983362
+    },
+    "errors": []
+  },
+  "mobile": {
+    "viewport": {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    "navigationMs": 2077,
+    "document": {
+      "width": 390,
+      "height": 10371
+    },
+    "canvasCount": 1,
+    "webgl": [
+      {
+        "width": 390,
+        "height": 844,
+        "context": "webgl2",
+        "vendor": "Google Inc. (NVIDIA)",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3070 Laptop GPU (0x0000249D) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      }
+    ],
+    "animation": {
+      "sampleMs": 2000,
+      "frameCount": 289,
+      "averageFrameMs": 6.94,
+      "approximateFps": 144,
+      "framesOver32Ms": 0
+    },
+    "resources": {
+      "count": 70,
+      "transferBytes": 15300,
+      "decodedBytes": 15886965
+    },
+    "heap": {
+      "usedBytes": 40398368,
+      "totalBytes": 47196924
+    },
+    "errors": []
+  }
+}

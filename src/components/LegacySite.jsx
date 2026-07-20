@@ -1,5 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { appConfig } from '../config'
+import { content } from '../content'
 
 export default function LegacySite() {
   const location = useLocation()
@@ -18,14 +20,14 @@ export default function LegacySite() {
     if (lastRouteRef.current === route) return
     lastRouteRef.current = route
     frameWindow.postMessage(
-      { type: 'fara:set-route', pathname: route },
+      { type: appConfig.legacyRuntime.routeMessage, pathname: route },
       window.location.origin,
     )
   }, [location.pathname, location.search, status])
 
   useEffect(() => {
     const onMessage = event => {
-      if (event.origin !== window.location.origin || event.data?.type !== 'fara:navigate') return
+      if (event.origin !== window.location.origin || event.data?.type !== appConfig.legacyRuntime.navigationMessage) return
       navigate(event.data.pathname)
     }
     window.addEventListener('message', onMessage)
@@ -40,7 +42,7 @@ export default function LegacySite() {
     if (logo?.tagName.toLowerCase() === 'svg') {
       logo.replaceChildren()
       logo.setAttribute('viewBox', '0 0 667 80')
-      logo.setAttribute('aria-label', 'FARA')
+      logo.setAttribute('aria-label', content.brand.logoText)
       const label = document.createElementNS('http://www.w3.org/2000/svg', 'text')
       label.setAttribute('x', '0')
       label.setAttribute('y', '58')
@@ -48,11 +50,11 @@ export default function LegacySite() {
       label.setAttribute('font-family', 'FARA Gotham')
       label.setAttribute('font-size', '52')
       label.setAttribute('letter-spacing', '12')
-      label.textContent = 'FARA'
+      label.textContent = content.brand.logoText
       logo.append(label)
     }
     const copyright = footer.querySelector('.copyright-info p')
-    if (copyright) copyright.textContent = '© 2026 | FARA - All rights reserved'
+    if (copyright) copyright.textContent = content.footer.copyright
   }
 
   const onLoad = event => {
@@ -64,11 +66,14 @@ export default function LegacySite() {
     const route = `${location.pathname}${location.search}`
     lastRouteRef.current = route
     frameDocument.defaultView?.postMessage(
-      { type: 'fara:set-route', pathname: route },
+      { type: appConfig.legacyRuntime.routeMessage, pathname: route },
       window.location.origin,
     )
     updateFooter(frameDocument)
-    frameDocument.defaultView?.setTimeout(() => updateFooter(frameDocument), 1000)
+    frameDocument.defaultView?.setTimeout(
+      () => updateFooter(frameDocument),
+      appConfig.legacyRuntime.delayedFooterSyncMs,
+    )
 
     const startedAt = Date.now()
     const waitUntilCustomized = () => {
@@ -77,11 +82,11 @@ export default function LegacySite() {
         setStatus('ready')
         return
       }
-      if (Date.now() - startedAt >= 5000) {
+      if (Date.now() - startedAt >= appConfig.legacyRuntime.readyTimeoutMs) {
         setStatus('failed')
         return
       }
-      timerRef.current = window.setTimeout(waitUntilCustomized, 50)
+      timerRef.current = window.setTimeout(waitUntilCustomized, appConfig.legacyRuntime.readyPollMs)
     }
     waitUntilCustomized()
   }
@@ -91,9 +96,9 @@ export default function LegacySite() {
       {status !== 'ready' && (
         <div className="site-gate" role={status === 'failed' ? 'alert' : 'status'}>
           {status === 'failed' ? (
-            'FARA could not be loaded. Please refresh the page.'
+            content.uiLabels.loadFailure
           ) : (
-            <div className="site-loader" aria-label="Loading FARA">
+            <div className="site-loader" aria-label={content.uiLabels.loading}>
               <span className="site-loader__spinner" aria-hidden="true" />
             </div>
           )}
@@ -102,9 +107,9 @@ export default function LegacySite() {
       <iframe
         ref={frameRef}
         className="legacy-site"
-        title="FARA"
-        src="/legacy/fort-energy/index.html"
-        sandbox="allow-scripts allow-same-origin"
+        title={appConfig.legacyRuntime.iframeTitle}
+        src={appConfig.legacyRuntime.iframeSource}
+        sandbox={appConfig.legacyRuntime.sandbox}
         onLoad={onLoad}
       />
     </div>
