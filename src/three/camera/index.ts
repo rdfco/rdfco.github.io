@@ -1,2 +1,6 @@
-// Public camera boundary. Runtime exports are introduced in M10.
-export {}
+export {
+  curveFromMesh,
+  curveFromNamedPoints,
+  type SceneCurve,
+} from './scene-curve'
+export { normalizedScrollProgress } from './scroll-progress'

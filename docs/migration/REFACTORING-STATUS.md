@@ -2,7 +2,7 @@
 
 ## Current position
 
-**M9 — Model Registry and Loader Contracts: complete**
+**M10 — Camera Runtime and Path Extraction: complete**
 
 Gate A is approved. M0 established rollback-safe measurable contracts, M1 documented
 the current and target architecture, and M2 materialized the target ownership skeleton.
@@ -47,9 +47,12 @@ contract. Gate B independently approved those sources and rollback boundaries.
 - [x] M9 canonical model registry derived from the asset source of truth
 - [x] M9 shared GLTF loader/preload contracts and model-ID scene consumption
 - [x] M9 model boundary validator and full production/native browser contract
+- [x] M10 shared camera-path extraction and normalized scroll contracts
+- [x] M10 scene-owned camera configuration and isolated frame runtime
+- [x] M10 camera boundary validator and full production/native browser contract
 
 ## Next
 
-- [ ] **M10 — Camera Runtime and Path Extraction**
+- [ ] **M11 — Material and Shader Boundaries**
 
 Gate B is approved. Gate C remains locked until M6–M12 independently pass validation.

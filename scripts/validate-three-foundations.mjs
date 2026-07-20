@@ -37,7 +37,6 @@ if (/from ['"]@react-three\/fiber['"]/.test(nativeScene) || /<Canvas/.test(nativ
 }
 
 const deferredBoundaries = [
-  'src/three/camera/index.ts',
   'src/three/materials/index.ts',
 ]
 for (const file of deferredBoundaries) {
@@ -47,5 +46,5 @@ for (const file of deferredBoundaries) {
 
 if (violations.length) throw new Error(`Three.js foundation validation failed:\n- ${violations.join('\n- ')}`)
 console.log(
-  `Three.js foundations valid: ${files.length} shared files, one active Canvas consumer, four deferred boundaries preserved.`,
+  `Three.js foundations valid: ${files.length} shared files, one active Canvas consumer, and the remaining deferred boundary preserved.`,
 )
