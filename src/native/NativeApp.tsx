@@ -5,10 +5,11 @@ import { SkipLink } from '../components/accessibility/SkipLink'
 import { SiteFooter } from '../components/SiteFooter'
 import { HomeContent } from '../features/home'
 import { NativeNavigation } from '../features/navigation'
+import { sceneRegistry } from '../three'
 import './native.css'
 import './native-footer.css'
 
-const FaraScene = lazy(() => import('./FaraScene'))
+const FaraScene = lazy(sceneRegistry.fara.load)
 gsap.registerPlugin(ScrollTrigger)
 
 export default function NativeApp() {

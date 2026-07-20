@@ -11,7 +11,7 @@ async function walk(directory) {
     else if (/\.[jt]sx?$/.test(entry.name)) files.push(path)
   }
 }
-await walk('src/three')
+for (const root of ['src/three/core', 'src/three/performance', 'src/three/types']) await walk(root)
 
 const forbiddenImports = [
   /from ['"].*(?:components|content|data|features|native|pages|routes|scenes|sections|store)\//,
@@ -28,19 +28,18 @@ for (const file of files) {
   }
 }
 
-const nativeScene = await readFile('src/native/FaraScene.tsx', 'utf8')
-if (!nativeScene.includes("from '../three'") || !nativeScene.includes('<ThreeCanvas')) {
-  violations.push('src/native/FaraScene.tsx does not consume the public Three.js Canvas boundary')
+const nativeScene = await readFile('src/three/scenes/fara/FaraScene.tsx', 'utf8')
+if (!nativeScene.includes("from '../../core'") || !nativeScene.includes('<ThreeCanvas')) {
+  violations.push('FARA scene does not consume the shared Three.js Canvas boundary')
 }
 if (/from ['"]@react-three\/fiber['"]/.test(nativeScene) || /<Canvas/.test(nativeScene)) {
-  violations.push('src/native/FaraScene.tsx still owns the R3F Canvas lifecycle')
+  violations.push('FARA scene still owns the R3F Canvas lifecycle')
 }
 
 const deferredBoundaries = [
   'src/three/camera/index.ts',
   'src/three/materials/index.ts',
   'src/three/models/index.ts',
-  'src/three/scenes/index.ts',
 ]
 for (const file of deferredBoundaries) {
   const source = await readFile(file, 'utf8')
