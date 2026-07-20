@@ -21,7 +21,9 @@ Migration is milestone-driven and gate-approved. Complete and validate one miles
 
 ## Current progress
 
-See `migration/REFACTORING-STATUS.md`. Gate A is not ready until M2 is complete.
+Gate A and Gate B are approved. See `migration/REFACTORING-STATUS.md` and the
+corresponding gate review packages. Gate C remains locked until M6–M12 pass
+independently.
 
 ## Rollback principle
 

@@ -2,12 +2,13 @@
 
 ## Current position
 
-**M5 — Shared Three.js Runtime Foundations: complete**
+**Gate B — Asset, Content, Configuration, and Runtime Foundations: approved**
 
 Gate A is approved. M0 established rollback-safe measurable contracts, M1 documented
 the current and target architecture, and M2 materialized the target ownership skeleton.
-M3 has now established one complete, typed asset registry without relocating assets or
-changing public URLs.
+M3–M5 established validated asset, content, application-configuration, and shared
+Canvas-runtime foundations without changing public URLs or the protected visual
+contract. Gate B independently approved those sources and rollback boundaries.
 
 ## Completed
 
@@ -35,9 +36,11 @@ changing public URLs.
 - [x] M5 architectural validator preserving M8–M11 deferred boundaries
 - [x] M5 tests locking active M0 Canvas values and tier invariants
 - [x] M5 full verification pipeline and production/native browser contract
+- [x] Gate B independent source-of-truth, ownership, rollback, and dependency audit
+- [x] Gate B full verification pipeline and built-Production/Native browser contract
 
 ## Next
 
-- [ ] **Gate B — Combined review of M3, M4, and M5**
+- [ ] **M6 — Application and Routing Boundaries**
 
-Gate B remains unavailable until M3, M4, and M5 independently pass validation.
+Gate B is approved. Gate C remains locked until M6–M12 independently pass validation.
