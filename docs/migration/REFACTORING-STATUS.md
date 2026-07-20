@@ -2,7 +2,7 @@
 
 ## Current position
 
-**M12 — GSAP and Animation Boundaries: complete**
+**Gate C — Runtime Ownership Review: approved**
 
 Gate A is approved. M0 established rollback-safe measurable contracts, M1 documented
 the current and target architecture, and M2 materialized the target ownership skeleton.
@@ -56,10 +56,14 @@ contract. Gate B independently approved those sources and rollback boundaries.
 - [x] M12 shared GSAP/ScrollTrigger registration and public animation runtime
 - [x] M12 feature-owned reveal configuration, lifecycle, and cleanup
 - [x] M12 animation validator and full production/native browser contract
+- [x] Gate C active Shader colocation and manifest-derived ownership validation
+- [x] Gate C DOM-free shared Camera runtime with explicit browser scroll adapter
+- [x] Gate C initial and reactive reduced-motion behavior with zero reduced-motion triggers
+- [x] Gate C full verification, browser, performance, and runtime ownership audit
 
 ## Next
 
-- [ ] **Gate C — Runtime Ownership Review**
+- [ ] **M13 — Automated Architecture Enforcement**
 
-M6–M12 independently passed validation. Gate C is ready for review but is not yet
-approved or merged.
+Gate C is approved. Gate D remains locked until M13 and M14 independently pass.
+No production cutover, Legacy removal, deployment, or merge is authorized.

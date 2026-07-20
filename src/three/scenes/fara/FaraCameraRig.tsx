@@ -7,6 +7,7 @@ import {
   curveFromNamedPoints,
   normalizedScrollProgress,
 } from '../../camera'
+import { readBrowserScrollMetrics } from './browser-scroll-adapter'
 import { faraCameraConfig as config } from './camera-config'
 
 interface FaraCameraRigProps {
@@ -45,7 +46,12 @@ export function FaraCameraRig({
   }, [chapter, mountains])
 
   useFrame(() => {
-    const progress = normalizedScrollProgress()
+    const scroll = readBrowserScrollMetrics()
+    const progress = normalizedScrollProgress(
+      scroll.scrollTop,
+      scroll.scrollHeight,
+      scroll.viewportHeight,
+    )
     const chapterProgress = Math.min(
       1,
       Math.max(
