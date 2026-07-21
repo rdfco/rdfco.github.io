@@ -1,20 +1,16 @@
-import { defaultPerformanceTier, getQualityTier } from '../performance'
-import type { ThreeRuntimeConfig } from '../types'
+import { getQualityTier, initialPerformanceTier } from '../performance'
+import type { PerformanceTier, ThreeRuntimeConfig } from '../types'
 
-const activeQuality = getQualityTier(defaultPerformanceTier)
+export function createThreeRuntimeConfig(performanceTier: PerformanceTier): ThreeRuntimeConfig {
+  const quality = getQualityTier(performanceTier)
+  return {
+    camera: { fov: 35, near: 0.1, far: 1000 },
+    dpr: quality.dpr,
+    renderer: { antialias: quality.antialias, powerPreference: 'high-performance' },
+    preloadAll: true,
+    adaptiveDpr: quality.adaptiveDpr,
+    pixelatedDprTransitions: true,
+  }
+}
 
-export const threeRuntimeConfig = {
-  camera: {
-    fov: 35,
-    near: 0.1,
-    far: 1000,
-  },
-  dpr: activeQuality.dpr,
-  renderer: {
-    antialias: activeQuality.antialias,
-    powerPreference: 'high-performance',
-  },
-  preloadAll: true,
-  adaptiveDpr: activeQuality.adaptiveDpr,
-  pixelatedDprTransitions: true,
-} satisfies ThreeRuntimeConfig
+export const threeRuntimeConfig = createThreeRuntimeConfig(initialPerformanceTier)

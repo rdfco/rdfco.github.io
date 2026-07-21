@@ -62,10 +62,12 @@ contract. Gate B independently approved those sources and rollback boundaries.
 - [x] Gate C full verification, browser, performance, and runtime ownership audit
 - [x] M13 executable dependency-direction, cycle, feature-API, and DOM boundary enforcement
 - [x] M13 frame-aware browser interaction contracts with no repository screenshots
+- [x] M14 capability-driven initial quality-tier selection with deterministic tests
+- [x] M14 Production and Native performance measurements at desktop, tablet, and mobile
 
 ## Next
 
-- [ ] **M14 — Measured Performance and Automatic Quality Selection**
+- [ ] **Gate D — Enforcement and Performance Review**
 
-M13 is complete. Gate D remains locked until M14 independently passes.
+M13 and M14 are complete. Gate D awaits its independent approval review.
 No production cutover, Legacy removal, deployment, or merge is authorized.

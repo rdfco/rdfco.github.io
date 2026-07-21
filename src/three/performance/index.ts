@@ -1,2 +1,2 @@
-export { defaultPerformanceTier, getQualityTier, qualityTiers } from './quality-tiers'
-export type { QualityTierDefinition } from './quality-tiers'
+export { defaultPerformanceTier, detectPerformanceTier, getQualityTier, initialPerformanceTier, qualityTiers, selectPerformanceTier } from './quality-tiers'
+export type { PerformanceCapabilities, QualityTierDefinition } from './quality-tiers'
