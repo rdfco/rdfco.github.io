@@ -54,9 +54,15 @@ export const carSceneConfig = {
     endAtPageProgress: 0.98,
   },
 
+  appearance: {
+    // Fade in/out inside the scene's own 0..1 progress range.
+    fadeInEndsAtProgress: 0.12,
+    fadeOutStartsAtProgress: 0.9,
+  },
+
   renderer: {
     alpha: true,
     antialias: true,
-    dpr: [1, 1.5],
+    dpr: [1, 1.25],
   },
 }
