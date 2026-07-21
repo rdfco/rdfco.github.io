@@ -50,5 +50,5 @@ function copyLegacyRuntime() {
 export default defineConfig({
   plugins: [react(), copyLegacyRuntime()],
   resolve: { alias: { '@': resolve(process.cwd(), 'src') } },
-  server: { port: 5173, open: true },
+  server: { host: 'localhost', port: 5173, strictPort: true, open: true },
 })

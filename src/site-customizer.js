@@ -16,6 +16,14 @@ const normalizeRoute = value => {
   return query ? `${normalizedPath}?${query}` : normalizedPath
 }
 
+const refreshScrollSystems = () => {
+  window.dispatchEvent(new Event('resize'))
+  window.dispatchEvent(new Event('scroll'))
+  window.ScrollTrigger?.refresh?.()
+  window.lenis?.resize?.()
+  window.lenis?.reset?.()
+}
+
 const refreshSite = () => {
   if (requestedPath === appliedPath && document.documentElement.dataset.faraReady === 'true') return
   appliedPath = requestedPath
@@ -25,9 +33,14 @@ const refreshSite = () => {
   currentPage.data.href ||= navigationItem.href
   window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   applySiteData(siteData, currentPage)
+  const header = document.querySelector('#header')
+  header?.classList.remove('top', 'fade')
+  if (header && requestedPath === '/') header.dataset.theme = 'light'
   window.requestAnimationFrame(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
-    window.dispatchEvent(new Event('scroll'))
+    header?.classList.remove('top', 'fade')
+    refreshScrollSystems()
+    window.requestAnimationFrame(refreshScrollSystems)
   })
   if (requestedPath !== null) document.documentElement.dataset.faraReady = 'true'
 }

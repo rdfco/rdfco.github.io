@@ -7,10 +7,12 @@ export const renderCurrentPage = page => {
   document.body.dataset.faraPage = pageKey
   document.body.classList.toggle('fara-content-route', pageKey !== 'home' && !['knowing-fara', 'solution', 'consulting', 'industries', 'case-studies', 'think-together'].includes(pageKey))
   if (pageKey === 'home') {
-    legacyMain?.removeAttribute('hidden')
+    legacyMain?.classList.remove('fara-legacy-main-suspended')
+    legacyMain?.removeAttribute('aria-hidden')
     return
   }
-  legacyMain?.setAttribute('hidden', '')
+  legacyMain?.classList.add('fara-legacy-main-suspended')
+  legacyMain?.setAttribute('aria-hidden', 'true')
   const footer = document.querySelector('#footer')
   const rendered = page.render(document)
   if (rendered) footer?.before(rendered)

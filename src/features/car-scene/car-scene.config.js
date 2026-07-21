@@ -3,6 +3,6 @@ export const carSceneConfig = {
   startAtPageProgress: 0.82,
   endAtPageProgress: 0.98,
   farCameraZ: 9.4,
-  nearCameraZ: 4.9,
+  nearCameraZ: 9.4,
   modelScale: 3.35,
 }

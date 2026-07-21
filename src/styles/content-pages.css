@@ -4,6 +4,13 @@
 .fara-content-route #header .menu-cta p { color: #2d628c !important; }
 .fara-content-route #header .menu-cta .dot,
 .fara-content-route #header .navbar { background: #2d628c !important; }
+.fara-legacy-main-suspended {
+  position: fixed !important;
+  inset: 0 !important;
+  visibility: hidden !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
 .fara-content-route .fara-route-page {
   min-height: 100vh;
   color: #2d628c;
