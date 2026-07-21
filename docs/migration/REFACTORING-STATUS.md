@@ -2,7 +2,7 @@
 
 ## Current position
 
-**Gate C — Runtime Ownership Review: approved**
+**Gate D — Enforcement and Performance Review: approved**
 
 Gate A is approved. M0 established rollback-safe measurable contracts, M1 documented
 the current and target architecture, and M2 materialized the target ownership skeleton.
@@ -64,10 +64,12 @@ contract. Gate B independently approved those sources and rollback boundaries.
 - [x] M13 frame-aware browser interaction contracts with no repository screenshots
 - [x] M14 capability-driven initial quality-tier selection with deterministic tests
 - [x] M14 Production and Native performance measurements at desktop, tablet, and mobile
+- [x] Gate D independent enforcement, browser, runtime, bundle, and performance audit
 
 ## Next
 
-- [ ] **Gate D — Enforcement and Performance Review**
+- [ ] **M15 — Native Parity Closure**
 
-M13 and M14 are complete. Gate D awaits its independent approval review.
+Gate D is approved. The next roadmap milestone is M15; production remains on Legacy
+until the later explicit cutover gate.
 No production cutover, Legacy removal, deployment, or merge is authorized.

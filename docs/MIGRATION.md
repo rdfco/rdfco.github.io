@@ -21,9 +21,9 @@ Migration is milestone-driven and gate-approved. Complete and validate one miles
 
 ## Current progress
 
-Gate A, Gate B, and Gate C are approved. See `migration/REFACTORING-STATUS.md` and the
-corresponding gate review packages. Gate D remains locked until M13 and M14 pass
-independently.
+Gate A, Gate B, Gate C, and Gate D are approved. See
+`migration/REFACTORING-STATUS.md` and the corresponding gate review packages. M15 is
+the next milestone; Gate E remains locked until Native parity passes independently.
 
 ## Rollback principle
 
