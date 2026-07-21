@@ -1,5 +1,5 @@
 export type AssetKind = 'model' | 'texture' | 'environment' | 'font' | 'audio' | 'image'
-export type AssetScope = 'shared' | 'native' | 'legacy'
+export type AssetScope = 'shared' | 'legacy'
 export type AssetLifecycle = 'active' | 'legacy-protected'
 export type AssetApproval = 'approved' | 'review-required' | 'rejected'
 

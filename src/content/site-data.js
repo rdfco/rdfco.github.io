@@ -31,7 +31,6 @@ export const siteData = {
   hero: {
     title: 'FARA IS IN',
     subtitle: 'We Provide AI & Technology Consulting And Results-Oriented Solution.',
-    nativeSubtitleLines: ['WE PROVIDE AI & TECHNOLOGY CONSULTING AND RESULTS-ORIENTED', 'SOLUTION.'],
     scrollLabel: '',
   },
   uiLabels: {

@@ -2,8 +2,7 @@
   "version": 1,
   "policy": "Shared FARA copy is canonical under src/content. Route-specific Legacy content remains protected until its owning route migrates.",
   "sources": [
-    { "path": "src/content/site-data.js", "ownership": "canonical-shared", "consumers": ["legacy-runtime", "native-preview"] },
-    { "path": "src/content/footer-content.ts", "ownership": "canonical-native", "consumers": ["native-preview"] },
+    { "path": "src/content/site-data.js", "ownership": "canonical-shared", "consumers": ["legacy-runtime"] },
     { "path": "src/navbar/navigation.js", "ownership": "legacy-protected", "consumers": ["legacy-runtime", "shared-site-content"] },
     { "path": "src/navbar/pages/home/data.json", "ownership": "legacy-protected", "consumers": ["legacy-home-route"] },
     { "path": "src/navbar/pages/knowing-fara/data.json", "ownership": "legacy-protected", "consumers": ["legacy-knowing-fara-route"] },

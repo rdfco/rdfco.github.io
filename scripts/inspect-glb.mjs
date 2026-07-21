@@ -1,7 +1,0 @@
-import { readdir, readFile, writeFile, mkdir } from 'node:fs/promises'
-import { join, relative } from 'node:path'
-const root='public/assets/models', files=[]
-async function walk(dir){for(const entry of await readdir(dir,{withFileTypes:true})){const path=join(dir,entry.name);if(entry.isDirectory())await walk(path);else if(entry.name.toLowerCase().endsWith('.glb'))files.push(path)}}await walk(root)
-const inventory=[]
-for(const file of files){const buffer=await readFile(file);const jsonLength=buffer.readUInt32LE(12);const gltf=JSON.parse(buffer.subarray(20,20+jsonLength).toString('utf8').replace(/\0+$/,''));inventory.push({file:relative(root,file).replaceAll('\\','/'),bytes:buffer.length,extensions:gltf.extensionsUsed??[],scenes:gltf.scenes?.length??0,nodes:(gltf.nodes??[]).map((node,index)=>({index,name:node.name??`node-${index}`,mesh:node.mesh,camera:node.camera,translation:node.translation,rotation:node.rotation,scale:node.scale})),meshes:(gltf.meshes??[]).map((mesh,index)=>({index,name:mesh.name??`mesh-${index}`,primitives:mesh.primitives?.length??0})),materials:(gltf.materials??[]).map((material,index)=>({index,name:material.name??`material-${index}`})),animations:(gltf.animations??[]).map((animation,index)=>({index,name:animation.name??`animation-${index}`,channels:animation.channels?.length??0})),cameras:gltf.cameras??[]})}
-await mkdir('docs/generated',{recursive:true});await writeFile('docs/generated/glb-inventory.json',JSON.stringify(inventory,null,2));console.log(`Inspected ${inventory.length} GLB files`)

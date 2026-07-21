@@ -13,10 +13,8 @@ export const appConfig = {
       '/news',
       '/news/:slug',
     ],
-    nativePreview: '/native-preview',
     fallback: '/',
   },
-  nativePreviewEnabled: import.meta.env.VITE_ENABLE_NATIVE_PREVIEW === 'true' || import.meta.env.DEV,
   legacyRuntime: {
     iframeSource: '/legacy/fort-energy/index.html',
     iframeTitle: 'FARA',

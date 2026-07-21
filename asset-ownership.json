@@ -1,5 +1,0 @@
-{
-  "policy": "Every runtime asset must be local and have explicit ownership, provenance, and approval metadata.",
-  "registry": "src/assets/asset-registry.json",
-  "note": "Compatibility pointer only. The typed asset registry is the single source of truth."
-}

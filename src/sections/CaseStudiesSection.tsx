@@ -1,2 +1,0 @@
-import { SectionHeading } from '../components/ui/SectionHeading';import { content } from '../content'
-export function CaseStudiesSection(){return <section id="case-studies" className="section cases reveal"><SectionHeading eyebrow={content.footer.eyebrow}>{content.footer.title}</SectionHeading><div className="case-list">{content.footer.caseStudies.map((item,index)=><div key={item}><span>{String(index+1).padStart(2,'0')}</span><strong>{item}</strong><b aria-hidden>↗</b></div>)}</div></section>}

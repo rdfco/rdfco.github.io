@@ -5,7 +5,6 @@ describe('application configuration', () => {
   it('keeps routes deterministic and rollback-safe', () => {
     expect(new Set(appConfig.routes.legacy).size).toBe(appConfig.routes.legacy.length)
     expect(appConfig.routes.legacy).toContain('/')
-    expect(appConfig.routes.nativePreview).toBe('/native-preview')
     expect(appConfig.routes.fallback).toBe('/')
   })
 

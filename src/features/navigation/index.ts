@@ -1,1 +1,0 @@
-export { NativeNavigation } from './NativeNavigation'

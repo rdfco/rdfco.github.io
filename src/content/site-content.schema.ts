@@ -26,7 +26,6 @@ export const siteContentSchema = z.object({
   hero: z.object({
     title: z.string().min(1),
     subtitle: z.string().min(1),
-    nativeSubtitleLines: z.tuple([z.string().min(1), z.string().min(1)]),
     scrollLabel: z.string(),
   }),
   uiLabels: z.object({
