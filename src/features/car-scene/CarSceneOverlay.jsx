@@ -1,13 +1,12 @@
 import { Canvas, useThree } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import { Box3, MeshStandardMaterial, Vector3 } from 'three'
-import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { carSceneConfig } from './car-scene.config'
 
 const clamp = value => Math.min(1, Math.max(0, value))
-useGLTF.preload(carSceneConfig.model.url)
 
-function WhiteCar({ onReady }) {
+function WhiteCar() {
   const gltf = useGLTF(carSceneConfig.model.url)
   const scene = useMemo(() => {
     const clone = gltf.scene.clone(true)
@@ -31,15 +30,13 @@ function WhiteCar({ onReady }) {
     return clone
   }, [gltf.scene])
 
-  useEffect(() => onReady(), [onReady])
-
   return <primitive object={scene} rotation={carSceneConfig.model.rotation} />
 }
 
 function CameraPosition({ progress }) {
   const { camera, invalidate } = useThree()
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const far = carSceneConfig.camera.farPosition
     const near = carSceneConfig.camera.nearPosition
     camera.position.set(
@@ -56,68 +53,46 @@ function CameraPosition({ progress }) {
 
 export function CarSceneOverlay({ frameRef, enabled }) {
   const [progress, setProgress] = useState(0)
-  const [modelReady, setModelReady] = useState(false)
-  const markModelReady = useCallback(() => setModelReady(true), [])
 
   useEffect(() => {
     if (!enabled) return undefined
     const frameWindow = frameRef.current?.contentWindow
     if (!frameWindow) return undefined
-    let animationFrame = 0
-    const readProgress = () => {
-      animationFrame = 0
+    const update = () => {
       const maximum = Math.max(1, frameWindow.document.documentElement.scrollHeight - frameWindow.innerHeight)
       const pageProgress = frameWindow.scrollY / maximum
       const sceneProgress = clamp(
         (pageProgress - carSceneConfig.scroll.startAtPageProgress)
         / (carSceneConfig.scroll.endAtPageProgress - carSceneConfig.scroll.startAtPageProgress),
       )
-      setProgress(current => Math.abs(current - sceneProgress) < 0.001 ? current : sceneProgress)
-    }
-    const update = () => {
-      if (!animationFrame) animationFrame = frameWindow.requestAnimationFrame(readProgress)
+      setProgress(sceneProgress)
     }
     update()
     frameWindow.addEventListener('scroll', update, { passive: true })
     frameWindow.addEventListener('resize', update)
     return () => {
-      if (animationFrame) frameWindow.cancelAnimationFrame(animationFrame)
       frameWindow.removeEventListener('scroll', update)
       frameWindow.removeEventListener('resize', update)
     }
   }, [enabled, frameRef])
 
-  const fadeIn = clamp(progress / carSceneConfig.appearance.fadeInEndsAtProgress)
-  const fadeOut = clamp(
-    (1 - progress) / (1 - carSceneConfig.appearance.fadeOutStartsAtProgress),
-  )
-  const opacity = modelReady ? Math.min(fadeIn, fadeOut) : 0
-  const initialCamera = carSceneConfig.camera.farPosition
+  const visible = progress > 0 && progress < 1
+
+  if (!visible) return null
 
   return (
-    <div
-      className="fara-car-scene"
-      data-model-ready={modelReady ? 'true' : 'false'}
-      style={{ opacity }}
-      aria-hidden="true"
-    >
+    <div className="fara-car-scene" aria-hidden="true">
       <Canvas
         frameloop="demand"
-        camera={{
-          fov: carSceneConfig.camera.fov,
-          near: carSceneConfig.camera.near,
-          far: carSceneConfig.camera.far,
-          position: initialCamera,
-        }}
+        camera={{ fov: carSceneConfig.camera.fov, near: carSceneConfig.camera.near, far: carSceneConfig.camera.far }}
         gl={{ alpha: carSceneConfig.renderer.alpha, antialias: carSceneConfig.renderer.antialias }}
         dpr={carSceneConfig.renderer.dpr}
-        onCreated={({ camera }) => camera.lookAt(...carSceneConfig.camera.lookAt)}
       >
         <ambientLight intensity={carSceneConfig.lights.ambientIntensity} />
         <directionalLight {...carSceneConfig.lights.key} />
         <directionalLight {...carSceneConfig.lights.fill} />
         <CameraPosition progress={progress} />
-        <WhiteCar onReady={markModelReady} />
+        <WhiteCar />
       </Canvas>
     </div>
   )

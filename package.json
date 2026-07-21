@@ -19,7 +19,6 @@
     "assets:validate": "node scripts/validate-asset-registry.mjs",
     "content:validate": "node scripts/validate-content-boundaries.mjs",
     "browser:contract": "node scripts/verify-navigation.mjs && node scripts/browser-check.mjs",
-    "car:contract": "node scripts/verify-car-scene.mjs",
     "visual:baseline": "node scripts/capture-baseline.mjs",
     "visual:compare": "node scripts/compare-baseline.mjs",
     "visual:contract": "npm run build && node scripts/capture-contract.mjs",
