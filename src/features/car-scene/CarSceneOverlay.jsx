@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { carSceneConfig } from './car-scene.config'
 
 const clamp = value => Math.min(1, Math.max(0, value))
+const revealThreshold = 0.01
 
 function WhiteCar() {
   const gltf = useGLTF(carSceneConfig.modelUrl)
@@ -40,6 +41,8 @@ function CameraPosition({ progress }) {
   return null
 }
 
+useGLTF.preload(carSceneConfig.modelUrl)
+
 export function CarSceneOverlay({ frameRef, enabled }) {
   const [progress, setProgress] = useState(0)
 
@@ -47,27 +50,36 @@ export function CarSceneOverlay({ frameRef, enabled }) {
     if (!enabled) return undefined
     const frameWindow = frameRef.current?.contentWindow
     if (!frameWindow) return undefined
+    let animationFrame = 0
+
     const update = () => {
       const maximum = Math.max(1, frameWindow.document.documentElement.scrollHeight - frameWindow.innerHeight)
       const pageProgress = frameWindow.scrollY / maximum
       const sceneProgress = clamp((pageProgress - carSceneConfig.startAtPageProgress) / (carSceneConfig.endAtPageProgress - carSceneConfig.startAtPageProgress))
       setProgress(sceneProgress)
     }
-    update()
-    frameWindow.addEventListener('scroll', update, { passive: true })
-    frameWindow.addEventListener('resize', update)
+    const scheduleUpdate = () => {
+      if (animationFrame) return
+      animationFrame = frameWindow.requestAnimationFrame(() => {
+        animationFrame = 0
+        update()
+      })
+    }
+
+    scheduleUpdate()
+    frameWindow.addEventListener('scroll', scheduleUpdate, { passive: true })
+    frameWindow.addEventListener('resize', scheduleUpdate)
     return () => {
-      frameWindow.removeEventListener('scroll', update)
-      frameWindow.removeEventListener('resize', update)
+      if (animationFrame) frameWindow.cancelAnimationFrame(animationFrame)
+      frameWindow.removeEventListener('scroll', scheduleUpdate)
+      frameWindow.removeEventListener('resize', scheduleUpdate)
     }
   }, [enabled, frameRef])
 
-  const visible = progress > 0 && progress < 1
-
-  if (!visible) return null
+  const visible = progress > revealThreshold && progress < 1
 
   return (
-    <div className="fara-car-scene" aria-hidden="true">
+    <div className="fara-car-scene" data-visible={visible ? 'true' : 'false'} aria-hidden="true">
       <Canvas frameloop="demand" camera={{ fov: 33, near: 0.1, far: 100 }} gl={{ alpha: true, antialias: true }} dpr={[1, 1.5]}>
         <ambientLight intensity={2.2} />
         <directionalLight position={[4, 6, 5]} intensity={3.4} />
