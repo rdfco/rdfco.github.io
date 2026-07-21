@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { appConfig } from '../config'
 import { content } from '../content'
+import { CarSceneOverlay } from './CarSceneOverlay'
 
 export default function LegacySite() {
   const location = useLocation()
@@ -112,6 +113,7 @@ export default function LegacySite() {
         sandbox={appConfig.legacyRuntime.sandbox}
         onLoad={onLoad}
       />
+      <CarSceneOverlay frameRef={frameRef} enabled={status === 'ready'} />
     </div>
   )
 }

@@ -15,3 +15,10 @@
 
 /* The mirrored document must never reveal its source content before FARA customization succeeds. */
 html:not([data-fara-ready='true']) body { visibility: hidden !important; }
+
+/*
+ * The generated WebGL runtime uses this fullscreen layer for its legacy
+ * long-press/drag transition. Keep the visual layer, but let pointer input
+ * pass through so the FARA home scene cannot be replaced by that transition.
+ */
+.hero-transition { pointer-events: none !important; }
