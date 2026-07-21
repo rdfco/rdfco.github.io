@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 // The only values normally needed to art-direct the car scene.
 export const carSceneConfig = {
-  modelUrl: '/assets/models/fara/mclaren.glb',
+  modelUrl: '/assets/models/car/mclaren.glb',
   startAtPageProgress: 0.82,
   endAtPageProgress: 0.98,
   farCameraZ: 9.4,
