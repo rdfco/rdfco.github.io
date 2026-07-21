@@ -1,8 +1,11 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { appConfig } from '../config'
 import { content } from '../content'
-import { CarSceneOverlay } from './CarSceneOverlay'
+
+const CarSceneOverlay = lazy(() =>
+  import('./CarSceneOverlay').then(module => ({ default: module.CarSceneOverlay })),
+)
 
 export default function LegacySite() {
   const location = useLocation()
@@ -113,7 +116,11 @@ export default function LegacySite() {
         sandbox={appConfig.legacyRuntime.sandbox}
         onLoad={onLoad}
       />
-      <CarSceneOverlay frameRef={frameRef} enabled={status === 'ready'} />
+      {status === 'ready' && (
+        <Suspense fallback={null}>
+          <CarSceneOverlay frameRef={frameRef} enabled />
+        </Suspense>
+      )}
     </div>
   )
 }

@@ -12,7 +12,7 @@ preload policy, owner, known consumers, provenance, approval, and fallback.
 
 ## Current inventory
 
-- 50 physical runtime files: 14 models, 15 textures/environments, 19 fonts, 1 audio, 1 image.
+- 51 physical runtime files: 15 models, 15 textures/environments, 19 fonts, 1 audio, 1 image.
 - No binary file or public URL was relocated in M3.
 - `docs/generated/asset-inventory.json` records exact file sizes and classifications.
 - `npm run assets:validate` fails on duplicate IDs/paths, missing files, unregistered
