@@ -2,7 +2,7 @@
 
 ## Current position
 
-**Gate D — Enforcement and Performance Review: approved**
+**Gate E — Native Parity Review: not approved**
 
 Gate A is approved. M0 established rollback-safe measurable contracts, M1 documented
 the current and target architecture, and M2 materialized the target ownership skeleton.
@@ -68,8 +68,9 @@ contract. Gate B independently approved those sources and rollback boundaries.
 
 ## Next
 
-- [ ] **M15 — Native Parity Closure**
+- [ ] **M15 — Native Parity Closure (blocked by parity gaps)**
 
-Gate D is approved. The next roadmap milestone is M15; production remains on Legacy
-until the later explicit cutover gate.
-No production cutover, Legacy removal, deployment, or merge is authorized.
+Gate D is approved. Gate E is not approved: Native has measured visual, layout, and
+route-ownership gaps against the protected Production contract. M16 and M17 remain
+locked. Production remains on Legacy; no cutover, Legacy removal, deployment, or
+merge is authorized.
