@@ -18,8 +18,9 @@ The local site is available at `http://localhost:5173/`.
 
 ## Active code
 
-- `src/components/LegacySite.jsx`: production iframe bridge and route sync.
-- `src/components/CarSceneOverlay.jsx`: production Three.js car overlay.
+- `src/app/`: application entry, routing, and error boundary.
+- `src/features/legacy-site/`: production iframe bridge and route sync.
+- `src/features/car-scene/`: production Three.js car overlay, configuration, and styles.
 - `src/content/`: validated shared site content.
 - `src/js/`, `src/navbar/`, `src/styles/`: source-owned legacy customization.
 - `public/legacy/`, `public/_astro/`: protected legacy runtime.

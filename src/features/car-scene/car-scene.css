@@ -1,0 +1,18 @@
+.fara-car-scene {
+  position: fixed;
+  z-index: 4;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity .35s ease;
+}
+
+.fara-car-scene canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none !important;
+}
+
+.fara-car-scene * {
+  pointer-events: none !important;
+}

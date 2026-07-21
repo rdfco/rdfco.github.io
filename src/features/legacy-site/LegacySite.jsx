@@ -1,10 +1,10 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { appConfig } from '../config'
-import { content } from '../content'
+import { appConfig } from '../../config'
+import { content } from '../../content'
 
 const CarSceneOverlay = lazy(() =>
-  import('./CarSceneOverlay').then(module => ({ default: module.CarSceneOverlay })),
+  import('../car-scene/CarSceneOverlay').then(module => ({ default: module.CarSceneOverlay })),
 )
 
 export default function LegacySite() {

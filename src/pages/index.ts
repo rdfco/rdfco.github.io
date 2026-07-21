@@ -1,1 +1,0 @@
-export { LegacyPage } from './LegacyPage'

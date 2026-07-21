@@ -1,6 +1,6 @@
 import { BrowserRouter } from 'react-router-dom'
-import AppErrorBoundary from '../components/AppErrorBoundary'
-import { AppRoutes } from '../routes'
+import AppErrorBoundary from './AppErrorBoundary'
+import { AppRoutes } from './AppRoutes'
 
 export function App() {
   return <AppErrorBoundary>
