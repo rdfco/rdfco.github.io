@@ -1,6 +1,7 @@
 import { lazy, Suspense, useRef } from 'react'
 import { SkipLink } from '../components/accessibility/SkipLink'
 import { SiteFooter } from '../components/SiteFooter'
+import { content, footerOffices, legalLinks } from '../content'
 import { HomeContent, useHomeRevealAnimations } from '../features/home'
 import { NativeNavigation } from '../features/navigation'
 import { sceneRegistry } from '../three'
@@ -20,6 +21,6 @@ export default function NativeApp() {
       <div className="scene-layer"><Suspense fallback={<div className="scene-fallback" aria-hidden="true" />}><FaraScene /></Suspense></div>
       <HomeContent />
     </main>
-    <SiteFooter />
+    <SiteFooter content={content} offices={footerOffices} legalLinks={legalLinks} />
   </div>
 }

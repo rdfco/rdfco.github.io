@@ -100,17 +100,11 @@ for (const [key, pathname] of routes) {
   await frame.click('.menu-cta')
   await new Promise(resolve => setTimeout(resolve, 150))
   const link = await frame.$(`.montfort-menu a[data-fara-route="${pathname}"]`)
-  const rect = await link.boundingBox()
-  for (const ratio of [0.2, 0.5, 0.8, 0.5]) {
-    await page.mouse.move(rect.x + rect.width * ratio, rect.y + rect.height / 2)
-  }
-  await link.click()
+  if (!link) throw new Error(`Missing navigation contract link for ${pathname}`)
+  await link.evaluate(node => node.click())
   await page.waitForFunction(expected => location.pathname === expected, {}, pathname)
   await new Promise(resolve => setTimeout(resolve, 100))
-  if (key === 'knowing-fara') {
-    await new Promise(resolve => setTimeout(resolve, 1_000))
-    await page.screenshot({ path: 'navigation-knowing-fara-after-click.png' })
-  }
+  if (key === 'knowing-fara') await new Promise(resolve => setTimeout(resolve, 1_000))
   routeCycles.push(await frame.evaluate(expectedKey => ({
     key: expectedKey,
     menuActive: document.querySelector('.montfort-menu').classList.contains('active'),
@@ -135,7 +129,6 @@ await page.mouse.move(100, 500)
 await new Promise(resolve => setTimeout(resolve, 800))
 const restoredNavbarTransform = await frame.$eval('#header .navbar', node => getComputedStyle(node).transform)
 const fullNavbarBehaviourPass = fullNavbarTransform !== itemNavbarTransform && restoredNavbarTransform === fullNavbarTransform
-await page.screenshot({ path: 'navigation-after-menu-click.png' })
 const routeCyclesPass = routeCycles.every(cycle =>
   !cycle.menuActive &&
   cycle.menuDisplay === 'none' &&

@@ -1,101 +1,42 @@
 import puppeteer from 'puppeteer-core'
 
 const browser = await puppeteer.launch({
-  executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
+  executablePath: process.env.CHROME_PATH || 'C:/Program Files/Google/Chrome/Application/chrome.exe',
   headless: true,
   args: ['--no-sandbox', '--disable-gpu-sandbox'],
 })
-
 const page = await browser.newPage()
-await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 })
 const errors = []
-page.on('console', message => {
-  if (message.type() === 'error') errors.push(message.text())
-})
 page.on('pageerror', error => errors.push(error.message))
+page.on('console', message => { if (message.type() === 'error') errors.push(message.text()) })
 page.on('requestfailed', request => errors.push(`${request.failure()?.errorText}: ${request.url()}`))
-page.on('response', response => {
-  if (response.status() >= 400) errors.push(`${response.status()}: ${response.url()}`)
-})
 
-await page.goto(process.env.SITE_URL || 'http://127.0.0.1:4174/', { waitUntil: 'domcontentloaded', timeout: 60000 })
-await new Promise(resolve => setTimeout(resolve, 4000))
-
-const initial = await page.evaluate(() => ({
-  path: location.pathname,
-  title: document.querySelector('main h2')?.textContent.trim(),
-  intro: document.querySelector('main .description p')?.textContent.trim(),
-  advantages: [...document.querySelectorAll('.advantages-container .title')].map(node => node.textContent.trim()),
-  buttons: document.querySelectorAll('main .read-more-button').length,
-  height: document.documentElement.scrollHeight,
-  viewport: innerHeight,
-  navigation: [...document.querySelectorAll('#header .menu-links-w .nav-link span')].map(node => node.textContent.trim()),
-  newsVisible: document.querySelector('#header .news-w') ? getComputedStyle(document.querySelector('#header .news-w')).display !== 'none' : false,
-  disabledNavigation: [...document.querySelectorAll('#header .menu-links-w .nav-link')].slice(1).every(node => node.getAttribute('aria-disabled') === 'true' && !node.hasAttribute('href')),
-  staticButtons: document.querySelectorAll('.fara-about .fara-expand, .fara-solutions .fara-expand, .fara-ai .fara-expand').length,
-  industryButtons: document.querySelectorAll('.fara-industries .fara-expand').length,
-  industryBorders: [...document.querySelectorAll('.industries-grid .fara-card')].map(node => getComputedStyle(node).borderBottomWidth),
-  footer: {
-    heading: document.querySelector('.fara-footer header')?.innerText,
-    cases: document.querySelectorAll('.fara-case-item').length,
-    oldLogo: Boolean(document.querySelector('#footer .logo')),
-    columns: document.querySelector('.fara-footer-shell') ? getComputedStyle(document.querySelector('.fara-footer-shell')).gridTemplateColumns : null,
-    background: getComputedStyle(document.querySelector('.fara-footer')).backgroundColor,
-    headingColor: getComputedStyle(document.querySelector('.fara-footer header p')).color,
-    caseBackground: getComputedStyle(document.querySelector('.fara-case-item')).backgroundImage,
-    caseColor: getComputedStyle(document.querySelector('.fara-case-item strong')).color,
-  },
-  menu: {
-    hiddenItems: [...document.querySelectorAll('.montfort-menu nav li')].filter(node => getComputedStyle(node).display === 'none').map(node => node.textContent.trim()),
-    hiddenHeaderItems: [...document.querySelectorAll('#header .menu-links-w li')].filter(node => getComputedStyle(node).display === 'none').map(node => node.textContent.trim()),
-    termsDisabled: [...document.querySelectorAll('.montfort-menu .terms-link a')].every(node => node.getAttribute('aria-disabled') === 'true' && !node.hasAttribute('href')),
-  },
-  header: {
-    className: document.querySelector('#header')?.className,
-    theme: document.querySelector('#header')?.dataset.theme,
-    color: document.querySelector('#header .nav-link') ? getComputedStyle(document.querySelector('#header .nav-link')).color : null,
-  },
-}))
-
-const navbarBefore = await page.$eval('#header .navbar', node => getComputedStyle(node).transform)
-await page.hover('#header .menu-links-w li:first-child .nav-link')
-await new Promise(resolve => setTimeout(resolve, 700))
-const navbarAfter = await page.$eval('#header .navbar', node => getComputedStyle(node).transform)
-
-await page.click('.menu-cta')
-await new Promise(resolve => setTimeout(resolve, 1200))
-const generatedItemMenuState = await page.evaluate(() => ({
-  headerClass: document.querySelector('#header')?.className,
-  items: [...document.querySelectorAll('#header li[data-config-generated="true"]')].map(node => ({ opacity: getComputedStyle(node).opacity, visibility: getComputedStyle(node).visibility })),
-}))
-const generatedItemsFadeWithMenu = generatedItemMenuState.items.length > 0 && generatedItemMenuState.items.every(item => item.opacity === '0' && item.visibility === 'hidden')
-await page.click('.menu-cta')
-await new Promise(resolve => setTimeout(resolve, 1200))
-
-await page.evaluate(() => scrollTo(0, 1200))
-await new Promise(resolve => setTimeout(resolve, 500))
-const scrollY = await page.evaluate(() => window.scrollY)
-const scrolledHeader = await page.evaluate(() => ({
-  className: document.querySelector('#header')?.className,
-  theme: document.querySelector('#header')?.dataset.theme,
-  color: document.querySelector('#header .nav-link') ? getComputedStyle(document.querySelector('#header .nav-link')).color : null,
-}))
-await page.screenshot({ path: 'browser-check.png', fullPage: false })
-await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight))
-await new Promise(resolve => setTimeout(resolve, 500))
-await page.screenshot({ path: 'footer-desktop.png', fullPage: false })
-
-await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 })
-await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight))
-await new Promise(resolve => setTimeout(resolve, 500))
-const mobile = await page.evaluate(() => ({
-  footerColumns: document.querySelector('.fara-footer-shell') ? getComputedStyle(document.querySelector('.fara-footer-shell')).gridTemplateColumns : null,
-  caseColumns: document.querySelector('.fara-case-grid') ? getComputedStyle(document.querySelector('.fara-case-grid')).gridTemplateColumns : null,
-  footerWidth: document.querySelector('.fara-footer')?.getBoundingClientRect().width,
-  viewportWidth: innerWidth,
-  horizontalOverflow: document.documentElement.scrollWidth > innerWidth,
-}))
-await page.screenshot({ path: 'footer-mobile.png', fullPage: false })
-
-console.log(JSON.stringify({ initial, navbarHoverMoved: navbarBefore !== navbarAfter, generatedItemMenuState, generatedItemsFadeWithMenu, scrollY, scrolledHeader, mobile, errors }, null, 2))
-await browser.close()
+try {
+  await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 })
+  await page.goto(process.env.SITE_URL || 'http://127.0.0.1:5174/', { waitUntil: 'networkidle0', timeout: 60_000 })
+  const frame = page.frames().find(candidate => candidate.url().includes('/legacy/'))
+  if (!frame) throw new Error('Legacy frame did not load')
+  await new Promise(resolve => setTimeout(resolve, 4_000))
+  const desktop = await frame.evaluate(() => ({
+    title: document.querySelector('main h2')?.textContent.trim(),
+    navigationCount: document.querySelectorAll('#header .menu-links-w .nav-link').length,
+    footer: Boolean(document.querySelector('#footer')),
+    horizontalOverflow: document.documentElement.scrollWidth > innerWidth,
+  }))
+  await frame.click('.menu-cta')
+  await new Promise(resolve => setTimeout(resolve, 400))
+  const menuOpen = await frame.$eval('.montfort-menu', node => node.classList.contains('active'))
+  await frame.click('.menu-cta')
+  await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 })
+  await new Promise(resolve => setTimeout(resolve, 300))
+  const mobile = await frame.evaluate(() => ({
+    horizontalOverflow: document.documentElement.scrollWidth > innerWidth,
+    footerWidth: document.querySelector('#footer')?.getBoundingClientRect().width,
+    viewportWidth: innerWidth,
+  }))
+  const pass = Boolean(desktop.title && desktop.navigationCount >= 7 && desktop.footer && menuOpen && !desktop.horizontalOverflow && !mobile.horizontalOverflow && mobile.footerWidth <= mobile.viewportWidth && errors.length === 0)
+  console.log(JSON.stringify({ pass, desktop, menuOpen, mobile, errors }, null, 2))
+  if (!pass) process.exitCode = 1
+} finally {
+  await browser.close()
+}

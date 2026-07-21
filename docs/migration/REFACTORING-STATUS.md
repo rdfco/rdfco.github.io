@@ -60,10 +60,12 @@ contract. Gate B independently approved those sources and rollback boundaries.
 - [x] Gate C DOM-free shared Camera runtime with explicit browser scroll adapter
 - [x] Gate C initial and reactive reduced-motion behavior with zero reduced-motion triggers
 - [x] Gate C full verification, browser, performance, and runtime ownership audit
+- [x] M13 executable dependency-direction, cycle, feature-API, and DOM boundary enforcement
+- [x] M13 frame-aware browser interaction contracts with no repository screenshots
 
 ## Next
 
-- [ ] **M13 — Automated Architecture Enforcement**
+- [ ] **M14 — Measured Performance and Automatic Quality Selection**
 
-Gate C is approved. Gate D remains locked until M13 and M14 independently pass.
+M13 is complete. Gate D remains locked until M14 independently passes.
 No production cutover, Legacy removal, deployment, or merge is authorized.
