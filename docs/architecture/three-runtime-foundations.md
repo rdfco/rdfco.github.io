@@ -51,10 +51,11 @@ camera path, scroll mapping, transforms, private materials, shaders, and composi
 | Power preference | high-performance |
 | Preload | all |
 | Adaptive DPR | enabled, pixelated transition |
-| Active quality tier | high |
+| Active quality tier | capability-selected (`high` on the M0 reference device) |
 
 The medium, low, and fallback tiers are typed policy definitions only. M5 does not
-activate automatic selection or alter quality at runtime.
+change quality after Canvas creation. M14 activates deterministic initial capability
+selection while preserving `high` on the M0 reference device.
 
 ## Dependency rules
 

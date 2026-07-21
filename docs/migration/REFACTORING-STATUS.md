@@ -2,7 +2,7 @@
 
 ## Current position
 
-**Gate C — Runtime Ownership Review: approved**
+**Gate E — Native Parity Review: not approved**
 
 Gate A is approved. M0 established rollback-safe measurable contracts, M1 documented
 the current and target architecture, and M2 materialized the target ownership skeleton.
@@ -60,10 +60,17 @@ contract. Gate B independently approved those sources and rollback boundaries.
 - [x] Gate C DOM-free shared Camera runtime with explicit browser scroll adapter
 - [x] Gate C initial and reactive reduced-motion behavior with zero reduced-motion triggers
 - [x] Gate C full verification, browser, performance, and runtime ownership audit
+- [x] M13 executable dependency-direction, cycle, feature-API, and DOM boundary enforcement
+- [x] M13 frame-aware browser interaction contracts with no repository screenshots
+- [x] M14 capability-driven initial quality-tier selection with deterministic tests
+- [x] M14 Production and Native performance measurements at desktop, tablet, and mobile
+- [x] Gate D independent enforcement, browser, runtime, bundle, and performance audit
 
 ## Next
 
-- [ ] **M13 — Automated Architecture Enforcement**
+- [ ] **M15 — Native Parity Closure (blocked by parity gaps)**
 
-Gate C is approved. Gate D remains locked until M13 and M14 independently pass.
-No production cutover, Legacy removal, deployment, or merge is authorized.
+Gate D is approved. Gate E is not approved: Native has measured visual, layout, and
+route-ownership gaps against the protected Production contract. M16 and M17 remain
+locked. Production remains on Legacy; no cutover, Legacy removal, deployment, or
+merge is authorized.
