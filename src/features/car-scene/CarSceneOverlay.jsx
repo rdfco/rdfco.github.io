@@ -7,33 +7,44 @@ import { carSceneConfig } from './car-scene.config'
 const clamp = value => Math.min(1, Math.max(0, value))
 
 function WhiteCar() {
-  const gltf = useGLTF(carSceneConfig.modelUrl)
+  const gltf = useGLTF(carSceneConfig.model.url)
   const scene = useMemo(() => {
     const clone = gltf.scene.clone(true)
     const bounds = new Box3().setFromObject(clone)
     const center = bounds.getCenter(new Vector3())
     const size = bounds.getSize(new Vector3())
-    const fit = carSceneConfig.modelScale / Math.max(size.x, size.y, size.z, 1)
-    clone.position.set(-center.x * fit, -center.y * fit - 1.1, -center.z * fit)
+    const fit = carSceneConfig.model.autoFitSize / Math.max(size.x, size.y, size.z, 1)
+    const [offsetX, offsetY, offsetZ] = carSceneConfig.model.position
+    clone.position.set(
+      -center.x * fit + offsetX,
+      -center.y * fit + offsetY,
+      -center.z * fit + offsetZ,
+    )
     clone.scale.setScalar(fit)
     clone.traverse(node => {
       if (!node.isMesh) return
-      node.material = new MeshStandardMaterial({ color: '#f7f7f2', roughness: 0.43, metalness: 0.18 })
-      node.castShadow = true
-      node.receiveShadow = true
+      node.material = new MeshStandardMaterial(carSceneConfig.material)
+      node.castShadow = carSceneConfig.model.shadows.cast
+      node.receiveShadow = carSceneConfig.model.shadows.receive
     })
     return clone
   }, [gltf.scene])
 
-  return <primitive object={scene} rotation={[0, -0.5, 0]} />
+  return <primitive object={scene} rotation={carSceneConfig.model.rotation} />
 }
 
 function CameraPosition({ progress }) {
   const { camera, invalidate } = useThree()
 
   useEffect(() => {
-    camera.position.set(0, 0.15, carSceneConfig.farCameraZ + (carSceneConfig.nearCameraZ - carSceneConfig.farCameraZ) * progress)
-    camera.lookAt(0, -0.45, 0)
+    const far = carSceneConfig.camera.farPosition
+    const near = carSceneConfig.camera.nearPosition
+    camera.position.set(
+      far[0] + (near[0] - far[0]) * progress,
+      far[1] + (near[1] - far[1]) * progress,
+      far[2] + (near[2] - far[2]) * progress,
+    )
+    camera.lookAt(...carSceneConfig.camera.lookAt)
     invalidate()
   }, [camera, invalidate, progress])
 
@@ -50,7 +61,10 @@ export function CarSceneOverlay({ frameRef, enabled }) {
     const update = () => {
       const maximum = Math.max(1, frameWindow.document.documentElement.scrollHeight - frameWindow.innerHeight)
       const pageProgress = frameWindow.scrollY / maximum
-      const sceneProgress = clamp((pageProgress - carSceneConfig.startAtPageProgress) / (carSceneConfig.endAtPageProgress - carSceneConfig.startAtPageProgress))
+      const sceneProgress = clamp(
+        (pageProgress - carSceneConfig.scroll.startAtPageProgress)
+        / (carSceneConfig.scroll.endAtPageProgress - carSceneConfig.scroll.startAtPageProgress),
+      )
       setProgress(sceneProgress)
     }
     update()
@@ -68,10 +82,15 @@ export function CarSceneOverlay({ frameRef, enabled }) {
 
   return (
     <div className="fara-car-scene" aria-hidden="true">
-      <Canvas frameloop="demand" camera={{ fov: 33, near: 0.1, far: 100 }} gl={{ alpha: true, antialias: true }} dpr={[1, 1.5]}>
-        <ambientLight intensity={2.2} />
-        <directionalLight position={[4, 6, 5]} intensity={3.4} />
-        <directionalLight position={[-5, 1, 2]} intensity={1.2} />
+      <Canvas
+        frameloop="demand"
+        camera={{ fov: carSceneConfig.camera.fov, near: carSceneConfig.camera.near, far: carSceneConfig.camera.far }}
+        gl={{ alpha: carSceneConfig.renderer.alpha, antialias: carSceneConfig.renderer.antialias }}
+        dpr={carSceneConfig.renderer.dpr}
+      >
+        <ambientLight intensity={carSceneConfig.lights.ambientIntensity} />
+        <directionalLight {...carSceneConfig.lights.key} />
+        <directionalLight {...carSceneConfig.lights.fill} />
         <CameraPosition progress={progress} />
         <WhiteCar />
       </Canvas>
