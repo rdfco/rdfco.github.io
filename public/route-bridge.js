@@ -10,6 +10,7 @@ window.setTimeout(() => {
   const criticalModels = [
     '/assets/models/fort-energy/energy-chapter.glb',
     '/assets/models/fort-energy/fort-energy.glb',
+    '/assets/models/mountains.glb',
   ]
   criticalModels.forEach(href => {
     const preload = document.createElement('link')
