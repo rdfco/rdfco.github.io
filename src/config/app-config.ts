@@ -25,6 +25,7 @@ export const appConfig = {
     routeMessage: 'fara:set-route',
     navigationMessage: 'fara:navigate',
     readyMessage: 'fara:ready',
+    criticalSceneAsset: '/assets/models/fort-energy/energy-chapter.glb',
   },
 } as const
 
