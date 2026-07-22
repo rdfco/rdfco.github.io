@@ -24,6 +24,7 @@ export const appConfig = {
     delayedFooterSyncMs: 1000,
     routeMessage: 'fara:set-route',
     navigationMessage: 'fara:navigate',
+    readyMessage: 'fara:ready',
   },
 } as const
 

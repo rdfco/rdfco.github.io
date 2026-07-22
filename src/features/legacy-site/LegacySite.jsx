@@ -11,15 +11,19 @@ export default function LegacySite() {
   const location = useLocation()
   const navigate = useNavigate()
   const timerRef = useRef()
+  const routeSyncRef = useRef()
   const frameRef = useRef()
   const lastRouteRef = useRef()
   const [status, setStatus] = useState('loading')
 
-  useLayoutEffect(() => () => window.clearTimeout(timerRef.current), [])
+  useLayoutEffect(() => () => {
+    window.clearTimeout(timerRef.current)
+    window.clearInterval(routeSyncRef.current)
+  }, [])
 
   useEffect(() => {
     const frameWindow = frameRef.current?.contentWindow
-    if (!frameWindow || status === 'loading') return
+    if (!frameWindow) return
     const route = `${location.pathname}${location.search}`
     if (lastRouteRef.current === route) return
     lastRouteRef.current = route
@@ -31,12 +35,39 @@ export default function LegacySite() {
 
   useEffect(() => {
     const onMessage = event => {
-      if (event.origin !== window.location.origin || event.data?.type !== appConfig.legacyRuntime.navigationMessage) return
-      navigate(event.data.pathname)
+      if (event.origin !== window.location.origin || event.source !== frameRef.current?.contentWindow) return
+      if (event.data?.type === appConfig.legacyRuntime.navigationMessage) {
+        navigate(event.data.pathname)
+        return
+      }
+      if (event.data?.type === appConfig.legacyRuntime.readyMessage) {
+        window.clearTimeout(timerRef.current)
+        window.clearInterval(routeSyncRef.current)
+        setStatus('ready')
+      }
     }
     window.addEventListener('message', onMessage)
     return () => window.removeEventListener('message', onMessage)
   }, [navigate])
+
+  useEffect(() => {
+    const sendInitialRoute = () => {
+      frameRef.current?.contentWindow?.postMessage(
+        { type: appConfig.legacyRuntime.routeMessage, pathname: `${location.pathname}${location.search}` },
+        window.location.origin,
+      )
+    }
+    sendInitialRoute()
+    routeSyncRef.current = window.setInterval(sendInitialRoute, appConfig.legacyRuntime.readyPollMs)
+    timerRef.current = window.setTimeout(() => {
+      window.clearInterval(routeSyncRef.current)
+      setStatus(currentStatus => currentStatus === 'loading' ? 'failed' : currentStatus)
+    }, appConfig.legacyRuntime.readyTimeoutMs)
+    return () => {
+      window.clearInterval(routeSyncRef.current)
+      window.clearTimeout(timerRef.current)
+    }
+  }, [location.pathname, location.search])
 
   const updateFooter = document => {
     const footer = document?.querySelector('#footer')
@@ -79,20 +110,6 @@ export default function LegacySite() {
       appConfig.legacyRuntime.delayedFooterSyncMs,
     )
 
-    const startedAt = Date.now()
-    const waitUntilCustomized = () => {
-      if (frameDocument.documentElement.dataset.faraReady === 'true') {
-        window.clearTimeout(timerRef.current)
-        setStatus('ready')
-        return
-      }
-      if (Date.now() - startedAt >= appConfig.legacyRuntime.readyTimeoutMs) {
-        setStatus('failed')
-        return
-      }
-      timerRef.current = window.setTimeout(waitUntilCustomized, appConfig.legacyRuntime.readyPollMs)
-    }
-    waitUntilCustomized()
   }
 
   return (

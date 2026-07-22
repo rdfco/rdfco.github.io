@@ -42,7 +42,10 @@ const refreshSite = () => {
     refreshScrollSystems()
     window.requestAnimationFrame(refreshScrollSystems)
   })
-  if (requestedPath !== null) document.documentElement.dataset.faraReady = 'true'
+  if (requestedPath !== null) {
+    document.documentElement.dataset.faraReady = 'true'
+    window.parent.postMessage({ type: 'fara:ready' }, window.location.origin)
+  }
 }
 
 window.addEventListener('message', event => {
