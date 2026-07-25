@@ -18,6 +18,7 @@ function CarDragControls({ onDrag }) {
     event.stopPropagation()
   }, [])
 
+  
   const handlePointerUp = useCallback(() => {
     isDragging.current = false
   }, [])
