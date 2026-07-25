@@ -161,68 +161,82 @@ const createTimeline = (instance, grid) => {
   const [first, second, third, fourth] = instance.holograms
   const lineFades = instance.lines.map(
     object => object.material.uniforms.uFade,
-  )
+  ).filter(Boolean)
   const middle = 0.5
   const duration = 0.3
 
-  timeline.fromTo(
-    lineFades,
-    { value: 0 },
-    { value: 1, duration: 0.1 },
-    0,
-  )
+  if (lineFades.length) {
+    timeline.fromTo(
+      lineFades,
+      { value: 0 },
+      { value: 1, duration: 0.1 },
+      0,
+    )
+  }
   timeline.fromTo(
     instance.pageProgress,
     { value: 0 },
     { value: 1, duration: 1, ease: 'sine.out' },
     0,
   )
-  timeline.fromTo(
-    first.material.uniforms.uFade,
-    { value: 0 },
-    { value: 1, duration: 0.1 },
-    0,
-  )
-  timeline.to(
-    first.material.uniforms.uFade,
-    { value: 0, duration: 0.06 },
-    0.17,
-  )
-  timeline.fromTo(
-    second.material.uniforms.uFade,
-    { value: 0 },
-    { value: 1, duration: 0.08 },
-    0.32,
-  )
-  timeline.to(
-    second.material.uniforms.uFade,
-    { value: 0, duration: 0.1 },
-    0.5,
-  )
-  timeline.fromTo(
-    grid.material.uniforms.uDepth,
-    { value: 100 },
-    { value: 120, duration },
-    middle,
-  )
-  timeline.fromTo(
-    third.material.uniforms.uFade,
-    { value: 0 },
-    { value: 1, duration },
-    middle + duration * 0.4 + 0.1,
-  )
-  timeline.fromTo(
-    fourth.material.uniforms.uOffset,
-    { value: 0 },
-    { value: 0.1, duration: duration * 0.8 },
-    middle + duration * 0.4 + 0.2,
-  )
-  timeline.fromTo(
-    fourth.material.uniforms.uFade,
-    { value: 0 },
-    { value: 1, duration },
-    middle + duration * 0.4 + 0.15,
-  )
+  if (first?.material?.uniforms?.uFade) {
+    timeline.fromTo(
+      first.material.uniforms.uFade,
+      { value: 0 },
+      { value: 1, duration: 0.1 },
+      0,
+    )
+    timeline.to(
+      first.material.uniforms.uFade,
+      { value: 0, duration: 0.06 },
+      0.17,
+    )
+  }
+  if (second?.material?.uniforms?.uFade) {
+    timeline.fromTo(
+      second.material.uniforms.uFade,
+      { value: 0 },
+      { value: 1, duration: 0.08 },
+      0.32,
+    )
+    timeline.to(
+      second.material.uniforms.uFade,
+      { value: 0, duration: 0.1 },
+      0.5,
+    )
+  }
+  if (grid?.material?.uniforms?.uDepth) {
+    timeline.fromTo(
+      grid.material.uniforms.uDepth,
+      { value: 100 },
+      { value: 120, duration },
+      middle,
+    )
+  }
+  if (third?.material?.uniforms?.uFade) {
+    timeline.fromTo(
+      third.material.uniforms.uFade,
+      { value: 0 },
+      { value: 1, duration },
+      middle + duration * 0.4 + 0.1,
+    )
+  }
+  if (fourth?.material?.uniforms?.uOffset) {
+    timeline.fromTo(
+      fourth.material.uniforms.uOffset,
+      { value: 0 },
+      { value: 0.1, duration: duration * 0.8 },
+      middle + duration * 0.4 + 0.2,
+    )
+  }
+  if (fourth?.material?.uniforms?.uFade) {
+    timeline.fromTo(
+      fourth.material.uniforms.uFade,
+      { value: 0 },
+      { value: 1, duration },
+      middle + duration * 0.4 + 0.15,
+    )
+  }
   timeline.add(() => {}, 1.2)
   return timeline
 }
