@@ -31,10 +31,19 @@ window.addEventListener('click', event => {
   event.preventDefault()
   event.stopImmediatePropagation()
 
-  window.dispatchEvent(new CustomEvent('fara:close-menu'))
+  const navigate = () => {
+    window.parent.postMessage(
+      { type: 'fara:navigate', pathname: link.dataset.faraRoute },
+      window.location.origin,
+    )
+  }
 
-  window.parent.postMessage(
-    { type: 'fara:navigate', pathname: link.dataset.faraRoute },
-    window.location.origin,
-  )
+  if (link.closest('.montfort-menu')) {
+    window.addEventListener('fara:menu-closed', navigate, { once: true })
+    window.dispatchEvent(new CustomEvent('fara:close-menu', { detail: { animate: true } }))
+    return
+  }
+
+  window.dispatchEvent(new CustomEvent('fara:close-menu'))
+  navigate()
 }, true)

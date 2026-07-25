@@ -1,27 +1,20 @@
-import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { appConfig } from '../../config'
 import { content } from '../../content'
-
-const CarSceneOverlay = lazy(() =>
-  import('../car-scene/CarSceneOverlay').then(module => ({ default: module.CarSceneOverlay })),
-)
 
 export default function LegacySite() {
   const location = useLocation()
   const navigate = useNavigate()
   const timerRef = useRef()
   const routeSyncRef = useRef()
-  const criticalScenePollRef = useRef()
   const frameRef = useRef()
   const lastRouteRef = useRef()
   const [status, setStatus] = useState('loading')
-  const [criticalSceneReady, setCriticalSceneReady] = useState(false)
 
   useLayoutEffect(() => () => {
     window.clearTimeout(timerRef.current)
     window.clearInterval(routeSyncRef.current)
-    window.clearInterval(criticalScenePollRef.current)
   }, [])
 
   useEffect(() => {
@@ -71,32 +64,6 @@ export default function LegacySite() {
       window.clearTimeout(timerRef.current)
     }
   }, [location.pathname, location.search])
-
-  useEffect(() => {
-    if (status !== 'ready') return undefined
-    const frameWindow = frameRef.current?.contentWindow
-    if (!frameWindow) return undefined
-
-    const checkCriticalScene = () => {
-      const loaded = frameWindow.performance.getEntriesByType('resource').some(entry => {
-        try {
-          return new URL(entry.name).pathname === appConfig.legacyRuntime.criticalSceneAsset && entry.responseEnd > 0
-        } catch {
-          return false
-        }
-      })
-      if (!loaded) return
-      window.clearInterval(criticalScenePollRef.current)
-      setCriticalSceneReady(true)
-    }
-
-    checkCriticalScene()
-    criticalScenePollRef.current = window.setInterval(
-      checkCriticalScene,
-      appConfig.legacyRuntime.readyPollMs,
-    )
-    return () => window.clearInterval(criticalScenePollRef.current)
-  }, [status])
 
   const updateFooter = document => {
     const footer = document?.querySelector('#footer')
@@ -162,11 +129,6 @@ export default function LegacySite() {
         sandbox={appConfig.legacyRuntime.sandbox}
         onLoad={onLoad}
       />
-      {status === 'ready' && criticalSceneReady && (
-        <Suspense fallback={null}>
-          <CarSceneOverlay frameRef={frameRef} enabled />
-        </Suspense>
-      )}
     </div>
   )
 }

@@ -13,7 +13,6 @@ export const setupNavigationEvents = () => {
     document.body.append(overlayCloseButton)
   }
   let overlayHideTimer = 0
-  let menuCloseTimer = 0
   let headerRevealTimer = 0
   const positionOverlayClose = () => {
     if (!menuButton || !overlayCloseButton) return
@@ -29,7 +28,6 @@ export const setupNavigationEvents = () => {
   const setMenuOpen = open => {
     if (open) {
       header?.classList.add('menu-cycle-started')
-      window.clearTimeout(menuCloseTimer)
       window.clearTimeout(headerRevealTimer)
       menu?.classList.remove('is-closing')
       menu?.style.removeProperty('--fara-close-overlay-delay')
@@ -57,6 +55,16 @@ export const setupNavigationEvents = () => {
     menuButton?.setAttribute('aria-expanded', String(open))
     document.documentElement.classList.toggle('fara-menu-open', open)
   }
+  const finishMenuClose = () => {
+    if (!menu?.classList.contains('is-closing')) return
+    menu.classList.remove('is-closing')
+    menu.style.display = 'none'
+    header?.classList.remove('menu-closing')
+    header?.classList.add('menu-revealing')
+    window.dispatchEvent(new CustomEvent('fara:menu-closed'))
+    window.clearTimeout(headerRevealTimer)
+    headerRevealTimer = window.setTimeout(() => header?.classList.remove('menu-revealing'), 1700)
+  }
   const closeMenu = (animate = true) => {
     const menuIsOpen = menu?.classList.contains('active') || menuButton?.classList.contains('close')
     if (!menuIsOpen && !menu?.classList.contains('is-closing')) {
@@ -75,7 +83,6 @@ export const setupNavigationEvents = () => {
       closingViaRoute = false
     }
     if (!animate) {
-      window.clearTimeout(menuCloseTimer)
       menu?.classList.remove('is-closing')
       setMenuOpen(false)
       if (menu) menu.style.display = 'none'
@@ -91,17 +98,11 @@ export const setupNavigationEvents = () => {
     header?.classList.add('menu-closing')
     header?.classList.remove('menu-revealing')
     setMenuOpen(false)
-    window.clearTimeout(menuCloseTimer)
-    menuCloseTimer = window.setTimeout(() => {
-      menu?.classList.remove('is-closing')
-      if (menu) menu.style.display = 'none'
-      header?.classList.remove('menu-closing')
-      header?.classList.add('menu-revealing')
-      window.clearTimeout(headerRevealTimer)
-      headerRevealTimer = window.setTimeout(() => header?.classList.remove('menu-revealing'), 1700)
-    }, overlayDelay + 450)
   }
-  window.addEventListener('fara:close-menu', () => closeMenu(false))
+  menu?.querySelector('.overlay')?.addEventListener('animationend', event => {
+    if (event.animationName === 'fara-menu-close-overlay') finishMenuClose()
+  })
+  window.addEventListener('fara:close-menu', event => closeMenu(event.detail?.animate === true))
   overlayCloseButton?.addEventListener('click', event => {
     event.preventDefault()
     event.stopPropagation()
