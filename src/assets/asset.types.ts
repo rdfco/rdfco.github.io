@@ -17,6 +17,8 @@ export type AssetRecord = {
   fallback?: string
 }
 
+
+
 export type AssetRegistryDocument = {
   version: number
   policy: string
