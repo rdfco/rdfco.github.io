@@ -56,8 +56,7 @@ export default function LegacySite() {
     sendInitialRoute()
     routeSyncRef.current = window.setInterval(sendInitialRoute, appConfig.legacyRuntime.readyPollMs)
     timerRef.current = window.setTimeout(() => {
-      window.clearInterval(routeSyncRef.current)
-      setStatus(currentStatus => currentStatus === 'loading' ? 'failed' : currentStatus)
+      sendInitialRoute()
     }, appConfig.legacyRuntime.readyTimeoutMs)
     return () => {
       window.clearInterval(routeSyncRef.current)
