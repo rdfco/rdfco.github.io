@@ -38,5 +38,3 @@ export function WhiteCar({ config, positionX }) {
 
   return <primitive object={scene} rotation={config.model.rotation} position={[positionX, 0, 0]} />
 }
-
-export const preloadWhiteCar = config => useGLTF.preload(config.assets.model.path)

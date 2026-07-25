@@ -1,10 +1,30 @@
-/* global window, CustomEvent */
+/* global window, CustomEvent, Element, Node */
 
 // Loaded before the mirrored Astro runtime so FARA routes always win over
 // the source site's navigation handlers.
 // The legacy sound engine remains bundled and can be restored with one flag.
 window.__FARA_SOUND_ENABLED__ = false
 window.__FARA_NAVIGATION_MANAGED__ = true
+window.__FARA_BLOCK_ASTRO_PREFETCH__ = true
+
+const blockAstroPrefetch = () => {
+  const nativeAppend = Element.prototype.append
+  const nativeAppendChild = Node.prototype.appendChild
+  const isBlockedPrefetch = node =>
+    window.__FARA_BLOCK_ASTRO_PREFETCH__ &&
+    node?.tagName === 'LINK' &&
+    String(node.rel || node.getAttribute?.('rel') || '').toLowerCase() === 'prefetch'
+
+  Element.prototype.append = function (...nodes) {
+    return nativeAppend.apply(this, nodes.filter(node => !isBlockedPrefetch(node)))
+  }
+  Node.prototype.appendChild = function (node) {
+    if (isBlockedPrefetch(node)) return node
+    return nativeAppendChild.call(this, node)
+  }
+}
+
+blockAstroPrefetch()
 
 const waitForTransition = ({ eventName, fallbackMs, start, navigate }) => {
   let completed = false
@@ -62,6 +82,14 @@ window.addEventListener('click', event => {
     return
   }
 
-  window.dispatchEvent(new CustomEvent('fara:close-menu'))
-  navigate()
+  waitForTransition({
+    fallbackMs: 750,
+    navigate,
+    start: complete => {
+      window.dispatchEvent(new CustomEvent('fara:close-menu'))
+      window.dispatchEvent(
+        new CustomEvent('fara:animate-navbar-route', { detail: { link, complete } }),
+      )
+    },
+  })
 }, true)

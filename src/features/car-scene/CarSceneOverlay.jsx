@@ -4,7 +4,7 @@ import { CameraPosition } from './camera/CameraPosition'
 import { carSceneConfig } from './config'
 import { SceneDebug } from './debug/SceneDebug'
 import { SceneLights } from './lights/SceneLights'
-import { preloadWhiteCar, WhiteCar } from './models/WhiteCar'
+import { WhiteCar } from './models/WhiteCar'
 import { useFrameScrollProgress } from './scroll/useFrameScrollProgress'
 
 function CarDragControls({ onDrag }) {
@@ -45,8 +45,6 @@ function CarDragControls({ onDrag }) {
 
   return null
 }
-
-preloadWhiteCar(carSceneConfig)
 
 export function CarSceneOverlay({ frameRef, enabled }) {
   const progress = useFrameScrollProgress({
