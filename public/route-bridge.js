@@ -1,10 +1,27 @@
-/* global window, document, CustomEvent */
+/* global window, CustomEvent */
 
 // Loaded before the mirrored Astro runtime so FARA routes always win over
 // the source site's navigation handlers.
 // The legacy sound engine remains bundled and can be restored with one flag.
 window.__FARA_SOUND_ENABLED__ = false
 window.__FARA_NAVIGATION_MANAGED__ = true
+
+const waitForTransition = ({ eventName, fallbackMs, start, navigate }) => {
+  let completed = false
+  let fallbackTimer = 0
+
+  const complete = () => {
+    if (completed) return
+    completed = true
+    window.clearTimeout(fallbackTimer)
+    if (eventName) window.removeEventListener(eventName, complete)
+    navigate()
+  }
+
+  if (eventName) window.addEventListener(eventName, complete)
+  fallbackTimer = window.setTimeout(complete, fallbackMs)
+  start(complete)
+}
 
 window.addEventListener('click', event => {
   const link = event.target.closest?.('a[data-fara-route]')
@@ -21,24 +38,27 @@ window.addEventListener('click', event => {
   }
 
   if (link.closest('.montfort-menu')) {
-    let navigated = false
-    const navigateOnce = () => {
-      if (navigated) return
-      navigated = true
-      const menu = document.querySelector('.montfort-menu')
-      const header = document.querySelector('#header')
-      const menuButton = document.querySelector('#header .menu-cta')
-      menu?.classList.remove('active', 'is-closing')
-      if (menu) menu.style.display = 'none'
-      header?.classList.remove('menu-open', 'menu-closing')
-      menuButton?.classList.remove('close')
-      menuButton?.setAttribute('aria-expanded', 'false')
-      document.documentElement.classList.remove('fara-menu-open')
-      navigate()
-    }
-    window.addEventListener('fara:menu-closed', navigateOnce, { once: true })
-    window.setTimeout(navigateOnce, 700)
-    window.dispatchEvent(new CustomEvent('fara:close-menu', { detail: { animate: true } }))
+    waitForTransition({
+      eventName: 'fara:menu-closed',
+      fallbackMs: 1700,
+      navigate,
+      start: () => {
+        window.dispatchEvent(new CustomEvent('fara:close-menu', { detail: { animate: true } }))
+      },
+    })
+    return
+  }
+
+  if (link.closest('#header .menu-links-w')) {
+    waitForTransition({
+      fallbackMs: 750,
+      navigate,
+      start: complete => {
+        window.dispatchEvent(
+          new CustomEvent('fara:animate-navbar-route', { detail: { link, complete } }),
+        )
+      },
+    })
     return
   }
 

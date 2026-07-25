@@ -24,6 +24,35 @@ const animateNavbarTo = target => {
   navbar.style.setProperty('--fara-navbar-transform', `translate3d(${labelRect.left - listRect.left}px, 0, 0) scaleX(${labelRect.width / (navbar.offsetWidth || 1)})`)
 }
 
+const setupNavbarRouteTransition = () => {
+  if (document.documentElement.dataset.faraNavbarRouteReady === 'true') return
+  document.documentElement.dataset.faraNavbarRouteReady = 'true'
+
+  window.addEventListener('fara:animate-navbar-route', event => {
+    const navbar = document.querySelector('#header nav .navbar')
+    const complete = event.detail?.complete
+    if (!navbar || typeof complete !== 'function') {
+      complete?.()
+      return
+    }
+
+    let completed = false
+    let fallbackTimer = 0
+    const finish = transitionEvent => {
+      if (transitionEvent?.propertyName && transitionEvent.propertyName !== 'transform') return
+      if (completed) return
+      completed = true
+      window.clearTimeout(fallbackTimer)
+      navbar.removeEventListener('transitionend', finish)
+      complete()
+    }
+
+    navbar.addEventListener('transitionend', finish)
+    animateNavbarTo(event.detail?.link)
+    fallbackTimer = window.setTimeout(finish, 650)
+  })
+}
+
 let navbarFrame = 0
 let navbarRestoreTimer = 0
 const scheduleNavbarUpdate = update => {
@@ -112,6 +141,7 @@ const configureLegalLink = link => {
 }
 
 export const renderNavigation = (siteData, currentPath = '/') => {
+  setupNavbarRouteTransition()
   ensureItems('#header .menu-links-w > ul', siteData.navigation.length)
   ensureItems('.montfort-menu nav > ul', siteData.navigation.length)
 
