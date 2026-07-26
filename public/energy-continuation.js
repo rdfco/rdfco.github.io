@@ -1,4 +1,5 @@
 import { g as gsap } from '/_astro/index.Brfk6Bdo.js'
+import { createBlackoutTransition } from '/transitions/blackout-transition.js'
 
 /* global document, window, ResizeObserver */
 
@@ -367,6 +368,12 @@ class EnergyChapterSequence {
     this.initializePersistentGrid()
     this.gridBasePosition = this.source.grid.position.clone()
     this.createInstances()
+    this.blackoutTransition = createBlackoutTransition({
+      getRanges: () => ({
+        connector: this.connectors[0],
+        instance: this.instances[0],
+      }),
+    })
     this.install()
   }
 
@@ -538,6 +545,7 @@ class EnergyChapterSequence {
   tick = () => {
     this.updateGrid(this.app.webgl.scrollProgress)
     const scroll = this.app.webgl.lerpedScrollProgress
+    this.blackoutTransition.update(this.app.webgl.scrollProgress)
     if (scroll < this.source.scrollRange.end) return
 
     for (let index = 0; index < this.instances.length; index += 1) {
