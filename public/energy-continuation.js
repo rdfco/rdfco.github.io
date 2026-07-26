@@ -365,6 +365,7 @@ class EnergyChapterSequence {
     this.lookAt = source.cameralookAt.clone()
     this.rangeEnd = 0
     this.initializePersistentGrid()
+    this.gridBasePosition = this.source.grid.position.clone()
     this.createInstances()
     this.install()
   }
@@ -520,7 +521,22 @@ class EnergyChapterSequence {
     camera.updateMatrixWorld()
   }
 
+  updateGrid(scroll) {
+    const activeInstance = this.instances.find(
+      instance =>
+        scroll >= this.connectors[instance.index - 1]?.start &&
+        scroll <= this.rangeEnd,
+    )
+
+    this.source.grid.position.copy(this.gridBasePosition)
+    if (activeInstance) {
+      this.source.grid.position.add(activeInstance.model.position)
+    }
+    this.source.grid.updateMatrixWorld()
+  }
+
   tick = () => {
+    this.updateGrid(this.app.webgl.scrollProgress)
     const scroll = this.app.webgl.lerpedScrollProgress
     if (scroll < this.source.scrollRange.end) return
 
