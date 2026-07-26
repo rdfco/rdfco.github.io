@@ -1,5 +1,5 @@
 import { g as gsap } from '/_astro/index.Brfk6Bdo.js'
-import { createBlackoutTransition } from '/transitions/blackout-transition.js'
+import { createBlackoutTransition } from '/transitions/blackout-transition.js?v=fog-sides-20260726-1'
 
 /* global document, window, ResizeObserver */
 
