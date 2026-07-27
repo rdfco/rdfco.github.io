@@ -144,6 +144,7 @@ export const renderNavigation = (siteData, currentPath = '/') => {
   setupNavbarRouteTransition()
   ensureItems('#header .menu-links-w > ul', siteData.navigation.length)
   ensureItems('.montfort-menu nav > ul', siteData.navigation.length)
+  document.querySelectorAll('.montfort-menu nav > ul > li').forEach(item => { item.dataset.configGenerated = 'true' })
 
   document.querySelectorAll('#header .menu-links-w .nav-link').forEach((link, index) => {
     const item = siteData.navigation[index]

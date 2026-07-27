@@ -1,10 +1,10 @@
 /* global console, document */
 
 // Visual scroll offsets only. These never modify connector/chapter timing.
-export const FOG_START_OFFSET = -1800
+export const FOG_START_OFFSET = -1700
 export const FULL_BLACK_OFFSET = -900
-export const REVEAL_START_OFFSET = 0
-export const REVEAL_END_OFFSET = 0
+export const REVEAL_START_OFFSET = -300
+export const REVEAL_END_OFFSET = -500
 
 /**
  * Visual-only timing controls. All offsets are scroll pixels and never alter
