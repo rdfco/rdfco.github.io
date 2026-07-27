@@ -1,5 +1,6 @@
 import { g as gsap } from '/_astro/index.Brfk6Bdo.js'
 import { createBlackoutTransition } from '/transitions/blackout-transition.js?v=fog-sides-20260726-1'
+import { replaceFirstLoop2ModelWithOil } from '/models/oil-loop2-scene.js?v=oil-step1-20260727-23'
 
 /* global document, window, ResizeObserver */
 
@@ -285,10 +286,16 @@ const createChapterInstance = (
   })
 
   group.add(model)
+  const oilModel = replaceFirstLoop2ModelWithOil({
+    app,
+    holograms,
+  })
+  const activeHolograms = oilModel
+    ? [oilModel, ...holograms.slice(1)]
+    : holograms
   group.updateWorldMatrix(true, true)
   sortNumberedNodes(cameras, 'Camera')
   sortNumberedNodes(lookAts, 'LookAt')
-  sortNumberedNodes(holograms, 'Hologram')
   sortNumberedNodes(lines, 'Line')
 
   const getWorldPoints = nodes =>
@@ -298,7 +305,7 @@ const createChapterInstance = (
     index,
     group,
     model,
-    holograms,
+    holograms: activeHolograms,
     lines,
     cameras,
     lookAts,

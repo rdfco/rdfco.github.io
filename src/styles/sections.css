@@ -42,7 +42,7 @@ main #grid { min-height: 7400px; }
   line-height: 1.5;
 }
 .fara-card-grid { display: grid; gap: clamp(2rem, 4vw, 5rem); }
-.solutions-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.AI & Techs-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .fara-ai {
   display: grid;
   grid-template-columns: minmax(16rem, .8fr) minmax(0, 1.5fr);

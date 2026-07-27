@@ -1,7 +1,7 @@
 export const navigationItems = [
   { key: 'home', label: 'Home', href: '/' },
   { key: 'knowing-fara', label: 'Knowing FARA', href: '/knowing-fara' },
-  { key: 'solution', label: 'Solution', href: '/solution' },
+  { key: 'solution', label: 'AI & Tech', href: '/solution' },
   { key: 'consulting', label: 'Consulting', href: '/consulting' },
   { key: 'industries', label: 'Industries', href: '/industries' },
   { key: 'case-studies', label: 'Case studies', href: '/case-studies' },

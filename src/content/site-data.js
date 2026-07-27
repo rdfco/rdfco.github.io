@@ -30,7 +30,7 @@ export const siteData = {
   },
   hero: {
     title: 'FARA IS IN',
-    subtitle: 'We Provide AI & Technology Consulting And Results-Oriented Solution.',
+    subtitle: 'We Provide AI & Technology Consulting And Results-Oriented AI & Tech.',
     scrollLabel: '',
   },
   uiLabels: {
@@ -57,8 +57,8 @@ export const siteData = {
         text: 'We combine human expertise with AI-powered analytics to identify opportunities, reduce uncertainty, and support faster strategic decisions.'
       },
       {
-        title: 'Deployable solutions',
-        text: 'Our work moves beyond presentations into tools, pilots, and operating solutions designed to integrate with real organizational processes.'
+        title: 'Deployable AI & Techs',
+        text: 'Our work moves beyond presentations into tools, pilots, and operating AI & Techs designed to integrate with real organizational processes.'
       },
       {
         title: 'Industry-focused expertise',
@@ -88,7 +88,7 @@ export const siteData = {
     ai: {
       title: 'AI by FARA',
       subtitle: 'Smarter with AI. Better with Human',
-      text: 'In the world of AI and emerging tech, speed to value is everything. Fara lives and breathes that. We help you cut through the hype and identify which technologies actually solve real business problems—not which ones look good on a slide. From generative AI and computer vision to predictive analytics and automation, we design practical, deployable solutions that integrate with your existing systems, not replace them overnight. No black-box promises.'
+      text: 'In the world of AI and emerging tech, speed to value is everything. Fara lives and breathes that. We help you cut through the hype and identify which technologies actually solve real business problems—not which ones look good on a slide. From generative AI and computer vision to predictive analytics and automation, we design practical, deployable AI & Techs that integrate with your existing systems, not replace them overnight. No black-box promises.'
     },
     industries: [
       {
@@ -97,19 +97,19 @@ export const siteData = {
       },
       {
         title: 'Metal',
-        text: 'In metals, the margin between leading and lagging is razor-thin. Fara gets that. We help you spot innovation opportunities others miss, modernize legacy processes, and adopt smart technologies that actually work on the shop floor—not just in theory. No dusty reports. Just deployable solutions and data-driven roadmaps that cut waste, lower energy costs, and improve yield.'
+        text: 'In metals, the margin between leading and lagging is razor-thin. Fara gets that. We help you spot innovation opportunities others miss, modernize legacy processes, and adopt smart technologies that actually work on the shop floor—not just in theory. No dusty reports. Just deployable AI & Techs and data-driven roadmaps that cut waste, lower energy costs, and improve yield.'
       },
       {
         title: 'Manufacture',
-        text: 'In manufacturing, every second counts and every defect costs. Fara knows that. We help you uncover innovation opportunities hidden in your operations, modernize outdated processes, and adopt smart technologies that actually perform on the production line—not just in presentations. No theoretical fluff. Just practical solutions and data-backed roadmaps that boost throughput, reduce downtime, and improve quality.'
+        text: 'In manufacturing, every second counts and every defect costs. Fara knows that. We help you uncover innovation opportunities hidden in your operations, modernize outdated processes, and adopt smart technologies that actually perform on the production line—not just in presentations. No theoretical fluff. Just practical AI & Techs and data-backed roadmaps that boost throughput, reduce downtime, and improve quality.'
       },
       {
         title: 'Automotive',
-        text: "In automotive, the race isn't just about speed—it's about staying relevant. Fara understands that. We help you navigate the convergence of electrification, software-defined vehicles, and autonomous driving—turning industry megatrends into practical roadmaps that actually drive value. From accelerating R&D cycles and streamlining supply chain complexity to integrating AI-driven quality systems on the production line, we deliver solutions that work in the real world, not just on the drawing board. Fara speaks your language—and helps you win the race that matters most."
+        text: "In automotive, the race isn't just about speed—it's about staying relevant. Fara understands that. We help you navigate the convergence of electrification, software-defined vehicles, and autonomous driving—turning industry megatrends into practical roadmaps that actually drive value. From accelerating R&D cycles and streamlining supply chain complexity to integrating AI-driven quality systems on the production line, we deliver AI & Techs that work in the real world, not just on the drawing board. Fara speaks your language—and helps you win the race that matters most."
       },
       {
         title: 'Health',
-        text: "In healthcare, innovation isn't about being first; it’s about being right. FARA helps you harness the power of AI, data analytics, and digital health technologies to improve patient outcomes, streamline clinical workflows, and reduce operational burdens without compromising safety or trust. From predictive diagnostics and remote patient monitoring to intelligent scheduling and supply chain optimization, we deliver practical, deployable solutions. No cookie-cutter approaches. Just tailored strategies and transparent tools that enhance decision-making, shorten diagnosis times, and lower care delivery costs."
+        text: "In healthcare, innovation isn't about being first; it’s about being right. FARA helps you harness the power of AI, data analytics, and digital health technologies to improve patient outcomes, streamline clinical workflows, and reduce operational burdens without compromising safety or trust. From predictive diagnostics and remote patient monitoring to intelligent scheduling and supply chain optimization, we deliver practical, deployable AI & Techs. No cookie-cutter approaches. Just tailored strategies and transparent tools that enhance decision-making, shorten diagnosis times, and lower care delivery costs."
       }
     ]
   },

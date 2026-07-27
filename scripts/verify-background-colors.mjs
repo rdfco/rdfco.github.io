@@ -32,7 +32,7 @@ await (await frame.$('.menu-cta')).click()
 await new Promise(resolve => setTimeout(resolve, 500))
 const menu = await frame.evaluate(() => {
   const panel = document.querySelector('.montfort-menu')
-  const link = panel?.querySelector('[data-fara-route="/solution"]')
+  const link = panel?.querySelector('[data-fara-route="/AI & Tech"]')
   const rect = link?.getBoundingClientRect()
   return {
     active: panel?.classList.contains('active'),

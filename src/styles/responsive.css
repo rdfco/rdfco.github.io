@@ -1,7 +1,7 @@
 @media (max-width: 1023px) {
   main #grid { min-height: 8000px; }
   .fara-sections { top: 1350px; gap: 600px; }
-  .solutions-grid,
+  .AI & Techs-grid,
   .industries-grid { grid-template-columns: 1fr; }
   .industries-grid .fara-card:nth-child(n) { grid-column: auto; margin-top: 0; }
   .fara-ai,

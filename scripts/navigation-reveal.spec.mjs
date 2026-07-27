@@ -101,10 +101,10 @@ test('original close and delayed menu navigation keep the original reveal', asyn
   await frame.click('#header .menu-cta')
   await expect.poll(async () => (await menuState(frame)).menuActive).toBe(true)
   const routeBeforeClick = new URL(page.url()).pathname
-  await frame.click('.montfort-menu a[data-fara-route="/solution"]')
+  await frame.click('.montfort-menu a[data-fara-route="/AI & Tech"]')
   await page.waitForTimeout(250)
   expect(new URL(page.url()).pathname).toBe(routeBeforeClick)
-  await expect.poll(() => new URL(page.url()).pathname, { timeout: 5_000 }).toBe('/solution')
+  await expect.poll(() => new URL(page.url()).pathname, { timeout: 5_000 }).toBe('/AI & Tech')
   await expect.poll(async () => (await frame.evaluate(() => window.__faraVerify.revealEnds.length)), { timeout: 5_000 }).toBe(7)
 
   const routeRecord = await frame.evaluate(() => structuredClone(window.__faraVerify))
@@ -115,8 +115,8 @@ test('original close and delayed menu navigation keep the original reveal', asyn
   expect(routeRecord.revealStarts.map(item => item.time)).toEqual(
     [...routeRecord.revealStarts].map(item => item.time).sort((a, b) => a - b),
   )
-  expect(await frame.locator('.fara-route-page[data-fara-page="solution"]').count()).toBe(1)
-  await page.screenshot({ path: `${screenshotRoot}/solution-after-menu-close.png` })
+  expect(await frame.locator('.fara-route-page[data-fara-page="AI & Tech"]').count()).toBe(1)
+  await page.screenshot({ path: `${screenshotRoot}/AI & Tech-after-menu-close.png` })
 
   await frame.click('#header .nav-link[data-fara-route="/"]')
   await expect.poll(() => new URL(page.url()).pathname).toBe('/')

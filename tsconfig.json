@@ -11,7 +11,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "moduleReAI & Tech": "Bundler",
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
