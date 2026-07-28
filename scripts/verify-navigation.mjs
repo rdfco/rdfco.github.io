@@ -85,7 +85,7 @@ const state = await frame.evaluate(() => ({
 }))
 
 const routes = [
-  ['AI & Tech', '/AI & Tech'],
+  ['solution', '/solution'],
   ['consulting', '/consulting'],
   ['industries', '/industries'],
   ['case-studies', '/case-studies'],

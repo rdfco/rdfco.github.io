@@ -46,14 +46,14 @@ for (const viewport of viewports) {
       horizontalOverflow: document.documentElement.scrollWidth > innerWidth,
       counts: {
         navigation: document.querySelectorAll('#header .menu-links-w .nav-link').length,
-        AI & Techs: document.querySelectorAll('.AI & Techs-grid .fara-card').length,
+        solutions: document.querySelectorAll('.solutions-grid .fara-card').length,
         industries: document.querySelectorAll('.industries-grid .fara-card').length,
         industryButtons: document.querySelectorAll('.industries-grid .fara-expand').length,
         footerCases: document.querySelectorAll('.fara-case-item').length,
       },
       boxes: {
         header: box('#header'), hero: box('.hero'), sections: box('.fara-sections'),
-        about: box('.fara-about'), AI & Techs: box('.fara-AI & Techs'), ai: box('.fara-ai'),
+        about: box('.fara-about'), solutions: box('.fara-solutions'), ai: box('.fara-ai'),
         industries: box('.fara-industries'), footer: box('.fara-footer'),
         footerHeading: box('.fara-footer header'), footerBottom: box('.fara-footer-bottom'),
       },
