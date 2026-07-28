@@ -15,7 +15,7 @@ const legacyRuntimeFiles = [
 
 const pageRoutes = [
   'knowing-fara',
-  'AI & Tech',
+  'solution',
   'consulting',
   'industries',
   'case-studies',

@@ -17,7 +17,7 @@ export const appConfig = {
   },
   legacyRuntime: {
     iframeSource:
-      '/legacy/fort-energy/index.html?v=fog-sides-20260726-1',
+      '/legacy/fort-energy/index.html?v=route-key-20260728-1',
     iframeTitle: 'FARA',
     sandbox: 'allow-scripts allow-same-origin',
     readyTimeoutMs: 5000,
