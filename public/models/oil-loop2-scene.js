@@ -106,7 +106,52 @@ const applyOilPlacement = oil => {
   oil.position.z += oilPlacement.offset.z
 }
 
-const syncOilToCameraFrame = ({ app, oil, targetCenter, scratch }) => {
+const getCameraFramePoint = ({ camera, ndcX, ndcY, viewDepth, scratch }) => {
+  const position = camera.getWorldPosition(new scratch.Vector3())
+  const elements = camera.matrixWorld.elements
+  const right = new scratch.Vector3(elements[0], elements[1], elements[2])
+  const up = new scratch.Vector3(elements[4], elements[5], elements[6])
+  const forward = new scratch.Vector3(-elements[8], -elements[9], -elements[10])
+  const halfHeight =
+    viewDepth *
+    Math.tan((camera.fov * Math.PI) / 360) /
+    camera.zoom
+  const halfWidth = halfHeight * camera.aspect
+
+  return position
+    .add(forward.multiplyScalar(viewDepth))
+    .add(right.multiplyScalar(ndcX * halfWidth))
+    .add(up.multiplyScalar(ndcY * halfHeight))
+}
+
+const moveOilCenterTo = ({ oil, barrel, worldCenter, scratch }) => {
+  barrel.updateWorldMatrix(true, true)
+  const currentCenter = new scratch.Box3()
+    .setFromObject(barrel)
+    .getCenter(new scratch.Vector3())
+  const oilWorldPosition = oil.getWorldPosition(new scratch.Vector3())
+  const targetOilWorldPosition = oilWorldPosition.add(
+    worldCenter.clone().sub(currentCenter),
+  )
+
+  if (oil.parent?.worldToLocal) {
+    oil.position.copy(oil.parent.worldToLocal(targetOilWorldPosition))
+  } else {
+    oil.position.copy(targetOilWorldPosition)
+  }
+  oil.updateWorldMatrix(true, true)
+  barrel.updateWorldMatrix(true, true)
+}
+
+const syncOilToCameraFrame = ({
+  app,
+  oil,
+  barrel,
+  targetCenter,
+  scratch,
+  frameState,
+  shouldLockFrame,
+}) => {
   const renderCamera = app.webgl.camera
   const sourceCamera = app.webgl.camera.tertiaryCamera
   if (!renderCamera || !sourceCamera) return
@@ -116,24 +161,64 @@ const syncOilToCameraFrame = ({ app, oil, targetCenter, scratch }) => {
   renderCamera.updateMatrixWorld(true)
   renderCamera.updateProjectionMatrix()
 
+  if (frameState.ndcX !== null) {
+    moveOilCenterTo({
+      oil,
+      barrel,
+      worldCenter: getCameraFramePoint({
+        camera: renderCamera,
+        ndcX: frameState.ndcX,
+        ndcY: frameState.ndcY,
+        viewDepth: frameState.viewDepth,
+        scratch,
+      }),
+      scratch,
+    })
+    return
+  }
+
   const projected = targetCenter.clone().project(sourceCamera)
-  const framed = new scratch.Vector3(
-    projected.x + oilPlacement.offset.x,
-    projected.y + oilPlacement.offset.y,
-    0.92,
-  ).unproject(renderCamera)
-  const direction = framed
-    .clone()
-    .sub(renderCamera.getWorldPosition(new scratch.Vector3()))
-    .normalize()
-  const worldPosition = renderCamera
-    .getWorldPosition(new scratch.Vector3())
-    .add(direction.multiplyScalar(Math.abs(oilPlacement.offset.z)))
+  const ndcX = projected.x + oilPlacement.offset.x
+  const ndcY = projected.y + oilPlacement.offset.y
+  const worldPosition = getCameraFramePoint({
+    camera: renderCamera,
+    ndcX,
+    ndcY,
+    viewDepth: Math.abs(oilPlacement.offset.z),
+    scratch,
+  })
 
   if (oil.parent?.worldToLocal) {
     oil.position.copy(oil.parent.worldToLocal(worldPosition))
   } else {
     oil.position.copy(worldPosition)
+  }
+  oil.updateWorldMatrix(true, true)
+  barrel.updateWorldMatrix(true, true)
+
+  if (shouldLockFrame) {
+    const center = new scratch.Box3()
+      .setFromObject(barrel)
+      .getCenter(new scratch.Vector3())
+    const cameraCenter = center
+      .clone()
+      .applyMatrix4(renderCamera.matrixWorldInverse)
+    const screenCenter = center.clone().project(renderCamera)
+    frameState.ndcX = screenCenter.x
+    frameState.ndcY = screenCenter.y
+    frameState.viewDepth = Math.abs(cameraCenter.z)
+    moveOilCenterTo({
+      oil,
+      barrel,
+      worldCenter: getCameraFramePoint({
+        camera: renderCamera,
+        ndcX: frameState.ndcX,
+        ndcY: frameState.ndcY,
+        viewDepth: frameState.viewDepth,
+        scratch,
+      }),
+      scratch,
+    })
   }
 }
 
@@ -147,17 +232,20 @@ const lockOilScreenScale = ({ app, barrel, state, scratch }) => {
   const center = new scratch.Box3()
     .setFromObject(barrel)
     .getCenter(new scratch.Vector3())
-  const distance = camera
-    .getWorldPosition(new scratch.Vector3())
-    .distanceTo(center)
+  const viewDepth = Math.abs(
+    center.clone().applyMatrix4(camera.matrixWorldInverse).z,
+  )
 
-  if (!state.distance) {
-    state.distance = distance
+  if (!state.viewDepth) {
+    state.viewDepth = viewDepth
     state.scale = barrel.scale.clone()
   }
 
-  if (!state.distance || distance <= 0) return
-  barrel.scale.copy(state.scale).multiplyScalar(distance / state.distance)
+  if (!state.viewDepth || viewDepth <= 0) return
+  barrel.scale
+    .copy(state.scale)
+    .multiplyScalar(viewDepth / state.viewDepth)
+  barrel.updateWorldMatrix(true, true)
 }
 
 export const replaceFirstLoop2ModelWithOil = ({
@@ -181,8 +269,13 @@ export const replaceFirstLoop2ModelWithOil = ({
     .setFromObject(oldModel)
     .getCenter(new scratch.Vector3())
   const screenScaleState = {
-    distance: 0,
+    viewDepth: 0,
     scale: null,
+  }
+  const screenFrameState = {
+    ndcX: null,
+    ndcY: null,
+    viewDepth: 0,
   }
 
   const oil = new oldParent.constructor()
@@ -204,7 +297,16 @@ export const replaceFirstLoop2ModelWithOil = ({
   barrel.frustumCulled = false
   barrel.renderOrder = 10
   barrel.onBeforeRender = () => {
-    syncOilToCameraFrame({ app, oil, targetCenter, scratch })
+    const isVisible = fadeProxy.uniforms.uFade.value > 0.01
+    syncOilToCameraFrame({
+      app,
+      oil,
+      barrel,
+      targetCenter,
+      scratch,
+      frameState: screenFrameState,
+      shouldLockFrame: isVisible,
+    })
     lockOilScreenScale({
       app,
       barrel,
