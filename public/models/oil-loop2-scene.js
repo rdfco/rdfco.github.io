@@ -14,6 +14,10 @@ const oilPlacement = {
     y: -0.75,
     z: -0.2,
   },
+  screenAnchor: {
+    x: 0.129,
+    y: -0.242,
+  },
 }
 
 const getOilScene = app => {
@@ -177,13 +181,10 @@ const syncOilToCameraFrame = ({
     return
   }
 
-  const projected = targetCenter.clone().project(sourceCamera)
-  const ndcX = projected.x + oilPlacement.offset.x
-  const ndcY = projected.y + oilPlacement.offset.y
   const worldPosition = getCameraFramePoint({
     camera: renderCamera,
-    ndcX,
-    ndcY,
+    ndcX: oilPlacement.screenAnchor.x,
+    ndcY: oilPlacement.screenAnchor.y,
     viewDepth: Math.abs(oilPlacement.offset.z),
     scratch,
   })

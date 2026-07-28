@@ -1,6 +1,6 @@
 import { g as gsap } from '/_astro/index.Brfk6Bdo.js'
 import { createBlackoutTransition } from '/transitions/blackout-transition.js?v=fog-sides-20260726-1'
-import { replaceFirstLoop2ModelWithOil } from '/models/oil-loop2-scene.js?v=oil-scale-lock-20260728-1'
+import { replaceFirstLoop2ModelWithOil } from '/models/oil-loop2-scene.js?v=oil-screen-anchor-20260728-1'
 
 /* global document, window, ResizeObserver */
 
