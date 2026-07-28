@@ -151,17 +151,13 @@ const syncOilToCameraFrame = ({
   app,
   oil,
   barrel,
-  targetCenter,
   scratch,
   frameState,
   shouldLockFrame,
 }) => {
   const renderCamera = app.webgl.camera
-  const sourceCamera = app.webgl.camera.tertiaryCamera
-  if (!renderCamera || !sourceCamera) return
+  if (!renderCamera) return
 
-  sourceCamera.updateMatrixWorld(true)
-  sourceCamera.updateProjectionMatrix()
   renderCamera.updateMatrixWorld(true)
   renderCamera.updateProjectionMatrix()
 
@@ -265,10 +261,6 @@ export const replaceFirstLoop2ModelWithOil = ({
     Box3: oldModel.geometry.boundingBox.constructor,
     Vector3: oldModel.position.constructor,
   }
-  oldModel.updateWorldMatrix(true, true)
-  const targetCenter = new scratch.Box3()
-    .setFromObject(oldModel)
-    .getCenter(new scratch.Vector3())
   const screenScaleState = {
     viewDepth: 0,
     scale: null,
@@ -303,7 +295,6 @@ export const replaceFirstLoop2ModelWithOil = ({
       app,
       oil,
       barrel,
-      targetCenter,
       scratch,
       frameState: screenFrameState,
       shouldLockFrame: isVisible,
