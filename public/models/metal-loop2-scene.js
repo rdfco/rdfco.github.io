@@ -270,7 +270,7 @@ export const replaceLastLoop2ModelWithMetal = ({ app, holograms }) => {
   metalMesh.position.set(0, 0, 0)
   metalMesh.rotation.set(0, 0, 0)
   metalMesh.scale.set(1, 1, 1)
-  metalMesh.geometry = createStructuralEdgeGeometry(metalMesh.geometry, scratch)
+  metalMesh.geometry = metalMesh.geometry.clone()
   metalMesh.layers.mask = oldModel.layers.mask
   metalMesh.material = adaptMetalMaterial(metalMesh.material)
   metalMesh.frustumCulled = false
