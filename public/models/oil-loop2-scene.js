@@ -1,8 +1,11 @@
 const oilResourceKeys = ['oil', 'Oil']
+const getHologramColor = key =>
+  window.FARA_BACKGROUND_COLORS?.[key] ?? '#37b478'
 
 // Tune these values only. The visible mesh is the Barrel mesh from Oil.glb.
 const oilPlacement = {
-  color: '#00ff00',
+  color: getHologramColor('hologram'),
+  glowColor: getHologramColor('hologram'),
   scale: 0.42,
   offset: {
     x: 0.2,
@@ -10,9 +13,9 @@ const oilPlacement = {
     z: -8,
   },
   rotation: {
-    x: 0.45,
-    y: -0.75,
-    z: -0.2,
+    x: 1.0,
+    y: 1.0,
+    z: 1.0,
   },
 }
 
@@ -29,6 +32,101 @@ const getOilScene = app => {
 
 const getOilBarrel = app => getOilScene(app)?.getObjectByName?.('Barrel')
 
+const vectorFrom = (Vector3, array, index) =>
+  new Vector3(array[index * 3], array[index * 3 + 1], array[index * 3 + 2])
+
+const vertexKey = vector =>
+  `${vector.x.toFixed(5)},${vector.y.toFixed(5)},${vector.z.toFixed(5)}`
+
+const createStructuralEdgeGeometry = (sourceGeometry, scratch) => {
+  const position = sourceGeometry.attributes?.position
+  if (!position?.array) return sourceGeometry
+
+  const sourcePositions = position.array
+  const sourceIndex = sourceGeometry.index?.array
+  const faceCount = sourceIndex
+    ? sourceIndex.length / 3
+    : sourcePositions.length / 9
+  const edges = new Map()
+  const tempA = new scratch.Vector3()
+  const tempB = new scratch.Vector3()
+  const normal = new scratch.Vector3()
+
+  for (let face = 0; face < faceCount; face += 1) {
+    const indices = sourceIndex
+      ? [
+          sourceIndex[face * 3],
+          sourceIndex[face * 3 + 1],
+          sourceIndex[face * 3 + 2],
+        ]
+      : [face * 3, face * 3 + 1, face * 3 + 2]
+    const points = indices.map(index =>
+      vectorFrom(scratch.Vector3, sourcePositions, index),
+    )
+    normal
+      .subVectors(points[1], points[0])
+      .cross(tempA.subVectors(points[2], points[0]))
+      .normalize()
+
+    ;[[0, 1], [1, 2], [2, 0]].forEach(([start, end]) => {
+      const startPoint = points[start]
+      const endPoint = points[end]
+      const startKey = vertexKey(startPoint)
+      const endKey = vertexKey(endPoint)
+      const key = startKey < endKey
+        ? `${startKey}|${endKey}`
+        : `${endKey}|${startKey}`
+      const edge = edges.get(key)
+      if (edge) {
+        edge.normals.push(normal.clone())
+      } else {
+        edges.set(key, {
+          start: startPoint.clone(),
+          end: endPoint.clone(),
+          normals: [normal.clone()],
+        })
+      }
+    })
+  }
+
+  sourceGeometry.computeBoundingBox?.()
+  const size = sourceGeometry.boundingBox
+    ?.getSize(new scratch.Vector3())
+  const thickness = Math.max(size?.x ?? 1, size?.y ?? 1, size?.z ?? 1) * 0.003
+  const positions = []
+  const sharpEdgeLimit = Math.cos(0.55)
+  const fallback = new scratch.Vector3(0, 1, 0)
+  const fallbackAlt = new scratch.Vector3(1, 0, 0)
+
+  edges.forEach(edge => {
+    const [firstNormal, secondNormal] = edge.normals
+    if (secondNormal && firstNormal.dot(secondNormal) > sharpEdgeLimit) return
+
+    const direction = tempA.subVectors(edge.end, edge.start).normalize()
+    const side = tempB
+      .crossVectors(direction, Math.abs(direction.y) > 0.9 ? fallbackAlt : fallback)
+      .normalize()
+      .multiplyScalar(thickness)
+    const a = edge.start.clone().add(side)
+    const b = edge.start.clone().sub(side)
+    const c = edge.end.clone().add(side)
+    const d = edge.end.clone().sub(side)
+    positions.push(
+      a.x, a.y, a.z, b.x, b.y, b.z, c.x, c.y, c.z,
+      b.x, b.y, b.z, d.x, d.y, d.z, c.x, c.y, c.z,
+    )
+  })
+
+  const Geometry = sourceGeometry.constructor
+  const Attribute = position.constructor
+  const geometry = new Geometry()
+  geometry.setAttribute(
+    'position',
+    new Attribute(new Float32Array(positions), 3),
+  )
+  return geometry
+}
+
 const createOilFadeProxy = referenceMaterial => ({
   uniforms: {
     uFade: {
@@ -40,16 +138,20 @@ const createOilFadeProxy = referenceMaterial => ({
 const syncOilFade = (object, fadeProxy) => {
   const fade = fadeProxy.uniforms.uFade.value
   object.visible = true
-  if (object.material) object.material.opacity = fade
+  if (object.material) object.material.opacity = fade * 0.85
 }
 
-const adaptOilMaterial = sourceMaterial => {
+const createOilMaterial = (sourceMaterial, {
+  color = oilPlacement.color,
+  opacity = 1,
+  wireframe = true,
+} = {}) => {
   const Material = sourceMaterial.constructor
   const material = new Material({
-    color: oilPlacement.color,
-    wireframe: true,
+    color,
+    wireframe,
     transparent: true,
-    opacity: 1,
+    opacity,
     depthTest: false,
     depthWrite: false,
     toneMapped: false,
@@ -57,12 +159,15 @@ const adaptOilMaterial = sourceMaterial => {
 
   material.side = 2
   material.blending = 2
-  if (material.color?.set) material.color.set(oilPlacement.color)
-  if (material.emissive?.set) material.emissive.set(oilPlacement.color)
-  if ('emissiveIntensity' in material) material.emissiveIntensity = 2
+  if (material.color?.set) material.color.set(color)
+  if (material.emissive?.set) material.emissive.set(color)
+  if ('emissiveIntensity' in material) material.emissiveIntensity = wireframe ? 2 : 3
   material.needsUpdate = true
   return material
 }
+
+const adaptOilMaterial = sourceMaterial =>
+  createOilMaterial(sourceMaterial, { wireframe: false })
 
 const fitOilToTarget = (oil, target, scratch) => {
   oil.updateWorldMatrix(true, true)
@@ -199,6 +304,7 @@ export const replaceFirstLoop2ModelWithOil = ({
   barrel.position.set(0, 0, 0)
   barrel.rotation.set(0, 0, 0)
   barrel.scale.set(1, 1, 1)
+  barrel.geometry = createStructuralEdgeGeometry(barrel.geometry, scratch)
   barrel.layers.mask = oldModel.layers.mask
   barrel.material = adaptOilMaterial(barrel.material)
   barrel.frustumCulled = false
