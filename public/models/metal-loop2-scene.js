@@ -1,3 +1,5 @@
+/* global window */
+
 const metalResourceKeys = ['metal', 'Metal', 'metals', 'Metals']
 const metalTargetIndex = 1
 
@@ -32,83 +34,6 @@ const getMetalScene = app => {
 }
 
 const getMetalMesh = app => getMetalScene(app)?.getObjectByName?.('metal')
-
-const vectorFrom = (Vector3, array, index) =>
-  new Vector3(array[index * 3], array[index * 3 + 1], array[index * 3 + 2])
-
-const vertexKey = vector =>
-  `${vector.x.toFixed(5)},${vector.y.toFixed(5)},${vector.z.toFixed(5)}`
-
-const createStructuralEdgeGeometry = (sourceGeometry, scratch) => {
-  const position = sourceGeometry.attributes?.position
-  if (!position?.array) return sourceGeometry
-
-  const sourcePositions = position.array
-  const sourceIndex = sourceGeometry.index?.array
-  const faceCount = sourceIndex ? sourceIndex.length / 3 : sourcePositions.length / 9
-  const edges = new Map()
-  const tempA = new scratch.Vector3()
-  const tempB = new scratch.Vector3()
-  const normal = new scratch.Vector3()
-
-  for (let face = 0; face < faceCount; face += 1) {
-    const indices = sourceIndex
-      ? [sourceIndex[face * 3], sourceIndex[face * 3 + 1], sourceIndex[face * 3 + 2]]
-      : [face * 3, face * 3 + 1, face * 3 + 2]
-    const points = indices.map(index => vectorFrom(scratch.Vector3, sourcePositions, index))
-    normal.subVectors(points[1], points[0]).cross(tempA.subVectors(points[2], points[0])).normalize()
-
-    ;[[0, 1], [1, 2], [2, 0]].forEach(([start, end]) => {
-      const startPoint = points[start]
-      const endPoint = points[end]
-      const startKey = vertexKey(startPoint)
-      const endKey = vertexKey(endPoint)
-      const key = startKey < endKey ? `${startKey}|${endKey}` : `${endKey}|${startKey}`
-      const edge = edges.get(key)
-      if (edge) {
-        edge.normals.push(normal.clone())
-      } else {
-        edges.set(key, {
-          start: startPoint.clone(),
-          end: endPoint.clone(),
-          normals: [normal.clone()],
-        })
-      }
-    })
-  }
-
-  sourceGeometry.computeBoundingBox?.()
-  const size = sourceGeometry.boundingBox?.getSize(new scratch.Vector3())
-  const thickness = Math.max(size?.x ?? 1, size?.y ?? 1, size?.z ?? 1) * 0.003
-  const positions = []
-  const sharpEdgeLimit = Math.cos(0.55)
-  const fallback = new scratch.Vector3(0, 1, 0)
-  const fallbackAlt = new scratch.Vector3(1, 0, 0)
-
-  edges.forEach(edge => {
-    const [firstNormal, secondNormal] = edge.normals
-    if (secondNormal && firstNormal.dot(secondNormal) > sharpEdgeLimit) return
-    const direction = tempA.subVectors(edge.end, edge.start).normalize()
-    const side = tempB
-      .crossVectors(direction, Math.abs(direction.y) > 0.9 ? fallbackAlt : fallback)
-      .normalize()
-      .multiplyScalar(thickness)
-    const a = edge.start.clone().add(side)
-    const b = edge.start.clone().sub(side)
-    const c = edge.end.clone().add(side)
-    const d = edge.end.clone().sub(side)
-    positions.push(
-      a.x, a.y, a.z, b.x, b.y, b.z, c.x, c.y, c.z,
-      b.x, b.y, b.z, d.x, d.y, d.z, c.x, c.y, c.z,
-    )
-  })
-
-  const Geometry = sourceGeometry.constructor
-  const Attribute = position.constructor
-  const geometry = new Geometry()
-  geometry.setAttribute('position', new Attribute(new Float32Array(positions), 3))
-  return geometry
-}
 
 const createMetalTimelineProxy = referenceMaterial => ({
   uniforms: {

@@ -1,3 +1,5 @@
+/* global window */
+
 const oilResourceKeys = ['oil', 'Oil']
 const getHologramColor = key =>
   window.FARA_BACKGROUND_COLORS?.[key] ?? '#37b478'
