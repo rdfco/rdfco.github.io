@@ -5,6 +5,7 @@
   --fara-hero-subtitle-color: #fff;
   --fara-hero-title-shift-x: -0.8vw;
   --fara-hero-prefix-shift-x: 1vw;
+  --fara-hero-phrase-right: clamp(1.5rem, 7vw, 9rem);
   position: absolute !important;
   inset: 0 !important;
   grid-column: 1 / -1 !important;
@@ -16,6 +17,7 @@
   max-width: none !important;
   height: 100% !important;
   padding: 0 2rem !important;
+  overflow: hidden;
   color: var(--fara-hero-title-color);
   text-align: center;
 }
@@ -47,10 +49,12 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 75%;
+  right: var(--fara-hero-phrase-right);
+  left: auto;
   display: flex;
   align-items: center;
-  width: 38%;
+  width: min(38rem, calc(48% - var(--fara-hero-phrase-right)));
+  min-width: 0;
   padding-left: 0;
   box-sizing: border-box;
   text-align: left;

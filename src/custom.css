@@ -13,6 +13,19 @@
 @import './styles/responsive.css';
 @import './styles/content-pages.css';
 
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+@supports not (overflow-x: clip) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+}
+
 /* The mirrored document must never reveal its source content before FARA customization succeeds. */
 html:not([data-fara-ready='true']) body { visibility: hidden !important; }
 
