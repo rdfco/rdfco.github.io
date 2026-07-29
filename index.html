@@ -5,8 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/Fara-Logo0Small.png?v=2" />
     <title>FARA</title>
+    <style>
+      html,
+      body,
+      #root,
+      .legacy-shell,
+      .legacy-site {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+      html,
+      body,
+      #root,
+      .legacy-shell {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+      .legacy-shell {
+        position: relative;
+        overflow: hidden;
+        background: #071d2e;
+      }
+      .legacy-site {
+        display: block;
+        border: 0;
+        opacity: 0;
+        transition: opacity 180ms ease;
+      }
+      .legacy-shell[data-status='ready'] .legacy-site {
+        opacity: 1;
+      }
+      .site-gate {
+        position: absolute;
+        z-index: 2;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 2rem;
+        color: #fff;
+        background: #071d2e;
+        font: 500 1rem/1.5 sans-serif;
+        text-align: center;
+      }
+      .legacy-shell[data-status='ready'] .site-gate {
+        display: none;
+      }
+      .site-loader {
+        display: grid;
+        place-items: center;
+      }
+      .site-loader__spinner {
+        width: 3rem;
+        height: 3rem;
+        border: 2px solid rgba(255, 255, 255, .2);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: fara-loader-spin 800ms linear infinite;
+      }
+      @keyframes fara-loader-spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
   </head>
   <body>
+    <script>
+      window.__FARA_SEND_INITIAL_ROUTE__ = frame => {
+        frame?.contentWindow?.postMessage(
+          { type: 'fara:set-route', pathname: `${window.location.pathname}${window.location.search}` },
+          window.location.origin,
+        )
+      }
+    </script>
     <div id="root">
       <div class="legacy-shell" data-status="loading">
         <div class="site-gate" role="status">
@@ -19,18 +89,26 @@
           title="FARA"
           src="/legacy/fort-energy/index.html?v=home-load-20260729-1"
           sandbox="allow-scripts allow-same-origin"
+          onload="window.__FARA_SEND_INITIAL_ROUTE__(this)"
         ></iframe>
       </div>
     </div>
-    <script>
+    <script type="module">
+      let faraAppBooted = false
+      const bootFaraApp = () => {
+        if (faraAppBooted) return
+        faraAppBooted = true
+        import('/src/main.jsx')
+      }
       window.addEventListener('message', event => {
         if (event.origin !== window.location.origin || event.data?.type !== 'fara:ready') return
         const shell = document.querySelector('.legacy-shell')
         if (shell) shell.dataset.status = 'ready'
+        bootFaraApp()
       })
+      window.setTimeout(bootFaraApp, 5000)
     </script>
     <!-- Edit this file to recolor the WebGL background. It must load before React. -->
     <script src="/background-colors.js"></script>
-    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
