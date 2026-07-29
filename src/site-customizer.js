@@ -26,6 +26,10 @@ const refreshScrollSystems = () => {
 
 const refreshSite = () => {
   if (requestedPath === appliedPath && document.documentElement.dataset.faraReady === 'true') return
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', refreshSite, { once: true })
+    return
+  }
   appliedPath = requestedPath
   window.dispatchEvent(new CustomEvent('fara:close-menu'))
   const navigationItem = getNavigationItem(requestedPath || '/')
