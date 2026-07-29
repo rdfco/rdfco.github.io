@@ -10,7 +10,9 @@ export default function LegacySite() {
   const routeSyncRef = useRef()
   const frameRef = useRef()
   const lastRouteRef = useRef()
-  const [status, setStatus] = useState('loading')
+  const [status, setStatus] = useState(
+    () => document.querySelector('.legacy-shell')?.dataset.status || 'loading',
+  )
 
   useLayoutEffect(() => () => {
     window.clearTimeout(timerRef.current)

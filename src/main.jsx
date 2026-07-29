@@ -1,6 +1,11 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import { App } from './app/App'
 import './styles.css'
 const root=document.getElementById('root');if(!root)throw new Error('Missing #root application mount')
-ReactDOM.createRoot(root).render(<React.StrictMode><App /></React.StrictMode>)
+const app = <React.StrictMode><App /></React.StrictMode>
+if (root.hasChildNodes()) {
+  hydrateRoot(root, app)
+} else {
+  createRoot(root).render(app)
+}

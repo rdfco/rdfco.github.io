@@ -7,7 +7,28 @@
     <title>FARA</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="legacy-shell" data-status="loading">
+        <div class="site-gate" role="status">
+          <div class="site-loader" aria-label="Loading">
+            <span class="site-loader__spinner" aria-hidden="true"></span>
+          </div>
+        </div>
+        <iframe
+          class="legacy-site"
+          title="FARA"
+          src="/legacy/fort-energy/index.html?v=home-load-20260729-1"
+          sandbox="allow-scripts allow-same-origin"
+        ></iframe>
+      </div>
+    </div>
+    <script>
+      window.addEventListener('message', event => {
+        if (event.origin !== window.location.origin || event.data?.type !== 'fara:ready') return
+        const shell = document.querySelector('.legacy-shell')
+        if (shell) shell.dataset.status = 'ready'
+      })
+    </script>
     <!-- Edit this file to recolor the WebGL background. It must load before React. -->
     <script src="/background-colors.js"></script>
     <script type="module" src="/src/main.jsx"></script>
