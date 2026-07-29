@@ -88,7 +88,6 @@ const routes = [
   ['solution', '/solution'],
   ['consulting', '/consulting'],
   ['industries', '/industries'],
-  ['case-studies', '/case-studies'],
   ['think-together', '/think-together'],
   ['home', '/'],
   ['knowing-fara', '/knowing-fara'],
@@ -151,7 +150,7 @@ if (
   state.headerOpen ||
   state.expanded !== 'false' ||
   state.scrollLocked ||
-  state.activeLabel !== 'Knowing FARA' ||
+  state.activeLabel !== 'Knowing Fara' ||
   !state.pageVisible ||
   !state.soundDisabled ||
   state.playingAudio ||

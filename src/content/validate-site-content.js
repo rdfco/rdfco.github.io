@@ -6,6 +6,8 @@ export const validateSiteData = data => {
   const errors = []
   requiredText(data?.seo?.title, 'seo.title', errors)
   requiredText(data?.hero?.title, 'hero.title', errors)
+  requiredText(data?.hero?.staticPrefix, 'hero.staticPrefix', errors)
+  if (!Array.isArray(data?.hero?.items)) errors.push('hero.items must be an array')
   requiredText(data?.introduction?.title, 'introduction.title', errors)
   requiredText(data?.introduction?.body, 'introduction.body', errors)
   if (!Array.isArray(data?.navigation)) errors.push('navigation must be an array')

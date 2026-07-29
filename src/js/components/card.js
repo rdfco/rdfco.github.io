@@ -9,7 +9,7 @@ const appendOptionalMedia = (card, media) => {
   card.appendChild(image)
 }
 
-export const createCard = ({ title, text, media }, { modifier = '', expandable = true } = {}) => {
+export const createCard = ({ title, text, media, buttonText = 'Read more about' }, { modifier = '', expandable = true } = {}) => {
   const card = createElement('article', { className: `fara-card ${modifier}`.trim() })
   const heading = createElement('h3', { text: title })
   const copy = createElement('p', { text })
@@ -23,7 +23,7 @@ export const createCard = ({ title, text, media }, { modifier = '', expandable =
     className: 'fara-expand',
     attributes: {
       type: 'button',
-      'aria-label': `Read more about ${title}`,
+      'aria-label': `${buttonText} ${title}`,
       'aria-expanded': 'false',
     },
   })

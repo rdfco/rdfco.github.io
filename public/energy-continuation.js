@@ -1,9 +1,11 @@
 import { g as gsap } from '/_astro/index.Brfk6Bdo.js'
-import { createBlackoutTransition } from '/transitions/blackout-transition.js?v=fog-sides-20260726-1'
+import { createBlackoutTransition } from '/transitions/blackout-transition.js?v=home-refresh-20260729-3'
 import { replaceFirstLoop2ModelWithOil } from '/models/oil-loop2-scene.js?v=oil-screen-anchor-20260728-1'
 import { replaceLastLoop2ModelWithMetal } from '/models/metal-loop2-scene.js?v=metal-body-20260728-1'
 
 /* global document, window, ResizeObserver */
+
+window.__faraGsap = gsap
 
 const additionalChapterCount = 1
 const retryDelay = 100
@@ -380,16 +382,48 @@ class EnergyChapterSequence {
     this.cameraPosition = source.cameraPosition.clone()
     this.lookAt = source.cameralookAt.clone()
     this.rangeEnd = 0
+    this.industriesSection = null
     this.initializePersistentGrid()
     this.gridBasePosition = this.source.grid.position.clone()
     this.createInstances()
+    this.attachIndustriesSection()
     this.blackoutTransition = createBlackoutTransition({
+      gsap,
       getRanges: () => ({
         connector: this.connectors[0],
         instance: this.instances[0],
       }),
     })
     this.install()
+  }
+
+  attachIndustriesSection = () => {
+    const industries = document.querySelector('.fara-industries')
+    if (!industries) {
+      window.requestAnimationFrame(this.attachIndustriesSection)
+      return
+    }
+    if (this.industriesSection === industries) return
+
+    this.industriesSection = industries
+    industries.dataset.faraLoop2Industries = ''
+    this.stage.removeAttribute('aria-hidden')
+    this.stage.append(industries)
+    this.positionIndustriesAtMetal()
+  }
+
+  positionIndustriesAtMetal = () => {
+    const instance = this.instances[0]
+    if (!this.industriesSection || !instance?.start || !instance?.end) return
+
+    // The second Loop 2 hologram is metal.glb. Its existing GSAP fade starts
+    // at timeline progress 0.32, so the DOM copy is anchored to that same point.
+    const metalStartProgress = 0.32
+    const cycleLength = instance.end - instance.start
+    const offsetFromStageStart =
+      instance.start - this.source.scrollRange.end +
+      cycleLength * metalStartProgress
+    this.industriesSection.style.top = `${offsetFromStageStart}px`
   }
 
   initializePersistentGrid() {
@@ -517,6 +551,7 @@ class EnergyChapterSequence {
     this.stage.style.height = `${
       cursor - this.source.scrollRange.end
     }px`
+    this.positionIndustriesAtMetal()
   }
 
   setActive(instance, active) {

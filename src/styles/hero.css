@@ -24,24 +24,39 @@
   top: 50%;
   left: calc(50% + var(--fara-hero-title-shift-x));
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: clamp(2.5rem, 5vw, 6rem);
   align-items: center;
   width: min(76rem, 76%);
   transform: translate(-50%, -50%);
   font-family: "FARA Gotham";
-  font-size: clamp(4.5rem, 10vw, 10rem);
-  font-weight: 300;
+  font-size: clamp(5rem, 5.5vw, 5.5rem);
+  font-weight: 400;
   line-height: .9;
   letter-spacing: .04em;
   text-transform: none;
 }
-.hero .fara-hero-word { display: block; text-align: center; }
-.hero .fara-hero-word-1 { grid-column: 1; }
-.hero .fara-hero-word-2 { grid-column: 2; }
-.hero .fara-hero-word-3 { grid-column: 3; }
+.hero .fara-hero-prefix,
+.hero .fara-hero-phrase { display: block; white-space: nowrap; }
+.hero .fara-hero-prefix { grid-column: 1; transform: translateX(4vw); }
+.hero .fara-hero-phrase {
+  grid-column: 2;
+  width: 100%;
+  padding-left: 4vw;
+  box-sizing: border-box;
+  text-align: left;
+  will-change: opacity, transform;
+}
+.hero .fara-hero-phrase.is-split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding-left: 0;
+  text-align: center;
+}
+.hero .fara-hero-phrase.is-split > span { display: block; }
 .hero .fara-hero-copy p {
   position: absolute;
-  top: 68%;
+  top: 73%;
   left: 50%;
   width: min(48rem, calc(100% - 3rem));
   color: var(--fara-hero-subtitle-color);

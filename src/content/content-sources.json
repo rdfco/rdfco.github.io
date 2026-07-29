@@ -10,6 +10,21 @@
       ]
     },
     {
+      "path": "src/content/hero.json",
+      "ownership": "canonical-shared",
+      "consumers": [
+        "legacy-home-hero"
+      ]
+    },
+    {
+      "path": "src/content/industries.json",
+      "ownership": "canonical-shared",
+      "consumers": [
+        "legacy-home-industries",
+        "blackout-transition"
+      ]
+    },
+    {
       "path": "src/navbar/navigation.js",
       "ownership": "legacy-protected",
       "consumers": [

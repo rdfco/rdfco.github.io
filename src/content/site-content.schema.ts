@@ -25,6 +25,8 @@ export const siteContentSchema = z.object({
   sectionVisibility: z.record(z.string(), z.boolean()),
   hero: z.object({
     title: z.string().min(1),
+    staticPrefix: z.string().min(1),
+    items: z.array(z.string().min(1)).min(1),
     subtitle: z.string().min(1),
     scrollLabel: z.string(),
   }),
@@ -47,7 +49,11 @@ export const siteContentSchema = z.object({
     industries: z.array(cardSchema).min(1),
   }),
   sectionLabels: z.object({
-    industries: z.object({ title: z.string().min(1), subtitle: z.string().min(1) }),
+    industries: z.object({
+      title: z.string().min(1),
+      subtitle: z.string().min(1),
+      description: z.string().min(1),
+    }),
   }),
   cta: z.object({ label: z.string().min(1), href: z.string().min(1) }),
   footer: z.object({

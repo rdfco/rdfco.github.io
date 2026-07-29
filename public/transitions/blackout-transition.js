@@ -1,10 +1,10 @@
-/* global console, document */
+/* global console, document, fetch, window */
 
 // Visual scroll offsets only. These never modify connector/chapter timing.
-export const FOG_START_OFFSET = -1700
-export const FULL_BLACK_OFFSET = -900
+export const FOG_START_OFFSET = -2300
+export const FULL_BLACK_OFFSET = -2500
 export const REVEAL_START_OFFSET = -300
-export const REVEAL_END_OFFSET = -500
+export const REVEAL_END_OFFSET = -700
 
 /**
  * Visual-only timing controls. All offsets are scroll pixels and never alter
@@ -30,7 +30,7 @@ export const BLACKOUT_CONFIG = {
   fogSoftness: 26,
   fogDensity: 16,
   opacity: 1,
-  title: 'INDUSTRIES',
+  contentUrl: '/src/content/industries.json',
   debug: false,
 }
 
@@ -88,6 +88,7 @@ const createOverlay = () => {
     'inset:0',
     'width:100vw',
     'height:100vh',
+    'overflow:hidden',
     'background:#000',
     'display:grid',
     'place-items:center',
@@ -101,6 +102,21 @@ const createOverlay = () => {
     'will-change:filter,mask-image,opacity,transform',
     'contain:strict',
   ].join(';')
+  const content = document.createElement('div')
+  content.setAttribute('data-fara-blackout-content', '')
+  content.style.cssText = [
+    'display:flex',
+    'flex-direction:column',
+    'align-items:flex-start',
+    'gap:clamp(.8rem,1.8vh,1.6rem)',
+    'width:100%',
+    'max-width:94vw',
+    'text-align:left',
+    'color:#fff',
+    'opacity:1',
+    'will-change:transform,opacity',
+  ].join(';')
+  overlay.append(content)
   document.body.append(overlay)
   return overlay
 }
@@ -149,21 +165,81 @@ const createDebugBackground = (landmarks) => {
  * Creates one fixed DOM layer. Call update(scroll) from the host render tick.
  * getRanges must return the existing connector and instance objects.
  */
-export const createBlackoutTransition = ({ getRanges, config = BLACKOUT_CONFIG } = {}) => {
+export const createBlackoutTransition = ({ gsap, getRanges, config = BLACKOUT_CONFIG } = {}) => {
   if (typeof getRanges !== 'function') {
     throw new TypeError('Blackout transition requires getRanges().')
   }
 
   const overlay = createOverlay()
-  overlay.textContent = config.title
+  const content = overlay.querySelector('[data-fara-blackout-content]')
+  let titleTimeline = null
+  let titleReady = false
+  const buildTitleTimeline = () => {
+    if (!titleReady || !gsap) return
+    titleTimeline?.kill()
+    const lines = Array.from(content.children)
+    const enterDuration = 1.5
+    const referenceWidth = Math.max(1, lines[0]?.getBoundingClientRect().width || 1)
+    titleTimeline = gsap.timeline({ paused: true })
+    lines.forEach((line, index) => {
+      const lineWidth = line.getBoundingClientRect().width
+      const startX = window.innerWidth * 1.12
+      const endX = -(lineWidth + window.innerWidth * 0.08)
+      const exitDuration = 2.5 * Math.max(1, lineWidth / referenceWidth)
+      const start = index * enterDuration
+      titleTimeline
+        .fromTo(line, {
+          x: startX,
+          autoAlpha: 0,
+        }, {
+          x: 0,
+          autoAlpha: 1,
+          duration: enterDuration,
+          ease: 'power2.out',
+        }, start)
+        .to(line, {
+          x: endX * 0.72,
+          autoAlpha: 1,
+          duration: exitDuration * 0.72,
+          ease: 'power1.inOut',
+        }, start + enterDuration)
+        .to(line, {
+          x: endX,
+          autoAlpha: 0,
+          duration: exitDuration * 0.28,
+          ease: 'power2.in',
+        }, start + enterDuration + exitDuration * 0.72)
+    })
+    titleTimeline.progress(0)
+  }
+  fetch(config.contentUrl)
+    .then(response => {
+      if (!response.ok) throw new Error(`Unable to load blackout content: ${response.status}`)
+      return response.json()
+    })
+    .then(data => {
+      const title = document.createElement('strong')
+      title.textContent = data.title
+      title.style.cssText = 'font:700 clamp(3.8rem,7.9vw,8.2rem)/1.05 "FARA Gotham",sans-serif;white-space:nowrap;'
+      const subtitle = document.createElement('span')
+      subtitle.textContent = data.subtitle
+      subtitle.style.cssText = 'font:700 clamp(2.5rem,5.6vw,5.8rem)/1 "FARA Gotham",sans-serif;letter-spacing:.05em;white-space:nowrap;'
+      const description = document.createElement('p')
+      description.textContent = data.description
+      description.style.cssText = 'margin:0;font:700 clamp(1.25rem,2.5vw,2.6rem)/1.15 "FARA Gotham",sans-serif;letter-spacing:.03em;white-space:nowrap;'
+      content.replaceChildren(title, subtitle, description)
+      titleReady = true
+      buildTitleTimeline()
+    })
+    .catch(error => console.error(error))
+  window.addEventListener('resize', buildTitleTimeline, { passive: true })
   let lastClip = ''
   let lastMask = ''
   let lastOpacity = ''
-  let lastTitleVisible = false
   let lastDebugSignature = ''
   let lastDebugProgress = ''
 
-  const render = (visibleAmount, opacity, revealing = false, showTitle = false) => {
+  const render = (visibleAmount, opacity, revealing = false) => {
     const atEndpoint = visibleAmount <= 0 || visibleAmount >= 1
     let clip
 
@@ -189,10 +265,6 @@ export const createBlackoutTransition = ({ getRanges, config = BLACKOUT_CONFIG }
     }
     overlay.style.filter = atEndpoint || config.fogSoftness <= 0 ? 'none' : `blur(${config.fogSoftness}px)`
     overlay.style.transform = atEndpoint || config.fogSoftness <= 0 ? 'none' : 'scale(1.06)'
-    if (showTitle !== lastTitleVisible) {
-      overlay.style.color = showTitle ? '#fff' : 'transparent'
-      lastTitleVisible = showTitle
-    }
   }
 
   const update = (scroll) => {
@@ -227,9 +299,12 @@ export const createBlackoutTransition = ({ getRanges, config = BLACKOUT_CONFIG }
     )
     const visibleAmount = scroll < landmarks.revealStart ? curve(coverProgress) : 1 - curve(revealProgress)
     const opacity = clamp(config.opacity)
-    const showTitle = scroll >= landmarks.fullyBlack && scroll < landmarks.revealStart
+    const titleProgress = clamp(
+      (scroll - landmarks.fullyBlack) / (landmarks.revealStart - landmarks.fullyBlack),
+    )
+    titleTimeline?.progress(titleProgress, false)
 
-    render(visibleAmount, visibleAmount > 0 ? opacity : 0, scroll >= landmarks.revealStart, showTitle)
+    render(visibleAmount, visibleAmount > 0 ? opacity : 0, scroll >= landmarks.revealStart)
 
     if (config.debug) {
       const signature = landmarkSignature
@@ -256,6 +331,8 @@ export const createBlackoutTransition = ({ getRanges, config = BLACKOUT_CONFIG }
   }
 
   const destroy = () => {
+    window.removeEventListener('resize', buildTitleTimeline)
+    titleTimeline?.kill()
     overlay.remove()
   }
 

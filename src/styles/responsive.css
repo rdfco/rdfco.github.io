@@ -1,3 +1,7 @@
+@media (max-width: 1199px) {
+  .hero .fara-hero-copy h1 { font-size: clamp(2rem, 4.8vw, 4.8rem); }
+}
+
 @media (max-width: 1023px) {
   main #grid { min-height: 8000px; }
   .fara-sections { top: 1350px; gap: 600px; }
@@ -7,17 +11,33 @@
   .fara-ai,
   .fara-about { grid-template-columns: 1fr; gap: 3rem; }
   .fara-industries { margin-top: 0; }
+  .fara-industries[data-fara-loop2-industries] { right: 2rem; left: 2rem; }
+  .industries-grid .fara-card > h3,
+  .industries-grid .fara-card > p,
+  .industries-grid .fara-card > .fara-expand { transform: translateY(-3rem); }
 }
 
 @media (max-width: 767px) {
   .hero .fara-hero-copy.logo-dk { display: none !important; }
   .hero .fara-hero-copy.logo-mb { display: flex !important; }
   .hero .fara-hero-copy { padding: 0 1rem !important; }
-  .hero .fara-hero-copy h1 { top: 50%; width: calc(100% - 1rem); font-size: clamp(2.25rem, 12vw, 4.25rem); }
+  .hero .fara-hero-copy h1 {
+    top: 50%;
+    width: calc(100% - 1rem);
+    grid-template-columns: max-content minmax(0, 1fr);
+    column-gap: 1rem;
+    font-size: clamp(1.5rem, 6vw, 2.2rem);
+  }
+  .hero .fara-hero-prefix { transform: translateX(1vw); }
+  .hero .fara-hero-phrase { padding-left: 1rem; }
   .hero .fara-hero-copy p { top: 69%; text-align: center; }
   main #grid { min-height: 8600px; }
   .fara-sections { top: 1250px; right: 1.25rem; left: 1.25rem; gap: 600px; }
   .fara-industries { margin-top: 0; }
+  .fara-industries[data-fara-loop2-industries] { right: 1.25rem; left: 1.25rem; }
+  .industries-grid .fara-card > h3,
+  .industries-grid .fara-card > p,
+  .industries-grid .fara-card > .fara-expand { transform: translateY(-2rem); }
   .fara-row > header { margin-bottom: 2.5rem; }
   .fara-card-grid { gap: 3rem; }
   .fara-footer { padding-block: 3rem; }

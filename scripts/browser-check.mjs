@@ -22,19 +22,21 @@ try {
     navigationCount: document.querySelectorAll('#header .menu-links-w .nav-link').length,
     footer: Boolean(document.querySelector('#footer')),
     horizontalOverflow: document.documentElement.scrollWidth > innerWidth,
+    scrollWidth: document.documentElement.scrollWidth,
   }))
   await frame.click('.menu-cta')
   await new Promise(resolve => setTimeout(resolve, 400))
   const menuOpen = await frame.$eval('.montfort-menu', node => node.classList.contains('active'))
   await frame.click('.menu-cta')
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 })
-  await new Promise(resolve => setTimeout(resolve, 300))
+  await new Promise(resolve => setTimeout(resolve, 1_800))
   const mobile = await frame.evaluate(() => ({
     horizontalOverflow: document.documentElement.scrollWidth > innerWidth,
+    scrollWidth: document.documentElement.scrollWidth,
     footerWidth: document.querySelector('#footer')?.getBoundingClientRect().width,
     viewportWidth: innerWidth,
   }))
-  const pass = Boolean(desktop.title && desktop.navigationCount >= 7 && desktop.footer && menuOpen && !desktop.horizontalOverflow && !mobile.horizontalOverflow && mobile.footerWidth <= mobile.viewportWidth && errors.length === 0)
+  const pass = Boolean(desktop.title && desktop.navigationCount === 6 && desktop.footer && menuOpen && !desktop.horizontalOverflow && !mobile.horizontalOverflow && mobile.footerWidth <= mobile.viewportWidth && errors.length === 0)
   console.log(JSON.stringify({ pass, desktop, menuOpen, mobile, errors }, null, 2))
   if (!pass) process.exitCode = 1
 } finally {

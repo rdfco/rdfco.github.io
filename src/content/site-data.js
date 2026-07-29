@@ -1,4 +1,6 @@
 import { navigationItems } from '../navbar/navigation.js'
+import heroContent from './hero.json' with { type: 'json' }
+import industriesContent from './industries.json' with { type: 'json' }
 
 export const siteData = {
   seo: { title: 'FARA', description: 'AI, technology and innovation consulting' },
@@ -29,8 +31,10 @@ export const siteData = {
     industries: true
   },
   hero: {
-    title: 'FARA IS IN',
-    subtitle: 'We Provide AI & Technology Consulting And Results-Oriented AI & Tech.',
+    title: `${heroContent.staticPrefix} ${heroContent.items[0]}`,
+    staticPrefix: heroContent.staticPrefix,
+    items: heroContent.items,
+    subtitle: heroContent.subtitle,
     scrollLabel: '',
   },
   uiLabels: {
@@ -90,33 +94,17 @@ export const siteData = {
       subtitle: 'Smarter with AI. Better with Human',
       text: 'In the world of AI and emerging tech, speed to value is everything. Fara lives and breathes that. We help you cut through the hype and identify which technologies actually solve real business problems—not which ones look good on a slide. From generative AI and computer vision to predictive analytics and automation, we design practical, deployable AI & Techs that integrate with your existing systems, not replace them overnight. No black-box promises.'
     },
-    industries: [
-      {
-        title: 'Oil & Gas',
-        text: "In oil and gas, innovation isn't a luxury—it's survival. Fara understands that. We combine deep tech expertise with a pragmatic ear for your real-world challenges, helping you turn global best practices into strategies that actually pay off—upstream, midstream, and downstream. But we don't stop at advice. We give you deployable tools and data insights that improve asset performance and streamline operations—without disrupting your business. For leaders tired of pilots that go nowhere, Fara is the partner who makes complexity work for you, not against you."
-      },
-      {
-        title: 'Metal',
-        text: 'In metals, the margin between leading and lagging is razor-thin. Fara gets that. We help you spot innovation opportunities others miss, modernize legacy processes, and adopt smart technologies that actually work on the shop floor—not just in theory. No dusty reports. Just deployable AI & Techs and data-driven roadmaps that cut waste, lower energy costs, and improve yield.'
-      },
-      {
-        title: 'Manufacture',
-        text: 'In manufacturing, every second counts and every defect costs. Fara knows that. We help you uncover innovation opportunities hidden in your operations, modernize outdated processes, and adopt smart technologies that actually perform on the production line—not just in presentations. No theoretical fluff. Just practical AI & Techs and data-backed roadmaps that boost throughput, reduce downtime, and improve quality.'
-      },
-      {
-        title: 'Automotive',
-        text: "In automotive, the race isn't just about speed—it's about staying relevant. Fara understands that. We help you navigate the convergence of electrification, software-defined vehicles, and autonomous driving—turning industry megatrends into practical roadmaps that actually drive value. From accelerating R&D cycles and streamlining supply chain complexity to integrating AI-driven quality systems on the production line, we deliver AI & Techs that work in the real world, not just on the drawing board. Fara speaks your language—and helps you win the race that matters most."
-      },
-      {
-        title: 'Health',
-        text: "In healthcare, innovation isn't about being first; it’s about being right. FARA helps you harness the power of AI, data analytics, and digital health technologies to improve patient outcomes, streamline clinical workflows, and reduce operational burdens without compromising safety or trust. From predictive diagnostics and remote patient monitoring to intelligent scheduling and supply chain optimization, we deliver practical, deployable AI & Techs. No cookie-cutter approaches. Just tailored strategies and transparent tools that enhance decision-making, shorten diagnosis times, and lower care delivery costs."
-      }
-    ]
+    industries: industriesContent.items.map(item => ({
+      title: item.title,
+      text: item.body,
+      buttonText: industriesContent.buttonText,
+    }))
   },
   sectionLabels: {
     industries: {
-      title: 'Industries FARA Serves:',
-      subtitle: 'FARA Industries'
+      title: industriesContent.title,
+      subtitle: industriesContent.subtitle,
+      description: industriesContent.description
     }
   },
   cta: { label: 'Work with FARA', href: '#footer' },
