@@ -61,8 +61,8 @@ export const siteData = {
         text: 'We combine human expertise with AI-powered analytics to identify opportunities, reduce uncertainty, and support faster strategic decisions.'
       },
       {
-        title: 'Deployable AI & Techs',
-        text: 'Our work moves beyond presentations into tools, pilots, and operating AI & Techs designed to integrate with real organizational processes.'
+        title: 'Deployable solutions',
+        text: 'Our work moves beyond presentations into tools, pilots, and operating solutions designed to integrate with real organizational processes.'
       },
       {
         title: 'Industry-focused expertise',
@@ -92,7 +92,7 @@ export const siteData = {
     ai: {
       title: 'AI by FARA',
       subtitle: 'Smarter with AI. Better with Human',
-      text: 'In the world of AI and emerging tech, speed to value is everything. Fara lives and breathes that. We help you cut through the hype and identify which technologies actually solve real business problems—not which ones look good on a slide. From generative AI and computer vision to predictive analytics and automation, we design practical, deployable AI & Techs that integrate with your existing systems, not replace them overnight. No black-box promises.'
+      text: 'In the world of AI and emerging tech, speed to value is everything. Fara lives and breathes that. We help you cut through the hype and identify which technologies actually solve real business problems—not which ones look good on a slide. From generative AI and computer vision to predictive analytics and automation, we design practical, deployable solutions that integrate with your existing systems, not replace them overnight. No black-box promises.'
     },
     industries: industriesContent.items.map(item => ({
       title: item.title,
@@ -116,8 +116,8 @@ export const siteData = {
       'پتروشیمی مارون / پتروشیمی بندر امام',
       'توسعه آهن و فولاد گل‌گهر',
       'ایرانسل',
-      'استیل پاسارگاد',
-      'کرمان موتور'
+      'کرمان موتور',
+      'انستیتو پاستور'
     ]
   }
 }

@@ -13,13 +13,6 @@ const waitForGsap = () => new Promise(resolve => {
 
 const setPhraseContent = (element, value) => {
   element.dataset.phrase = value
-  element.classList.toggle('is-split', value === 'IS IN')
-  if (value === 'IS IN') {
-    const is = createElement('span', { text: 'IS' })
-    const inside = createElement('span', { text: 'IN' })
-    element.replaceChildren(is, inside)
-    return
-  }
   element.textContent = value
 }
 

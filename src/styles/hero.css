@@ -4,6 +4,7 @@
   --fara-hero-title-color: #fff;
   --fara-hero-subtitle-color: #fff;
   --fara-hero-title-shift-x: -0.8vw;
+  --fara-hero-prefix-shift-x: 1vw;
   position: absolute !important;
   inset: 0 !important;
   grid-column: 1 / -1 !important;
@@ -38,22 +39,23 @@
 }
 .hero .fara-hero-prefix,
 .hero .fara-hero-phrase { display: block; white-space: nowrap; }
-.hero .fara-hero-prefix { grid-column: 1; transform: translateX(4vw); }
+.hero .fara-hero-prefix {
+  grid-column: 1;
+  transform: translateX(var(--fara-hero-prefix-shift-x));
+}
 .hero .fara-hero-phrase {
-  grid-column: 2;
-  width: 100%;
-  padding-left: 4vw;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 75%;
+  display: flex;
+  align-items: center;
+  width: 38%;
+  padding-left: 0;
   box-sizing: border-box;
   text-align: left;
   will-change: opacity, transform;
 }
-.hero .fara-hero-phrase.is-split {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  padding-left: 0;
-  text-align: center;
-}
-.hero .fara-hero-phrase.is-split > span { display: block; }
 .hero .fara-hero-copy p {
   position: absolute;
   top: 73%;
