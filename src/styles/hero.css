@@ -4,8 +4,9 @@
   --fara-hero-title-color: #fff;
   --fara-hero-subtitle-color: #fff;
   --fara-hero-title-shift-x: -0.8vw;
-  --fara-hero-prefix-shift-x: 1vw;
-  --fara-hero-phrase-right: clamp(1.5rem, 7vw, 9rem);
+  --fara-hero-prefix-shift-x: -4vw;
+  --fara-hero-phrase-left: 64%;
+  --fara-hero-phrase-right: clamp(.75rem, 2vw, 2.5rem);
   position: absolute !important;
   inset: 0 !important;
   grid-column: 1 / -1 !important;
@@ -50,13 +51,14 @@
   top: 0;
   bottom: 0;
   right: var(--fara-hero-phrase-right);
-  left: 70%;
+  left: var(--fara-hero-phrase-left);
   display: flex;
   align-items: center;
-  width: min(38rem, calc(48% - var(--fara-hero-phrase-right)));
+  width: auto;
   min-width: 0;
   padding-left: 0;
   box-sizing: border-box;
+  font-size: clamp(1.4rem, 3.15vw, 3.35rem);
   text-align: left;
   will-change: opacity, transform;
 }

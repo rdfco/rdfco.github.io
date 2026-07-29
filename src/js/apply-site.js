@@ -2,7 +2,6 @@ import { setText } from './core/dom.js'
 import { renderHero } from './components/hero.js'
 import { renderSections } from './components/sections.js'
 import { renderNavigation } from './navigation.js'
-import { renderCurrentPage } from '../navbar/pages/render-page.js'
 
 const updateLegacyContent = siteData => {
   setText('main h2', siteData.introduction.title)
@@ -31,7 +30,19 @@ const updateLegacyContent = siteData => {
   }
 }
 
-export const applySiteData = (siteData, currentPage) => {
+const renderHomePage = page => {
+  const pageKey = page.data.key
+  const renderedPage = document.querySelector('.fara-route-page')
+  if (renderedPage?.dataset.faraPage === pageKey) return
+  const legacyMain = document.querySelector('body > main')
+  document.body.dataset.faraPage = pageKey
+  document.body.classList.remove('fara-content-route', 'fara-legal-route')
+  renderedPage?.remove()
+  legacyMain?.classList.remove('fara-legacy-main-suspended')
+  legacyMain?.removeAttribute('aria-hidden')
+}
+
+export const applySiteData = async (siteData, currentPage) => {
   document.title = siteData.seo.title
   document.querySelector('meta[name="description"]')?.setAttribute('content', siteData.seo.description)
   document.documentElement.classList.toggle('fara-sound-disabled', siteData.features?.sound === false)
@@ -45,6 +56,11 @@ export const applySiteData = (siteData, currentPage) => {
     renderSections(siteData)
     document.documentElement.dataset.faraStaticContentReady = 'true'
   }
-  renderCurrentPage(currentPage)
+  if (currentPage.data.key === 'home') {
+    renderHomePage(currentPage)
+  } else {
+    const { renderCurrentPage } = await import('../navbar/pages/render-page.js')
+    renderCurrentPage(currentPage)
+  }
   // Keep the legacy footer layout intact; it is customized separately.
 }

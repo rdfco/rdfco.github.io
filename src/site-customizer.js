@@ -2,7 +2,6 @@ import { siteData } from './data/siteData.js'
 import { validateSiteData } from './data/validateSiteData.js'
 import { applySiteData } from './js/apply-site.js'
 import { getNavigationItem } from './navbar/navigation.js'
-import { getPageForPath } from './navbar/pages/registry.js'
 import { setupNavigationEvents } from './navbar/navigation-events.js'
 
 validateSiteData(siteData)
@@ -24,7 +23,23 @@ const refreshScrollSystems = () => {
   window.lenis?.reset?.()
 }
 
-const refreshSite = () => {
+const getCurrentPage = async (path, navigationItem) => {
+  if (navigationItem.key === 'home') {
+    return {
+      data: {
+        key: 'home',
+        href: navigationItem.href,
+      },
+    }
+  }
+
+  const { getPageForPath } = await import('./navbar/pages/registry.js')
+  const currentPage = getPageForPath(path, navigationItem.key)
+  currentPage.data.href ||= navigationItem.href
+  return currentPage
+}
+
+const refreshSite = async () => {
   if (requestedPath === appliedPath && document.documentElement.dataset.faraReady === 'true') return
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', refreshSite, { once: true })
@@ -33,10 +48,9 @@ const refreshSite = () => {
   appliedPath = requestedPath
   window.dispatchEvent(new CustomEvent('fara:close-menu'))
   const navigationItem = getNavigationItem(requestedPath || '/')
-  const currentPage = getPageForPath(requestedPath || '/', navigationItem.key)
-  currentPage.data.href ||= navigationItem.href
+  const currentPage = await getCurrentPage(requestedPath || '/', navigationItem)
   window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
-  applySiteData(siteData, currentPage)
+  await applySiteData(siteData, currentPage)
   const header = document.querySelector('#header')
   header?.classList.remove('top', 'fade')
   if (header && requestedPath === '/') header.dataset.theme = 'light'
