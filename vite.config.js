@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { cpSync, mkdirSync } from 'node:fs'
+import { build as buildWithEsbuild } from 'esbuild'
+import { cpSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 const legacyRuntimeFiles = [
@@ -29,13 +30,28 @@ const pageRoutes = [
 function copyLegacyRuntime() {
   return {
     name: 'copy-legacy-runtime',
-    closeBundle() {
+    async closeBundle() {
       const sourceRoot = resolve(process.cwd(), 'src')
       const targetRoot = resolve(process.cwd(), 'dist', 'src')
+      const legacyIndex = resolve(process.cwd(), 'dist', 'legacy', 'fort-energy', 'index.html')
+      const bundledCustomizerPath = '/site-customizer.bundle.js?v=home-load-20260729-2'
       mkdirSync(targetRoot, { recursive: true })
       legacyRuntimeFiles.forEach(file => {
         cpSync(resolve(sourceRoot, file), resolve(targetRoot, file), { recursive: true })
       })
+      await buildWithEsbuild({
+        entryPoints: [resolve(sourceRoot, 'site-customizer.js')],
+        bundle: true,
+        format: 'esm',
+        target: 'es2020',
+        minify: true,
+        outfile: resolve(process.cwd(), 'dist', 'site-customizer.bundle.js'),
+      })
+      const legacyHtml = readFileSync(legacyIndex, 'utf8').replace(
+        /<script type="module" src="\/src\/site-customizer\.js[^"]*" data-astro-transition-persist="fara-customizer"><\/script>/,
+        `<script type="module" src="${bundledCustomizerPath}" data-astro-transition-persist="fara-customizer"></script>`,
+      )
+      writeFileSync(legacyIndex, legacyHtml)
       const appShell = resolve(process.cwd(), 'dist', 'index.html')
       cpSync(appShell, resolve(process.cwd(), 'dist', '404.html'))
       pageRoutes.forEach(route => {
