@@ -42,7 +42,8 @@ const resetHomeScrollState = () => {
 }
 
 const getCurrentPage = async (path, navigationItem) => {
-  if (navigationItem.key === 'home') {
+  const cleanPath = (path || '/').split('?')[0]
+  if (cleanPath === '/' && navigationItem.key === 'home') {
     return {
       data: {
         key: 'home',
@@ -58,7 +59,15 @@ const getCurrentPage = async (path, navigationItem) => {
 }
 
 const refreshSite = async () => {
-  if (requestedPath === appliedPath && document.documentElement.dataset.faraReady === 'true') return
+  if (requestedPath === appliedPath && document.documentElement.dataset.faraReady === 'true') {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    window.lenis?.scrollTo?.(0, { immediate: true, force: true })
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+      refreshScrollSystems()
+    })
+    return
+  }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', refreshSite, { once: true })
     return

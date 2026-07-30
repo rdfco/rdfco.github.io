@@ -51,6 +51,8 @@ window.addEventListener('click', event => {
   event.stopImmediatePropagation()
 
   const navigate = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    window.lenis?.scrollTo?.(0, { immediate: true, force: true })
     window.parent.postMessage(
       { type: 'fara:navigate', pathname: link.dataset.faraRoute },
       window.location.origin,

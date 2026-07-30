@@ -61,6 +61,10 @@ export default function LegacySite() {
         window.clearTimeout(timerRef.current)
         window.clearInterval(routeSyncRef.current)
         setStatus('ready')
+        frameRef.current?.contentWindow?.postMessage(
+          { type: appConfig.legacyRuntime.routeMessage, pathname: `${window.location.pathname}${window.location.search}` },
+          window.location.origin,
+        )
       }
     }
     window.addEventListener('message', onMessage)
@@ -115,7 +119,6 @@ export default function LegacySite() {
       return
     }
     const route = `${location.pathname}${location.search}`
-    lastRouteRef.current = route
     frameDocument.defaultView?.postMessage(
       { type: appConfig.legacyRuntime.routeMessage, pathname: route },
       window.location.origin,
