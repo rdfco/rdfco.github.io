@@ -1,7 +1,5 @@
 export const renderCurrentPage = page => {
   const pageKey = page.data.key
-  const staticRouteKeys = ['who-we-are', 'solution', 'how-we-help', 'who-we-serve', 'case-studies', 'think-together']
-  const isStaticRoute = staticRouteKeys.includes(pageKey)
   const isLegalRoute = pageKey === 'privacy-policy' || pageKey === 'terms-of-use'
   const isContentRoute = pageKey !== 'home' && !isLegalRoute
   const renderedPage = document.querySelector('.fara-route-page')

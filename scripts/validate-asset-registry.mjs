@@ -25,7 +25,7 @@ const extensionsByKind = {
   environment: new Set(['.exr']),
   font: new Set(['.woff2', '.otf']),
   audio: new Set(['.mp3']),
-  image: new Set(['.png']),
+  image: new Set(['.png', '.svg', '.webp']),
 }
 
 for (const asset of registry.assets) {
