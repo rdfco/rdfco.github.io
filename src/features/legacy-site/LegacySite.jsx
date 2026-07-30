@@ -13,11 +13,18 @@ export default function LegacySite() {
   const [status, setStatus] = useState(
     () => document.querySelector('.legacy-shell')?.dataset.status || 'loading',
   )
+  const isHomeRoute = location.pathname === '/'
 
   useLayoutEffect(() => () => {
     window.clearTimeout(timerRef.current)
     window.clearInterval(routeSyncRef.current)
   }, [])
+
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+  }, [location.pathname, location.search])
 
   useEffect(() => {
     const frameWindow = frameRef.current?.contentWindow
@@ -110,8 +117,8 @@ export default function LegacySite() {
   }
 
   return (
-    <div className="legacy-shell" data-status={status}>
-      {status !== 'ready' && (
+    <div className="legacy-shell" data-status={status} data-route-surface={isHomeRoute ? 'home' : 'content'}>
+      {isHomeRoute && status !== 'ready' && (
         <div className="site-gate" role={status === 'failed' ? 'alert' : 'status'}>
           {status === 'failed' ? (
             content.uiLabels.loadFailure

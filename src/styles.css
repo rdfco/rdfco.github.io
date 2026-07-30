@@ -1,2 +1,4 @@
 @import './styles/fonts.css';
+@import './styles/route-pages.css';
+@import './styles/content-pages.css';
 @import './features/legacy-site/legacy-site.css';

@@ -21,26 +21,18 @@
   .hero .fara-hero-copy.logo-dk { display: none !important; }
   .hero .fara-hero-copy.logo-mb { display: flex !important; }
   .hero .fara-hero-copy {
-    --fara-hero-prefix-shift-x: 1vw;
-    --fara-hero-phrase-left: 52%;
-    --fara-hero-phrase-right: 1rem;
+    --fara-hero-title-shift-x: 0vw;
     padding: 0 1rem !important;
   }
   .hero .fara-hero-copy h1 {
     top: 50%;
-    width: calc(100% - 1rem);
-    grid-template-columns: max-content minmax(0, 1fr);
-    column-gap: 1rem;
-    font-size: clamp(1.5rem, 6vw, 2.2rem);
+    width: min(28rem, calc(100% - 2rem));
+    font-size: clamp(1.5rem, 7vw, 2.2rem);
   }
   .hero .fara-hero-phrase {
-    right: var(--fara-hero-phrase-right);
-    left: var(--fara-hero-phrase-left);
-    width: auto;
-    padding-left: 0;
-    font-size: clamp(1rem, 4.6vw, 1.45rem);
+    width: min(34rem, calc(100% - 2rem));
+    font-size: clamp(.78rem, 3.6vw, 1.05rem);
   }
-  .hero .fara-hero-copy p { top: 69%; text-align: center; }
   main #grid { min-height: 8600px; }
   .fara-sections { top: 1250px; right: 1.25rem; left: 1.25rem; gap: 600px; }
   .fara-industries { margin-top: 0; }

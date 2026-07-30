@@ -1,6 +1,79 @@
 .fara-content-route {
   background: #fff;
 }
+.montfort-menu,
+.montfort-menu *,
+.montfort-menu .grid-nav .nav-link,
+.montfort-menu .grid-nav .nav-link:hover,
+.montfort-menu .grid-nav .nav-link:focus-visible,
+.montfort-menu .grid-terms a,
+.fara-overlay-close,
+.fara-overlay-close p,
+#footer,
+#footer *,
+#footer [data-theme="light"],
+#footer [data-theme="light"] *,
+#footer a,
+#footer p,
+#footer h2,
+#footer span {
+  color: #111 !important;
+}
+.montfort-menu svg,
+.montfort-menu svg *,
+.fara-overlay-close svg,
+.fara-overlay-close svg *,
+#footer svg,
+#footer svg * {
+  fill: #111 !important;
+  stroke: #111 !important;
+}
+.montfort-menu .grid-nav .nav-link .svg-container,
+.fara-overlay-close .dot {
+  background: #111 !important;
+}
+.montfort-menu .grid-nav .nav-link .svg-container {
+  display: grid !important;
+  width: 40px !important;
+  height: 40px !important;
+  place-items: center !important;
+  box-sizing: border-box !important;
+  color: #111 !important;
+  background: transparent !important;
+  border: 1px solid #111 !important;
+}
+.montfort-menu .grid-nav .nav-link .svg-container svg {
+  display: block !important;
+}
+.fara-content-route #footer,
+.fara-content-route #footer *,
+.fara-content-route #footer [data-theme="light"],
+.fara-content-route #footer [data-theme="light"] *,
+.fara-content-route #footer a,
+.fara-content-route #footer p,
+.fara-content-route #footer h2,
+.fara-content-route #footer span {
+  color: #111 !important;
+}
+.fara-content-route #footer svg,
+.fara-content-route #footer svg * {
+  fill: #111 !important;
+  stroke: #111 !important;
+}
+html.fara-menu-open .cursor {
+  display: none !important;
+}
+body:not([data-fara-page="home"]) #footer,
+body:not([data-fara-page="home"]) #footer *,
+.fara-content-route .fara-route-page,
+.fara-content-route .fara-route-page * {
+  color: #111 !important;
+}
+.fara-content-route #footer svg,
+.fara-content-route #footer svg * {
+  fill: #111 !important;
+  stroke: #111 !important;
+}
 .fara-content-route::before {
   position: fixed;
   z-index: 0;
@@ -10,26 +83,34 @@
   content: '';
 }
 .fara-content-route #canvas-wrapper,
+.fara-content-route #canvas-wrapper canvas,
+.fara-content-route .cursor {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 .fara-content-route .hero-transition,
 .fara-content-route .buttons-container {
+  display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
 }
 .fara-content-route #header .nav-link,
-.fara-content-route #header .menu-cta p { color: #2d628c !important; }
+.fara-content-route #header .menu-cta p { color: #111 !important; }
 .fara-content-route #header .menu-cta .dot,
-.fara-content-route #header .navbar { background: #2d628c !important; }
+.fara-content-route #header .navbar { background: #111 !important; }
 .fara-legacy-main-suspended {
   position: fixed !important;
   inset: 0 !important;
+  display: none !important;
   visibility: hidden !important;
   overflow: hidden !important;
   pointer-events: none !important;
 }
 .fara-content-route .fara-route-page {
   min-height: 100vh;
-  color: #2d628c;
+  color: #111;
   background: #fff;
   animation: fara-page-reveal 900ms cubic-bezier(.22, .72, .2, 1) both;
 }
@@ -66,7 +147,7 @@
 .fara-content-title {
   max-width: 62rem;
   margin: 0;
-  color: #2d628c;
+  color: #111;
   font-family: "FARA Gotham";
   font-size: clamp(2.75rem, 5.3vw, 5.5rem);
   font-weight: 300;
@@ -77,14 +158,14 @@
 .fara-legal-content {
   width: min(760px, 100%);
   margin: clamp(5rem, 9vw, 9rem) 0 0 auto;
-  color: #2d628c;
+  color: #111;
   font-size: clamp(.95rem, 1.15vw, 1.1rem);
   line-height: 1.85;
 }
 .fara-legal-intro { font-size: 1.08em; }
 .fara-legal-content h2 {
   margin: 4.5rem 0 1.25rem;
-  color: #2d628c;
+  color: #111;
   font-size: clamp(1.35rem, 2vw, 1.8rem);
   font-weight: 400;
 }
@@ -95,7 +176,7 @@
   gap: clamp(4rem, 7vw, 7rem) clamp(1.5rem, 4vw, 4.5rem);
   margin-top: clamp(6rem, 11vw, 11rem);
 }
-.fara-news-card { display: block; color: #2d628c; text-decoration: none; }
+.fara-news-card { display: block; color: #111; text-decoration: none; }
 .fara-news-media,
 .fara-article-hero {
   overflow: hidden;
@@ -122,7 +203,7 @@
 .fara-news-card:hover .fara-news-mark,
 .fara-news-card:focus-visible .fara-news-mark { transform: scale(1.07); }
 .fara-news-card time { display: block; margin-top: 1.5rem; color: #77a2c3; font-size: .86rem; letter-spacing: .08em; }
-.fara-news-card h2 { margin: .9rem 0 0; color: #2d628c; font-size: clamp(1rem, 1.35vw, 1.25rem); font-weight: 400; line-height: 1.5; }
+.fara-news-card h2 { margin: .9rem 0 0; color: #111; font-size: clamp(1rem, 1.35vw, 1.25rem); font-weight: 400; line-height: 1.5; }
 .fara-pagination { display: flex; gap: .75rem; align-items: center; justify-content: flex-start; margin-top: clamp(6rem, 10vw, 10rem); }
 .fara-pagination a,
 .fara-page-current { display: grid; min-width: 3rem; height: 3.25rem; padding: 0 1rem; place-items: center; color: #163e60; text-decoration: none; border: 1px solid #c8d9e7; border-radius: .6rem; }
@@ -134,10 +215,10 @@
 .fara-article-layout { display: grid; grid-template-columns: 12rem minmax(0, 1fr); gap: clamp(3rem, 8vw, 8rem); margin-top: clamp(5rem, 9vw, 9rem); }
 .fara-article-meta { display: flex; flex-direction: column; gap: .6rem; color: #78a0bf; font-size: .88rem; }
 .fara-article-meta time,
-.fara-article-meta strong { margin-bottom: 2rem; color: #2d628c; font-weight: 400; }
-.fara-article-body { max-width: 700px; color: #2d628c; font-size: clamp(.95rem, 1.15vw, 1.08rem); line-height: 1.75; }
+.fara-article-meta strong { margin-bottom: 2rem; color: #111; font-weight: 400; }
+.fara-article-body { max-width: 700px; color: #111; font-size: clamp(.95rem, 1.15vw, 1.08rem); line-height: 1.75; }
 .fara-article-lead { font-size: 1.12em; font-style: italic; }
-.fara-article-body h2 { margin: 4rem 0 1rem; color: #2d628c; font-size: 1.2rem; }
+.fara-article-body h2 { margin: 4rem 0 1rem; color: #111; font-size: 1.2rem; }
 .fara-article-body p { margin: 0 0 1.6rem; }
 @media (max-width: 64em) {
   .fara-news-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

@@ -2,10 +2,10 @@ export const appConfig = {
   routes: {
     legacy: [
       '/',
-      '/knowing-fara',
+      '/who-we-are',
       '/solution',
-      '/consulting',
-      '/industries',
+      '/how-we-help',
+      '/who-we-serve',
       '/case-studies',
       '/think-together',
       '/privacy-policy',

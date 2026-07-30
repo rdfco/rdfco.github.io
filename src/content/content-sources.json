@@ -40,10 +40,10 @@
       ]
     },
     {
-      "path": "src/navbar/pages/knowing-fara/data.json",
+      "path": "src/navbar/pages/who-we-are/data.json",
       "ownership": "legacy-protected",
       "consumers": [
-        "legacy-knowing-fara-route"
+        "who-we-are-route"
       ]
     },
     {
@@ -54,14 +54,14 @@
       ]
     },
     {
-      "path": "src/navbar/pages/consulting/data.json",
+      "path": "src/navbar/pages/how-we-help/data.json",
       "ownership": "legacy-protected",
       "consumers": [
         "legacy-consulting-route"
       ]
     },
     {
-      "path": "src/navbar/pages/industries/data.json",
+      "path": "src/navbar/pages/who-we-serve/data.json",
       "ownership": "legacy-protected",
       "consumers": [
         "legacy-industries-route"

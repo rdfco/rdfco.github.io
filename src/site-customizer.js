@@ -3,6 +3,8 @@ import { validateSiteData } from './data/validateSiteData.js'
 import { applySiteData } from './js/apply-site.js'
 import { getNavigationItem } from './navbar/navigation.js'
 import { setupNavigationEvents } from './navbar/navigation-events.js'
+import './styles/route-pages.css'
+import './styles/content-pages.css'
 
 validateSiteData(siteData)
 
@@ -21,6 +23,22 @@ const refreshScrollSystems = () => {
   window.ScrollTrigger?.refresh?.()
   window.lenis?.resize?.()
   window.lenis?.reset?.()
+}
+
+const resetHomeScrollState = () => {
+  document.documentElement.scrollTop = 0
+  document.body.scrollTop = 0
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  window.lenis?.scrollTo?.(0, { immediate: true, force: true })
+  window.lenis?.stop?.()
+  window.lenis?.resize?.()
+  window.ScrollTrigger?.getAll?.().forEach(trigger => {
+    trigger.scroll?.(0)
+    trigger.update?.(true)
+  })
+  window.ScrollTrigger?.refresh?.(true)
+  window.ScrollTrigger?.update?.(true)
+  window.lenis?.start?.()
 }
 
 const getCurrentPage = async (path, navigationItem) => {
@@ -49,16 +67,21 @@ const refreshSite = async () => {
   window.dispatchEvent(new CustomEvent('fara:close-menu'))
   const navigationItem = getNavigationItem(requestedPath || '/')
   const currentPage = await getCurrentPage(requestedPath || '/', navigationItem)
-  window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  if (currentPage.data.key === 'home') resetHomeScrollState()
+  else window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   await applySiteData(siteData, currentPage)
   const header = document.querySelector('#header')
   header?.classList.remove('top', 'fade')
   if (header && requestedPath === '/') header.dataset.theme = 'light'
   window.requestAnimationFrame(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    if (currentPage.data.key === 'home') resetHomeScrollState()
+    else window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
     header?.classList.remove('top', 'fade')
     refreshScrollSystems()
-    window.requestAnimationFrame(refreshScrollSystems)
+    window.requestAnimationFrame(() => {
+      if (currentPage.data.key === 'home') resetHomeScrollState()
+      refreshScrollSystems()
+    })
   })
   if (requestedPath !== null) {
     document.documentElement.dataset.faraReady = 'true'

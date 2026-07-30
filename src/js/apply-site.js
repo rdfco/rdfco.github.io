@@ -33,13 +33,15 @@ const updateLegacyContent = siteData => {
 const renderHomePage = page => {
   const pageKey = page.data.key
   const renderedPage = document.querySelector('.fara-route-page')
-  if (renderedPage?.dataset.faraPage === pageKey) return
   const legacyMain = document.querySelector('body > main')
   document.body.dataset.faraPage = pageKey
   document.body.classList.remove('fara-content-route', 'fara-legal-route')
   renderedPage?.remove()
   legacyMain?.classList.remove('fara-legacy-main-suspended')
   legacyMain?.removeAttribute('aria-hidden')
+  document.querySelector('#canvas-wrapper')?.removeAttribute('aria-hidden')
+  document.querySelector('.hero-transition')?.removeAttribute('aria-hidden')
+  document.querySelector('.buttons-container')?.removeAttribute('aria-hidden')
 }
 
 export const applySiteData = async (siteData, currentPage) => {

@@ -22,6 +22,14 @@ body,
   background: #071d2e;
 }
 
+.legacy-shell[data-route-surface='content'] {
+  background: #fff;
+}
+
+.legacy-shell[data-route-surface='content'] .legacy-site {
+  opacity: 1;
+}
+
 .legacy-site {
   display: block;
   border: 0;

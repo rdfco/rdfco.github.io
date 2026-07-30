@@ -3,10 +3,7 @@
 .hero .fara-hero-copy {
   --fara-hero-title-color: #fff;
   --fara-hero-subtitle-color: #fff;
-  --fara-hero-title-shift-x: -0.8vw;
-  --fara-hero-prefix-shift-x: -4vw;
-  --fara-hero-phrase-left: 64%;
-  --fara-hero-phrase-right: clamp(.75rem, 2vw, 2.5rem);
+  --fara-hero-title-shift-x: -4vw;
   position: absolute !important;
   inset: 0 !important;
   grid-column: 1 / -1 !important;
@@ -27,53 +24,39 @@
   position: absolute;
   top: 50%;
   left: calc(50% + var(--fara-hero-title-shift-x));
-  display: grid;
-  grid-template-columns: max-content minmax(0, 1fr);
-  column-gap: clamp(2.5rem, 5vw, 6rem);
+  display: flex;
   align-items: center;
-  width: min(76rem, 76%);
+  justify-content: space-between;
+  width: min(72rem, 60%);
   transform: translate(-50%, -50%);
   font-family: "FARA Gotham";
-  font-size: clamp(5rem, 5.5vw, 5.5rem);
-  font-weight: 400;
+  font-size: clamp(7.4rem, 7.8vw, 9.4rem);
+  font-weight: 300;
   line-height: .9;
   letter-spacing: .04em;
   text-transform: none;
 }
-.hero .fara-hero-prefix,
+.hero .fara-hero-title-word,
 .hero .fara-hero-phrase { display: block; white-space: nowrap; }
-.hero .fara-hero-prefix {
-  grid-column: 1;
-  transform: translateX(var(--fara-hero-prefix-shift-x));
-}
 .hero .fara-hero-phrase {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  right: var(--fara-hero-phrase-right);
-  left: var(--fara-hero-phrase-left);
+  top: 73%;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
-  width: auto;
+  justify-content: center;
+  width: min(48rem, calc(100% - 3rem));
   min-width: 0;
   padding-left: 0;
   box-sizing: border-box;
-  font-size: clamp(1.4rem, 3.15vw, 3.35rem);
-  text-align: left;
-  will-change: opacity, transform;
-}
-.hero .fara-hero-copy p {
-  position: absolute;
-  top: 73%;
-  left: 50%;
-  width: min(48rem, calc(100% - 3rem));
   color: var(--fara-hero-subtitle-color);
-  transform: translateX(-50%);
-  max-width: 48rem;
-  margin-top: 0;
+  margin: 0 auto;
   font-family: "FARA Gotham";
-  font-size: clamp(.75rem, 1.15vw, 1.15rem);
+  font-size: clamp(.95rem, 1.25vw, 1.25rem);
   line-height: 1.7;
-  letter-spacing: .12em;
+  letter-spacing: .16em;
+  text-align: center;
   text-transform: uppercase;
+  will-change: opacity, transform;
 }

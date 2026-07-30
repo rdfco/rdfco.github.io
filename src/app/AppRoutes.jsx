@@ -4,6 +4,9 @@ import LegacySite from '../features/legacy-site/LegacySite'
 
 export function AppRoutes() {
   return <Routes>
+    <Route path="/knowing-fara" element={<Navigate to="/who-we-are" replace />} />
+    <Route path="/consulting" element={<Navigate to="/how-we-help" replace />} />
+    <Route path="/industries" element={<Navigate to="/who-we-serve" replace />} />
     {appConfig.routes.legacy.map(path => (
       <Route key={path} path={path} element={<LegacySite />} />
     ))}

@@ -16,6 +16,18 @@ const setPhraseContent = (element, value) => {
   element.textContent = value
 }
 
+const createHeroTitle = siteData => {
+  const title = createElement('h1', { attributes: { 'aria-label': siteData.hero.title } })
+  ;['FARA', 'IS', 'IN'].forEach((word, index) => {
+    title.append(createElement('span', {
+      className: `fara-hero-title-word fara-hero-title-word-${index + 1}`,
+      text: word,
+      attributes: { 'aria-hidden': 'true' },
+    }))
+  })
+  return title
+}
+
 const replaceWithImage = (current, source, alt, className) => {
   if (!current || !source) return false
   const image = createElement('img', {
@@ -36,19 +48,12 @@ export const renderHero = async siteData => {
 
     const copy = createElement('div', { className: `${logo.className.baseVal || logo.className} fara-hero-copy` })
     const items = siteData.hero.items
-    const title = createElement('h1', { attributes: { 'aria-label': siteData.hero.title } })
-    const prefix = createElement('span', {
-      className: 'fara-hero-prefix',
-      text: siteData.hero.staticPrefix,
-      attributes: { 'aria-hidden': 'true' },
-    })
     const phrase = createElement('span', {
       className: 'fara-hero-phrase',
       attributes: { 'aria-hidden': 'true' },
     })
     setPhraseContent(phrase, items[0])
-    title.append(prefix, phrase)
-    copy.append(title, createElement('p', { text: siteData.hero.subtitle }))
+    copy.append(createHeroTitle(siteData), phrase)
     logo.replaceWith(copy)
 
     const timeline = gsap.timeline({ repeat: -1 })
