@@ -10,10 +10,13 @@ export default function LegacySite() {
   const routeSyncRef = useRef()
   const frameRef = useRef()
   const lastRouteRef = useRef()
+  const previousPathRef = useRef(location.pathname)
+  const [homeResetKey, setHomeResetKey] = useState(0)
   const [status, setStatus] = useState(
     () => document.querySelector('.legacy-shell')?.dataset.status || 'loading',
   )
   const isHomeRoute = location.pathname === '/'
+  const frameKey = isHomeRoute ? `home-${homeResetKey}` : 'content'
 
   useLayoutEffect(() => () => {
     window.clearTimeout(timerRef.current)
@@ -25,6 +28,15 @@ export default function LegacySite() {
     document.documentElement.scrollTop = 0
     document.body.scrollTop = 0
   }, [location.pathname, location.search])
+
+  useEffect(() => {
+    const previousPath = previousPathRef.current
+    previousPathRef.current = location.pathname
+    if (location.pathname === '/' && previousPath !== '/') {
+      setHomeResetKey(key => key + 1)
+      setStatus('loading')
+    }
+  }, [location.pathname])
 
   useEffect(() => {
     const frameWindow = frameRef.current?.contentWindow
@@ -130,6 +142,7 @@ export default function LegacySite() {
         </div>
       )}
       <iframe
+        key={frameKey}
         ref={frameRef}
         className="legacy-site"
         title={appConfig.legacyRuntime.iframeTitle}
