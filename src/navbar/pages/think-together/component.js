@@ -82,7 +82,9 @@ const render = document => {
 
   const submit = document.createElement('button')
   submit.type = 'submit'
-  submit.textContent = 'Submit'
+  const submitLabel = document.createElement('span')
+  submitLabel.textContent = 'Submit'
+  submit.append(submitLabel)
 
   form.append(inquiry, grid, message, submit)
 

@@ -27,6 +27,12 @@
         overflow: hidden;
         background: #071d2e;
       }
+      .legacy-shell[data-route-surface='content'] {
+        background: #fff;
+      }
+      .legacy-shell[data-route-surface='content'] .legacy-site {
+        opacity: 1;
+      }
       .legacy-site {
         display: block;
         border: 0;
@@ -69,7 +75,28 @@
     </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="legacy-shell" data-status="loading" data-route-surface="home">
+        <div class="site-gate" role="status">
+          <div class="site-loader" aria-label="Loading">
+            <span class="site-loader__spinner" aria-hidden="true"></span>
+          </div>
+        </div>
+        <iframe
+          class="legacy-site"
+          title="FARA"
+          src="/legacy/fort-energy/index.html?v=site-load-20260730-1"
+          sandbox="allow-scripts allow-same-origin"
+        ></iframe>
+      </div>
+    </div>
+    <script>
+      ;(() => {
+        const shell = document.querySelector('.legacy-shell')
+        if (!shell) return
+        shell.dataset.routeSurface = window.location.pathname === '/' ? 'home' : 'content'
+      })()
+    </script>
     <script type="module" src="/src/main.jsx"></script>
     <!-- Edit this file to recolor the WebGL background. It must load before React. -->
     <script src="/background-colors.js"></script>

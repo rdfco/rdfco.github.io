@@ -339,17 +339,26 @@
   resize: vertical;
 }
 .fara-think-form button[type='submit'] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   justify-self: start;
   min-width: 9rem;
+  min-height: 3rem;
   padding: 1rem 1.6rem;
   color: #fff;
-  font: 500 .85rem/1 "FARA Gotham";
+  font: 500 .85rem/1 "FARA Gotham", Arial, sans-serif;
   letter-spacing: .12em;
   text-transform: uppercase;
   cursor: default;
   background: #111;
   border: 1px solid #111;
   border-radius: 999px;
+}
+.fara-think-form button[type='submit'] span {
+  display: block;
+  color: #fff !important;
+  line-height: 1;
 }
 .fara-think-contact {
   display: grid;
