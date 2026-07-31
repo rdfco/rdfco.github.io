@@ -10,7 +10,7 @@ describe('application configuration', () => {
 
   it('keeps the protected Legacy runtime contract explicit', () => {
     expect(appConfig.legacyRuntime.iframeSource).toBe(
-      '/legacy/fort-energy/index.html?v=site-load-20260730-1',
+      '/legacy/fort-energy/index.html?v=oil-bg-sync-20260801-2',
     )
     expect(appConfig.legacyRuntime.readyTimeoutMs).toBe(5000)
     expect(appConfig.legacyRuntime.routeMessage).toBe('fara:set-route')

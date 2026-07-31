@@ -1,4 +1,4 @@
-/* global window */
+/* global window, document */
 
 const oilResourceKeys = ['oil', 'Oil']
 const getHologramColor = key =>
@@ -26,7 +26,6 @@ const oilPlacement = {
   barrelFacingFlip: Math.PI,
   barrelRollSpeed: 0.5,
   scrollRollMultiplier: 0.35,
-  backgroundSyncRollMultiplier: 0.9,
   visibleExtentScale: 0.85,
   fillOpacity: 0.18,
   glowOpacity: 0.05,
@@ -52,6 +51,8 @@ const vectorFrom = (Vector3, array, index) =>
 const vertexKey = vector =>
   `${vector.x.toFixed(5)},${vector.y.toFixed(5)},${vector.z.toFixed(5)}`
 
+// Kept as an inactive rendering experiment; the active Oil mesh remains unchanged.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createStructuralEdgeGeometry = (sourceGeometry, scratch) => {
   const position = sourceGeometry.attributes?.position
   if (!position?.array) return sourceGeometry
@@ -310,6 +311,7 @@ const addCapRing = ({
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createCleanBarrelFillGeometry = sourceGeometry => {
   const positions = []
   const segments = 72
@@ -328,6 +330,7 @@ const createCleanBarrelFillGeometry = sourceGeometry => {
   return createGeometry(sourceGeometry, positions)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createCleanBarrelDetailGeometry = sourceGeometry => {
   const positions = []
   const segments = 96
@@ -659,15 +662,10 @@ const createOilItem = ({ oilSource, oldModel, index }) => {
   const updateBarrelRoll = () => {
     const timeSeconds =
       (window.performance?.now?.() ?? Date.now()) * 0.001
-    const syncedBackgroundRoll =
-      (barrelRoll.userData.oilBackgroundSyncProgress ?? 0) *
-      Math.PI * 2 *
-      oilPlacement.backgroundSyncRollMultiplier
     barrelRoll.rotation.set(
       initialRotation.x,
       initialRotation.y +
         (barrelRoll.userData.oilPathRoll ?? 0) +
-        syncedBackgroundRoll +
         timeSeconds * oilPlacement.barrelRollSpeed,
       initialRotation.z,
     )
@@ -715,21 +713,9 @@ export const replaceFirstLoop2ModelWithOil = ({
   const fadeProxy = createOilFadeProxy(oldModel.material)
   oil.material = fadeProxy
   oil.userData.oilMotionProgress = 0
-  oil.userData.oilBackgroundSyncProgress = 0
   oil.userData.setOilMotionProgress = progress => {
     oil.userData.oilMotionProgress = Math.min(1, Math.max(0, progress))
     updateOilSequence({ app, oil, scratch })
-  }
-  oil.userData.setOilBackgroundSyncProgress = progress => {
-    oil.userData.oilBackgroundSyncProgress = Math.min(
-      1,
-      Math.max(0, progress),
-    )
-    oil.userData.oilItems?.forEach(item => {
-      item.barrelRoll.userData.oilBackgroundSyncProgress =
-        oil.userData.oilBackgroundSyncProgress
-      item.updateBarrelRoll()
-    })
   }
   oil.userData.updateOilSequence = () => {
     updateOilSequence({ app, oil, scratch })

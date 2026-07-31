@@ -17,7 +17,7 @@ export const appConfig = {
   },
   legacyRuntime: {
     iframeSource:
-      '/legacy/fort-energy/index.html?v=oil-bg-sync-20260801-1',
+      '/legacy/fort-energy/index.html?v=oil-bg-sync-20260801-2',
     iframeTitle: 'FARA',
     sandbox: 'allow-scripts allow-same-origin',
     readyTimeoutMs: 5000,
