@@ -1,5 +1,5 @@
 import{a as t,E as a}from"/webgl-color-loader.js";
-import{installEnergyContinuation}from"/energy-continuation.js?v=home-refresh-20260729-3";
+import{installEnergyContinuation}from"/energy-continuation.js?v=oil-bg-sync-20260801-1";
 import"./index.Brfk6Bdo.js";
 import"./ScrollTrigger.6qCihK2t.js";
 import"./router.B-sij-_X.js";

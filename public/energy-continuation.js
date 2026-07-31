@@ -1,7 +1,7 @@
 import { g as gsap } from '/_astro/index.Brfk6Bdo.js'
 import { createBlackoutTransition } from '/transitions/blackout-transition.js?v=home-refresh-20260729-3'
-import { replaceFirstLoop2ModelWithOil } from '/models/oil-loop2-scene.js?v=oil-screen-anchor-20260728-1'
-import { replaceLastLoop2ModelWithMetal } from '/models/metal-loop2-scene.js?v=metal-body-20260728-1'
+import { replaceFirstLoop2ModelWithOil } from '/models/oil-loop2-scene.js?v=oil-bg-sync-20260801-1'
+import { replaceLastLoop2ModelWithMetal } from '/models/metal-loop2-scene.js?v=metal-right-arc-20260801-2'
 
 /* global document, window, ResizeObserver */
 
@@ -11,6 +11,13 @@ const additionalChapterCount = 1
 const retryDelay = 100
 const retryLimit = 300
 const curveSamples = 100
+const oilMotionHoldProgress = 0.1
+const oilCameraHoldProgress = 0
+const oilCameraBlendLength = 220
+const metalMotionStartProgress = 0.26
+const metalMotionEndProgress = 0.58
+const getOilMotionLength = () =>
+  Math.max(1900, Math.min(2800, window.innerHeight * 2.45))
 
 const clamp = value => Math.min(1, Math.max(0, value))
 const cinematicEase = value => 0.5 - 0.5 * Math.cos(Math.PI * value)
@@ -414,14 +421,14 @@ class EnergyChapterSequence {
 
   positionIndustriesAtMetal = () => {
     const instance = this.instances[0]
-    if (!this.industriesSection || !instance?.start || !instance?.end) return
+    if (!this.industriesSection || !instance?.timelineStart || !instance?.end) return
 
     // The second Loop 2 hologram is metal.glb. Its existing GSAP fade starts
     // at timeline progress 0.32, so the DOM copy is anchored to that same point.
     const metalStartProgress = 0.32
-    const cycleLength = instance.end - instance.start
+    const cycleLength = instance.end - instance.timelineStart
     const offsetFromStageStart =
-      instance.start - this.source.scrollRange.end +
+      instance.timelineStart - this.source.scrollRange.end +
       cycleLength * metalStartProgress
     this.industriesSection.style.top = `${offsetFromStageStart}px`
   }
@@ -540,7 +547,10 @@ class EnergyChapterSequence {
       connector.start = cursor
       connector.end = cursor + connectorLength
       instance.start = connector.end
-      instance.end = instance.start + cycleLength
+      instance.motionStart = instance.start
+      instance.motionEnd = instance.motionStart + getOilMotionLength()
+      instance.timelineStart = instance.motionEnd
+      instance.end = instance.timelineStart + cycleLength
       cursor = instance.end
       previousCameraCurve = instance.camCurve
       previousLookAtCurve = instance.lookAtCurve
@@ -633,11 +643,58 @@ class EnergyChapterSequence {
       if (scroll >= instance.start && scroll < instance.end) {
         this.hideAllInstances()
         this.setActive(instance, true)
-        const progress = clamp(
-          (scroll - instance.start) /
-            (instance.end - instance.start),
+        const inOilMotion =
+          scroll >= instance.motionStart &&
+          scroll < instance.motionEnd
+        const motionProgress = inOilMotion
+          ? clamp(
+              (scroll - instance.motionStart) /
+                (instance.motionEnd - instance.motionStart),
+            )
+          : 1
+        const resumedProgress = oilMotionHoldProgress +
+            clamp(
+              (scroll - instance.timelineStart) /
+                (instance.end - instance.timelineStart),
+            ) *
+              (1 - oilMotionHoldProgress)
+        const timelineProgress = inOilMotion
+          ? oilMotionHoldProgress
+          : resumedProgress
+        const cameraBlendProgress = inOilMotion
+          ? 0
+          : cinematicEase(
+              clamp(
+                (scroll - instance.timelineStart) /
+                  oilCameraBlendLength,
+              ),
+            )
+
+        const oilSequence = instance.holograms[0]
+        const metalSequence = instance.holograms[1]
+        const metalMotionProgress = clamp(
+          (timelineProgress - metalMotionStartProgress) /
+            (metalMotionEndProgress - metalMotionStartProgress),
         )
-        instance.timeline.progress(progress, false)
+        const oilBackgroundSyncProgress = clamp(
+          scroll / Math.max(1, instance.end),
+        )
+        oilSequence?.userData?.setOilMotionProgress?.(motionProgress)
+        oilSequence?.userData?.setOilBackgroundSyncProgress?.(
+          oilBackgroundSyncProgress,
+        )
+        oilSequence?.userData?.updateOilSequence?.()
+        metalSequence?.userData?.setMetalMotionProgress?.(metalMotionProgress)
+        metalSequence?.userData?.updateMetalSequence?.()
+        instance.timeline.progress(timelineProgress, false)
+        if (inOilMotion) {
+          instance.pageProgress.value = oilCameraHoldProgress
+        } else if (cameraBlendProgress < 1) {
+          instance.pageProgress.value =
+            oilCameraHoldProgress +
+            (instance.pageProgress.value - oilCameraHoldProgress) *
+              cameraBlendProgress
+        }
         instance.camCurve.getPoint(
           instance.pageProgress.value,
           this.cameraPosition,
