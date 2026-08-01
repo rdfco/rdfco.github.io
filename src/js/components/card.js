@@ -9,7 +9,7 @@ const appendOptionalMedia = (card, media) => {
   card.appendChild(image)
 }
 
-export const createCard = ({ title, text, media, buttonText = 'Read more about' }, { modifier = '', expandable = true } = {}) => {
+export const createCard = ({ title, text, media, buttonText = 'Read more about' }, { modifier = '', expandable = true, collapsedLines = 4 } = {}) => {
   const card = createElement('article', { className: `fara-card ${modifier}`.trim() })
   const heading = createElement('h3', { text: title })
   const copy = createElement('p', { text })
@@ -28,12 +28,22 @@ export const createCard = ({ title, text, media, buttonText = 'Read more about' 
     },
   })
   button.innerHTML = '<span></span>'
-  button.addEventListener('click', () => {
-    const expanded = card.classList.toggle('expanded')
+  const collapsedHeight = () => {
     const lineHeight = Number.parseFloat(getComputedStyle(copy).lineHeight) || 27
-    const collapsedHeight = lineHeight * 4
-    copy.style.maxHeight = `${expanded ? copy.scrollHeight : collapsedHeight}px`
+    return Math.min(copy.scrollHeight, lineHeight * collapsedLines)
+  }
+  window.requestAnimationFrame(() => {
+    if (card.isConnected) copy.style.height = `${collapsedHeight()}px`
+  })
+  button.addEventListener('click', () => {
+    const expanded = !card.classList.contains('expanded')
+    const currentHeight = copy.getBoundingClientRect().height
+    const targetHeight = expanded ? copy.scrollHeight : collapsedHeight()
+    copy.style.height = `${currentHeight}px`
+    void copy.offsetHeight
+    card.classList.toggle('expanded', expanded)
     button.setAttribute('aria-expanded', String(expanded))
+    window.requestAnimationFrame(() => { copy.style.height = `${targetHeight}px` })
   })
   card.appendChild(button)
   return card

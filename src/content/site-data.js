@@ -109,15 +109,9 @@ export const siteData = {
   },
   cta: { label: 'Work with FARA', href: '#footer' },
   footer: {
-    eyebrow: 'Proven Impact',
-    title: 'FARA Case Studies',
     copyright: '© 2026 | FARA - All rights reserved',
-    caseStudies: [
-      'پتروشیمی مارون / پتروشیمی بندر امام',
-      'توسعه آهن و فولاد گل‌گهر',
-      'ایرانسل',
-      'کرمان موتور',
-      'انستیتو پاستور'
-    ]
+    phone: '0901 384 0313',
+    phoneHref: 'tel:+989013840313',
+    address: 'Tehran, Kargar St, Science And Technology Park, University of Tehran',
   }
 }

@@ -70,7 +70,7 @@ const homeHoverWorks = await frame.evaluate(() => {
 })
 
 await frame.click('.montfort-menu .grid-nav li:nth-child(2) .nav-link')
-await page.waitForFunction(() => location.pathname === '/knowing-fara')
+await page.waitForFunction(() => location.pathname === '/who-we-are')
 await new Promise(resolve => setTimeout(resolve, 1_000))
 const state = await frame.evaluate(() => ({
   menuActive: document.querySelector('.montfort-menu').classList.contains('active'),
@@ -85,12 +85,11 @@ const state = await frame.evaluate(() => ({
 }))
 
 const routes = [
-  ['solution', '/solution'],
-  ['consulting', '/consulting'],
-  ['industries', '/industries'],
+  ['who-we-are', '/who-we-are'],
+  ['how-we-help', '/how-we-help'],
+  ['who-we-serve', '/who-we-serve'],
   ['think-together', '/think-together'],
   ['home', '/'],
-  ['knowing-fara', '/knowing-fara'],
   ['privacy-policy', '/privacy-policy'],
   ['terms-of-use', '/terms-of-use'],
 ]
@@ -103,7 +102,7 @@ for (const [key, pathname] of routes) {
   await link.evaluate(node => node.click())
   await page.waitForFunction(expected => location.pathname === expected, {}, pathname)
   await new Promise(resolve => setTimeout(resolve, 100))
-  if (key === 'knowing-fara') await new Promise(resolve => setTimeout(resolve, 1_000))
+  if (key === 'who-we-are') await new Promise(resolve => setTimeout(resolve, 1_000))
   routeCycles.push(await frame.evaluate(expectedKey => ({
     key: expectedKey,
     menuActive: document.querySelector('.montfort-menu').classList.contains('active'),
@@ -150,7 +149,7 @@ if (
   state.headerOpen ||
   state.expanded !== 'false' ||
   state.scrollLocked ||
-  state.activeLabel !== 'Knowing Fara' ||
+  state.activeLabel !== 'Who we are' ||
   !state.pageVisible ||
   !state.soundDisabled ||
   state.playingAudio ||

@@ -2,6 +2,7 @@ import { setText } from './core/dom.js'
 import { renderHero } from './components/hero.js'
 import { renderSections } from './components/sections.js'
 import { renderNavigation } from './navigation.js'
+import { renderFooter } from './components/footer.js'
 
 const updateLegacyContent = siteData => {
   setText('main h2', siteData.introduction.title)
@@ -52,6 +53,7 @@ export const applySiteData = async (siteData, currentPage) => {
     document.querySelectorAll('audio').forEach(audio => audio.pause())
   }
   renderNavigation(siteData, currentPage.data.href)
+  renderFooter(siteData)
   if (document.documentElement.dataset.faraStaticContentReady !== 'true') {
     updateLegacyContent(siteData)
     renderHero(siteData)

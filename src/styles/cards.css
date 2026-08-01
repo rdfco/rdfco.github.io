@@ -9,20 +9,21 @@
 .fara-card h3:empty { display: none; }
 .fara-card p {
   display: block;
-  max-height: 7em;
+  height: 6.8em;
   overflow: hidden;
-  color: #fff;
+  color: #fff !important;
   font-family: "FARA Gotham";
   font-size: clamp(.9rem, 1.05vw, 1.05rem);
   line-height: 1.7;
   letter-spacing: .035em;
   opacity: .92;
-  transition: max-height 700ms cubic-bezier(.4, 0, .1, 1), opacity 500ms ease;
+  transition: height 600ms cubic-bezier(.4, 0, .2, 1), opacity 300ms ease;
   mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
 }
+.fara-card h3 { color: #fff !important; }
 .fara-card.is-static { padding-bottom: 0; border-bottom: 0; }
-.fara-card.is-static p { max-height: none; overflow: visible; mask-image: none; -webkit-mask-image: none; }
+.fara-card.is-static p { height: auto; overflow: visible; mask-image: none; -webkit-mask-image: none; }
 .fara-card.expanded p { mask-image: none; -webkit-mask-image: none; }
 .fara-expand {
   position: absolute;
@@ -32,11 +33,12 @@
   width: 2.75rem;
   height: 2.75rem;
   padding: 0;
+  margin: 0;
   cursor: pointer;
   background: transparent;
   border: 2px solid #8cb4d5;
   border-radius: 50%;
-  transition: background-color .25s ease, border-color .25s ease, transform 650ms cubic-bezier(.4, 0, .1, 1);
+  transition: background-color .2s ease, border-color .2s ease;
   transform: translateX(-50%);
 }
 .fara-expand::before {
@@ -48,9 +50,11 @@
   content: "";
   border-right: 1px solid #fff;
   border-bottom: 1px solid #fff;
-  transition: transform 650ms cubic-bezier(.4, 0, .1, 1);
+  transition: transform 600ms cubic-bezier(.4, 0, .2, 1);
   transform: translate(-50%, -50%) rotate(45deg);
 }
-.fara-expand:hover { background: rgba(140, 180, 213, .22); border-color: #fff; transform: translateX(-50%) scale(1.08); }
-.fara-card.expanded .fara-expand { transform: translateX(-50%) rotate(180deg); }
-.fara-card.expanded .fara-expand:hover { transform: translateX(-50%) rotate(180deg) scale(1.08); }
+.fara-expand:hover { background: rgba(140, 180, 213, .16); border-color: #fff; }
+.fara-card.expanded .fara-expand::before { transform: translate(-50%, -50%) rotate(-135deg); }
+
+html:has(.industries-grid .fara-expand:hover) .cursor,
+html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !important; opacity: 0 !important; }

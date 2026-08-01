@@ -35,7 +35,7 @@ export const renderSections = siteData => {
 
   const solutions = createElement('section', { className: 'fara-row fara-solutions' })
   const solutionsGrid = createElement('div', { className: 'fara-card-grid solutions-grid' })
-  content.solutions.filter(item => item.enabled !== false).forEach(item => solutionsGrid.appendChild(createCard(item, { expandable: false })))
+  content.solutions.filter(item => item.enabled !== false).forEach(item => solutionsGrid.appendChild(createCard(item, { modifier: 'fara-solution-card', expandable: false })))
   solutions.append(createSectionHeader({ title: siteData.advantage.title, subtitle: siteData.advantage.lead }), solutionsGrid)
 
   const ai = createElement('section', { className: 'fara-row fara-ai' })

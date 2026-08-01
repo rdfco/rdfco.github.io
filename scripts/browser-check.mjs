@@ -36,7 +36,7 @@ try {
     footerWidth: document.querySelector('#footer')?.getBoundingClientRect().width,
     viewportWidth: innerWidth,
   }))
-  const pass = Boolean(desktop.title && desktop.navigationCount === 6 && desktop.footer && menuOpen && !desktop.horizontalOverflow && !mobile.horizontalOverflow && mobile.footerWidth <= mobile.viewportWidth && errors.length === 0)
+  const pass = Boolean(desktop.title && desktop.navigationCount === 5 && desktop.footer && menuOpen && !desktop.horizontalOverflow && !mobile.horizontalOverflow && mobile.footerWidth <= mobile.viewportWidth && errors.length === 0)
   console.log(JSON.stringify({ pass, desktop, menuOpen, mobile, errors }, null, 2))
   if (!pass) process.exitCode = 1
 } finally {

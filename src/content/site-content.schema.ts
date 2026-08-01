@@ -57,10 +57,10 @@ export const siteContentSchema = z.object({
   }),
   cta: z.object({ label: z.string().min(1), href: z.string().min(1) }),
   footer: z.object({
-    eyebrow: z.string().min(1),
-    title: z.string().min(1),
     copyright: z.string().min(1),
-    caseStudies: z.array(z.string().min(1)),
+    phone: z.string().min(1),
+    phoneHref: z.string().min(1),
+    address: z.string().min(1),
   }),
 })
 

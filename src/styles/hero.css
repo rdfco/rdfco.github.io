@@ -3,7 +3,7 @@
 .hero .fara-hero-copy {
   --fara-hero-title-color: #fff;
   --fara-hero-subtitle-color: #fff;
-  --fara-hero-title-shift-x: -4vw;
+  --fara-hero-title-shift-x: -7vw;
   position: absolute !important;
   inset: 0 !important;
   grid-column: 1 / -1 !important;
@@ -27,10 +27,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: min(72rem, 60%);
+  width: min(82rem, 68%);
   transform: translate(-50%, -50%);
   font-family: "FARA Gotham";
-  font-size: clamp(7.4rem, 7.8vw, 9.4rem);
+  font-size: clamp(8.2rem, 9vw, 10.8rem);
   font-weight: 300;
   line-height: .9;
   letter-spacing: .04em;

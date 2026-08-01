@@ -1,38 +1,82 @@
 import { createElement, removeAstroScope } from '../core/dom.js'
 
-export const renderFooter = footerData => {
+const createIcon = (className, pathData) => {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  svg.setAttribute('viewBox', '0 0 24 24')
+  svg.setAttribute('aria-hidden', 'true')
+  svg.classList.add(className)
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+  path.setAttribute('d', pathData)
+  svg.appendChild(path)
+  return svg
+}
+
+const createRouteLink = ({ label, href }) => createElement('a', {
+  text: label,
+  attributes: { href: '#', 'data-fara-route': href },
+})
+
+export const renderFooter = siteData => {
   const footer = document.querySelector('#footer')
   if (!footer) return
-  footer.innerHTML = ''
+
+  footer.replaceChildren()
   footer.className = 'fara-footer'
 
   const shell = createElement('div', { className: 'fara-footer-shell' })
-  const heading = document.createElement('header')
-  heading.innerHTML = `<p>${footerData.eyebrow}</p><h2>${footerData.title}</h2>`
-
-  const grid = createElement('div', {
-    className: 'fara-case-grid',
-    attributes: { 'aria-label': footerData.title },
+  const navigation = createElement('nav', {
+    className: 'fara-footer-navigation',
+    attributes: { 'aria-label': 'Footer navigation' },
   })
-  footerData.caseStudies.filter(entry => typeof entry === 'string' || entry.enabled !== false).forEach(entry => {
-    const itemData = typeof entry === 'string' ? { name: entry, direction: 'rtl' } : entry
-    const item = createElement('div', {
-      className: 'fara-case-item',
-      attributes: { dir: itemData.direction || 'rtl' },
-    })
-    item.appendChild(createElement('strong', { text: itemData.name }))
-    grid.appendChild(item)
+  const home = createRouteLink(siteData.navigation[0])
+  home.className = 'fara-footer-home'
+  home.setAttribute('aria-label', 'Home')
+  home.replaceChildren(createIcon('fara-footer-home-icon', 'M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5h-5.7v-6.6H9.2V21H3.5a.5.5 0 0 1-.5-.5v-9.7Z'))
+
+  const primary = createElement('ul', { className: 'fara-footer-primary' })
+  siteData.navigation.slice(1).forEach(item => {
+    const listItem = document.createElement('li')
+    listItem.appendChild(createRouteLink(item))
+    primary.appendChild(listItem)
   })
 
-  const bottom = createElement('div', { className: 'fara-footer-bottom' })
-  const signature = createElement('div', { className: 'fara-footer-signature' })
-  signature.innerHTML = `<strong>${footerData.eyebrow}</strong><span>${footerData.title}</span>`
-  bottom.append(
-    signature,
-    createElement('p', { className: 'fara-footer-copyright', text: footerData.copyright }),
+  const legal = createElement('ul', { className: 'fara-footer-legal' })
+  ;[
+    { label: 'Privacy policy', href: '/privacy-policy' },
+    { label: 'Terms of use', href: '/terms-of-use' },
+  ].forEach(item => {
+    const listItem = document.createElement('li')
+    listItem.appendChild(createRouteLink(item))
+    legal.appendChild(listItem)
+  })
+  navigation.append(home, primary, legal)
+
+  const contact = createElement('address', { className: 'fara-footer-contact' })
+  const call = createElement('div', { className: 'fara-footer-contact-block' })
+  const callTitle = document.createElement('strong')
+  callTitle.append(
+    createIcon('fara-footer-phone-icon', 'M6.6 10.8c1.5 3 3.6 5.1 6.6 6.6l2.2-2.2c.3-.3.8-.4 1.2-.3 1.3.4 2.6.6 4 .6.7 0 1.2.5 1.2 1.2v3.5c0 .7-.5 1.2-1.2 1.2C10.7 21.4 2.6 13.3 2.6 3.4c0-.7.5-1.2 1.2-1.2h3.5c.7 0 1.2.5 1.2 1.2 0 1.4.2 2.7.6 4 .1.4 0 .9-.3 1.2l-2.2 2.2Z'),
+    document.createTextNode('Call us:'),
+  )
+  call.append(
+    callTitle,
+    createElement('a', { text: siteData.footer.phone, attributes: { href: siteData.footer.phoneHref } }),
   )
 
-  shell.append(heading, grid, bottom)
+  const visit = createElement('div', { className: 'fara-footer-contact-block' })
+  visit.append(
+    createElement('strong', { text: 'Visit us:' }),
+    createElement('p', { text: siteData.footer.address }),
+  )
+  contact.append(call, visit)
+
+  const bottom = createElement('div', { className: 'fara-footer-bottom' })
+  bottom.append(
+    createElement('strong', { className: 'fara-footer-wordmark', text: siteData.brand.logoText }),
+    createElement('p', { className: 'fara-footer-copyright', text: siteData.footer.copyright }),
+  )
+
+  shell.append(navigation, contact, bottom)
   footer.appendChild(shell)
   footer.removeAttribute('data-theme')
   removeAstroScope(footer)
