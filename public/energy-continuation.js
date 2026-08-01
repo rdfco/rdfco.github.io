@@ -393,7 +393,6 @@ class EnergyChapterSequence {
     this.initializePersistentGrid()
     this.gridBasePosition = this.source.grid.position.clone()
     this.createInstances()
-    this.attachIndustriesSection()
     this.blackoutTransition = createBlackoutTransition({
       gsap,
       getRanges: () => ({

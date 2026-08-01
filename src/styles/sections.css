@@ -8,7 +8,7 @@ main #grid { min-height: 7400px; }
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 700px;
+  gap: 620px;
   color: #fff;
 }
 .fara-row { width: 100%; }
@@ -53,3 +53,4 @@ main #grid { min-height: 7400px; }
 }
 .fara-ai > header { margin: 0; }
 .fara-ai .ai-copy { min-height: 12rem; }
+.fara-ai + .fara-industries { margin-top: -280px; }

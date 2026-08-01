@@ -55,6 +55,7 @@ const setupNavbarRouteTransition = () => {
 
 let navbarFrame = 0
 let navbarRestoreTimer = 0
+let panelThemeReady = false
 const scheduleNavbarUpdate = update => {
   window.cancelAnimationFrame(navbarFrame)
   navbarFrame = window.requestAnimationFrame(update)
@@ -111,6 +112,17 @@ const syncNavbar = currentPath => {
   scheduleNavbarUpdate(() => currentPath === '/' ? animateNavbarTo(activeLink) : animateNavbarFull())
 }
 
+const setupPanelTheme = () => {
+  if (panelThemeReady) return
+  panelThemeReady = true
+  const updatePanelTheme = () => {
+    document.querySelector('#header')?.classList.toggle('fara-nav-on-panel', window.scrollY > 160)
+  }
+  updatePanelTheme()
+  window.addEventListener('scroll', updatePanelTheme, { passive: true })
+  window.addEventListener('resize', updatePanelTheme, { passive: true })
+}
+
 const disableLink = link => {
   link.removeAttribute('href')
   link.setAttribute('aria-disabled', 'true')
@@ -122,6 +134,26 @@ const disableLink = link => {
 
 const setupRouteLink = (link, route) => {
   link.dataset.faraRoute = route
+}
+
+const renderHeaderLinkContent = (link, item) => {
+  const label = link.querySelector('span')
+  if (!label) return
+  if (item.key !== 'home') {
+    link.classList.remove('fara-logo-link')
+    label.textContent = item.label
+    return
+  }
+
+  link.classList.add('fara-logo-link')
+  label.textContent = ''
+  label.setAttribute('aria-hidden', 'true')
+  if (!link.querySelector('.fara-nav-logo')) {
+    label.insertAdjacentHTML('afterbegin', `
+      <img class="fara-nav-logo fara-nav-logo--white" src="/assets/logos/fara-logo0-white.svg" alt="FARA">
+      <img class="fara-nav-logo fara-nav-logo--black" src="/assets/logos/fara-logo0-black.svg" alt="">
+    `)
+  }
 }
 
 const legalRoutes = new Map([
@@ -149,7 +181,7 @@ export const renderNavigation = (siteData, currentPath = '/') => {
   document.querySelectorAll('#header .menu-links-w .nav-link').forEach((link, index) => {
     const item = siteData.navigation[index]
     if (!item) return
-    link.querySelector('span').textContent = item.label
+    renderHeaderLinkContent(link, item)
     link.classList.toggle('active', item.href === currentPath)
     link.classList.toggle('is-disabled', item.enabled === false)
     setupRouteLink(link, item.href)
@@ -172,5 +204,6 @@ export const renderNavigation = (siteData, currentPath = '/') => {
   })
   document.querySelectorAll('#footer .legals-links a').forEach(link => configureLegalLink(link))
   setupHover()
+  setupPanelTheme()
   syncNavbar(currentPath)
 }
