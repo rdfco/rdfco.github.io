@@ -15,6 +15,9 @@ try{
 	await t.init(o,r);
 	t.state.emit(a.ATTACH);
 	t.state.emit(a.RESIZE,t.tools?.viewport.infos);
+	await new Promise(e=>requestAnimationFrame(()=>requestAnimationFrame(e)));
+	window.__FARA_WEBGL_READY=true;
+	window.dispatchEvent(new Event("fara:webgl-ready"));
 }finally{
 	history.replaceState(history.state,"",localUrl);
 }

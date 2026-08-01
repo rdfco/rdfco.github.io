@@ -76,6 +76,7 @@ const waitForHomeAboveFoldReady = () => new Promise(resolve => {
       heroText?.textContent?.trim() &&
       heroPhrase?.textContent?.trim() &&
       canvas &&
+      window.__FARA_WEBGL_READY === true &&
       (canvas.width > 0 || canvas.clientWidth > 0) &&
       (canvas.height > 0 || canvas.clientHeight > 0)
     )
@@ -88,6 +89,7 @@ const waitForHomeAboveFoldReady = () => new Promise(resolve => {
     }
     window.requestAnimationFrame(check)
   }
+  window.addEventListener('fara:webgl-ready', check, { once: true })
   check()
 })
 
