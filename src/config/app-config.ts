@@ -17,7 +17,7 @@ export const appConfig = {
   },
   legacyRuntime: {
     iframeSource:
-      '/legacy/fort-energy/index.html?v=home-load-20260801-7',
+      '/legacy/fort-energy/index.html?v=home-load-20260801-8',
     iframeTitle: 'FARA',
     sandbox: 'allow-scripts allow-same-origin',
     readyTimeoutMs: 5000,
