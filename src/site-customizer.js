@@ -178,11 +178,13 @@ const waitForSceneAssets = () => new Promise(resolve => {
 })
 
 const waitForVisualReadiness = async pageKey => {
-  await Promise.all([waitForBodyLoaded(), waitForFonts()])
   if (pageKey === 'home') {
     await waitForSceneAssets()
     await waitForRenderedCanvasFrame()
+    return
   }
+
+  await Promise.all([waitForBodyLoaded(), waitForFonts()])
 }
 
 const getCurrentPage = async (path, navigationItem) => {
