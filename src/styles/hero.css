@@ -38,7 +38,7 @@
 }
 .hero .fara-hero-title-word,
 .hero .fara-hero-phrase { display: block; white-space: nowrap; }
-.hero .fara-hero-title-word-1 { transform: translateX(-2vw); }
+.hero .fara-hero-title-word-1 { transform: translateX(-6vw); }
 .hero .fara-hero-title-group { display: flex; gap: .22em; align-items: center; white-space: nowrap; }
 .hero .fara-hero-phrase {
   position: absolute;
