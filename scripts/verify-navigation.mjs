@@ -29,7 +29,7 @@ await page.goto(process.env.SITE_URL || 'http://127.0.0.1:5174/', {
   waitUntil: 'networkidle0',
   timeout: 60_000,
 })
-const frame = page.frames().find(candidate => candidate.url().includes('/legacy/'))
+let frame = page.frames().find(candidate => candidate.url().includes('/legacy/'))
 if (!frame) throw new Error('Legacy frame did not load')
 await frame.evaluate(() => { window.__faraLongTasks = [] })
 
@@ -72,6 +72,8 @@ const homeHoverWorks = await frame.evaluate(() => {
 await frame.click('.montfort-menu .grid-nav li:nth-child(2) .nav-link')
 await page.waitForFunction(() => location.pathname === '/who-we-are')
 await new Promise(resolve => setTimeout(resolve, 1_000))
+frame = page.frames().find(candidate => candidate.url().includes('/legacy/'))
+if (!frame) throw new Error('Legacy frame did not reload after navigation')
 const state = await frame.evaluate(() => ({
   menuActive: document.querySelector('.montfort-menu').classList.contains('active'),
   headerOpen: document.querySelector('#header').classList.contains('menu-open'),
@@ -102,6 +104,8 @@ for (const [key, pathname] of routes) {
   await link.evaluate(node => node.click())
   await page.waitForFunction(expected => location.pathname === expected, {}, pathname)
   await new Promise(resolve => setTimeout(resolve, 100))
+  frame = page.frames().find(candidate => candidate.url().includes('/legacy/'))
+  if (!frame) throw new Error(`Legacy frame did not reload for ${pathname}`)
   if (key === 'who-we-are') await new Promise(resolve => setTimeout(resolve, 1_000))
   routeCycles.push(await frame.evaluate(expectedKey => ({
     key: expectedKey,
