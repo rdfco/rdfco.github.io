@@ -67,8 +67,33 @@ const waitForFonts = async () => {
   await document.fonts.ready
 }
 
+const waitForHomeAboveFoldReady = () => new Promise(resolve => {
+  const deadline = performance.now() + 900
+  const isReady = () => {
+    const heroText = document.querySelector('.hero .fara-hero-copy h1')
+    const heroPhrase = document.querySelector('.hero .fara-hero-phrase')
+    const canvas = document.querySelector('#canvas-wrapper canvas')
+    return (
+      heroText?.textContent?.trim() &&
+      heroPhrase?.textContent?.trim() &&
+      canvas &&
+      (canvas.width > 0 || canvas.clientWidth > 0) &&
+      (canvas.height > 0 || canvas.clientHeight > 0)
+    )
+  }
+  const check = () => {
+    if (isReady() || performance.now() >= deadline) {
+      resolve()
+      return
+    }
+    window.requestAnimationFrame(check)
+  }
+  check()
+})
+
 const waitForVisualReadiness = async pageKey => {
   if (pageKey === 'home') {
+    await waitForHomeAboveFoldReady()
     return
   }
 
