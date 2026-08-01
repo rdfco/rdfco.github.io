@@ -146,7 +146,6 @@ const waitForSceneAssets = () => new Promise(resolve => {
   let idleTimer = null
 
   const isReady = () =>
-    visualAssetTracker.pendingCount === 0 &&
     visualAssetTracker.completed.has(requiredAsset)
 
   const cleanup = () => {
