@@ -29,30 +29,6 @@ body {
 /* The mirrored document must never reveal its source content before FARA customization succeeds. */
 html:not([data-fara-ready='true']) body { visibility: hidden !important; }
 
-body[data-fara-page='home'] #canvas-wrapper {
-  background:
-    radial-gradient(circle at 72% 44%, rgba(55, 180, 120, .38), transparent 20rem),
-    linear-gradient(180deg, #061926 0%, #082536 48%, #0b6f5d 100%);
-}
-
-body[data-fara-page='home'] #canvas-wrapper::before {
-  position: fixed;
-  inset: 58% -8% -6%;
-  pointer-events: none;
-  background:
-    repeating-linear-gradient(0deg, rgba(146, 255, 211, .34) 0 2px, transparent 2px 11px),
-    linear-gradient(90deg, transparent, rgba(83, 255, 183, .72), transparent);
-  content: '';
-  filter: blur(.2px);
-  transform: perspective(520px) rotateX(62deg);
-  transform-origin: 50% 100%;
-  animation: fara-home-bg-drift 1.8s linear infinite;
-}
-
-@keyframes fara-home-bg-drift {
-  to { background-position: 0 44px, 0 0; }
-}
-
 /*
  * The generated WebGL runtime uses this fullscreen layer for its legacy
  * long-press/drag transition. Keep the visual layer, but let pointer input
