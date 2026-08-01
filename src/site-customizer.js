@@ -69,7 +69,6 @@ const waitForFonts = async () => {
 
 const waitForVisualReadiness = async pageKey => {
   if (pageKey === 'home') {
-    await new Promise(resolve => window.requestAnimationFrame(resolve))
     return
   }
 
