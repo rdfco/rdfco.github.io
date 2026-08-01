@@ -34,7 +34,7 @@ function copyLegacyRuntime() {
       const sourceRoot = resolve(process.cwd(), 'src')
       const targetRoot = resolve(process.cwd(), 'dist', 'src')
       const legacyIndex = resolve(process.cwd(), 'dist', 'legacy', 'fort-energy', 'index.html')
-      const bundledCustomizerPath = '/site-customizer.bundle.js?v=home-load-20260801-5'
+      const bundledCustomizerPath = '/site-customizer.bundle.js?v=home-load-20260801-6'
       mkdirSync(targetRoot, { recursive: true })
       legacyRuntimeFiles.forEach(file => {
         cpSync(resolve(sourceRoot, file), resolve(targetRoot, file), { recursive: true })
