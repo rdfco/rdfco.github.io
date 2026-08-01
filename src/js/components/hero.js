@@ -1,19 +1,26 @@
 import { createElement } from '../core/dom.js'
 
-const waitForGsap = () => new Promise(resolve => {
-  const check = () => {
-    if (window.__faraGsap) {
-      resolve(window.__faraGsap)
-      return
-    }
-    window.requestAnimationFrame(check)
-  }
-  check()
-})
-
 const setPhraseContent = (element, value) => {
   element.dataset.phrase = value
   element.textContent = value
+}
+
+const animatePhraseFallback = (phrase, items) => {
+  let index = 0
+  phrase.style.transition = 'opacity 700ms ease, transform 700ms ease'
+  window.setInterval(() => {
+    phrase.style.opacity = '0'
+    phrase.style.transform = 'translate3d(0, -18%, 0)'
+    window.setTimeout(() => {
+      index = (index + 1) % items.length
+      setPhraseContent(phrase, items[index])
+      phrase.style.transform = 'translate3d(0, 18%, 0)'
+      window.requestAnimationFrame(() => {
+        phrase.style.opacity = '1'
+        phrase.style.transform = 'translate3d(0, 0, 0)'
+      })
+    }, 700)
+  }, 3400)
 }
 
 const createHeroTitle = siteData => {
@@ -46,7 +53,6 @@ const replaceWithImage = (current, source, alt, className) => {
 }
 
 export const renderHero = async siteData => {
-  const gsap = await waitForGsap()
   document.querySelectorAll('.hero .logo').forEach(logo => {
     if (logo.classList.contains('fara-hero-copy') || logo.classList.contains('configurable-logo')) return
     const isMobile = logo.classList.contains('logo-mb')
@@ -63,23 +69,28 @@ export const renderHero = async siteData => {
     copy.append(createHeroTitle(siteData), phrase)
     logo.replaceWith(copy)
 
-    const timeline = gsap.timeline({ repeat: -1 })
-    items.slice(1).concat(items[0]).forEach((item, index) => {
-      timeline.to(phrase, {
-        autoAlpha: 0,
-        yPercent: -18,
-        duration: 0.7,
-        ease: 'power2.inOut',
-      }, index === 0 ? 2 : '+=2')
-      timeline.set(phrase, { yPercent: 18 })
-      timeline.call(() => setPhraseContent(phrase, item))
-      timeline.to(phrase, {
-        autoAlpha: 1,
-        yPercent: 0,
-        duration: 0.7,
-        ease: 'power2.out',
+    const gsap = window.__faraGsap
+    if (gsap) {
+      const timeline = gsap.timeline({ repeat: -1 })
+      items.slice(1).concat(items[0]).forEach((item, index) => {
+        timeline.to(phrase, {
+          autoAlpha: 0,
+          yPercent: -18,
+          duration: 0.7,
+          ease: 'power2.inOut',
+        }, index === 0 ? 2 : '+=2')
+        timeline.set(phrase, { yPercent: 18 })
+        timeline.call(() => setPhraseContent(phrase, item))
+        timeline.to(phrase, {
+          autoAlpha: 1,
+          yPercent: 0,
+          duration: 0.7,
+          ease: 'power2.out',
+        })
       })
-    })
-    copy.faraHeroTimeline = timeline
+      copy.faraHeroTimeline = timeline
+    } else {
+      animatePhraseFallback(phrase, items)
+    }
   })
 }

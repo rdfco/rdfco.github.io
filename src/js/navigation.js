@@ -13,7 +13,7 @@ const ensureItems = (listSelector, count) => {
 }
 
 const animateNavbarTo = target => {
-  const navList = document.querySelector('#header .container-menu ul')
+  const navList = document.querySelector('#header .menu-links-w')
   const navbar = document.querySelector('#header nav .navbar')
   const label = target?.matches?.('span') ? target : target?.querySelector?.('span')
   if (!navList || !navbar || !label) return
@@ -63,12 +63,14 @@ const scheduleNavbarUpdate = update => {
 
 const animateNavbarFull = () => {
   const navList = document.querySelector('#header .menu-links-w > ul')
+  const wrapper = document.querySelector('#header .menu-links-w')
   const navbar = document.querySelector('#header nav .navbar')
-  if (!navList || !navbar) return
+  if (!navList || !wrapper || !navbar) return
   const listRect = navList.getBoundingClientRect()
+  const wrapperRect = wrapper.getBoundingClientRect()
   navbar.style.opacity = '1'
   navbar.style.transition = 'transform 600ms cubic-bezier(.2,.8,.2,1)'
-  navbar.style.setProperty('--fara-navbar-transform', `translate3d(0, 0, 0) scaleX(${listRect.width / (navbar.offsetWidth || 1)})`)
+  navbar.style.setProperty('--fara-navbar-transform', `translate3d(${listRect.left - wrapperRect.left}px, 0, 0) scaleX(${listRect.width / (navbar.offsetWidth || 1)})`)
 }
 
 const restoreNavbar = () => {
@@ -139,20 +141,39 @@ const setupRouteLink = (link, route) => {
 const renderHeaderLinkContent = (link, item) => {
   const label = link.querySelector('span')
   if (!label) return
-  if (item.key !== 'home') {
-    link.classList.remove('fara-logo-link')
-    label.textContent = item.label
-    return
-  }
+  link.classList.remove('fara-logo-link')
+  label.removeAttribute('aria-hidden')
+  label.textContent = item.label
+}
 
-  link.classList.add('fara-logo-link')
-  label.textContent = ''
-  label.setAttribute('aria-hidden', 'true')
-  if (!link.querySelector('.fara-nav-logo')) {
-    label.insertAdjacentHTML('afterbegin', `
-      <img class="fara-nav-logo fara-nav-logo--white" src="/assets/logos/fara-logo0-white.svg" alt="FARA">
-      <img class="fara-nav-logo fara-nav-logo--black" src="/assets/logos/fara-logo0-black.svg" alt="">
-    `)
+const setupStaticHeaderLogo = () => {
+  const wrapper = document.querySelector('#header .menu-links-w')
+  if (!wrapper || wrapper.querySelector('.fara-static-nav-logo')) return
+
+  const logo = document.createElement('a')
+  logo.className = 'fara-static-nav-logo'
+  logo.href = '#'
+  logo.dataset.faraRoute = '/'
+  logo.setAttribute('aria-label', 'FARA home')
+  logo.innerHTML = `
+    <img class="fara-static-nav-logo__image fara-static-nav-logo__image--white" src="/assets/logos/fara-logo0-white.svg" alt="">
+    <img class="fara-static-nav-logo__image fara-static-nav-logo__image--black" src="/assets/logos/fara-logo0-black.svg" alt="">
+  `
+  logo.addEventListener('click', event => {
+    event.preventDefault()
+    const routeEvent = new CustomEvent('fara:navigate', {
+      bubbles: true,
+      detail: { href: '/' },
+    })
+    logo.dispatchEvent(routeEvent)
+  })
+  wrapper.prepend(logo)
+}
+
+const syncStaticHeaderLogo = currentPath => {
+  const logo = document.querySelector('#header .fara-static-nav-logo')
+  if (logo) {
+    logo.classList.toggle('active', currentPath === '/')
   }
 }
 
@@ -174,8 +195,10 @@ const configureLegalLink = link => {
 
 export const renderNavigation = (siteData, currentPath = '/') => {
   setupNavbarRouteTransition()
+  setupStaticHeaderLogo()
   ensureItems('#header .menu-links-w > ul', siteData.navigation.length)
   ensureItems('.montfort-menu nav > ul', siteData.navigation.length)
+  document.querySelectorAll('#header .menu-links-w > ul > li').forEach(item => { item.dataset.configGenerated = 'true' })
   document.querySelectorAll('.montfort-menu nav > ul > li').forEach(item => { item.dataset.configGenerated = 'true' })
 
   document.querySelectorAll('#header .menu-links-w .nav-link').forEach((link, index) => {
@@ -203,6 +226,7 @@ export const renderNavigation = (siteData, currentPath = '/') => {
     if (!configureLegalLink(link) && siteData.menuSettings.enableLegalLinks === false) disableLink(link)
   })
   document.querySelectorAll('#footer .legals-links a').forEach(link => configureLegalLink(link))
+  syncStaticHeaderLogo(currentPath)
   setupHover()
   setupPanelTheme()
   syncNavbar(currentPath)

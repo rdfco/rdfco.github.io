@@ -1,15 +1,5 @@
 .fara-industries > header { margin-bottom: 5rem; text-align: center; }
 .fara-industries { margin-top: 0; }
-.fara-industries[data-fara-loop2-industries] {
-  position: absolute;
-  right: max(2rem, calc((100% - 1540px) / 2));
-  left: max(2rem, calc((100% - 1540px) / 2));
-  width: auto;
-  z-index: 2;
-  color: #fff;
-  pointer-events: none;
-}
-.fara-industries[data-fara-loop2-industries] .fara-expand { pointer-events: auto; }
 .industries-grid {
   grid-template-columns: repeat(6, minmax(0, 1fr));
   align-items: start;

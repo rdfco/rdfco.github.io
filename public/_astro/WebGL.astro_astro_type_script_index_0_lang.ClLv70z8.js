@@ -1,5 +1,4 @@
 import{a as t,E as a}from"/webgl-color-loader.js";
-import{installEnergyContinuation}from"/energy-continuation.js?v=stage-scroll-20260801-2";
 import"./index.Brfk6Bdo.js";
 import"./ScrollTrigger.6qCihK2t.js";
 import"./router.B-sij-_X.js";
@@ -16,7 +15,6 @@ try{
 	await t.init(o,r);
 	t.state.emit(a.ATTACH);
 	t.state.emit(a.RESIZE,t.tools?.viewport.infos);
-	installEnergyContinuation(t,a);
 }finally{
 	history.replaceState(history.state,"",localUrl);
 }

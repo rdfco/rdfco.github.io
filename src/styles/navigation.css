@@ -7,34 +7,39 @@
   font-size: clamp(.72rem, .78vw, .9rem);
   letter-spacing: .025rem;
 }
+#header .menu-links-w {
+  display: flex;
+  gap: clamp(1.15rem, 1.8vw, 2.35rem);
+  align-items: center;
+}
 #header .menu-links-w > ul {
   gap: clamp(1.05rem, 1.65vw, 2.1rem);
   align-items: center;
 }
-#header .menu-links-w .nav-link.fara-logo-link {
-  display: inline-flex;
-  align-items: center;
-}
-#header .menu-links-w .nav-link.fara-logo-link span {
+#header .fara-static-nav-logo {
   display: inline-flex;
   width: clamp(2.65rem, 3.7vw, 4.05rem);
   height: clamp(2.2rem, 3.05vw, 3.35rem);
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
+  pointer-events: auto;
+  transform: translateX(clamp(.65rem, 1vw, 1.15rem));
+  animation: fara-header-logo-in 800ms cubic-bezier(.2, .8, .2, 1) 400ms both;
 }
-#header .fara-nav-logo {
+#header .fara-static-nav-logo__image {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
-#header .fara-nav-logo--black { display: none; }
-#header.top .fara-nav-logo--white,
-.fara-content-route #header .fara-nav-logo--white,
-#header.fara-nav-on-panel .fara-nav-logo--white { display: none; }
-#header.top .fara-nav-logo--black,
-.fara-content-route #header .fara-nav-logo--black,
-#header.fara-nav-on-panel .fara-nav-logo--black { display: block; }
+#header .fara-static-nav-logo__image--black { display: none; }
+#header.top .fara-static-nav-logo__image--white,
+.fara-content-route #header .fara-static-nav-logo__image--white,
+#header.fara-nav-on-panel .fara-static-nav-logo__image--white { display: none; }
+#header.top .fara-static-nav-logo__image--black,
+.fara-content-route #header .fara-static-nav-logo__image--black,
+#header.fara-nav-on-panel .fara-static-nav-logo__image--black { display: block; }
 #header nav .navbar {
   height: .16rem;
   min-width: clamp(2.65rem, 3.7vw, 4.05rem);
@@ -239,6 +244,18 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
   from { opacity: 1; visibility: visible; transform: translate3d(0, 0, 0); }
   to { opacity: 0; visibility: hidden; transform: translate3d(-8px, 0, 0); }
 }
+@keyframes fara-header-logo-in {
+  from { opacity: 0; visibility: hidden; }
+  to { opacity: 1; visibility: visible; }
+}
+@keyframes fara-header-logo-out {
+  from { opacity: 1; visibility: visible; }
+  to { opacity: 0; visibility: hidden; }
+}
+#header.menu-open .fara-static-nav-logo {
+  animation: fara-header-logo-out 260ms cubic-bezier(.2, .8, .2, 1) both !important;
+  pointer-events: none !important;
+}
 #header .menu-links-w > ul > li[data-config-generated="true"] {
   animation: fara-header-item-in 800ms cubic-bezier(.2, .8, .2, 1) both;
 }
@@ -266,6 +283,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
 #header.menu-open .menu-w .menu-cta { pointer-events: auto; }
 #header.menu-closing .menu-links-w > ul > li,
 #header.menu-closing .menu-links-w .navbar,
+#header.menu-closing .fara-static-nav-logo,
 #header.menu-closing .menu-w {
   visibility: hidden !important;
   opacity: 0 !important;
@@ -274,6 +292,9 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
 }
 #header.menu-revealing .menu-links-w > ul > li {
   animation: fara-navbar-item-reveal 800ms cubic-bezier(.2, .8, .2, 1) both !important;
+}
+#header.menu-revealing .fara-static-nav-logo {
+  animation: fara-header-logo-in 800ms cubic-bezier(.2, .8, .2, 1) 0ms both !important;
 }
 #header.menu-revealing .menu-links-w > ul > li:nth-child(1) { animation-delay: 0ms !important; }
 #header.menu-revealing .menu-links-w > ul > li:nth-child(2) { animation-delay: 100ms !important; }
@@ -286,6 +307,11 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
   visibility: visible;
   opacity: 1;
   transform: translate3d(0, 0, 0);
+  animation: none !important;
+}
+#header.menu-cycle-started:not(.menu-open):not(.menu-revealing) .fara-static-nav-logo {
+  visibility: visible;
+  opacity: 1;
   animation: none !important;
 }
 #header.menu-revealing .menu-links-w .navbar,

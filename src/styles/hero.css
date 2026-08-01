@@ -1,5 +1,6 @@
 .hero .configurable-logo { object-fit: contain; }
 .fara-hidden { display: none !important; }
+.hero .logo:not(.fara-hero-copy) { display: none !important; }
 .hero .fara-hero-copy {
   --fara-hero-title-color: #fff;
   --fara-hero-subtitle-color: #fff;

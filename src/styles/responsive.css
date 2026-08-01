@@ -12,7 +12,6 @@
   .fara-ai,
   .fara-about { grid-template-columns: 1fr; gap: 3rem; }
   .fara-industries { margin-top: 0; }
-  .fara-industries[data-fara-loop2-industries] { right: 2rem; left: 2rem; }
   .industries-grid .fara-card > h3,
   .industries-grid .fara-card > p { transform: translateY(-3rem); }
   .industries-grid .fara-card > .fara-expand { transform: translate(-50%, -3rem); }
@@ -37,7 +36,6 @@
   main #grid { min-height: 8600px; }
   .fara-sections { top: 1250px; right: 1.25rem; left: 1.25rem; gap: 600px; }
   .fara-industries { margin-top: 0; }
-  .fara-industries[data-fara-loop2-industries] { right: 1.25rem; left: 1.25rem; }
   .industries-grid .fara-card > h3,
   .industries-grid .fara-card > p { transform: translateY(-2rem); }
   .industries-grid .fara-card > .fara-expand { transform: translate(-50%, -2rem); }

@@ -43,7 +43,11 @@ export const createCard = ({ title, text, media, buttonText = 'Read more about' 
     void copy.offsetHeight
     card.classList.toggle('expanded', expanded)
     button.setAttribute('aria-expanded', String(expanded))
-    window.requestAnimationFrame(() => { copy.style.height = `${targetHeight}px` })
+    window.requestAnimationFrame(() => {
+      copy.style.height = `${targetHeight}px`
+      window.dispatchEvent(new CustomEvent('fara:card-resized'))
+    })
+    window.setTimeout(() => window.dispatchEvent(new CustomEvent('fara:card-resized')), 450)
   })
   card.appendChild(button)
   return card

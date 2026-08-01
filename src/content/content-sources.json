@@ -20,8 +20,7 @@
       "path": "src/content/industries.json",
       "ownership": "canonical-shared",
       "consumers": [
-        "legacy-home-industries",
-        "blackout-transition"
+        "legacy-home-industries"
       ]
     },
     {
