@@ -94,7 +94,7 @@ const render = document => {
   const callTitle = document.createElement('h2')
   callTitle.append(phoneIcon(document), document.createTextNode('Call us:'))
   const phone = document.createElement('p')
-  phone.textContent = '0901 384 0313'
+  phone.textContent = '02188220629'
   call.append(callTitle, phone)
   const visit = document.createElement('div')
   const visitTitle = document.createElement('h2')

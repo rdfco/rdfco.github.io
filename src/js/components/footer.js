@@ -11,6 +11,15 @@ const createIcon = (className, pathData) => {
   return svg
 }
 
+const createImage = (className, src, alt) => {
+  const image = document.createElement('img')
+  image.className = className
+  image.src = src
+  image.alt = alt
+  image.decoding = 'async'
+  return image
+}
+
 const createRouteLink = ({ label, href }) => createElement('a', {
   text: label,
   attributes: { href: '#', 'data-fara-route': href },
@@ -28,10 +37,6 @@ export const renderFooter = siteData => {
     className: 'fara-footer-navigation',
     attributes: { 'aria-label': 'Footer navigation' },
   })
-  const home = createRouteLink(siteData.navigation[0])
-  home.className = 'fara-footer-home'
-  home.setAttribute('aria-label', 'Home')
-  home.replaceChildren(createIcon('fara-footer-home-icon', 'M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5h-5.7v-6.6H9.2V21H3.5a.5.5 0 0 1-.5-.5v-9.7Z'))
 
   const primary = createElement('ul', { className: 'fara-footer-primary' })
   siteData.navigation.slice(1).forEach(item => {
@@ -49,7 +54,7 @@ export const renderFooter = siteData => {
     listItem.appendChild(createRouteLink(item))
     legal.appendChild(listItem)
   })
-  navigation.append(home, primary, legal)
+  navigation.append(primary, legal)
 
   const contact = createElement('address', { className: 'fara-footer-contact' })
   const call = createElement('div', { className: 'fara-footer-contact-block' })
@@ -72,7 +77,7 @@ export const renderFooter = siteData => {
 
   const bottom = createElement('div', { className: 'fara-footer-bottom' })
   bottom.append(
-    createElement('strong', { className: 'fara-footer-wordmark', text: siteData.brand.logoText }),
+    createImage('fara-footer-wordmark', '/assets/logos/fara-en-logo2-black.png', 'FARA'),
     createElement('p', { className: 'fara-footer-copyright', text: siteData.footer.copyright }),
   )
 

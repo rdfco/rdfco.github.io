@@ -110,8 +110,8 @@ export const siteData = {
   cta: { label: 'Work with FARA', href: '#footer' },
   footer: {
     copyright: '© 2026 | FARA - All rights reserved',
-    phone: '0901 384 0313',
-    phoneHref: 'tel:+989013840313',
+    phone: '02188220629',
+    phoneHref: 'tel:02188220629',
     address: 'Tehran, Kargar St, Science And Technology Park, University of Tehran',
   }
 }

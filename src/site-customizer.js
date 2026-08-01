@@ -11,72 +11,6 @@ validateSiteData(siteData)
 let requestedPath = null
 let appliedPath = null
 
-const visualAssetTracker = (() => {
-  const pending = new Set()
-  const completed = new Set()
-  let requestId = 0
-
-  const isVisualAsset = value => {
-    try {
-      const url = new URL(String(value), window.location.href)
-      return /\.(?:glb|gltf|bin|ktx2|basis|webp|png|jpe?g)(?:$|\?)/i.test(url.pathname + url.search)
-    } catch {
-      return false
-    }
-  }
-
-  const begin = value => {
-    if (!isVisualAsset(value)) return null
-    const id = requestId++
-    pending.add(id)
-    return id
-  }
-
-  const end = (id, value) => {
-    if (id === null) return
-    pending.delete(id)
-    completed.add(new URL(String(value), window.location.href).pathname)
-    window.dispatchEvent(new CustomEvent('fara:visual-asset-complete'))
-  }
-
-  const originalFetch = window.fetch?.bind(window)
-  if (originalFetch) {
-    window.fetch = async (...args) => {
-      const value = args[0]?.url || args[0]
-      const id = begin(value)
-      try {
-        return await originalFetch(...args)
-      } finally {
-        end(id, value)
-      }
-    }
-  }
-
-  const originalOpen = window.XMLHttpRequest?.prototype?.open
-  const originalSend = window.XMLHttpRequest?.prototype?.send
-  if (originalOpen && originalSend) {
-    window.XMLHttpRequest.prototype.open = function open(method, url, ...args) {
-      this.__faraVisualAssetUrl = url
-      return originalOpen.call(this, method, url, ...args)
-    }
-    window.XMLHttpRequest.prototype.send = function send(...args) {
-      const url = this.__faraVisualAssetUrl
-      const id = begin(url)
-      if (id !== null) {
-        this.addEventListener('loadend', () => end(id, url), { once: true })
-      }
-      return originalSend.apply(this, args)
-    }
-  }
-
-  return {
-    completed,
-    get pendingCount() {
-      return pending.size
-    },
-  }
-})()
-
 const normalizeRoute = value => {
   const [path, query = ''] = value.split('?')
   const normalizedPath = path === '/' ? '/' : path.replace(/\/+$/, '')
@@ -89,6 +23,13 @@ const refreshScrollSystems = () => {
   window.ScrollTrigger?.refresh?.()
   window.lenis?.resize?.()
   window.lenis?.reset?.()
+}
+
+const normalizePhoneNumbers = () => {
+  document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+    link.href = 'tel:02188220629'
+    link.textContent = '02188220629'
+  })
 }
 
 const resetHomeScrollState = () => {
@@ -107,26 +48,8 @@ const resetHomeScrollState = () => {
   window.lenis?.start?.()
 }
 
-const waitForBodyLoaded = () => new Promise(resolve => {
-  if (document.body.classList.contains('loaded')) {
-    resolve()
-    return
-  }
-
-  const observer = new MutationObserver(() => {
-    if (!document.body.classList.contains('loaded')) return
-    observer.disconnect()
-    resolve()
-  })
-  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
-})
-
-const waitForFonts = async () => {
-  if (!document.fonts?.ready) return
-  await document.fonts.ready
-}
-
 const waitForRenderedCanvasFrame = () => new Promise(resolve => {
+  const timeout = window.setTimeout(resolve, 1000)
   const check = () => {
     const canvas = document.querySelector('#canvas-wrapper canvas')
     if (!canvas || canvas.width === 0 || canvas.height === 0) {
@@ -134,45 +57,14 @@ const waitForRenderedCanvasFrame = () => new Promise(resolve => {
       return
     }
 
-    // Let the WebGL runtime paint a complete frame before the parent reveals it.
+    window.clearTimeout(timeout)
     window.requestAnimationFrame(() => window.requestAnimationFrame(resolve))
   }
   check()
 })
 
-const waitForSceneAssets = () => new Promise(resolve => {
-  const requiredAsset = '/assets/models/fort-energy/energy-chapter.glb'
-  const idleDelayMs = 250
-  let idleTimer = null
-
-  const isReady = () =>
-    visualAssetTracker.completed.has(requiredAsset)
-
-  const cleanup = () => {
-    window.clearTimeout(idleTimer)
-    window.removeEventListener('fara:visual-asset-complete', schedule)
-  }
-
-  const schedule = () => {
-    window.clearTimeout(idleTimer)
-    if (!isReady()) return
-    idleTimer = window.setTimeout(() => {
-      if (!isReady()) return
-      cleanup()
-      resolve()
-    }, idleDelayMs)
-  }
-
-  window.addEventListener('fara:visual-asset-complete', schedule)
-  schedule()
-})
-
 const waitForVisualReadiness = async pageKey => {
-  await Promise.all([waitForBodyLoaded(), waitForFonts()])
-  if (pageKey === 'home') {
-    await waitForSceneAssets()
-    await waitForRenderedCanvasFrame()
-  }
+  if (pageKey === 'home') await waitForRenderedCanvasFrame()
 }
 
 const getCurrentPage = async (path, navigationItem) => {
@@ -213,6 +105,7 @@ const refreshSite = async () => {
   if (currentPage.data.key === 'home') resetHomeScrollState()
   else window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   await applySiteData(siteData, currentPage)
+  normalizePhoneNumbers()
   await waitForVisualReadiness(currentPage.data.key)
   const header = document.querySelector('#header')
   header?.classList.remove('top', 'fade')
