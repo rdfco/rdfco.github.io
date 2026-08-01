@@ -30,17 +30,16 @@
       .legacy-shell[data-route-surface='content'] {
         background: #fff;
       }
-      .legacy-shell[data-route-surface='content'] .legacy-site {
-        opacity: 1;
-      }
       .legacy-site {
         display: block;
         border: 0;
         opacity: 0;
+        visibility: hidden;
         transition: opacity 180ms ease;
       }
       .legacy-shell[data-status='ready'] .legacy-site {
         opacity: 1;
+        visibility: visible;
       }
       .site-gate {
         position: absolute;
@@ -75,21 +74,7 @@
     </style>
   </head>
   <body>
-    <div id="root">
-      <div class="legacy-shell" data-status="loading" data-route-surface="home">
-        <div class="site-gate" role="status">
-          <div class="site-loader" aria-label="Loading">
-            <span class="site-loader__spinner" aria-hidden="true"></span>
-          </div>
-        </div>
-        <iframe
-          class="legacy-site"
-          title="FARA"
-          src="/legacy/fort-energy/index.html?v=oil-bg-sync-20260801-2"
-          sandbox="allow-scripts allow-same-origin"
-        ></iframe>
-      </div>
-    </div>
+    <div id="root"><div class="legacy-shell" data-status="loading" data-route-surface="home"><div class="site-gate" role="status"><div class="site-loader" aria-label="Loading"><span class="site-loader__spinner" aria-hidden="true"></span></div></div><iframe class="legacy-site" title="FARA" src="/legacy/fort-energy/index.html?v=oil-bg-sync-20260801-2" sandbox="allow-scripts allow-same-origin"></iframe></div></div>
     <script>
       ;(() => {
         const shell = document.querySelector('.legacy-shell')

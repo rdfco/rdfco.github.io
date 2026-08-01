@@ -18,13 +18,20 @@ const setPhraseContent = (element, value) => {
 
 const createHeroTitle = siteData => {
   const title = createElement('h1', { attributes: { 'aria-label': siteData.hero.title } })
-  ;['FARA', 'IS', 'IN'].forEach((word, index) => {
-    title.append(createElement('span', {
-      className: `fara-hero-title-word fara-hero-title-word-${index + 1}`,
-      text: word,
-      attributes: { 'aria-hidden': 'true' },
-    }))
+  const fara = createElement('span', {
+    className: 'fara-hero-title-word fara-hero-title-word-1',
+    text: 'FARA',
+    attributes: { 'aria-hidden': 'true' },
   })
+  const phrase = createElement('span', {
+    className: 'fara-hero-title-group',
+    attributes: { 'aria-hidden': 'true' },
+  })
+  phrase.append(
+    createElement('span', { className: 'fara-hero-title-word fara-hero-title-word-2', text: 'IS' }),
+    createElement('span', { className: 'fara-hero-title-word fara-hero-title-word-3', text: 'IN' }),
+  )
+  title.append(fara, phrase)
   return title
 }
 

@@ -174,12 +174,43 @@ export const createBlackoutTransition = ({ gsap, getRanges, config = BLACKOUT_CO
   const content = overlay.querySelector('[data-fara-blackout-content]')
   let titleTimeline = null
   let titleReady = false
+  let titleStage = 0
+  let titleStageTargets = [0, 0.26, 0.47, 0.68, 1]
+  let currentLandmarks = null
+  let currentScroll = 0
+  let lastWheelAt = 0
+  let lastExitTarget = -1
+  const setTitleStage = (nextStage, immediate = false) => {
+    if (!titleTimeline || !gsap) return
+    const normalizedStage = Math.max(0, Math.min(4, nextStage))
+    if (!immediate && normalizedStage === titleStage) return
+    titleStage = normalizedStage
+    gsap.killTweensOf(titleTimeline)
+    if (immediate) {
+      titleTimeline.progress(titleStageTargets[titleStage], false)
+      return
+    }
+    gsap.to(titleTimeline, {
+      progress: titleStageTargets[titleStage],
+      duration: 1.15,
+      ease: 'power2.out',
+      overwrite: true,
+    })
+  }
+  const handleWheel = (event) => {
+    if (!currentLandmarks || currentScroll < currentLandmarks.fullyBlack || currentScroll >= currentLandmarks.revealStart) return
+    const direction = Math.sign(event.deltaY)
+    const now = window.performance.now()
+    if (!direction || now - lastWheelAt < 280) return
+    lastWheelAt = now
+    setTitleStage(Math.min(3, titleStage + direction))
+  }
   const buildTitleTimeline = () => {
     if (!titleReady || !gsap) return
     titleTimeline?.kill()
     const lines = Array.from(content.children)
     const enterDuration = 1
-    const lineStagger = 0.82
+    const lineStagger = enterDuration
     titleTimeline = gsap.timeline({ paused: true })
     lines.forEach((line, index) => {
       const startX = window.innerWidth * 1.08
@@ -205,7 +236,15 @@ export const createBlackoutTransition = ({ gsap, getRanges, config = BLACKOUT_CO
         ease: 'none',
       }, exitStart)
     })
-    titleTimeline.progress(0)
+    const totalDuration = titleTimeline.duration() || 1
+    titleStageTargets = [
+      0,
+      enterDuration / totalDuration,
+      (lineStagger + enterDuration) / totalDuration,
+      exitStart / totalDuration,
+      1,
+    ]
+    setTitleStage(titleStage, true)
   }
   const title = document.createElement('strong')
   title.textContent = 'INSIDER INTELLIGENCE'
@@ -220,6 +259,7 @@ export const createBlackoutTransition = ({ gsap, getRanges, config = BLACKOUT_CO
   titleReady = true
   buildTitleTimeline()
   window.addEventListener('resize', buildTitleTimeline, { passive: true })
+  window.addEventListener('wheel', handleWheel, { passive: true })
   let lastClip = ''
   let lastMask = ''
   let lastOpacity = ''
@@ -269,6 +309,8 @@ export const createBlackoutTransition = ({ gsap, getRanges, config = BLACKOUT_CO
     }
 
     const landmarks = getLandmarks(connector, instance, config)
+    currentLandmarks = landmarks
+    currentScroll = scroll
     const landmarkSignature = Object.values(landmarks).join(':')
     if (landmarkSignature !== overlay.dataset.landmarkSignature) {
       overlay.dataset.landmarkSignature = landmarkSignature
@@ -286,10 +328,29 @@ export const createBlackoutTransition = ({ gsap, getRanges, config = BLACKOUT_CO
     )
     const visibleAmount = scroll < landmarks.revealStart ? curve(coverProgress) : 1 - curve(revealProgress)
     const opacity = clamp(config.opacity)
-    const titleProgress = clamp(
-      (scroll - landmarks.fullyBlack) / (landmarks.revealStart - landmarks.fullyBlack),
-    )
-    titleTimeline?.progress(titleProgress, false)
+    const titleProgress = clamp((scroll - landmarks.fullyBlack) / (landmarks.revealStart - landmarks.fullyBlack))
+    if (scroll < landmarks.fullyBlack && titleStage !== 0) {
+      lastExitTarget = -1
+      setTitleStage(0, true)
+    }
+    if (titleStage >= 3 && titleProgress > 0.68) {
+      const exitProgress = clamp((titleProgress - 0.68) / 0.32)
+      const targetProgress = titleStageTargets[3] + (1 - titleStageTargets[3]) * exitProgress
+      if (Math.abs(targetProgress - lastExitTarget) > 0.002) {
+        lastExitTarget = targetProgress
+        gsap.killTweensOf(titleTimeline)
+        gsap.to(titleTimeline, {
+          progress: targetProgress,
+          duration: 0.24,
+          ease: 'power1.out',
+          overwrite: true,
+        })
+      }
+      if (exitProgress >= 1) titleStage = 4
+    }
+    if (lastWheelAt === 0 && titleProgress > 0 && titleStage < 3) {
+      setTitleStage(Math.min(3, Math.max(1, Math.ceil(titleProgress * 3))))
+    }
 
     render(visibleAmount, visibleAmount > 0 ? opacity : 0, scroll >= landmarks.revealStart)
 
@@ -319,6 +380,7 @@ export const createBlackoutTransition = ({ gsap, getRanges, config = BLACKOUT_CO
 
   const destroy = () => {
     window.removeEventListener('resize', buildTitleTimeline)
+    window.removeEventListener('wheel', handleWheel)
     titleTimeline?.kill()
     overlay.remove()
   }

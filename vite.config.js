@@ -54,7 +54,7 @@ function copyLegacyRuntime() {
         )
         .replace(
           /\/_astro\/WebGL\.astro_astro_type_script_index_0_lang\.ClLv70z8\.js\?v=[^"]+/,
-          '/_astro/WebGL.astro_astro_type_script_index_0_lang.ClLv70z8.js?v=copy-smooth-20260801-1',
+          '/_astro/WebGL.astro_astro_type_script_index_0_lang.ClLv70z8.js?v=stage-scroll-20260801-2',
         )
       writeFileSync(legacyIndex, legacyHtml)
       const appShell = resolve(process.cwd(), 'dist', 'index.html')

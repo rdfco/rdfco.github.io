@@ -26,19 +26,17 @@ body,
   background: #fff;
 }
 
-.legacy-shell[data-route-surface='content'] .legacy-site {
-  opacity: 1;
-}
-
 .legacy-site {
   display: block;
   border: 0;
   opacity: 0;
+  visibility: hidden;
   transition: opacity 180ms ease;
 }
 
 .legacy-shell[data-status='ready'] .legacy-site {
   opacity: 1;
+  visibility: visible;
 }
 
 .site-gate {

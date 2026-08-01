@@ -3,7 +3,7 @@
 .hero .fara-hero-copy {
   --fara-hero-title-color: #fff;
   --fara-hero-subtitle-color: #fff;
-  --fara-hero-title-shift-x: -7vw;
+  --fara-hero-title-shift-x: 0vw;
   position: absolute !important;
   inset: 0 !important;
   grid-column: 1 / -1 !important;
@@ -27,7 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: min(82rem, 68%);
+  width: min(82rem, calc(100% - 8rem));
   transform: translate(-50%, -50%);
   font-family: "FARA Gotham";
   font-size: clamp(7.7rem, 8.4vw, 10.1rem);
@@ -38,6 +38,8 @@
 }
 .hero .fara-hero-title-word,
 .hero .fara-hero-phrase { display: block; white-space: nowrap; }
+.hero .fara-hero-title-word-1 { transform: translateX(-2vw); }
+.hero .fara-hero-title-group { display: flex; gap: .22em; align-items: center; white-space: nowrap; }
 .hero .fara-hero-phrase {
   position: absolute;
   top: 73%;

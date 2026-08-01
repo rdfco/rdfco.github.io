@@ -14,7 +14,7 @@ page.on('requestfailed', request => errors.push(`${request.failure()?.errorText}
 try {
   await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 })
   await page.goto(process.env.SITE_URL || 'http://127.0.0.1:5174/', { waitUntil: 'networkidle0', timeout: 60_000 })
-  const frame = page.frames().find(candidate => candidate.url().includes('/legacy/'))
+  const frame = page.frames().find(candidate => candidate !== page.mainFrame())
   if (!frame) throw new Error('Legacy frame did not load')
   await new Promise(resolve => setTimeout(resolve, 4_000))
   const desktop = await frame.evaluate(() => ({

@@ -133,12 +133,12 @@ export default function LegacySite() {
 
   return (
     <div className="legacy-shell" data-status={status} data-route-surface={isHomeRoute ? 'home' : 'content'}>
-      {isHomeRoute && status !== 'ready' && (
+      {status !== 'ready' && (
         <div className="site-gate" role={status === 'failed' ? 'alert' : 'status'}>
           {status === 'failed' ? (
             content.uiLabels.loadFailure
           ) : (
-            <div className="site-loader" aria-label={content.uiLabels.loading}>
+            <div className="site-loader" aria-label="Loading">
               <span className="site-loader__spinner" aria-hidden="true" />
             </div>
           )}
