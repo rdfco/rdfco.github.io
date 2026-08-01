@@ -11,6 +11,18 @@ validateSiteData(siteData)
 let requestedPath = null
 let appliedPath = null
 
+const homeBackgroundAssets = [
+  '/assets/models/fort-energy/fort-energy.glb',
+  '/assets/models/fort-energy/energy-chapter.glb',
+  '/assets/models/mountains.glb',
+  '/assets/textures/envmap-min.exr',
+  '/assets/textures/noise.webp',
+  '/assets/textures/perlinNoise.webp',
+  '/assets/textures/noise-solid-normal.webp',
+  '/assets/textures/rock_normal.webp',
+  '/assets/textures/voronoi.webp',
+]
+
 const normalizeRoute = value => {
   const [path, query = ''] = value.split('?')
   const normalizedPath = path === '/' ? '/' : path.replace(/\/+$/, '')
@@ -68,7 +80,17 @@ const waitForFonts = async () => {
 }
 
 const waitForHomeAboveFoldReady = () => new Promise(resolve => {
-  const deadline = performance.now() + 900
+  const hasLoadedResource = asset =>
+    performance
+      .getEntriesByType('resource')
+      .some(entry => {
+        try {
+          return new URL(entry.name).pathname === asset && entry.responseEnd > 0
+        } catch {
+          return false
+        }
+      })
+
   const isReady = () => {
     const heroText = document.querySelector('.hero .fara-hero-copy h1')
     const heroPhrase = document.querySelector('.hero .fara-hero-phrase')
@@ -78,11 +100,13 @@ const waitForHomeAboveFoldReady = () => new Promise(resolve => {
       heroPhrase?.textContent?.trim() &&
       canvas &&
       (canvas.width > 0 || canvas.clientWidth > 0) &&
-      (canvas.height > 0 || canvas.clientHeight > 0)
+      (canvas.height > 0 || canvas.clientHeight > 0) &&
+      homeBackgroundAssets.every(hasLoadedResource)
     )
   }
+
   const check = () => {
-    if (isReady() || performance.now() >= deadline) {
+    if (isReady()) {
       resolve()
       return
     }

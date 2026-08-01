@@ -35,10 +35,17 @@ function copyLegacyRuntime() {
       const targetRoot = resolve(process.cwd(), 'dist', 'src')
       const legacyIndex = resolve(process.cwd(), 'dist', 'legacy', 'fort-energy', 'index.html')
       const bundledCustomizerPath = '/site-customizer.bundle.js?v=home-load-20260801-7'
+      const bundledStylesPath = '/custom.bundle.css?v=home-load-20260801-7'
       mkdirSync(targetRoot, { recursive: true })
       legacyRuntimeFiles.forEach(file => {
         cpSync(resolve(sourceRoot, file), resolve(targetRoot, file), { recursive: true })
       })
+      const customCss = readFileSync(resolve(sourceRoot, 'custom.css'), 'utf8')
+      const bundledCss = customCss.replace(
+        /@import\s+['"]\.\/styles\/([^'"]+)['"];\s*/g,
+        (_, file) => `${readFileSync(resolve(sourceRoot, 'styles', file), 'utf8')}\n`,
+      )
+      writeFileSync(resolve(process.cwd(), 'dist', 'custom.bundle.css'), bundledCss)
       await buildWithEsbuild({
         entryPoints: [resolve(sourceRoot, 'site-customizer.js')],
         bundle: true,
@@ -51,6 +58,10 @@ function copyLegacyRuntime() {
         .replace(
           /<script type="module" src="\/src\/site-customizer\.js[^"]*" data-astro-transition-persist="fara-customizer"><\/script>/,
           `<script type="module" src="${bundledCustomizerPath}" data-astro-transition-persist="fara-customizer"></script>`,
+        )
+        .replace(
+          /<link rel="stylesheet" href="\/src\/custom\.css">/,
+          `<link rel="stylesheet" href="${bundledStylesPath}">`,
         )
         .replace(
           /\/_astro\/WebGL\.astro_astro_type_script_index_0_lang\.ClLv70z8\.js\?v=[^"]+/,
