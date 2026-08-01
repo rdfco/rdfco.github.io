@@ -30,7 +30,7 @@
   width: min(82rem, 68%);
   transform: translate(-50%, -50%);
   font-family: "FARA Gotham";
-  font-size: clamp(8.2rem, 9vw, 10.8rem);
+  font-size: clamp(7.7rem, 8.4vw, 10.1rem);
   font-weight: 300;
   line-height: .9;
   letter-spacing: .04em;
@@ -53,7 +53,7 @@
   color: var(--fara-hero-subtitle-color);
   margin: 0 auto;
   font-family: "FARA Gotham";
-  font-size: clamp(.95rem, 1.25vw, 1.25rem);
+  font-size: clamp(1.1rem, 1.55vw, 1.55rem);
   line-height: 1.7;
   letter-spacing: .16em;
   text-align: center;

@@ -1,5 +1,5 @@
 import { g as gsap } from '/_astro/index.Brfk6Bdo.js'
-import { createBlackoutTransition } from '/transitions/blackout-transition.js?v=home-refresh-20260729-3'
+import { createBlackoutTransition } from '/transitions/blackout-transition.js?v=copy-smooth-20260801-1'
 import { replaceFirstLoop2ModelWithOil } from '/models/oil-loop2-scene.js?v=oil-bg-sync-20260801-2'
 import { replaceLastLoop2ModelWithMetal } from '/models/metal-loop2-scene.js?v=metal-right-arc-20260801-2'
 

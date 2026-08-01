@@ -47,10 +47,15 @@ function copyLegacyRuntime() {
         minify: true,
         outfile: resolve(process.cwd(), 'dist', 'site-customizer.bundle.js'),
       })
-      const legacyHtml = readFileSync(legacyIndex, 'utf8').replace(
-        /<script type="module" src="\/src\/site-customizer\.js[^"]*" data-astro-transition-persist="fara-customizer"><\/script>/,
-        `<script type="module" src="${bundledCustomizerPath}" data-astro-transition-persist="fara-customizer"></script>`,
-      )
+      const legacyHtml = readFileSync(legacyIndex, 'utf8')
+        .replace(
+          /<script type="module" src="\/src\/site-customizer\.js[^"]*" data-astro-transition-persist="fara-customizer"><\/script>/,
+          `<script type="module" src="${bundledCustomizerPath}" data-astro-transition-persist="fara-customizer"></script>`,
+        )
+        .replace(
+          /\/_astro\/WebGL\.astro_astro_type_script_index_0_lang\.ClLv70z8\.js\?v=[^"]+/,
+          '/_astro/WebGL.astro_astro_type_script_index_0_lang.ClLv70z8.js?v=copy-smooth-20260801-1',
+        )
       writeFileSync(legacyIndex, legacyHtml)
       const appShell = resolve(process.cwd(), 'dist', 'index.html')
       cpSync(appShell, resolve(process.cwd(), 'dist', '404.html'))

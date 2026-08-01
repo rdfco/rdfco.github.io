@@ -1,4 +1,4 @@
-/* global console, document, fetch, window */
+/* global console, document, window */
 
 // Visual scroll offsets only. These never modify connector/chapter timing.
 export const FOG_START_OFFSET = -2300
@@ -178,15 +178,12 @@ export const createBlackoutTransition = ({ gsap, getRanges, config = BLACKOUT_CO
     if (!titleReady || !gsap) return
     titleTimeline?.kill()
     const lines = Array.from(content.children)
-    const enterDuration = 1.5
-    const referenceWidth = Math.max(1, lines[0]?.getBoundingClientRect().width || 1)
+    const enterDuration = 1
+    const lineStagger = 0.82
     titleTimeline = gsap.timeline({ paused: true })
     lines.forEach((line, index) => {
-      const lineWidth = line.getBoundingClientRect().width
-      const startX = window.innerWidth * 1.12
-      const endX = -(lineWidth + window.innerWidth * 0.08)
-      const exitDuration = 2.5 * Math.max(1, lineWidth / referenceWidth)
-      const start = index * enterDuration
+      const startX = window.innerWidth * 1.08
+      const start = index * lineStagger
       titleTimeline
         .fromTo(line, {
           x: startX,
@@ -195,43 +192,33 @@ export const createBlackoutTransition = ({ gsap, getRanges, config = BLACKOUT_CO
           x: 0,
           autoAlpha: 1,
           duration: enterDuration,
-          ease: 'power2.out',
+          ease: 'none',
         }, start)
-        .to(line, {
-          x: endX * 0.72,
-          autoAlpha: 1,
-          duration: exitDuration * 0.72,
-          ease: 'power1.inOut',
-        }, start + enterDuration)
-        .to(line, {
-          x: endX,
-          autoAlpha: 0,
-          duration: exitDuration * 0.28,
-          ease: 'power2.in',
-        }, start + enterDuration + exitDuration * 0.72)
+    })
+    const exitStart = (lines.length - 1) * lineStagger + enterDuration
+    lines.forEach(line => {
+      const lineWidth = line.getBoundingClientRect().width
+      titleTimeline.to(line, {
+        x: -(lineWidth + window.innerWidth * 0.08),
+        autoAlpha: 0,
+        duration: 1.25,
+        ease: 'none',
+      }, exitStart)
     })
     titleTimeline.progress(0)
   }
-  fetch(config.contentUrl)
-    .then(response => {
-      if (!response.ok) throw new Error(`Unable to load blackout content: ${response.status}`)
-      return response.json()
-    })
-    .then(data => {
-      const title = document.createElement('strong')
-      title.textContent = data.title
-      title.style.cssText = 'font:700 clamp(3.8rem,7.9vw,8.2rem)/1.05 "FARA Gotham",sans-serif;white-space:nowrap;'
-      const subtitle = document.createElement('span')
-      subtitle.textContent = data.subtitle
-      subtitle.style.cssText = 'font:700 clamp(2.5rem,5.6vw,5.8rem)/1 "FARA Gotham",sans-serif;letter-spacing:.05em;white-space:nowrap;'
-      const description = document.createElement('p')
-      description.textContent = data.description
-      description.style.cssText = 'margin:0;font:700 clamp(1.25rem,2.5vw,2.6rem)/1.15 "FARA Gotham",sans-serif;letter-spacing:.03em;white-space:nowrap;'
-      content.replaceChildren(title, subtitle, description)
-      titleReady = true
-      buildTitleTimeline()
-    })
-    .catch(error => console.error(error))
+  const title = document.createElement('strong')
+  title.textContent = 'INSIDER INTELLIGENCE'
+  title.style.cssText = 'font:700 clamp(3.4rem,7vw,7.4rem)/1.05 "FARA Gotham",sans-serif;white-space:nowrap;'
+  const subtitle = document.createElement('span')
+  subtitle.textContent = 'Defining The Future'
+  subtitle.style.cssText = 'font:500 clamp(2.5rem,5vw,5.2rem)/1 "FARA Gotham",sans-serif;letter-spacing:.04em;white-space:nowrap;'
+  const description = document.createElement('p')
+  description.textContent = 'Dare to Disrupt'
+  description.style.cssText = 'margin:0;font:500 clamp(1.8rem,3.2vw,3.4rem)/1.1 "FARA Gotham",sans-serif;letter-spacing:.04em;white-space:nowrap;'
+  content.replaceChildren(title, subtitle, description)
+  titleReady = true
+  buildTitleTimeline()
   window.addEventListener('resize', buildTitleTimeline, { passive: true })
   let lastClip = ''
   let lastMask = ''
