@@ -41,6 +41,44 @@ const resetHomeScrollState = () => {
   window.lenis?.start?.()
 }
 
+const waitForBodyLoaded = () => new Promise(resolve => {
+  if (document.body.classList.contains('loaded')) {
+    resolve()
+    return
+  }
+
+  const observer = new MutationObserver(() => {
+    if (!document.body.classList.contains('loaded')) return
+    observer.disconnect()
+    resolve()
+  })
+  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
+})
+
+const waitForFonts = async () => {
+  if (!document.fonts?.ready) return
+  await document.fonts.ready
+}
+
+const waitForRenderedCanvasFrame = () => new Promise(resolve => {
+  const check = () => {
+    const canvas = document.querySelector('#canvas-wrapper canvas')
+    if (!canvas || canvas.width === 0 || canvas.height === 0) {
+      window.requestAnimationFrame(check)
+      return
+    }
+
+    // Let the WebGL runtime paint a complete frame before the parent reveals it.
+    window.requestAnimationFrame(() => window.requestAnimationFrame(resolve))
+  }
+  check()
+})
+
+const waitForVisualReadiness = async pageKey => {
+  await Promise.all([waitForBodyLoaded(), waitForFonts()])
+  if (pageKey === 'home') await waitForRenderedCanvasFrame()
+}
+
 const getCurrentPage = async (path, navigationItem) => {
   const cleanPath = (path || '/').split('?')[0]
   if (cleanPath === '/' && navigationItem.key === 'home') {
@@ -79,6 +117,7 @@ const refreshSite = async () => {
   if (currentPage.data.key === 'home') resetHomeScrollState()
   else window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   await applySiteData(siteData, currentPage)
+  await waitForVisualReadiness(currentPage.data.key)
   const header = document.querySelector('#header')
   header?.classList.remove('top', 'fade')
   if (header && requestedPath === '/') header.dataset.theme = 'light'
