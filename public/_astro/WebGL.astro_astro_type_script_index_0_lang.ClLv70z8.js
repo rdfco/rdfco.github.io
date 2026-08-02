@@ -1,4 +1,5 @@
 import{a as t,E as a}from"/webgl-color-loader.js";
+import{installEnergyContinuation}from"/energy-continuation.js?v=restore-loop2-20260802-1";
 import"./index.Brfk6Bdo.js";
 import"./ScrollTrigger.6qCihK2t.js";
 import"./router.B-sij-_X.js";
@@ -13,6 +14,7 @@ history.replaceState(history.state,"","/fort-energy/");
 const o=document.querySelector("#canvas-wrapper"),r=o.querySelector("canvas");
 try{
 	await t.init(o,r);
+	installEnergyContinuation(t,a);
 	t.state.emit(a.ATTACH);
 	t.state.emit(a.RESIZE,t.tools?.viewport.infos);
 	await new Promise(e=>requestAnimationFrame(()=>requestAnimationFrame(e)));
