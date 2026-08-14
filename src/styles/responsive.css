@@ -45,6 +45,9 @@
   .hero .fara-hero-copy.logo-mb { display: flex !important; }
   .hero .fara-hero-copy {
     padding: 0 1rem !important;
+    --fara-hero-arc-x: 47vw;
+    --fara-hero-arc-y: 1vh;
+    --fara-hero-arc-width: clamp(12rem, 58vw, 22rem);
   }
   .hero .fara-hero-brand-lockup {
     top: 43%;

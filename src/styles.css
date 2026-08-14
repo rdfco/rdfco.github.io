@@ -2,3 +2,9 @@
 @import './styles/route-pages.css';
 @import './styles/content-pages.css';
 @import './features/legacy-site/legacy-site.css';
+
+html,
+body,
+#root {
+  background: #080a0b;
+}

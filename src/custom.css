@@ -30,6 +30,17 @@ body {
 html:not([data-fara-ready='true']) body { visibility: hidden !important; }
 
 /*
+ * The WebGL canvas deliberately sits behind the document at z-index: -1.
+ * Keep the dark early paint while loading, then remove the document paint
+ * once the real first frame and all above-fold content are ready.
+ */
+html[data-fara-ready='true'],
+html[data-fara-ready='true'] body {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/*
  * The generated WebGL runtime uses this fullscreen layer for its legacy
  * long-press/drag transition. Keep the visual layer, but let pointer input
  * pass through so the FARA home scene cannot be replaced by that transition.

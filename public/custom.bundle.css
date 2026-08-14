@@ -1144,6 +1144,11 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
 .hero .logo:not(.fara-hero-copy) { display: none !important; }
 .hero .fara-hero-copy {
   --fara-accent-green: #00c878;
+  --fara-hero-arc-x: 47vw;
+  --fara-hero-arc-y: -4vh;
+  --fara-hero-arc-width: clamp(16rem, 28vw, 35rem);
+  --fara-hero-arc-rotate: 0deg;
+  --fara-hero-arc-opacity: 1;
   --fara-hero-title-color: #f4f7f5;
   --fara-hero-subtitle-color: #fff;
   position: absolute !important;
@@ -1163,8 +1168,23 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
 }
 .hero .fara-hero-copy.logo-dk { display: flex !important; }
 .hero .fara-hero-copy h1 { display: none !important; }
+.hero .fara-hero-arc {
+  position: absolute;
+  z-index: 0;
+  top: var(--fara-hero-arc-y);
+  left: var(--fara-hero-arc-x);
+  display: block;
+  width: var(--fara-hero-arc-width);
+  height: auto;
+  opacity: var(--fara-hero-arc-opacity);
+  pointer-events: none;
+  transform: rotate(var(--fara-hero-arc-rotate));
+  transform-origin: center;
+  user-select: none;
+}
 .hero .fara-hero-brand-lockup {
   position: absolute;
+  z-index: 1;
   top: clamp(12.5rem, 47vh, 21rem);
   left: clamp(5.5rem, 12vw, 13rem);
   display: flex;
@@ -1200,6 +1220,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
 }
 .hero .fara-hero-phrase-wrap {
   position: absolute;
+  z-index: 1;
   top: 73%;
   left: 0;
   right: 0;
@@ -1587,6 +1608,9 @@ html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !imp
   .hero .fara-hero-copy.logo-mb { display: flex !important; }
   .hero .fara-hero-copy {
     padding: 0 1rem !important;
+    --fara-hero-arc-x: 47vw;
+    --fara-hero-arc-y: 1vh;
+    --fara-hero-arc-width: clamp(12rem, 58vw, 22rem);
   }
   .hero .fara-hero-brand-lockup {
     top: 43%;
@@ -1883,6 +1907,17 @@ body {
 
 /* The mirrored document must never reveal its source content before FARA customization succeeds. */
 html:not([data-fara-ready='true']) body { visibility: hidden !important; }
+
+/*
+ * The WebGL canvas deliberately sits behind the document at z-index: -1.
+ * Keep the dark early paint while loading, then remove the document paint
+ * once the real first frame and all above-fold content are ready.
+ */
+html[data-fara-ready='true'],
+html[data-fara-ready='true'] body {
+  background: transparent !important;
+  background-image: none !important;
+}
 
 /*
  * The generated WebGL runtime uses this fullscreen layer for its legacy
