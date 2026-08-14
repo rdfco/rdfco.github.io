@@ -3,10 +3,8 @@ export const appConfig = {
     legacy: [
       '/',
       '/who-we-are',
-      '/solution',
       '/how-we-help',
       '/who-we-serve',
-      '/case-studies',
       '/think-together',
       '/privacy-policy',
       '/terms-of-use',

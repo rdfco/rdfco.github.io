@@ -46,13 +46,6 @@
       ]
     },
     {
-      "path": "src/navbar/pages/solution/data.json",
-      "ownership": "legacy-protected",
-      "consumers": [
-        "legacy-solution-route"
-      ]
-    },
-    {
       "path": "src/navbar/pages/how-we-help/data.json",
       "ownership": "legacy-protected",
       "consumers": [
@@ -64,13 +57,6 @@
       "ownership": "legacy-protected",
       "consumers": [
         "legacy-industries-route"
-      ]
-    },
-    {
-      "path": "src/navbar/pages/case-studies/data.json",
-      "ownership": "legacy-protected",
-      "consumers": [
-        "legacy-case-studies-route"
       ]
     },
     {

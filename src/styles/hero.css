@@ -2,9 +2,9 @@
 .fara-hidden { display: none !important; }
 .hero .logo:not(.fara-hero-copy) { display: none !important; }
 .hero .fara-hero-copy {
-  --fara-hero-title-color: #fff;
+  --fara-accent-green: #00c878;
+  --fara-hero-title-color: #f4f7f5;
   --fara-hero-subtitle-color: #fff;
-  --fara-hero-title-shift-x: 0vw;
   position: absolute !important;
   inset: 0 !important;
   grid-column: 1 / -1 !important;
@@ -21,45 +21,79 @@
   text-align: center;
 }
 .hero .fara-hero-copy.logo-dk { display: flex !important; }
-.hero .fara-hero-copy h1 {
+.hero .fara-hero-copy h1 { display: none !important; }
+.hero .fara-hero-brand-lockup {
   position: absolute;
-  top: 50%;
-  left: calc(50% + var(--fara-hero-title-shift-x));
+  top: clamp(12.5rem, 47vh, 21rem);
+  left: clamp(5.5rem, 12vw, 13rem);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: min(82rem, calc(100% - 8rem));
-  transform: translate(-50%, -50%);
-  font-family: "FARA Gotham";
-  font-size: clamp(7.7rem, 8.4vw, 10.1rem);
-  font-weight: 300;
-  line-height: .9;
-  letter-spacing: .04em;
-  text-transform: none;
+  justify-content: flex-start;
+  gap: clamp(1rem, 1.45vw, 1.5rem);
+  transform: translateY(-50%);
+  color: var(--fara-hero-title-color);
+  pointer-events: none;
 }
-.hero .fara-hero-title-word,
-.hero .fara-hero-phrase { display: block; white-space: nowrap; }
-.hero .fara-hero-title-word-1 { transform: translateX(-6vw); }
-.hero .fara-hero-title-group { display: flex; gap: .22em; align-items: center; white-space: nowrap; }
-.hero .fara-hero-phrase {
+.hero .fara-hero-brand-logo {
+  display: block;
+  width: clamp(3.1rem, 4.5vw, 5.15rem);
+  height: auto;
+  object-fit: contain;
+}
+.hero .fara-hero-brand-divider {
+  display: block;
+  width: 2px;
+  height: clamp(2.55rem, 3.8vw, 4.15rem);
+  background: var(--fara-accent-green);
+  box-shadow: 0 0 18px rgba(0, 200, 120, .34);
+}
+.hero .fara-hero-brand-text {
+  display: block;
+  font-family: "FARA Gotham";
+  font-size: clamp(2.3rem, 3.25vw, 4rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.hero .fara-hero-phrase-wrap {
   position: absolute;
   top: 73%;
   left: 0;
   right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   width: min(48rem, calc(100% - 3rem));
   min-width: 0;
   padding-left: 0;
   box-sizing: border-box;
   color: var(--fara-hero-subtitle-color);
   margin: 0 auto;
+  will-change: opacity, transform;
+}
+.hero .fara-hero-phrase {
+  position: static !important;
+  inset: auto !important;
+  display: block !important;
+  width: 100%;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none;
   font-family: "FARA Gotham";
   font-size: clamp(1.1rem, 1.55vw, 1.55rem);
   line-height: 1.7;
   letter-spacing: .16em;
   text-align: center;
   text-transform: uppercase;
-  will-change: opacity, transform;
+  white-space: nowrap;
+}
+.hero .fara-hero-phrase-rule {
+  position: static !important;
+  display: block !important;
+  width: min(18rem, 64%);
+  height: 2px;
+  margin: .55rem auto 0;
+  background: var(--fara-accent-green);
+  box-shadow: 0 0 16px rgba(0, 200, 120, .32);
 }

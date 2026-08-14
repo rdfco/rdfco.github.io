@@ -5,41 +5,43 @@ const setPhraseContent = (element, value) => {
   element.textContent = value
 }
 
-const animatePhraseFallback = (phrase, items) => {
+const animatePhraseFallback = (phraseWrap, phrase, items) => {
   let index = 0
-  phrase.style.transition = 'opacity 700ms ease, transform 700ms ease'
+  phraseWrap.style.transition = 'opacity 700ms ease, transform 700ms ease'
   window.setInterval(() => {
-    phrase.style.opacity = '0'
-    phrase.style.transform = 'translate3d(0, -18%, 0)'
+    phraseWrap.style.opacity = '0'
+    phraseWrap.style.transform = 'translate3d(0, -18%, 0)'
     window.setTimeout(() => {
       index = (index + 1) % items.length
       setPhraseContent(phrase, items[index])
-      phrase.style.transform = 'translate3d(0, 18%, 0)'
+      phraseWrap.style.transform = 'translate3d(0, 18%, 0)'
       window.requestAnimationFrame(() => {
-        phrase.style.opacity = '1'
-        phrase.style.transform = 'translate3d(0, 0, 0)'
+        phraseWrap.style.opacity = '1'
+        phraseWrap.style.transform = 'translate3d(0, 0, 0)'
       })
     }, 700)
   }, 3400)
 }
 
-const createHeroTitle = siteData => {
-  const title = createElement('h1', { attributes: { 'aria-label': siteData.hero.title } })
-  const fara = createElement('span', {
-    className: 'fara-hero-title-word fara-hero-title-word-1',
-    text: 'FARA',
-    attributes: { 'aria-hidden': 'true' },
+const createHeroBrandLockup = () => {
+  const lockup = createElement('div', {
+    className: 'fara-hero-brand-lockup',
+    attributes: { 'aria-label': 'FARA IS IN' },
   })
-  const phrase = createElement('span', {
-    className: 'fara-hero-title-group',
-    attributes: { 'aria-hidden': 'true' },
+  const logo = createElement('img', {
+    className: 'fara-hero-brand-logo',
+    attributes: {
+      src: '/assets/logos/fara-logo0-white.svg',
+      alt: '',
+      'aria-hidden': 'true',
+    },
   })
-  phrase.append(
-    createElement('span', { className: 'fara-hero-title-word fara-hero-title-word-2', text: 'IS' }),
-    createElement('span', { className: 'fara-hero-title-word fara-hero-title-word-3', text: 'IN' }),
+  lockup.append(
+    logo,
+    createElement('span', { className: 'fara-hero-brand-divider', attributes: { 'aria-hidden': 'true' } }),
+    createElement('span', { className: 'fara-hero-brand-text', text: 'FARA IS IN' }),
   )
-  title.append(fara, phrase)
-  return title
+  return lockup
 }
 
 const replaceWithImage = (current, source, alt, className) => {
@@ -61,27 +63,34 @@ export const renderHero = async siteData => {
 
     const copy = createElement('div', { className: `${logo.className.baseVal || logo.className} fara-hero-copy` })
     const items = siteData.hero.items
-    const phrase = createElement('span', {
-      className: 'fara-hero-phrase',
+    const phraseWrap = createElement('span', {
+      className: 'fara-hero-phrase-wrap',
       attributes: { 'aria-hidden': 'true' },
     })
+    const phrase = createElement('span', {
+      className: 'fara-hero-phrase',
+    })
     setPhraseContent(phrase, items[0])
-    copy.append(createHeroTitle(siteData), phrase)
+    phraseWrap.append(
+      phrase,
+      createElement('span', { className: 'fara-hero-phrase-rule', attributes: { 'aria-hidden': 'true' } }),
+    )
+    copy.append(createHeroBrandLockup(), phraseWrap)
     logo.replaceWith(copy)
 
     const gsap = window.__faraGsap
     if (gsap) {
       const timeline = gsap.timeline({ repeat: -1 })
       items.slice(1).concat(items[0]).forEach((item, index) => {
-        timeline.to(phrase, {
+        timeline.to(phraseWrap, {
           autoAlpha: 0,
           yPercent: -18,
           duration: 0.7,
           ease: 'power2.inOut',
         }, index === 0 ? 2 : '+=2')
-        timeline.set(phrase, { yPercent: 18 })
+        timeline.set(phraseWrap, { yPercent: 18 })
         timeline.call(() => setPhraseContent(phrase, item))
-        timeline.to(phrase, {
+        timeline.to(phraseWrap, {
           autoAlpha: 1,
           yPercent: 0,
           duration: 0.7,
@@ -90,7 +99,7 @@ export const renderHero = async siteData => {
       })
       copy.faraHeroTimeline = timeline
     } else {
-      animatePhraseFallback(phrase, items)
+      animatePhraseFallback(phraseWrap, phrase, items)
     }
   })
 }

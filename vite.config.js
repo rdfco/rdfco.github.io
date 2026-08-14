@@ -16,10 +16,8 @@ const legacyRuntimeFiles = [
 
 const pageRoutes = [
   'knowing-fara',
-  'solution',
   'consulting',
   'industries',
-  'case-studies',
   'think-together',
   'privacy-policy',
   'terms-of-use',
@@ -34,8 +32,8 @@ function copyLegacyRuntime() {
       const sourceRoot = resolve(process.cwd(), 'src')
       const targetRoot = resolve(process.cwd(), 'dist', 'src')
       const legacyIndex = resolve(process.cwd(), 'dist', 'legacy', 'fort-energy', 'index.html')
-      const bundledCustomizerPath = '/site-customizer.bundle.js?v=home-load-20260801-10'
-      const bundledStylesPath = '/custom.bundle.css?v=home-load-20260801-10'
+      const bundledCustomizerPath = '/site-customizer.bundle.js?v=home-load-20260814-visual-1'
+      const bundledStylesPath = '/custom.bundle.css?v=home-load-20260814-visual-1'
       mkdirSync(targetRoot, { recursive: true })
       legacyRuntimeFiles.forEach(file => {
         cpSync(resolve(sourceRoot, file), resolve(targetRoot, file), { recursive: true })
@@ -46,6 +44,7 @@ function copyLegacyRuntime() {
         (_, file) => `${readFileSync(resolve(sourceRoot, 'styles', file), 'utf8')}\n`,
       )
       writeFileSync(resolve(process.cwd(), 'dist', 'custom.bundle.css'), bundledCss)
+      writeFileSync(resolve(process.cwd(), 'public', 'custom.bundle.css'), bundledCss)
       await buildWithEsbuild({
         entryPoints: [resolve(sourceRoot, 'site-customizer.js')],
         bundle: true,
@@ -54,6 +53,10 @@ function copyLegacyRuntime() {
         minify: true,
         outfile: resolve(process.cwd(), 'dist', 'site-customizer.bundle.js'),
       })
+      cpSync(
+        resolve(process.cwd(), 'dist', 'site-customizer.bundle.js'),
+        resolve(process.cwd(), 'public', 'site-customizer.bundle.js'),
+      )
       const legacyHtml = readFileSync(legacyIndex, 'utf8')
         .replace(
           /<script type="module" src="\/src\/site-customizer\.js[^"]*" data-astro-transition-persist="fara-customizer"><\/script>/,

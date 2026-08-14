@@ -19,7 +19,7 @@ body,
 .legacy-shell {
   position: relative;
   overflow: hidden;
-  background: #071d2e;
+  background: #080a0b;
 }
 
 .legacy-shell[data-route-surface='content'] {
@@ -46,8 +46,10 @@ body,
   display: grid;
   place-items: center;
   padding: 2rem;
-  color: #fff;
-  background: #071d2e;
+  color: #eef2f0;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(92, 102, 98, .28), rgba(8, 10, 11, 0) 34rem),
+    linear-gradient(135deg, #040505 0%, #121616 55%, #262b2a 100%);
   font: 500 1rem/1.5 "FARA Gotham";
   text-align: center;
 }
@@ -60,8 +62,8 @@ body,
 .site-loader__spinner {
   width: 3rem;
   height: 3rem;
-  border: 2px solid rgba(255, 255, 255, .2);
-  border-top-color: #fff;
+  border: 2px solid rgba(238, 242, 240, .22);
+  border-top-color: #00c878;
   border-radius: 50%;
   animation: fara-loader-spin 800ms linear infinite;
 }

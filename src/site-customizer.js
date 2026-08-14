@@ -69,7 +69,7 @@ const waitForFonts = async () => {
 
 const waitForHomeAboveFoldReady = () => new Promise(resolve => {
   const isReady = () => {
-    const heroText = document.querySelector('.hero .fara-hero-copy h1')
+    const heroText = document.querySelector('.hero .fara-hero-brand-lockup')
     const heroPhrase = document.querySelector('.hero .fara-hero-phrase')
     const canvas = document.querySelector('#canvas-wrapper canvas')
     return (

@@ -19,14 +19,32 @@ main #grid { min-height: 7400px; }
   align-items: start;
 }
 .fara-about > h2 {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
   color: #fff;
   font-family: "FARA Gotham";
-  font-size: clamp(2.5rem, 4.2vw, 4.75rem);
+  font-size: clamp(4.1rem, 5.2vw, 6.1rem);
   font-weight: 300;
-  line-height: 1.08;
+  line-height: 1.02;
   white-space: pre-line;
 }
-.fara-about .about-copy { min-height: 13rem; }
+.fara-about > h2::before {
+  position: absolute;
+  z-index: -1;
+  top: clamp(-2.4rem, -3vw, -1.35rem);
+  left: clamp(-4.5rem, -4vw, -4.5rem);
+  width: clamp(10.5rem, 14vw, 15.5rem);
+  aspect-ratio: 1;
+  content: "";
+  background: rgba(0, 200, 120, .82);
+  border-radius: 50%;
+  box-shadow: 0 0 36px rgba(0, 200, 120, .28);
+}
+.fara-about .about-copy {
+  min-height: 13rem;
+  margin-top: clamp(19rem, 22vw, 26rem);
+}
 .fara-row > header { margin-bottom: 3.5rem; }
 .fara-row > header h2,
 .fara-card h3 {
@@ -41,9 +59,59 @@ main #grid { min-height: 7400px; }
   font-size: clamp(1rem, 1.6vw, 1.5rem);
   line-height: 1.5;
 }
+.fara-solutions > header {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  width: fit-content;
+}
+.fara-solutions > header::before {
+  position: absolute;
+  z-index: -1;
+  top: clamp(-5.25rem, -4.5vw, -3rem);
+  left: clamp(-3rem, -2vw, -1.25rem);
+  width: clamp(10rem, 13vw, 15rem);
+  aspect-ratio: 1;
+  content: "";
+  background: rgba(0, 200, 120, .82);
+  border-radius: 50%;
+  box-shadow: 0 0 36px rgba(0, 200, 120, .28);
+}
+.fara-solutions > header h2,
+.fara-solutions > header p {
+  position: relative;
+  z-index: 1;
+}
 .fara-card-grid { display: grid; gap: clamp(2rem, 4vw, 5rem); }
 .solutions-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }
-.solutions-grid .fara-card { min-height: 0; padding-bottom: 1.25rem; border-bottom: 2px solid rgba(140, 180, 213, .7); }
+.solutions-grid .fara-card {
+  min-height: 0;
+  padding: 0 0 1.25rem;
+  border-bottom: 2px solid rgba(140, 180, 213, .7);
+}
+.solutions-grid .fara-card::before {
+  position: absolute;
+  z-index: 0;
+  top: .08rem;
+  left: 1px;
+  width: clamp(1.9rem, 2.4vw, 2.7rem);
+  aspect-ratio: 1;
+  content: "";
+  background: url("/assets/icons/special/inception-icon.svg") center / contain no-repeat;
+  opacity: 1;
+  pointer-events: none;
+}
+.solutions-grid .fara-card h3,
+.solutions-grid .fara-card p {
+  position: relative;
+  z-index: 1;
+}
+.solutions-grid .fara-card h3 {
+  min-height: clamp(1.9rem, 2.4vw, 2.7rem);
+  padding-left: clamp(2.55rem, 3.2vw, 3.45rem);
+  margin-bottom: 1.25rem;
+  transform: none;
+}
 .solutions-grid .fara-card p { font-size: clamp(.78rem, .88vw, .92rem); line-height: 1.65; }
 .fara-ai {
   display: grid;

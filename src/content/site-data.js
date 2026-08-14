@@ -45,7 +45,7 @@ export const siteData = {
     loadFailure: 'FARA could not be loaded. Please refresh the page.',
   },
   introduction: {
-    title: 'ABOUT FARA\nIntelligence. Innovation. Impact.',
+    title: 'Intelligence\nInnovation\nImpact',
     body: "We are a consulting firm specializing in Technology and Innovation Management. Our edge? We integrate artificial intelligence into everything we do—from opportunity scouting and product development to capability building. By combining AI-powered analytics with deep industry expertise and international standards, we help you cut through complexity, seize high-value opportunities, and future-proof your organization. At FARA, we don't just talk about AI—we put it to work for you."
   },
   advantage: {
