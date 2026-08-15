@@ -14,6 +14,21 @@ body,
 .legacy-shell {
   max-width: 100%;
   overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.legacy-site::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+html,
+body,
+.legacy-site {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .legacy-shell {
@@ -39,6 +54,59 @@ body,
 .legacy-shell[data-status='ready'] .legacy-site {
   opacity: 1;
   visibility: visible;
+}
+
+.fara-scrollbar {
+  position: fixed;
+  z-index: 20;
+  top: 1rem;
+  right: .7rem;
+  bottom: 1rem;
+  width: 10px;
+  pointer-events: none;
+}
+
+.fara-scrollbar::before {
+  position: absolute;
+  top: .25rem;
+  bottom: .25rem;
+  left: 50%;
+  width: 1px;
+  content: "";
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(0, 200, 120, .18) 18%,
+    rgba(0, 200, 120, .22) 50%,
+    rgba(0, 200, 120, .18) 82%,
+    transparent
+  );
+  transform: translateX(-50%);
+}
+
+.fara-scrollbar__thumb {
+  width: 5px;
+  min-height: 48px;
+  margin-inline: auto;
+  background: linear-gradient(180deg, #31f7ad, #00c878 48%, #008f5c);
+  border-radius: 999px;
+  box-shadow:
+    0 0 10px rgba(0, 200, 120, .48),
+    0 0 26px rgba(0, 200, 120, .24);
+  opacity: .95;
+  transition:
+    width 160ms ease,
+    opacity 160ms ease,
+    box-shadow 160ms ease;
+  will-change: transform, height;
+}
+
+.legacy-shell:hover .fara-scrollbar__thumb {
+  width: 6px;
+  opacity: 1;
+  box-shadow:
+    0 0 14px rgba(0, 200, 120, .62),
+    0 0 34px rgba(0, 200, 120, .34);
 }
 
 .site-gate {

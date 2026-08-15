@@ -21,6 +21,19 @@
       .legacy-shell {
         max-width: 100%;
         overflow-x: hidden;
+        scrollbar-width: none;
+      }
+      html::-webkit-scrollbar,
+      body::-webkit-scrollbar,
+      .legacy-site::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+      html,
+      body,
+      .legacy-site {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
       }
       .legacy-shell {
         position: relative;

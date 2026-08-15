@@ -9,6 +9,7 @@ export default function LegacySite() {
   const timerRef = useRef()
   const routeSyncRef = useRef()
   const frameRef = useRef()
+  const scrollbarThumbRef = useRef()
   const lastRouteRef = useRef()
   const previousPathRef = useRef(location.pathname)
   const [homeResetKey, setHomeResetKey] = useState(0)
@@ -89,6 +90,36 @@ export default function LegacySite() {
     }
   }, [location.pathname, location.search])
 
+  useEffect(() => {
+    const frameWindow = frameRef.current?.contentWindow
+    const frameDocument = frameRef.current?.contentDocument
+    const thumb = scrollbarThumbRef.current
+    if (!frameWindow || !frameDocument || !thumb || status !== 'ready') return
+
+    let frameId = 0
+    const updateScrollbar = () => {
+      window.cancelAnimationFrame(frameId)
+      frameId = window.requestAnimationFrame(() => {
+        const root = frameDocument.documentElement
+        const maxScroll = Math.max(1, root.scrollHeight - frameWindow.innerHeight)
+        const progress = Math.min(1, Math.max(0, frameWindow.scrollY / maxScroll))
+        const thumbHeight = Math.max(48, Math.min(132, frameWindow.innerHeight * (frameWindow.innerHeight / root.scrollHeight)))
+        const travel = frameWindow.innerHeight - thumbHeight - 28
+        thumb.style.height = `${thumbHeight}px`
+        thumb.style.transform = `translate3d(0, ${14 + progress * Math.max(0, travel)}px, 0)`
+      })
+    }
+
+    updateScrollbar()
+    frameWindow.addEventListener('scroll', updateScrollbar, { passive: true })
+    frameWindow.addEventListener('resize', updateScrollbar, { passive: true })
+    return () => {
+      window.cancelAnimationFrame(frameId)
+      frameWindow.removeEventListener('scroll', updateScrollbar)
+      frameWindow.removeEventListener('resize', updateScrollbar)
+    }
+  }, [frameKey, status])
+
   const updateFooter = document => {
     const footer = document?.querySelector('#footer')
     if (!footer) return
@@ -152,6 +183,9 @@ export default function LegacySite() {
         src={appConfig.legacyRuntime.iframeSource}
         onLoad={onLoad}
       />
+      <div className="fara-scrollbar" aria-hidden="true">
+        <div ref={scrollbarThumbRef} className="fara-scrollbar__thumb" />
+      </div>
     </div>
   )
 }
