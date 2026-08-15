@@ -17,9 +17,9 @@ export const appConfig = {
     iframeSource:
       '/legacy/fort-energy/index.html?v=home-load-20260814-visual-1',
     iframeTitle: 'FARA',
-    sandbox: 'allow-scripts allow-same-origin',
+    sandbox: undefined,
     readyTimeoutMs: 5000,
-    readyPollMs: 50,
+    readyPollMs: 250,
     delayedFooterSyncMs: 1000,
     routeMessage: 'fara:set-route',
     navigationMessage: 'fara:navigate',

@@ -34,7 +34,9 @@
         display: block;
         border: 0;
         opacity: 0;
+        overflow: auto;
         visibility: hidden;
+        -webkit-overflow-scrolling: touch;
         transition: opacity 180ms ease;
       }
       .legacy-shell[data-status='ready'] .legacy-site {
@@ -76,7 +78,7 @@
     </style>
   </head>
   <body>
-      <div id="root"><div class="legacy-shell" data-status="loading" data-route-surface="home"><div class="site-gate" role="status"><div class="site-loader" aria-label="Loading"><span class="site-loader__spinner" aria-hidden="true"></span></div></div><iframe class="legacy-site" title="FARA" src="/legacy/fort-energy/index.html?v=home-load-20260814-visual-1" sandbox="allow-scripts allow-same-origin"></iframe></div></div>
+      <div id="root"><div class="legacy-shell" data-status="loading" data-route-surface="home"><div class="site-gate" role="status"><div class="site-loader" aria-label="Loading"><span class="site-loader__spinner" aria-hidden="true"></span></div></div><iframe class="legacy-site" title="FARA" src="/legacy/fort-energy/index.html?v=home-load-20260814-visual-1"></iframe></div></div>
     <script>
       ;(() => {
         const shell = document.querySelector('.legacy-shell')

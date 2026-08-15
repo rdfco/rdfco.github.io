@@ -10,6 +10,26 @@ validateSiteData(siteData)
 
 let requestedPath = null
 let appliedPath = null
+let refreshFrame = 0
+
+const nativeWarn = console.warn.bind(console)
+console.warn = (...args) => {
+  if (String(args[0] || '').startsWith('GSAP target  not found')) return
+  nativeWarn(...args)
+}
+
+const silenceLegacyGsapNullTargets = () => {
+  window.gsap?.config?.({ nullTargetWarn: false })
+}
+
+const prepareLegacyGsap = () => {
+  let attempts = 0
+  const timer = window.setInterval(() => {
+    attempts += 1
+    silenceLegacyGsapNullTargets()
+    if (window.gsap || attempts >= 20) window.clearInterval(timer)
+  }, 100)
+}
 
 const normalizeRoute = value => {
   const [path, query = ''] = value.split('?')
@@ -18,11 +38,14 @@ const normalizeRoute = value => {
 }
 
 const refreshScrollSystems = () => {
-  window.dispatchEvent(new Event('resize'))
-  window.dispatchEvent(new Event('scroll'))
-  window.ScrollTrigger?.refresh?.()
-  window.lenis?.resize?.()
-  window.lenis?.reset?.()
+  window.cancelAnimationFrame(refreshFrame)
+  refreshFrame = window.requestAnimationFrame(() => {
+    silenceLegacyGsapNullTargets()
+    window.dispatchEvent(new Event('resize'))
+    window.dispatchEvent(new Event('scroll'))
+    window.ScrollTrigger?.refresh?.()
+    window.lenis?.resize?.()
+  })
 }
 
 const normalizePhoneNumbers = () => {
@@ -35,14 +58,10 @@ const normalizePhoneNumbers = () => {
 const resetHomeScrollState = () => {
   document.documentElement.scrollTop = 0
   document.body.scrollTop = 0
-  window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
   window.lenis?.scrollTo?.(0, { immediate: true, force: true })
   window.lenis?.stop?.()
   window.lenis?.resize?.()
-  window.ScrollTrigger?.getAll?.().forEach(trigger => {
-    trigger.scroll?.(0)
-    trigger.update?.(true)
-  })
   window.ScrollTrigger?.refresh?.(true)
   window.ScrollTrigger?.update?.(true)
   window.lenis?.start?.()
@@ -121,12 +140,8 @@ const getCurrentPage = async (path, navigationItem) => {
 
 const refreshSite = async () => {
   if (requestedPath === appliedPath && document.documentElement.dataset.faraReady === 'true') {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
     window.lenis?.scrollTo?.(0, { immediate: true, force: true })
-    window.requestAnimationFrame(() => {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
-      refreshScrollSystems()
-    })
     return
   }
   if (document.readyState === 'loading') {
@@ -138,7 +153,7 @@ const refreshSite = async () => {
   const navigationItem = getNavigationItem(requestedPath || '/')
   const currentPage = await getCurrentPage(requestedPath || '/', navigationItem)
   if (currentPage.data.key === 'home') resetHomeScrollState()
-  else window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  else window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
   await applySiteData(siteData, currentPage)
   normalizePhoneNumbers()
   await waitForVisualReadiness(currentPage.data.key)
@@ -147,7 +162,7 @@ const refreshSite = async () => {
   if (header && requestedPath === '/') header.dataset.theme = 'light'
   window.requestAnimationFrame(() => {
     if (currentPage.data.key === 'home') resetHomeScrollState()
-    else window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    else window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
     header?.classList.remove('top', 'fade')
     refreshScrollSystems()
     window.requestAnimationFrame(() => {
@@ -176,6 +191,7 @@ document.addEventListener('click', event => {
 }, true)
 
 setupNavigationEvents()
+prepareLegacyGsap()
 document.addEventListener('astro:page-load', () => {
   if (requestedPath !== null) refreshSite()
 })

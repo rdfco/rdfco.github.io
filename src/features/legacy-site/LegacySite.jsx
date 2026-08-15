@@ -150,7 +150,6 @@ export default function LegacySite() {
         className="legacy-site"
         title={appConfig.legacyRuntime.iframeTitle}
         src={appConfig.legacyRuntime.iframeSource}
-        sandbox={appConfig.legacyRuntime.sandbox}
         onLoad={onLoad}
       />
     </div>

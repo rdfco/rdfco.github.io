@@ -30,7 +30,9 @@ body,
   display: block;
   border: 0;
   opacity: 0;
+  overflow: auto;
   visibility: hidden;
+  -webkit-overflow-scrolling: touch;
   transition: opacity 180ms ease;
 }
 
