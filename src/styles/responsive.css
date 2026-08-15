@@ -86,7 +86,8 @@
     letter-spacing: .055em;
   }
   .hero .fara-hero-phrase-wrap {
-    width: min(34rem, calc(100% - 2rem));
+    width: fit-content;
+    max-width: calc(100% - 2rem);
   }
   .hero .fara-hero-phrase {
     font-size: clamp(.78rem, 3.6vw, 1.05rem);

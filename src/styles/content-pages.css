@@ -38,12 +38,17 @@
   height: 40px !important;
   place-items: center !important;
   box-sizing: border-box !important;
-  color: #111 !important;
+  color: #00c878 !important;
   background: transparent !important;
-  border: 1px solid #111 !important;
+  border: 1px solid #00c878 !important;
 }
 .montfort-menu .grid-nav .nav-link .svg-container svg {
   display: block !important;
+}
+.montfort-menu .grid-nav .nav-link .svg-container svg,
+.montfort-menu .grid-nav .nav-link .svg-container svg * {
+  fill: #00c878 !important;
+  stroke: none !important;
 }
 .fara-content-route #footer,
 .fara-content-route #footer *,

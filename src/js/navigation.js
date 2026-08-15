@@ -12,6 +12,8 @@ const ensureItems = (listSelector, count) => {
   while (list.children.length > count) list.lastElementChild.remove()
 }
 
+const homeSectionRoutes = new Set(['/', '/who-we-are', '/how-we-help', '/who-we-serve'])
+
 const animateNavbarTo = target => {
   const navList = document.querySelector('#header .menu-links-w')
   const navbar = document.querySelector('#header nav .navbar')
@@ -135,6 +137,12 @@ const disableLink = link => {
 }
 
 const setupRouteLink = (link, route) => {
+  if (homeSectionRoutes.has(route)) {
+    delete link.dataset.faraRoute
+    link.dataset.faraSectionRoute = route
+    return
+  }
+  delete link.dataset.faraSectionRoute
   link.dataset.faraRoute = route
 }
 

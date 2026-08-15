@@ -2,9 +2,9 @@ export const appConfig = {
   routes: {
     legacy: [
       '/',
-      '/who-we-are',
-      '/how-we-help',
-      '/who-we-serve',
+      // '/who-we-are',
+      // '/how-we-help',
+      // '/who-we-serve',
       '/think-together',
       '/privacy-policy',
       '/terms-of-use',

@@ -11,6 +11,26 @@ validateSiteData(siteData)
 let requestedPath = null
 let appliedPath = null
 let refreshFrame = 0
+let activeScrollRoute = '/'
+let scrollAnimationFrame = 0
+let activeNavFrame = 0
+let programmaticSectionScroll = false
+
+const sectionRoutes = new Map([
+  ['/who-we-are', '.fara-about'],
+  ['/how-we-help', '.fara-solutions'],
+  ['/who-we-serve', '.fara-industries'],
+])
+
+const animatedHomeRoutes = new Set(['/'])
+
+const routeSelector = route => `[data-fara-route="${route}"], [data-fara-section-route="${route}"]`
+
+const getLinkRoute = link => link?.dataset.faraSectionRoute || link?.dataset.faraRoute || ''
+
+const postMenuState = open => {
+  window.parent.postMessage({ type: 'fara:menu-state', open }, window.location.origin)
+}
 
 const nativeWarn = console.warn.bind(console)
 console.warn = (...args) => {
@@ -68,6 +88,149 @@ const refreshScrollSystems = () => {
     window.dispatchEvent(new Event('scroll'))
     window.ScrollTrigger?.refresh?.()
     window.lenis?.resize?.()
+  })
+}
+
+const setupMenuStateSync = () => {
+  const root = document.documentElement
+  postMenuState(root.classList.contains('fara-menu-open'))
+  const observer = new MutationObserver(() => {
+    postMenuState(root.classList.contains('fara-menu-open'))
+  })
+  observer.observe(root, { attributes: true, attributeFilter: ['class'] })
+}
+
+const easeInOutCubic = progress => (
+  progress < .5
+    ? 4 * progress * progress * progress
+    : 1 - ((-2 * progress + 2) ** 3) / 2
+)
+
+const setActiveNavigationRoute = route => {
+  if (activeScrollRoute === route) return
+  activeScrollRoute = route
+  document.querySelectorAll('[data-fara-route], [data-fara-section-route]').forEach(link => {
+    link.classList.toggle('active', getLinkRoute(link) === route)
+  })
+  const headerLink = document.querySelector(`#header .menu-links-w .nav-link:is(${routeSelector(route)})`)
+  if (headerLink) {
+    window.dispatchEvent(new CustomEvent('fara:animate-navbar-route', {
+      detail: { link: headerLink, complete: () => {} },
+    }))
+  }
+}
+
+const getSectionTargetTop = selector => {
+  const target = document.querySelector(selector)
+  if (!target) return 0
+  const offset = Math.min(180, Math.max(90, window.innerHeight * .16))
+  return Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset)
+}
+
+const scrollToSectionRoute = route => {
+  const selector = sectionRoutes.get(route)
+  if (!selector && !animatedHomeRoutes.has(route)) return
+  const start = window.scrollY
+  const end = animatedHomeRoutes.has(route) ? 0 : getSectionTargetTop(selector)
+  const distance = end - start
+  const duration = Math.min(4600, Math.max(3000, Math.abs(distance) * .9))
+  const startedAt = performance.now()
+
+  window.cancelAnimationFrame(scrollAnimationFrame)
+  programmaticSectionScroll = true
+  setActiveNavigationRoute(route)
+  const step = now => {
+    const progress = Math.min(1, (now - startedAt) / duration)
+    window.scrollTo(0, start + distance * easeInOutCubic(progress))
+    if (progress < 1) {
+      scrollAnimationFrame = window.requestAnimationFrame(step)
+      return
+    }
+    programmaticSectionScroll = false
+    setActiveNavigationRoute(route)
+    refreshScrollSystems()
+  }
+  scrollAnimationFrame = window.requestAnimationFrame(step)
+}
+
+const waitForMenuClose = shouldClose => new Promise(resolve => {
+  const menu = document.querySelector('.montfort-menu')
+  const isOpen = menu?.classList.contains('active') || menu?.classList.contains('is-closing')
+  if (!shouldClose || !isOpen) {
+    resolve()
+    return
+  }
+  let done = false
+  const finish = () => {
+    if (done) return
+    done = true
+    window.clearTimeout(timer)
+    window.removeEventListener('fara:menu-closed', finish)
+    resolve()
+  }
+  const timer = window.setTimeout(finish, 1800)
+  window.addEventListener('fara:menu-closed', finish, { once: true })
+  window.dispatchEvent(new CustomEvent('fara:close-menu', { detail: { animate: true } }))
+})
+
+const routeHomeBeforeSectionScroll = async () => {
+  const currentPage = document.body.dataset.faraPage
+  if (currentPage === 'home' && (requestedPath === '/' || requestedPath === null)) return
+  requestedPath = '/'
+  appliedPath = null
+  await refreshSite()
+}
+
+const navigateToSectionRoute = async (route, { closeMenu = false } = {}) => {
+  await waitForMenuClose(closeMenu)
+  await routeHomeBeforeSectionScroll()
+  window.requestAnimationFrame(() => scrollToSectionRoute(route))
+}
+
+const setupSectionRouteLinks = () => {
+  const handleSectionRouteClick = event => {
+    if (event.__faraSectionRouteHandled) return
+    const link = event.target.closest?.('[data-fara-route], [data-fara-section-route]')
+    const route = getLinkRoute(link)
+    if (!route || (!sectionRoutes.has(route) && !animatedHomeRoutes.has(route))) return
+
+    event.__faraSectionRouteHandled = true
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    navigateToSectionRoute(route, {
+      closeMenu: Boolean(link.closest('.montfort-menu')),
+    })
+  }
+
+  if (document.documentElement.dataset.faraSectionRoutesReady !== 'true') {
+    document.documentElement.dataset.faraSectionRoutesReady = 'true'
+    window.addEventListener('click', handleSectionRouteClick, true)
+    document.addEventListener('click', handleSectionRouteClick, true)
+  }
+
+  document.querySelectorAll('[data-fara-route], [data-fara-section-route]').forEach(link => {
+    if (link.dataset.faraSectionScrollReady === 'true') return
+    const route = getLinkRoute(link)
+    if (!sectionRoutes.has(route) && !animatedHomeRoutes.has(route)) return
+    link.dataset.faraSectionScrollReady = 'true'
+    link.addEventListener('click', handleSectionRouteClick, true)
+  })
+}
+
+const syncActiveNavigationWithScroll = () => {
+  if (programmaticSectionScroll) return
+  if (document.body.dataset.faraPage !== 'home') return
+  window.cancelAnimationFrame(activeNavFrame)
+  activeNavFrame = window.requestAnimationFrame(() => {
+    const marker = window.scrollY + window.innerHeight * .42
+    let route = '/'
+    sectionRoutes.forEach((selector, candidateRoute) => {
+      const section = document.querySelector(selector)
+      if (!section) return
+      const top = section.getBoundingClientRect().top + window.scrollY
+      if (marker >= top) route = candidateRoute
+    })
+    setActiveNavigationRoute(route)
   })
 }
 
@@ -177,6 +340,7 @@ const refreshSite = async () => {
   else window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
   await applySiteData(siteData, currentPage)
   normalizePhoneNumbers()
+  setupSectionRouteLinks()
   await waitForVisualReadiness(currentPage.data.key)
   const header = document.querySelector('#header')
   header?.classList.remove('top', 'fade')
@@ -191,6 +355,8 @@ const refreshSite = async () => {
   if (requestedPath !== null) {
     document.documentElement.dataset.faraReady = 'true'
     window.parent.postMessage({ type: 'fara:ready' }, window.location.origin)
+    if (currentPage.data.key === 'home') syncActiveNavigationWithScroll()
+    else setActiveNavigationRoute(currentPage.data.href)
   }
 }
 
@@ -211,6 +377,10 @@ document.addEventListener('click', event => {
 setupNavigationEvents()
 prepareLegacyGsap()
 setupWheelScrollFallback()
+setupMenuStateSync()
+setupSectionRouteLinks()
+window.addEventListener('scroll', syncActiveNavigationWithScroll, { passive: true })
+window.addEventListener('resize', syncActiveNavigationWithScroll, { passive: true })
 document.addEventListener('astro:page-load', () => {
   if (requestedPath !== null) refreshSite()
 })

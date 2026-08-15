@@ -64,6 +64,13 @@ body,
   bottom: 1rem;
   width: 10px;
   pointer-events: none;
+  transition: opacity 180ms ease, visibility 180ms ease;
+}
+
+.legacy-shell[data-menu-open='true'] .fara-scrollbar {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .fara-scrollbar::before {

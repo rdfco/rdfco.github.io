@@ -95,15 +95,34 @@
   pointer-events: auto;
 }
 .montfort-menu .grid-nav .nav-link .text-content {
+  position: relative;
   transition: transform 600ms cubic-bezier(.4, 0, .1, 1);
 }
+.montfort-menu .grid-nav .nav-link .text-content::before {
+  background: #00c878 !important;
+}
 .montfort-menu .grid-nav .nav-link .svg-container {
+  color: #00c878 !important;
+  border-color: #00c878 !important;
   transition: background 400ms linear, color 400ms linear, transform 400ms cubic-bezier(.4, 0, .1, 1);
 }
-.montfort-menu .grid-nav .nav-link:hover { color: #2d628c; }
+.montfort-menu .grid-nav .nav-link .svg-container svg,
+.montfort-menu .grid-nav .nav-link .svg-container path {
+  color: #00c878 !important;
+  fill: #00c878 !important;
+}
+.montfort-menu .grid-nav .nav-link .text-content {
+  text-decoration-color: #00c878 !important;
+}
+.montfort-menu .grid-nav .nav-link .text-content::after,
+.montfort-menu .grid-nav .nav-link::after {
+  background: #00c878 !important;
+  border-color: #00c878 !important;
+}
+.montfort-menu .grid-nav .nav-link:hover { color: #00c878; }
 .montfort-menu .grid-nav .nav-link:hover .text-content { transform: translate3d(0, 0, 0) !important; }
 .montfort-menu .grid-nav .nav-link:hover .svg-container { transform: scale3d(1, 1, 1) !important; }
-.montfort-menu .grid-nav .nav-link:focus-visible { color: #2d628c; }
+.montfort-menu .grid-nav .nav-link:focus-visible { color: #00c878; }
 .montfort-menu .grid-nav .nav-link:focus-visible .text-content { transform: translate3d(0, 0, 0); }
 .montfort-menu .grid-nav .nav-link:focus-visible .svg-container { transform: scale3d(1, 1, 1); }
 html.fara-menu-open { overflow: hidden; }
@@ -207,7 +226,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
   }
-  .montfort-menu.active .grid-nav nav { scrollbar-color: #a9bfd2 transparent; }
+  .montfort-menu.active .grid-nav nav { scrollbar-color: #00c878 transparent; }
   .montfort-menu .grid-nav nav::-webkit-scrollbar { width: 4px; }
   .montfort-menu .grid-nav nav::-webkit-scrollbar-track { background: transparent; }
   .montfort-menu .grid-nav nav::-webkit-scrollbar-thumb {
@@ -215,7 +234,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
     border-radius: 999px;
     transition: background-color 300ms linear 500ms;
   }
-  .montfort-menu.active .grid-nav nav::-webkit-scrollbar-thumb { background: #a9bfd2; }
+  .montfort-menu.active .grid-nav nav::-webkit-scrollbar-thumb { background: #00c878; }
 }
 @keyframes fara-header-item-in {
   from { opacity: 0; visibility: hidden; transform: translate3d(-8px, 0, 0); }

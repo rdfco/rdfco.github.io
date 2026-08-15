@@ -62,6 +62,10 @@ export const renderSections = siteData => {
     const contentBottom = sections.getBoundingClientRect().bottom - grid.getBoundingClientRect().top
     grid.style.minHeight = `${contentBottom + safeFooterGap}px`
   }
-  window.requestAnimationFrame(fitStageToContent)
-  window.setTimeout(fitStageToContent, 500)
+  window.requestAnimationFrame(() => {
+    fitStageToContent()
+  })
+  window.setTimeout(() => {
+    fitStageToContent()
+  }, 500)
 }

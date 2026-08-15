@@ -20,9 +20,13 @@ const createImage = (className, src, alt) => {
   return image
 }
 
+const homeSectionRoutes = new Set(['/who-we-are', '/how-we-help', '/who-we-serve'])
+
 const createRouteLink = ({ label, href }) => createElement('a', {
   text: label,
-  attributes: { href: '#', 'data-fara-route': href },
+  attributes: homeSectionRoutes.has(href)
+    ? { href: '#', 'data-fara-section-route': href }
+    : { href: '#', 'data-fara-route': href },
 })
 
 export const renderFooter = siteData => {

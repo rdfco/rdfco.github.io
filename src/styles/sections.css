@@ -90,7 +90,7 @@ main #grid { min-height: 7400px; }
 .solutions-grid .fara-card {
   min-height: 0;
   padding: 0 0 1.25rem;
-  border-bottom: 2px solid rgba(140, 180, 213, .7);
+  border-bottom: 0;
 }
 .solutions-grid .fara-card::before {
   position: absolute;
@@ -110,10 +110,21 @@ main #grid { min-height: 7400px; }
   z-index: 1;
 }
 .solutions-grid .fara-card h3 {
+  display: inline-block;
+  width: max-content;
   min-height: clamp(1.9rem, 2.4vw, 2.7rem);
   padding-left: clamp(2.55rem, 3.2vw, 3.45rem);
   margin-bottom: 1.25rem;
   transform: none;
+}
+.solutions-grid .fara-card h3::after {
+  position: absolute;
+  right: 0;
+  bottom: -.45rem;
+  width: calc(100% - clamp(2.55rem, 3.2vw, 3.45rem));
+  height: 2px;
+  content: "";
+  background: rgba(140, 180, 213, .7);
 }
 .solutions-grid .fara-card p { font-size: clamp(.78rem, .88vw, .92rem); line-height: 1.65; }
 .fara-ai {

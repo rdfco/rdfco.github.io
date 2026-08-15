@@ -16,6 +16,7 @@ export default function LegacySite() {
   const [status, setStatus] = useState(
     () => document.querySelector('.legacy-shell')?.dataset.status || 'loading',
   )
+  const [menuOpen, setMenuOpen] = useState(false)
   const isHomeRoute = location.pathname === '/'
   const frameKey = isHomeRoute ? `home-${homeResetKey}` : 'content'
 
@@ -56,6 +57,10 @@ export default function LegacySite() {
       if (event.origin !== window.location.origin || event.source !== frameRef.current?.contentWindow) return
       if (event.data?.type === appConfig.legacyRuntime.navigationMessage) {
         navigate(event.data.pathname)
+        return
+      }
+      if (event.data?.type === 'fara:menu-state') {
+        setMenuOpen(Boolean(event.data.open))
         return
       }
       if (event.data?.type === appConfig.legacyRuntime.readyMessage) {
@@ -197,7 +202,12 @@ export default function LegacySite() {
   }
 
   return (
-    <div className="legacy-shell" data-status={status} data-route-surface={isHomeRoute ? 'home' : 'content'}>
+    <div
+      className="legacy-shell"
+      data-menu-open={menuOpen ? 'true' : 'false'}
+      data-status={status}
+      data-route-surface={isHomeRoute ? 'home' : 'content'}
+    >
       {status !== 'ready' && (
         <div className="site-gate" role={status === 'failed' ? 'alert' : 'status'}>
           {status === 'failed' ? (
