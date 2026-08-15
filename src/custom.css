@@ -17,6 +17,8 @@ html,
 body {
   max-width: 100%;
   overflow-x: clip;
+  scrollbar-color: rgba(0, 200, 120, .86) transparent;
+  scrollbar-width: thin;
 }
 
 @supports not (overflow-x: clip) {
@@ -24,6 +26,39 @@ body {
   body {
     overflow-x: hidden;
   }
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  min-height: 4rem;
+  background:
+    linear-gradient(180deg, rgba(20, 226, 148, .95), rgba(0, 200, 120, .78));
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+  box-shadow: 0 0 18px rgba(0, 200, 120, .35);
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(180deg, #14e294, #00a968);
+  box-shadow: 0 0 24px rgba(0, 200, 120, .5);
+}
+
+html::-webkit-scrollbar-corner,
+body::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 /* The mirrored document must never reveal its source content before FARA customization succeeds. */
