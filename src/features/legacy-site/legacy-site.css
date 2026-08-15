@@ -98,15 +98,22 @@ body,
     width 160ms ease,
     opacity 160ms ease,
     box-shadow 160ms ease;
+  pointer-events: auto;
+  touch-action: none;
   will-change: transform, height;
 }
 
-.legacy-shell:hover .fara-scrollbar__thumb {
+.legacy-shell:hover .fara-scrollbar__thumb,
+.fara-scrollbar-dragging .fara-scrollbar__thumb {
   width: 6px;
   opacity: 1;
   box-shadow:
     0 0 14px rgba(0, 200, 120, .62),
     0 0 34px rgba(0, 200, 120, .34);
+}
+
+.fara-scrollbar-dragging * {
+  user-select: none;
 }
 
 .site-gate {

@@ -120,6 +120,40 @@ export default function LegacySite() {
     }
   }, [frameKey, status])
 
+  const handleScrollbarPointerDown = event => {
+    const frameWindow = frameRef.current?.contentWindow
+    const frameDocument = frameRef.current?.contentDocument
+    const thumb = scrollbarThumbRef.current
+    if (!frameWindow || !frameDocument || !thumb) return
+
+    event.preventDefault()
+    const startY = event.clientY
+    const startScrollY = frameWindow.scrollY
+    const root = frameDocument.documentElement
+    const maxScroll = Math.max(1, root.scrollHeight - frameWindow.innerHeight)
+    const thumbHeight = thumb.getBoundingClientRect().height
+    const trackTravel = Math.max(1, window.innerHeight - thumbHeight - 28)
+    const scrollPerPixel = maxScroll / trackTravel
+
+    const handlePointerMove = moveEvent => {
+      moveEvent.preventDefault()
+      frameWindow.scrollTo({ top: startScrollY + (moveEvent.clientY - startY) * scrollPerPixel, behavior: 'auto' })
+    }
+
+    const stopDragging = () => {
+      document.body.classList.remove('fara-scrollbar-dragging')
+      window.removeEventListener('pointermove', handlePointerMove)
+      window.removeEventListener('pointerup', stopDragging)
+      window.removeEventListener('pointercancel', stopDragging)
+    }
+
+    document.body.classList.add('fara-scrollbar-dragging')
+    event.currentTarget.setPointerCapture?.(event.pointerId)
+    window.addEventListener('pointermove', handlePointerMove)
+    window.addEventListener('pointerup', stopDragging)
+    window.addEventListener('pointercancel', stopDragging)
+  }
+
   const updateFooter = document => {
     const footer = document?.querySelector('#footer')
     if (!footer) return
@@ -184,7 +218,11 @@ export default function LegacySite() {
         onLoad={onLoad}
       />
       <div className="fara-scrollbar" aria-hidden="true">
-        <div ref={scrollbarThumbRef} className="fara-scrollbar__thumb" />
+        <div
+          ref={scrollbarThumbRef}
+          className="fara-scrollbar__thumb"
+          onPointerDown={handleScrollbarPointerDown}
+        />
       </div>
     </div>
   )
