@@ -27,14 +27,16 @@ main #grid { min-height: 7400px; }
   font-size: clamp(4.1rem, 5.2vw, 6.1rem);
   font-weight: 300;
   line-height: 1.02;
+  max-width: 100%;
+  overflow-wrap: anywhere;
   white-space: pre-line;
 }
 .fara-about > h2::before {
   position: absolute;
   z-index: -1;
-  top: clamp(-2.4rem, -3vw, -1.35rem);
-  left: clamp(-4.5rem, -4vw, -4.5rem);
-  width: clamp(10.5rem, 14vw, 15.5rem);
+  top: -3rem;
+  left: -3.5rem;
+  width: clamp(6rem, 9vw, 9.5rem);
   aspect-ratio: 1;
   content: "";
   background: rgba(0, 200, 120, .82);
@@ -68,9 +70,9 @@ main #grid { min-height: 7400px; }
 .fara-solutions > header::before {
   position: absolute;
   z-index: -1;
-  top: clamp(-5.25rem, -4.5vw, -3rem);
-  left: clamp(-3rem, -2vw, -1.25rem);
-  width: clamp(10rem, 13vw, 15rem);
+  top: -2rem;
+  left: -2rem;
+  width: clamp(4.5rem, 6vw, 6.5rem);
   aspect-ratio: 1;
   content: "";
   background: rgba(0, 200, 120, .82);

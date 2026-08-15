@@ -58,13 +58,10 @@ export const renderSections = siteData => {
   })
   grid.appendChild(sections)
   const fitStageToContent = () => {
-    const safeFooterGap = Math.max(920, Math.min(1280, window.innerHeight * 1.08))
+    const safeFooterGap = 80
     const contentBottom = sections.getBoundingClientRect().bottom - grid.getBoundingClientRect().top
     grid.style.minHeight = `${contentBottom + safeFooterGap}px`
   }
   window.requestAnimationFrame(fitStageToContent)
   window.setTimeout(fitStageToContent, 500)
-  window.addEventListener('fara:card-resized', fitStageToContent)
-  window.addEventListener('resize', fitStageToContent, { passive: true })
-  new ResizeObserver(fitStageToContent).observe(sections)
 }

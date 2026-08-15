@@ -44,15 +44,6 @@ const createHeroBrandLockup = () => {
   return lockup
 }
 
-const createHeroArc = () => createElement('img', {
-  className: 'fara-hero-arc',
-  attributes: {
-    src: '/assets/hero/hero-white-arc.webp',
-    alt: '',
-    'aria-hidden': 'true',
-  },
-})
-
 const replaceWithImage = (current, source, alt, className) => {
   if (!current || !source) return false
   const image = createElement('img', {
@@ -84,7 +75,7 @@ export const renderHero = async siteData => {
       phrase,
       createElement('span', { className: 'fara-hero-phrase-rule', attributes: { 'aria-hidden': 'true' } }),
     )
-    copy.append(createHeroArc(), createHeroBrandLockup(), phraseWrap)
+    copy.append(createHeroBrandLockup(), phraseWrap)
     logo.replaceWith(copy)
 
     const gsap = window.__faraGsap

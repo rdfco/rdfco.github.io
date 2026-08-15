@@ -90,7 +90,7 @@
   margin-top: clamp(1rem, 3vw, 2rem);
   border-top: 1px solid rgba(45, 98, 140, .28);
 }
-.fara-footer-wordmark { display: block; width: clamp(11rem, 19vw, 19rem); height: auto; object-fit: contain; }
+.fara-footer-wordmark { display: block; width: clamp(5.5rem, 7vw, 7rem); height: auto; object-fit: contain; }
 .fara-footer-copyright { margin: 0; color: #111 !important; font-size: clamp(.7rem, .9vw, .85rem); white-space: nowrap; }
 
 @media (max-width: 1023px) {

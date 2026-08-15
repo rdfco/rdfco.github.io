@@ -1,7 +1,7 @@
 @media (max-width: 1199px) {
   .hero .fara-hero-brand-lockup {
     top: clamp(11.5rem, 44vh, 19rem);
-    left: clamp(3rem, 8vw, 7rem);
+    left: clamp(1.5rem, 4vw, 3rem);
   }
   .hero .fara-hero-brand-text { font-size: clamp(1.9rem, 4.8vw, 3.25rem); }
 }
@@ -18,9 +18,9 @@
   .fara-about .about-copy { margin-top: 0; }
   .fara-solutions > header { width: auto; }
   .fara-solutions > header::before {
-    top: -3.25rem;
-    left: clamp(-1.75rem, -4vw, -.75rem);
-    width: clamp(4.5rem, 20vw, 7rem);
+    top: clamp(-1.5rem, -3vw, -.75rem);
+    left: -1rem;
+    width: clamp(3.5rem, 12vw, 5rem);
 
   }
   .solutions-grid .fara-card {
@@ -45,13 +45,10 @@
   .hero .fara-hero-copy.logo-mb { display: flex !important; }
   .hero .fara-hero-copy {
     padding: 0 1rem !important;
-    --fara-hero-arc-x: 47vw;
-    --fara-hero-arc-y: 1vh;
-    --fara-hero-arc-width: clamp(12rem, 58vw, 22rem);
   }
   .hero .fara-hero-brand-lockup {
     top: 43%;
-    left: 1.25rem;
+    left: .75rem;
     gap: .8rem;
   }
   .hero .fara-hero-brand-logo { width: clamp(2.3rem, 12vw, 3.2rem); }
@@ -75,11 +72,11 @@
   .industries-grid .fara-card > .fara-expand { transform: translate(-50%, -2rem); }
   .fara-row > header { margin-bottom: 2.5rem; }
   .fara-card-grid { gap: 3rem; }
-  .fara-about > h2 { font-size: clamp(3.1rem, 14vw, 4.7rem); }
+  .fara-about > h2 { font-size: clamp(2.4rem, 11.5vw, 4.7rem); }
   .fara-about > h2::before {
-    top: -1.25rem;
-    left: clamp(3.5rem, 18vw, 7rem);
-    width: clamp(8.5rem, 38vw, 12rem);
+    top: -.75rem;
+    left: 0;
+    width: clamp(4.5rem, 22vw, 7rem);
   }
   .fara-footer { padding-block: 3rem; }
   .fara-footer-shell { gap: 3rem; }

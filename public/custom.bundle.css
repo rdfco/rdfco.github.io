@@ -49,30 +49,6 @@ optgroup,
   gap: clamp(1.05rem, 1.65vw, 2.1rem);
   align-items: center;
 }
-#header .fara-static-nav-logo {
-  display: inline-flex;
-  width: clamp(2.65rem, 3.7vw, 4.05rem);
-  height: clamp(2.2rem, 3.05vw, 3.35rem);
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  pointer-events: auto;
-  transform: translateX(clamp(.65rem, 1vw, 1.15rem));
-  animation: fara-header-logo-in 800ms cubic-bezier(.2, .8, .2, 1) 400ms both;
-}
-#header .fara-static-nav-logo__image {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-#header .fara-static-nav-logo__image--black { display: none; }
-#header.top .fara-static-nav-logo__image--white,
-.fara-content-route #header .fara-static-nav-logo__image--white,
-#header.fara-nav-on-panel .fara-static-nav-logo__image--white { display: none; }
-#header.top .fara-static-nav-logo__image--black,
-.fara-content-route #header .fara-static-nav-logo__image--black,
-#header.fara-nav-on-panel .fara-static-nav-logo__image--black { display: block; }
 #header nav .navbar {
   height: .24rem;
   min-width: clamp(2.65rem, 3.7vw, 4.05rem);
@@ -282,18 +258,6 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
   from { opacity: 1; visibility: visible; transform: translate3d(0, 0, 0); }
   to { opacity: 0; visibility: hidden; transform: translate3d(-8px, 0, 0); }
 }
-@keyframes fara-header-logo-in {
-  from { opacity: 0; visibility: hidden; }
-  to { opacity: 1; visibility: visible; }
-}
-@keyframes fara-header-logo-out {
-  from { opacity: 1; visibility: visible; }
-  to { opacity: 0; visibility: hidden; }
-}
-#header.menu-open .fara-static-nav-logo {
-  animation: fara-header-logo-out 260ms cubic-bezier(.2, .8, .2, 1) both !important;
-  pointer-events: none !important;
-}
 #header .menu-links-w > ul > li[data-config-generated="true"] {
   animation: fara-header-item-in 800ms cubic-bezier(.2, .8, .2, 1) both;
 }
@@ -321,7 +285,6 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
 #header.menu-open .menu-w .menu-cta { pointer-events: auto; }
 #header.menu-closing .menu-links-w > ul > li,
 #header.menu-closing .menu-links-w .navbar,
-#header.menu-closing .fara-static-nav-logo,
 #header.menu-closing .menu-w {
   visibility: hidden !important;
   opacity: 0 !important;
@@ -330,9 +293,6 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
 }
 #header.menu-revealing .menu-links-w > ul > li {
   animation: fara-navbar-item-reveal 800ms cubic-bezier(.2, .8, .2, 1) both !important;
-}
-#header.menu-revealing .fara-static-nav-logo {
-  animation: fara-header-logo-in 800ms cubic-bezier(.2, .8, .2, 1) 0ms both !important;
 }
 #header.menu-revealing .menu-links-w > ul > li:nth-child(1) { animation-delay: 0ms !important; }
 #header.menu-revealing .menu-links-w > ul > li:nth-child(2) { animation-delay: 100ms !important; }
@@ -345,11 +305,6 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
   visibility: visible;
   opacity: 1;
   transform: translate3d(0, 0, 0);
-  animation: none !important;
-}
-#header.menu-cycle-started:not(.menu-open):not(.menu-revealing) .fara-static-nav-logo {
-  visibility: visible;
-  opacity: 1;
   animation: none !important;
 }
 #header.menu-revealing .menu-links-w .navbar,
@@ -1144,11 +1099,6 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
 .hero .logo:not(.fara-hero-copy) { display: none !important; }
 .hero .fara-hero-copy {
   --fara-accent-green: #00c878;
-  --fara-hero-arc-x: 47vw;
-  --fara-hero-arc-y: -4vh;
-  --fara-hero-arc-width: clamp(16rem, 28vw, 35rem);
-  --fara-hero-arc-rotate: 0deg;
-  --fara-hero-arc-opacity: 1;
   --fara-hero-title-color: #f4f7f5;
   --fara-hero-subtitle-color: #fff;
   position: absolute !important;
@@ -1168,25 +1118,11 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
 }
 .hero .fara-hero-copy.logo-dk { display: flex !important; }
 .hero .fara-hero-copy h1 { display: none !important; }
-.hero .fara-hero-arc {
-  position: absolute;
-  z-index: 0;
-  top: var(--fara-hero-arc-y);
-  left: var(--fara-hero-arc-x);
-  display: block;
-  width: var(--fara-hero-arc-width);
-  height: auto;
-  opacity: var(--fara-hero-arc-opacity);
-  pointer-events: none;
-  transform: rotate(var(--fara-hero-arc-rotate));
-  transform-origin: center;
-  user-select: none;
-}
 .hero .fara-hero-brand-lockup {
   position: absolute;
   z-index: 1;
   top: clamp(12.5rem, 47vh, 21rem);
-  left: clamp(5.5rem, 12vw, 13rem);
+  left: clamp(3rem, 7vw, 7rem);
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -1289,14 +1225,16 @@ main #grid { min-height: 7400px; }
   font-size: clamp(4.1rem, 5.2vw, 6.1rem);
   font-weight: 300;
   line-height: 1.02;
+  max-width: 100%;
+  overflow-wrap: anywhere;
   white-space: pre-line;
 }
 .fara-about > h2::before {
   position: absolute;
   z-index: -1;
-  top: clamp(-2.4rem, -3vw, -1.35rem);
-  left: clamp(-4.5rem, -4vw, -4.5rem);
-  width: clamp(10.5rem, 14vw, 15.5rem);
+  top: -3rem;
+  left: -3.5rem;
+  width: clamp(6rem, 9vw, 9.5rem);
   aspect-ratio: 1;
   content: "";
   background: rgba(0, 200, 120, .82);
@@ -1330,9 +1268,9 @@ main #grid { min-height: 7400px; }
 .fara-solutions > header::before {
   position: absolute;
   z-index: -1;
-  top: clamp(-5.25rem, -4.5vw, -3rem);
-  left: clamp(-3rem, -2vw, -1.25rem);
-  width: clamp(10rem, 13vw, 15rem);
+  top: -2rem;
+  left: -2rem;
+  width: clamp(4.5rem, 6vw, 6.5rem);
   aspect-ratio: 1;
   content: "";
   background: rgba(0, 200, 120, .82);
@@ -1446,7 +1384,7 @@ main #grid { min-height: 7400px; }
 html:has(.industries-grid .fara-expand:hover) .cursor,
 html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !important; opacity: 0 !important; }
 
-.fara-industries > header { margin-bottom: 5rem; text-align: center; }
+.fara-industries > header { margin-bottom: clamp(7rem, 10vw, 10rem); text-align: center; }
 .fara-industries { margin-top: 0; }
 .industries-grid {
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -1553,7 +1491,7 @@ html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !imp
   margin-top: clamp(1rem, 3vw, 2rem);
   border-top: 1px solid rgba(45, 98, 140, .28);
 }
-.fara-footer-wordmark { display: block; width: clamp(11rem, 19vw, 19rem); height: auto; object-fit: contain; }
+.fara-footer-wordmark { display: block; width: clamp(5.5rem, 7vw, 7rem); height: auto; object-fit: contain; }
 .fara-footer-copyright { margin: 0; color: #111 !important; font-size: clamp(.7rem, .9vw, .85rem); white-space: nowrap; }
 
 @media (max-width: 1023px) {
@@ -1564,7 +1502,7 @@ html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !imp
 @media (max-width: 1199px) {
   .hero .fara-hero-brand-lockup {
     top: clamp(11.5rem, 44vh, 19rem);
-    left: clamp(3rem, 8vw, 7rem);
+    left: clamp(1.5rem, 4vw, 3rem);
   }
   .hero .fara-hero-brand-text { font-size: clamp(1.9rem, 4.8vw, 3.25rem); }
 }
@@ -1581,9 +1519,9 @@ html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !imp
   .fara-about .about-copy { margin-top: 0; }
   .fara-solutions > header { width: auto; }
   .fara-solutions > header::before {
-    top: -3.25rem;
-    left: clamp(-1.75rem, -4vw, -.75rem);
-    width: clamp(4.5rem, 20vw, 7rem);
+    top: clamp(-1.5rem, -3vw, -.75rem);
+    left: -1rem;
+    width: clamp(3.5rem, 12vw, 5rem);
 
   }
   .solutions-grid .fara-card {
@@ -1608,13 +1546,10 @@ html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !imp
   .hero .fara-hero-copy.logo-mb { display: flex !important; }
   .hero .fara-hero-copy {
     padding: 0 1rem !important;
-    --fara-hero-arc-x: 47vw;
-    --fara-hero-arc-y: 1vh;
-    --fara-hero-arc-width: clamp(12rem, 58vw, 22rem);
   }
   .hero .fara-hero-brand-lockup {
     top: 43%;
-    left: 1.25rem;
+    left: .75rem;
     gap: .8rem;
   }
   .hero .fara-hero-brand-logo { width: clamp(2.3rem, 12vw, 3.2rem); }
@@ -1638,11 +1573,11 @@ html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !imp
   .industries-grid .fara-card > .fara-expand { transform: translate(-50%, -2rem); }
   .fara-row > header { margin-bottom: 2.5rem; }
   .fara-card-grid { gap: 3rem; }
-  .fara-about > h2 { font-size: clamp(3.1rem, 14vw, 4.7rem); }
+  .fara-about > h2 { font-size: clamp(2.4rem, 11.5vw, 4.7rem); }
   .fara-about > h2::before {
-    top: -1.25rem;
-    left: clamp(3.5rem, 18vw, 7rem);
-    width: clamp(8.5rem, 38vw, 12rem);
+    top: -.75rem;
+    left: 0;
+    width: clamp(4.5rem, 22vw, 7rem);
   }
   .fara-footer { padding-block: 3rem; }
   .fara-footer-shell { gap: 3rem; }

@@ -146,37 +146,6 @@ const renderHeaderLinkContent = (link, item) => {
   label.textContent = item.label
 }
 
-const setupStaticHeaderLogo = () => {
-  const wrapper = document.querySelector('#header .menu-links-w')
-  if (!wrapper || wrapper.querySelector('.fara-static-nav-logo')) return
-
-  const logo = document.createElement('a')
-  logo.className = 'fara-static-nav-logo'
-  logo.href = '#'
-  logo.dataset.faraRoute = '/'
-  logo.setAttribute('aria-label', 'FARA home')
-  logo.innerHTML = `
-    <img class="fara-static-nav-logo__image fara-static-nav-logo__image--white" src="/assets/logos/fara-logo0-white.svg" alt="">
-    <img class="fara-static-nav-logo__image fara-static-nav-logo__image--black" src="/assets/logos/fara-logo0-black.svg" alt="">
-  `
-  logo.addEventListener('click', event => {
-    event.preventDefault()
-    const routeEvent = new CustomEvent('fara:navigate', {
-      bubbles: true,
-      detail: { href: '/' },
-    })
-    logo.dispatchEvent(routeEvent)
-  })
-  wrapper.prepend(logo)
-}
-
-const syncStaticHeaderLogo = currentPath => {
-  const logo = document.querySelector('#header .fara-static-nav-logo')
-  if (logo) {
-    logo.classList.toggle('active', currentPath === '/')
-  }
-}
-
 const legalRoutes = new Map([
   ['privacy policy', '/privacy-policy'],
   ['terms of use', '/terms-of-use'],
@@ -195,7 +164,6 @@ const configureLegalLink = link => {
 
 export const renderNavigation = (siteData, currentPath = '/') => {
   setupNavbarRouteTransition()
-  setupStaticHeaderLogo()
   ensureItems('#header .menu-links-w > ul', siteData.navigation.length)
   ensureItems('.montfort-menu nav > ul', siteData.navigation.length)
   document.querySelectorAll('#header .menu-links-w > ul > li').forEach(item => { item.dataset.configGenerated = 'true' })
@@ -226,7 +194,6 @@ export const renderNavigation = (siteData, currentPath = '/') => {
     if (!configureLegalLink(link) && siteData.menuSettings.enableLegalLinks === false) disableLink(link)
   })
   document.querySelectorAll('#footer .legals-links a').forEach(link => configureLegalLink(link))
-  syncStaticHeaderLogo(currentPath)
   setupHover()
   setupPanelTheme()
   syncNavbar(currentPath)

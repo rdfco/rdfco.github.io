@@ -8,6 +8,9 @@ preview-final.png
 qa*.png
 footer-*.png
 artifacts-*.png
+screenshot*.png
+screenshots/
+**/screenshots/
 test-results/
 work/
 
