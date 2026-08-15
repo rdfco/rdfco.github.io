@@ -1232,9 +1232,9 @@ main #grid { min-height: 7400px; }
 .fara-about > h2::before {
   position: absolute;
   z-index: -1;
-  top: -3rem;
-  left: -3.5rem;
-  width: clamp(6rem, 9vw, 9.5rem);
+  top: -.58em;
+  left: -.22em;
+  width: 1.5em;
   aspect-ratio: 1;
   content: "";
   background: rgba(0, 200, 120, .82);
@@ -1244,6 +1244,7 @@ main #grid { min-height: 7400px; }
 .fara-about .about-copy {
   min-height: 13rem;
   margin-top: clamp(19rem, 22vw, 26rem);
+  max-width: 42rem;
 }
 .fara-row > header { margin-bottom: 3.5rem; }
 .fara-row > header h2,
@@ -1505,6 +1506,30 @@ html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !imp
     left: clamp(1.5rem, 4vw, 3rem);
   }
   .hero .fara-hero-brand-text { font-size: clamp(1.9rem, 4.8vw, 3.25rem); }
+  .fara-about {
+    grid-template-columns: minmax(15rem, .85fr) minmax(0, 1.15fr);
+    gap: clamp(2.5rem, 5vw, 5rem);
+  }
+  .fara-about > h2::before {
+    top: -.55em;
+    left: -.18em;
+    width: 1.42em;
+  }
+  .fara-about .about-copy {
+    max-width: min(100%, 38rem);
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1366px) {
+  .fara-about {
+    gap: clamp(3rem, 5vw, 5.5rem);
+  }
+  .fara-about > h2::before {
+    left: -.18em;
+  }
+  .fara-about .about-copy {
+    max-width: min(100%, 39rem);
+  }
 }
 
 @media (max-width: 1023px) {
@@ -1517,6 +1542,10 @@ html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !imp
   .fara-ai,
   .fara-about { grid-template-columns: 1fr; gap: 3rem; }
   .fara-about .about-copy { margin-top: 0; }
+  .fara-about > h2 {
+    width: fit-content;
+    max-width: 100%;
+  }
   .fara-solutions > header { width: auto; }
   .fara-solutions > header::before {
     top: clamp(-1.5rem, -3vw, -.75rem);
@@ -1575,9 +1604,9 @@ html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !imp
   .fara-card-grid { gap: 3rem; }
   .fara-about > h2 { font-size: clamp(2.4rem, 11.5vw, 4.7rem); }
   .fara-about > h2::before {
-    top: -.75rem;
-    left: 0;
-    width: clamp(4.5rem, 22vw, 7rem);
+    top: -.45em;
+    left: -.12em;
+    width: 1.34em;
   }
   .fara-footer { padding-block: 3rem; }
   .fara-footer-shell { gap: 3rem; }

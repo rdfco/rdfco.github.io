@@ -34,9 +34,9 @@ main #grid { min-height: 7400px; }
 .fara-about > h2::before {
   position: absolute;
   z-index: -1;
-  top: -3rem;
-  left: -3.5rem;
-  width: clamp(6rem, 9vw, 9.5rem);
+  top: -.58em;
+  left: -.22em;
+  width: 1.5em;
   aspect-ratio: 1;
   content: "";
   background: rgba(0, 200, 120, .82);
@@ -46,6 +46,7 @@ main #grid { min-height: 7400px; }
 .fara-about .about-copy {
   min-height: 13rem;
   margin-top: clamp(19rem, 22vw, 26rem);
+  max-width: 42rem;
 }
 .fara-row > header { margin-bottom: 3.5rem; }
 .fara-row > header h2,
