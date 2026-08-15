@@ -31,6 +31,29 @@ const prepareLegacyGsap = () => {
   }, 100)
 }
 
+const setupWheelScrollFallback = () => {
+  let touchY = 0
+
+  window.addEventListener('wheel', event => {
+    if (event.defaultPrevented || Math.abs(event.deltaY) < Math.abs(event.deltaX)) return
+    event.preventDefault()
+    window.scrollBy({ top: event.deltaY, left: 0, behavior: 'auto' })
+  }, { passive: false })
+
+  window.addEventListener('touchstart', event => {
+    touchY = event.touches?.[0]?.clientY ?? 0
+  }, { passive: true })
+
+  window.addEventListener('touchmove', event => {
+    const currentY = event.touches?.[0]?.clientY ?? touchY
+    const deltaY = touchY - currentY
+    touchY = currentY
+    if (!deltaY) return
+    event.preventDefault()
+    window.scrollBy({ top: deltaY, left: 0, behavior: 'auto' })
+  }, { passive: false })
+}
+
 const normalizeRoute = value => {
   const [path, query = ''] = value.split('?')
   const normalizedPath = path === '/' ? '/' : path.replace(/\/+$/, '')
@@ -140,8 +163,6 @@ const getCurrentPage = async (path, navigationItem) => {
 
 const refreshSite = async () => {
   if (requestedPath === appliedPath && document.documentElement.dataset.faraReady === 'true') {
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
-    window.lenis?.scrollTo?.(0, { immediate: true, force: true })
     return
   }
   if (document.readyState === 'loading') {
@@ -161,12 +182,9 @@ const refreshSite = async () => {
   header?.classList.remove('top', 'fade')
   if (header && requestedPath === '/') header.dataset.theme = 'light'
   window.requestAnimationFrame(() => {
-    if (currentPage.data.key === 'home') resetHomeScrollState()
-    else window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
     header?.classList.remove('top', 'fade')
     refreshScrollSystems()
     window.requestAnimationFrame(() => {
-      if (currentPage.data.key === 'home') resetHomeScrollState()
       refreshScrollSystems()
     })
   })
@@ -192,6 +210,7 @@ document.addEventListener('click', event => {
 
 setupNavigationEvents()
 prepareLegacyGsap()
+setupWheelScrollFallback()
 document.addEventListener('astro:page-load', () => {
   if (requestedPath !== null) refreshSite()
 })
