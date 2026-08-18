@@ -1281,13 +1281,17 @@ main #grid { min-height: 7400px; }
   font-size: clamp(1rem, 1.6vw, 1.5rem);
   line-height: 1.5;
 }
-.fara-solutions > header {
+.fara-solutions > header,
+.fara-ai > header,
+.fara-industries > header {
   position: relative;
   z-index: 1;
   isolation: isolate;
   width: fit-content;
 }
-.fara-solutions > header::before {
+.fara-solutions > header::before,
+.fara-ai > header::before,
+.fara-industries > header::before {
   position: absolute;
   z-index: -1;
   top: -2rem;
@@ -1300,9 +1304,17 @@ main #grid { min-height: 7400px; }
   box-shadow: 0 0 36px rgba(0, 200, 120, .28);
 }
 .fara-solutions > header h2,
-.fara-solutions > header p {
+.fara-solutions > header p,
+.fara-ai > header h2,
+.fara-ai > header p,
+.fara-industries > header h2,
+.fara-industries > header p {
   position: relative;
   z-index: 1;
+}
+.fara-industries > header {
+  margin-inline: auto;
+  text-align: center;
 }
 .fara-card-grid { display: grid; gap: clamp(2rem, 4vw, 5rem); }
 .solutions-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }
@@ -1579,8 +1591,12 @@ html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !imp
     width: fit-content;
     max-width: 100%;
   }
-  .fara-solutions > header { width: auto; }
-  .fara-solutions > header::before {
+  .fara-solutions > header,
+  .fara-ai > header { width: auto; }
+  .fara-industries > header { width: fit-content; }
+  .fara-solutions > header::before,
+  .fara-ai > header::before,
+  .fara-industries > header::before {
     top: clamp(-1.5rem, -3vw, -.75rem);
     left: -1rem;
     width: clamp(3.5rem, 12vw, 5rem);
