@@ -7,7 +7,7 @@ window.FARA_BACKGROUND_COLORS = {
   sceneBackground: '#000000',  // فضای خالی پشت کل صحنه WebGL
   skyDark: '#000000',          // بخش بالایی آسمان
   skyLight: '#ffffff',         // بخش پایینی آسمان؛ فقط بالای تپه اعمال می‌شود
-  stars: '#b4dcc3',            // ستاره‌ها و ذرات آسمان
+  stars: '#37b478',            // ستاره‌ها و ذرات آسمان
   fixedHills: '#000000',       // سیلوئت تپه ثابت پشت هاله و خطوط
   mountainBackGlow: '#ffffff', // هاله زمردی مرکزی پشت تپه
   horizonGlow: '#ffffff',      // روشنایی و سایه داخل سطح تپه
@@ -17,8 +17,8 @@ window.FARA_BACKGROUND_COLORS = {
   terrainBase: '#000000',      // رنگ مستقل پایین تپه و زمین؛ از skyLight/skyDark تأثیر نمی‌گیرد
 
   // بخش‌های پایین‌تر سایت ــ برای دیدن تغییر باید اسکرول کنید.
-  mountain: '#000000',         // بافت مدل سه‌بعدی کوه در فصل‌های دیگر
-  hologram: '#ffffff',         // بدنه مدل‌های سیمی
+  mountain: '#37b478',         // بافت مدل سه‌بعدی کوه در فصل‌های دیگر
+  hologram: '#37b478',         // بدنه مدل‌های سیمی
   hologramGlow: '#ffffff',     // هاله مدل‌های سیمی
   gridBackground: '#000000',   // سطح زیر شبکه
   gridLines: '#ffffff',        // خط‌های شبکه مربعی
