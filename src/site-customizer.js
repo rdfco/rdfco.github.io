@@ -8,6 +8,8 @@ import './styles/content-pages.css'
 
 validateSiteData(siteData)
 
+if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual'
+
 let requestedPath = null
 let appliedPath = null
 let refreshFrame = 0
@@ -17,6 +19,7 @@ let activeNavFrame = 0
 let programmaticSectionScroll = false
 let pendingSectionRoute = null
 let sceneRunning = true
+let applyingRoute = false
 
 const sectionRoutes = new Map([
   ['/who-we-are', '.fara-about'],
@@ -314,10 +317,35 @@ const normalizePhoneNumbers = () => {
   })
 }
 
-const resetHomeScrollState = () => {
+const jumpToTop = () => {
   document.documentElement.scrollTop = 0
   document.body.scrollTop = 0
   window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+}
+
+// Refreshing the legacy scroll systems restores the offset they recorded before
+// the route changed, and the legacy timelines tween the window back up, which
+// reads as a fast auto-scroll. Holding the document at zero for the rest of the
+// transition - while the shell's gate still covers the frame - means the home
+// page is simply already at the top when it appears.
+const holdAtTop = durationMs => new Promise(resolve => {
+  const startedAt = performance.now()
+  const hold = now => {
+    window.gsap?.killTweensOf?.(window)
+    window.gsap?.killTweensOf?.(document.documentElement)
+    jumpToTop()
+    if (now - startedAt >= durationMs) {
+      resolve()
+      return
+    }
+    window.requestAnimationFrame(hold)
+  }
+  window.requestAnimationFrame(hold)
+})
+
+const resetHomeScrollState = () => {
+  stopSmoothScroll()
+  jumpToTop()
   window.lenis?.scrollTo?.(0, { immediate: true, force: true })
   window.lenis?.stop?.()
   window.lenis?.resize?.()
@@ -400,8 +428,9 @@ const getCurrentPage = async (path, navigationItem) => {
 const refreshSite = async () => {
   if (requestedPath === appliedPath && document.documentElement.dataset.faraReady === 'true') {
     // The shell keeps polling until it hears back, so an already-applied route
-    // still has to answer or its loading gate never lifts.
-    window.parent.postMessage({ type: 'fara:ready' }, window.location.origin)
+    // still has to answer or its loading gate never lifts - but never while the
+    // route is still settling, or the gate would lift over an unfinished page.
+    if (!applyingRoute) window.parent.postMessage({ type: 'fara:ready' }, window.location.origin)
     return
   }
   if (document.readyState === 'loading') {
@@ -409,13 +438,14 @@ const refreshSite = async () => {
     return
   }
   appliedPath = requestedPath
+  applyingRoute = true
   window.dispatchEvent(new CustomEvent('fara:close-menu'))
   const navigationItem = getNavigationItem(requestedPath || '/')
   const currentPage = await getCurrentPage(requestedPath || '/', navigationItem)
   setSceneRunning(currentPage.data.key === 'home')
   stopSmoothScroll()
   if (currentPage.data.key === 'home') resetHomeScrollState()
-  else window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  else jumpToTop()
   await applySiteData(siteData, currentPage)
   normalizePhoneNumbers()
   setupSectionRouteLinks()
@@ -423,6 +453,7 @@ const refreshSite = async () => {
   const header = document.querySelector('#header')
   header?.classList.remove('top', 'fade')
   if (header && requestedPath === '/') header.dataset.theme = 'light'
+  const arrivesAtTop = !pendingSectionRoute || pendingSectionRoute === '/'
   window.requestAnimationFrame(() => {
     header?.classList.remove('top', 'fade')
     refreshScrollSystems()
@@ -430,6 +461,8 @@ const refreshSite = async () => {
       refreshScrollSystems()
     })
   })
+  if (arrivesAtTop) await holdAtTop(900)
+  applyingRoute = false
   if (requestedPath !== null) {
     document.documentElement.dataset.faraReady = 'true'
     window.parent.postMessage({ type: 'fara:ready' }, window.location.origin)
@@ -440,7 +473,8 @@ const refreshSite = async () => {
     } else if (queuedSection && queuedSection !== '/') {
       window.requestAnimationFrame(() => scrollToSectionRoute(queuedSection))
     } else {
-      syncActiveNavigationWithScroll()
+      // A few legacy timelines fire one last scroll tween after the gate lifts.
+      holdAtTop(600).then(syncActiveNavigationWithScroll)
     }
   }
 }
