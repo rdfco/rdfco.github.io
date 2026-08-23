@@ -12,13 +12,11 @@ export default function LegacySite() {
   const scrollbarThumbRef = useRef()
   const lastRouteRef = useRef()
   const previousPathRef = useRef(location.pathname)
-  const [homeResetKey, setHomeResetKey] = useState(0)
   const [status, setStatus] = useState(
     () => document.querySelector('.legacy-shell')?.dataset.status || 'loading',
   )
   const [menuOpen, setMenuOpen] = useState(false)
   const isHomeRoute = location.pathname === '/'
-  const frameKey = isHomeRoute ? `home-${homeResetKey}` : 'content'
 
   useLayoutEffect(() => () => {
     window.clearTimeout(timerRef.current)
@@ -31,13 +29,12 @@ export default function LegacySite() {
     document.body.scrollTop = 0
   }, [location.pathname, location.search])
 
+  // Every route change gets the same loading gate, so a page only ever appears
+  // once the frame reports that it finished rendering it.
   useEffect(() => {
     const previousPath = previousPathRef.current
     previousPathRef.current = location.pathname
-    if (location.pathname === '/' && previousPath !== '/') {
-      setHomeResetKey(key => key + 1)
-      setStatus('loading')
-    }
+    if (previousPath !== location.pathname) setStatus('loading')
   }, [location.pathname])
 
   useEffect(() => {
@@ -108,7 +105,10 @@ export default function LegacySite() {
         const root = frameDocument.documentElement
         const maxScroll = Math.max(1, root.scrollHeight - frameWindow.innerHeight)
         const progress = Math.min(1, Math.max(0, frameWindow.scrollY / maxScroll))
-        const thumbHeight = Math.max(48, Math.min(132, frameWindow.innerHeight * (frameWindow.innerHeight / root.scrollHeight)))
+        // Keep the thumb proportional to the document it belongs to, so a short
+        // routed page reads as short instead of matching the home page.
+        const visibleRatio = Math.min(1, frameWindow.innerHeight / Math.max(1, root.scrollHeight))
+        const thumbHeight = Math.max(44, Math.min(frameWindow.innerHeight * .62, frameWindow.innerHeight * visibleRatio))
         const travel = frameWindow.innerHeight - thumbHeight - 28
         thumb.style.height = `${thumbHeight}px`
         thumb.style.transform = `translate3d(0, ${14 + progress * Math.max(0, travel)}px, 0)`
@@ -123,7 +123,7 @@ export default function LegacySite() {
       frameWindow.removeEventListener('scroll', updateScrollbar)
       frameWindow.removeEventListener('resize', updateScrollbar)
     }
-  }, [frameKey, status])
+  }, [status])
 
   const handleScrollbarPointerDown = event => {
     const frameWindow = frameRef.current?.contentWindow
@@ -208,19 +208,16 @@ export default function LegacySite() {
       data-status={status}
       data-route-surface={isHomeRoute ? 'home' : 'content'}
     >
-      {status !== 'ready' && (
-        <div className="site-gate" role={status === 'failed' ? 'alert' : 'status'}>
-          {status === 'failed' ? (
-            content.uiLabels.loadFailure
-          ) : (
-            <div className="site-loader" aria-label="Loading">
-              <span className="site-loader__spinner" aria-hidden="true" />
-            </div>
-          )}
-        </div>
-      )}
+      <div className="site-gate" role={status === 'failed' ? 'alert' : 'status'}>
+        {status === 'failed' ? (
+          content.uiLabels.loadFailure
+        ) : (
+          <div className="site-loader" aria-label="Loading">
+            <span className="site-loader__spinner" aria-hidden="true" />
+          </div>
+        )}
+      </div>
       <iframe
-        key={frameKey}
         ref={frameRef}
         className="legacy-site"
         title={appConfig.legacyRuntime.iframeTitle}

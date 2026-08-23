@@ -1,3 +1,16 @@
+// Cloned list items inherit the "listener already attached" markers of their
+// template. Clearing them keeps hover, route, and disabled wiring working on
+// every regenerated entry.
+const clearListenerMarkers = item => {
+  item.querySelectorAll('[data-hover-ready], [data-fara-section-scroll-ready], [data-disabled-ready]').forEach(node => {
+    delete node.dataset.hoverReady
+    delete node.dataset.faraSectionScrollReady
+    delete node.dataset.disabledReady
+    node.removeAttribute('aria-disabled')
+    node.removeAttribute('tabindex')
+  })
+}
+
 const ensureItems = (listSelector, count) => {
   const list = document.querySelector(listSelector)
   if (!list) return
@@ -6,6 +19,7 @@ const ensureItems = (listSelector, count) => {
     if (!template) break
     const item = template.cloneNode(true)
     item.querySelector('.active')?.classList.remove('active')
+    clearListenerMarkers(item)
     item.dataset.configGenerated = 'true'
     list.appendChild(item)
   }
@@ -13,6 +27,17 @@ const ensureItems = (listSelector, count) => {
 }
 
 const homeSectionRoutes = new Set(['/', '/who-we-are', '/how-we-help', '/who-we-serve'])
+
+// Away from the home surface the navbar collapses to the two routes that can
+// actually be reached from a standalone page: back home, and the page itself.
+const contentHeaderKeys = ['home', 'think-together']
+
+const getHeaderItems = (siteData, currentPath) => {
+  if (homeSectionRoutes.has(currentPath)) return siteData.navigation
+  return contentHeaderKeys
+    .map(key => siteData.navigation.find(item => item.key === key))
+    .filter(Boolean)
+}
 
 const animateNavbarTo = target => {
   const navList = document.querySelector('#header .menu-links-w')
@@ -63,22 +88,18 @@ const scheduleNavbarUpdate = update => {
   navbarFrame = window.requestAnimationFrame(update)
 }
 
-const animateNavbarFull = () => {
-  const navList = document.querySelector('#header .menu-links-w > ul')
-  const wrapper = document.querySelector('#header .menu-links-w')
+// The navbar rule is the "you are here" marker, so it collapses instead of
+// spanning the whole list when no navigation entry matches the current route.
+const collapseNavbar = () => {
   const navbar = document.querySelector('#header nav .navbar')
-  if (!navList || !wrapper || !navbar) return
-  const listRect = navList.getBoundingClientRect()
-  const wrapperRect = wrapper.getBoundingClientRect()
-  navbar.style.opacity = '1'
+  if (!navbar) return
   navbar.style.transition = 'transform 600ms cubic-bezier(.2,.8,.2,1)'
-  navbar.style.setProperty('--fara-navbar-transform', `translate3d(${listRect.left - wrapperRect.left}px, 0, 0) scaleX(${listRect.width / (navbar.offsetWidth || 1)})`)
+  navbar.style.setProperty('--fara-navbar-transform', 'translate3d(0, 0, 0) scaleX(0)')
 }
 
 const restoreNavbar = () => {
-  const isHome = document.body.dataset.faraPage === 'home'
-  const activeLabel = document.querySelector('#header .nav-link.active span')
-  isHome ? animateNavbarTo(activeLabel) : animateNavbarFull()
+  const activeLabel = document.querySelector('#header .menu-links-w .nav-link.active span')
+  activeLabel ? animateNavbarTo(activeLabel) : collapseNavbar()
 }
 
 const setupHover = () => {
@@ -111,9 +132,8 @@ const setupHover = () => {
   })
 }
 
-const syncNavbar = currentPath => {
-  const activeLink = document.querySelector('#header .menu-links-w .nav-link.active')
-  scheduleNavbarUpdate(() => currentPath === '/' ? animateNavbarTo(activeLink) : animateNavbarFull())
+const syncNavbar = () => {
+  scheduleNavbarUpdate(restoreNavbar)
 }
 
 const setupPanelTheme = () => {
@@ -172,13 +192,14 @@ const configureLegalLink = link => {
 
 export const renderNavigation = (siteData, currentPath = '/') => {
   setupNavbarRouteTransition()
-  ensureItems('#header .menu-links-w > ul', siteData.navigation.length)
+  const headerItems = getHeaderItems(siteData, currentPath)
+  ensureItems('#header .menu-links-w > ul', headerItems.length)
   ensureItems('.montfort-menu nav > ul', siteData.navigation.length)
   document.querySelectorAll('#header .menu-links-w > ul > li').forEach(item => { item.dataset.configGenerated = 'true' })
   document.querySelectorAll('.montfort-menu nav > ul > li').forEach(item => { item.dataset.configGenerated = 'true' })
 
   document.querySelectorAll('#header .menu-links-w .nav-link').forEach((link, index) => {
-    const item = siteData.navigation[index]
+    const item = headerItems[index]
     if (!item) return
     renderHeaderLinkContent(link, item)
     link.classList.toggle('active', item.href === currentPath)
@@ -204,5 +225,5 @@ export const renderNavigation = (siteData, currentPath = '/') => {
   document.querySelectorAll('#footer .legals-links a').forEach(link => configureLegalLink(link))
   setupHover()
   setupPanelTheme()
-  syncNavbar(currentPath)
+  syncNavbar()
 }

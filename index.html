@@ -50,7 +50,6 @@
         overflow: auto;
         visibility: hidden;
         -webkit-overflow-scrolling: touch;
-        transition: opacity 180ms ease;
       }
       .legacy-shell[data-status='ready'] .legacy-site {
         opacity: 1;
@@ -63,15 +62,18 @@
         display: grid;
         place-items: center;
         padding: 2rem;
-        color: #fff;
-        background:
-          radial-gradient(circle at 50% 42%, rgba(92, 102, 98, 0.18), rgba(8, 10, 11, 0) 34rem),
-          linear-gradient(135deg, #040505 0%, #121616 55%, #262b2a 100%);
+        opacity: 1;
+        transition: opacity 420ms ease, visibility 0ms linear 0ms;
+        color: #eef2f0;
+        background: #080a0b;
         font: 500 1rem/1.5 sans-serif;
         text-align: center;
       }
       .legacy-shell[data-status='ready'] .site-gate {
-        display: none;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 420ms ease, visibility 0ms linear 420ms;
       }
       .site-loader {
         display: grid;
@@ -80,8 +82,8 @@
       .site-loader__spinner {
         width: 3rem;
         height: 3rem;
-        border: 2px solid rgba(255, 255, 255, .2);
-        border-top-color: #fff;
+        border: 2px solid rgba(0, 200, 120, .22);
+        border-top-color: #00c878;
         border-radius: 50%;
         animation: fara-loader-spin 800ms linear infinite;
       }
@@ -91,7 +93,7 @@
     </style>
   </head>
   <body>
-      <div id="root"><div class="legacy-shell" data-status="loading" data-route-surface="home"><div class="site-gate" role="status"><div class="site-loader" aria-label="Loading"><span class="site-loader__spinner" aria-hidden="true"></span></div></div><iframe class="legacy-site" title="FARA" src="/legacy/fort-energy/index.html?v=home-load-20260814-visual-1"></iframe></div></div>
+      <div id="root"><div class="legacy-shell" data-menu-open="false" data-status="loading" data-route-surface="home"><div class="site-gate" role="status"><div class="site-loader" aria-label="Loading"><span class="site-loader__spinner" aria-hidden="true"></span></div></div><iframe class="legacy-site" title="FARA" src="/legacy/fort-energy/index.html?v=home-load-20260814-visual-1"></iframe><div class="fara-scrollbar" aria-hidden="true"><div class="fara-scrollbar__thumb"></div></div></div></div>
     <script>
       ;(() => {
         const shell = document.querySelector('.legacy-shell')

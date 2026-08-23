@@ -50,7 +50,7 @@ optgroup,
   align-items: center;
 }
 #header nav .navbar {
-  height: .24rem;
+  height: .14rem;
   min-width: clamp(2.65rem, 3.7vw, 4.05rem);
   background: #00f08a !important;
   border-radius: 0 !important;
@@ -1772,8 +1772,8 @@ body:not([data-fara-page="home"]) #footer *,
 }
 .fara-content-route #header .nav-link,
 .fara-content-route #header .menu-cta p { color: #111 !important; }
-.fara-content-route #header .menu-cta .dot,
 .fara-content-route #header .navbar { background: #111 !important; }
+.fara-content-route #header .menu-cta .dot { background: #00c878 !important; }
 .fara-legacy-main-suspended {
   position: fixed !important;
   inset: 0 !important;

@@ -15,6 +15,8 @@ let activeScrollRoute = '/'
 let scrollAnimationFrame = 0
 let activeNavFrame = 0
 let programmaticSectionScroll = false
+let pendingSectionRoute = null
+let sceneRunning = true
 
 const sectionRoutes = new Map([
   ['/who-we-are', '.fara-about'],
@@ -51,20 +53,78 @@ const prepareLegacyGsap = () => {
   }, 100)
 }
 
+const homeSurfaceIsActive = () => document.body.dataset.faraPage === 'home'
+
+const getWheelDelta = event => {
+  if (event.deltaMode === 1) return event.deltaY * 16
+  if (event.deltaMode === 2) return event.deltaY * window.innerHeight
+  return event.deltaY
+}
+
+const getMaxScroll = () => Math.max(
+  0,
+  document.documentElement.scrollHeight - window.innerHeight,
+)
+
+// Routed pages are plain documents with their own height, so they get an eased
+// wheel driver of their own instead of inheriting the home surface's one-to-one
+// jump per event. Trackpads emit many tiny deltas, which this accumulates into
+// one continuous glide.
+let smoothTarget = 0
+let smoothFrame = 0
+let smoothRunning = false
+
+const stopSmoothScroll = () => {
+  window.cancelAnimationFrame(smoothFrame)
+  smoothRunning = false
+}
+
+const runSmoothScroll = () => {
+  const current = window.scrollY
+  const distance = smoothTarget - current
+  if (Math.abs(distance) < .6) {
+    window.scrollTo(0, smoothTarget)
+    smoothRunning = false
+    return
+  }
+  window.scrollTo(0, current + distance * .16)
+  smoothFrame = window.requestAnimationFrame(runSmoothScroll)
+}
+
+const smoothScrollBy = delta => {
+  const max = getMaxScroll()
+  if (!smoothRunning) smoothTarget = window.scrollY
+  smoothTarget = Math.min(max, Math.max(0, smoothTarget + delta))
+  if (smoothRunning) return
+  smoothRunning = true
+  smoothFrame = window.requestAnimationFrame(runSmoothScroll)
+}
+
 const setupWheelScrollFallback = () => {
   let touchY = 0
 
   window.addEventListener('wheel', event => {
     if (event.defaultPrevented || Math.abs(event.deltaY) < Math.abs(event.deltaX)) return
+    const delta = getWheelDelta(event)
+    if (!delta) return
     event.preventDefault()
-    window.scrollBy({ top: event.deltaY, left: 0, behavior: 'auto' })
+    if (homeSurfaceIsActive()) {
+      stopSmoothScroll()
+      window.scrollBy({ top: delta, left: 0, behavior: 'auto' })
+      return
+    }
+    smoothScrollBy(delta)
   }, { passive: false })
 
   window.addEventListener('touchstart', event => {
     touchY = event.touches?.[0]?.clientY ?? 0
+    stopSmoothScroll()
   }, { passive: true })
 
+  // Touch devices already scroll routed pages natively; only the home surface
+  // needs the manual driver.
   window.addEventListener('touchmove', event => {
+    if (!homeSurfaceIsActive()) return
     const currentY = event.touches?.[0]?.clientY ?? touchY
     const deltaY = touchY - currentY
     touchY = currentY
@@ -72,6 +132,19 @@ const setupWheelScrollFallback = () => {
     event.preventDefault()
     window.scrollBy({ top: deltaY, left: 0, behavior: 'auto' })
   }, { passive: false })
+
+  window.addEventListener('keydown', stopSmoothScroll, { passive: true })
+}
+
+// The WebGL scene only exists behind the home surface. Leaving its ticker
+// running under a routed page costs a full frame budget and is what makes the
+// menu, the navbar rule, and scrolling feel choppy there.
+const setSceneRunning = running => {
+  if (sceneRunning === running) return
+  const ticker = window.__FARA_APP_EXPORTS?.a?.core?.ticker
+  if (!ticker?.play || !ticker?.pause) return
+  sceneRunning = running
+  running ? ticker.play() : ticker.pause()
 }
 
 const normalizeRoute = value => {
@@ -130,6 +203,7 @@ const getSectionTargetTop = selector => {
 const scrollToSectionRoute = route => {
   const selector = sectionRoutes.get(route)
   if (!selector && !animatedHomeRoutes.has(route)) return
+  stopSmoothScroll()
   const start = window.scrollY
   const end = animatedHomeRoutes.has(route) ? 0 : getSectionTargetTop(selector)
   const distance = end - start
@@ -173,17 +247,16 @@ const waitForMenuClose = shouldClose => new Promise(resolve => {
   window.dispatchEvent(new CustomEvent('fara:close-menu', { detail: { animate: true } }))
 })
 
-const routeHomeBeforeSectionScroll = async () => {
-  const currentPage = document.body.dataset.faraPage
-  if (currentPage === 'home' && (requestedPath === '/' || requestedPath === null)) return
-  requestedPath = '/'
-  appliedPath = null
-  await refreshSite()
-}
-
+// Section routes live on the home page. From a routed page the parent router
+// has to move the URL back to "/" first, otherwise the browser address stays on
+// the standalone page and the scroll lands inside it.
 const navigateToSectionRoute = async (route, { closeMenu = false } = {}) => {
   await waitForMenuClose(closeMenu)
-  await routeHomeBeforeSectionScroll()
+  if (document.body.dataset.faraPage !== 'home') {
+    pendingSectionRoute = route
+    window.parent.postMessage({ type: 'fara:navigate', pathname: '/' }, window.location.origin)
+    return
+  }
   window.requestAnimationFrame(() => scrollToSectionRoute(route))
 }
 
@@ -326,6 +399,9 @@ const getCurrentPage = async (path, navigationItem) => {
 
 const refreshSite = async () => {
   if (requestedPath === appliedPath && document.documentElement.dataset.faraReady === 'true') {
+    // The shell keeps polling until it hears back, so an already-applied route
+    // still has to answer or its loading gate never lifts.
+    window.parent.postMessage({ type: 'fara:ready' }, window.location.origin)
     return
   }
   if (document.readyState === 'loading') {
@@ -336,6 +412,8 @@ const refreshSite = async () => {
   window.dispatchEvent(new CustomEvent('fara:close-menu'))
   const navigationItem = getNavigationItem(requestedPath || '/')
   const currentPage = await getCurrentPage(requestedPath || '/', navigationItem)
+  setSceneRunning(currentPage.data.key === 'home')
+  stopSmoothScroll()
   if (currentPage.data.key === 'home') resetHomeScrollState()
   else window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
   await applySiteData(siteData, currentPage)
@@ -355,8 +433,15 @@ const refreshSite = async () => {
   if (requestedPath !== null) {
     document.documentElement.dataset.faraReady = 'true'
     window.parent.postMessage({ type: 'fara:ready' }, window.location.origin)
-    if (currentPage.data.key === 'home') syncActiveNavigationWithScroll()
-    else setActiveNavigationRoute(currentPage.data.href)
+    const queuedSection = pendingSectionRoute
+    pendingSectionRoute = null
+    if (currentPage.data.key !== 'home') {
+      setActiveNavigationRoute(currentPage.data.href)
+    } else if (queuedSection && queuedSection !== '/') {
+      window.requestAnimationFrame(() => scrollToSectionRoute(queuedSection))
+    } else {
+      syncActiveNavigationWithScroll()
+    }
   }
 }
 
