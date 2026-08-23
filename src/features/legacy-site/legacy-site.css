@@ -48,9 +48,11 @@ body,
   overflow: auto;
   visibility: hidden;
   -webkit-overflow-scrolling: touch;
-  transition: opacity 180ms ease;
 }
 
+/* The gate sits above the frame, so the frame can appear instantly underneath
+   it and the gate alone fades. That crossfade is what stops the new page from
+   popping in. */
 .legacy-shell[data-status='ready'] .legacy-site {
   opacity: 1;
   visibility: visible;
@@ -130,12 +132,19 @@ body,
   display: grid;
   place-items: center;
   padding: 2rem;
+  opacity: 1;
+  transition: opacity 420ms ease, visibility 0ms linear 0ms;
   color: #eef2f0;
-  background:
-    radial-gradient(circle at 50% 42%, rgba(92, 102, 98, .28), rgba(8, 10, 11, 0) 34rem),
-    linear-gradient(135deg, #040505 0%, #121616 55%, #262b2a 100%);
+  background: #080a0b;
   font: 500 1rem/1.5 "FARA Gotham";
   text-align: center;
+}
+
+.legacy-shell[data-status='ready'] .site-gate {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 420ms ease, visibility 0ms linear 420ms;
 }
 
 .site-loader {
@@ -146,7 +155,7 @@ body,
 .site-loader__spinner {
   width: 3rem;
   height: 3rem;
-  border: 2px solid rgba(238, 242, 240, .22);
+  border: 2px solid rgba(0, 200, 120, .22);
   border-top-color: #00c878;
   border-radius: 50%;
   animation: fara-loader-spin 800ms linear infinite;
