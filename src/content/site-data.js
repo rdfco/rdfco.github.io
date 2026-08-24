@@ -10,8 +10,8 @@ export const siteData = {
     logoText: 'FARA',
     // فایل لوگو را داخل public/assets/logos بگذارید و مسیرش را اینجا بنویسید.
     // خالی بماند، لوگوی SVG اصلی سایت نمایش داده می‌شود.
-    desktopLogo: '', // مثال: '/assets/logos/fort-energy-desktop.svg'
-    mobileLogo: '',  // مثال: '/assets/logos/fort-energy-mobile.svg'
+    desktopLogo: '', // مثال: '/assets/logos/fara-logo-desktop.svg'
+    mobileLogo: '',  // مثال: '/assets/logos/fara-logo-mobile.svg'
   },
 
   navigation: navigationItems,

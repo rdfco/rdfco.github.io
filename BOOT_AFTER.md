@@ -60,7 +60,7 @@ Measured in Chrome against production preview at `http://localhost:4173/`, cold 
 | `/assets/textures/noise-solid-normal.webp` | 497 ms | 511 ms | 27 KB | non-blocking image | Yes, shared material texture | Not safe to defer |
 | `/assets/textures/rock_normal.webp` | 497 ms | 513 ms | 170 KB | non-blocking image | Yes, mountain material normal | Not safe to defer |
 | `/assets/textures/voronoi.webp` | 497 ms | 513 ms | 9 KB | non-blocking image | Yes, shared shader texture | Not safe to defer |
-| `/assets/models/fort-energy/fort-energy.glb` | 699 ms | 707 ms | 711 KB | non-blocking fetch | Yes, first Fort Energy scene | Not safe to defer |
+| `/assets/models/fort-energy/fort-energy.glb` | 699 ms | 707 ms | 711 KB | non-blocking fetch | Yes, first energy scene | Not safe to defer |
 | `/assets/models/fort-energy/energy-chapter.glb` | 731 ms | 744 ms | 1.33 MB | non-blocking fetch | Below-fold chapter, but near-scroll dependency | Not changed; further deferral risks visible fast-scroll regression |
 | `/assets/sounds/sound.mp3` | not requested | not requested | 0 KB | none | No | Removed from startup |
 
@@ -87,7 +87,7 @@ index.html
 -> /_astro/WebGL...
 -> /_astro/GlobalApp...
 -> global WebGL assets
--> Fort Energy page GLB
+-> Energy page GLB
 -> lazy chapter GLB background load
 ```
 
@@ -132,6 +132,6 @@ These were audited but not changed:
 - `mountains.glb`: required by global WebGL/camera path and mountain scene setup.
 - `envmap-min.exr`: required by shared environment/lighting setup.
 - Shared WebP textures: used by shader/material paths active in the first WebGL scene.
-- `fort-energy.glb`: required by the first Fort Energy scene.
+- `fort-energy.glb`: required by the first energy scene.
 - `energy-chapter.glb`: below-fold/lazy chapter asset, but deferring it further can create visible fast-scroll/chapter pop-in.
 

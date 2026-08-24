@@ -14,9 +14,8 @@ screenshots/
 test-results/
 work/
 
-# Redundant copies from the original site mirror
+# Redundant duplicate asset trees; the served copies live under public/legacy/
 public/site/
-public/fort-energy/
 public/consent.cookiebot.com/
 public/cdn-cgi/
 
