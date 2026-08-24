@@ -30,6 +30,13 @@ if (!app.includes('<title>FARA</title>')) throw new Error('Unsafe build: the pub
  */
 const BRAND = /montfort|mont-fort|fort.?energy|\bmont\b|\bfort\b/i
 
+/*
+ * Third-party identifiers carried over from the source site. An analytics
+ * container id is as traceable back to the previous owner as the name itself,
+ * so it is held to the same standard.
+ */
+const THIRD_PARTY = /GTM-[A-Z0-9]{4,}|\bUA-\d{4,}-\d+|\bG-[A-Z0-9]{8,}|gtag\(|googletagmanager|cookiebot|cybot|\bsentry\b/i
+
 // Extensions that are not usefully searchable as text; scanned as raw bytes.
 const BINARY = new Set(['.glb', '.gltf', '.woff', '.woff2', '.ttf', '.otf', '.eot', '.exr', '.ktx2', '.png', '.jpg', '.jpeg', '.webp', '.gif', '.ico', '.mp3', '.wav', '.ogg', '.mp4', '.webm', '.pdf', '.zip'])
 
@@ -44,16 +51,19 @@ for (const file of walk('dist')) {
   // latin1 keeps every byte a distinct character, so ASCII runs inside binaries
   // stay matchable without decoding the container.
   const content = readFileSync(file, binary ? 'latin1' : 'utf8')
-  const matches = content.match(new RegExp(BRAND.source, 'gi'))
-  if (!matches) continue
+  const matches = [
+    ...(content.match(new RegExp(BRAND.source, 'gi')) || []),
+    ...(content.match(new RegExp(THIRD_PARTY.source, 'gi')) || []),
+  ]
+  if (!matches.length) continue
   const unique = [...new Set(matches.map(match => match.toLowerCase()))]
   findings.push(`${file}${binary ? ' (binary)' : ''}: ${unique.join(', ')}`)
 }
 
 if (findings.length) {
-  console.error('Unsafe build: the retired source brand reached dist/.')
+  console.error('Unsafe build: retired source-brand or third-party identifiers reached dist/.')
   for (const finding of findings) console.error(`  ${finding}`)
   throw new Error(`Brand scan failed in ${findings.length} file(s). Rename the source, do not weaken this pattern.`)
 }
 
-console.log(`Brand-safety checks passed: FARA entry point and guards present, and ${walk('dist').length} files in dist/ are free of the retired brand.`)
+console.log(`Brand-safety checks passed: FARA entry point and guards present, and ${walk('dist').length} files in dist/ are free of the retired brand and its third-party identifiers.`)
