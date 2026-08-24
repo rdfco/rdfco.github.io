@@ -1,4 +1,4 @@
-/* global Blob, URL, console, fetch, window */
+/* global Blob, URL, console, fetch, setTimeout, window */
 const APP = '/_astro/GlobalApp.vK8XqYB9.js'
 let config = window.FARA_BACKGROUND_COLORS || {}
 try { config = window.parent.FARA_BACKGROUND_COLORS || config } catch { /* sandboxed cross-origin parent */ }
@@ -18,35 +18,120 @@ const replacements = [
   [/new ce\(4103095\)/g, `new ce("${color('skyLight', '#3e9bb7')}")`],
   [/new ce\(528921\)/g, `new ce("${color('skyDark', '#081219')}")`],
 ]
+/*
+ * Every sentinel below targets one specific shader, so a miss on any single
+ * shader is normal - patchShader runs for all of them. What is NOT normal is a
+ * sentinel that never matches across the whole session, or a replace that runs
+ * inside a matched block and silently changes nothing. Both mean the generated
+ * bundle moved and the FARA colors are quietly not being applied, which is
+ * invisible on screen unless you already know the intended palette.
+ */
+const SENTINELS = [
+  'energyStars', 'fixedHills', 'risingLines', 'powerBeams',
+  'mountainBackGlow', 'pathLines', 'hologram', 'boatAtlas',
+]
+const patchHits = new Map()
+const patchFailures = []
+const hit = name => {
+  patchHits.set(name, (patchHits.get(name) || 0) + 1)
+  refreshShaderPatchHealth()
+}
+const step = (name, source, next) => {
+  if (next === source) {
+    const failure = `${name}: replace matched nothing`
+    if (!patchFailures.includes(failure)) {
+      patchFailures.push(failure)
+      console.error(`[FARA] shader patch step did not apply - ${failure}`)
+    }
+  }
+  return next
+}
 const patchShader = source => {
-  if (source.includes('Fort energy stars')) source = source
-    .replace(/vec3 color = mix\(uDarkColor, uLightColor \+ \.08 \* homepage, clamp\(value, 0\., 1\.\)\);/, `vec3 color = mix(vec3(${litRgb('skyDark', '#081219')}), vec3(${litRgb('skyLight', '#3e9bb7')}), clamp(value, 0., 1.));`)
-    .replace(/color \+= stars \* \(\.4 \+ uLightColor\) \* fortEnergy;/, `color += stars * vec3(${litRgb('stars', '#ffffff')}) * fortEnergy;`)
-    .replace(/gl_FragColor\s*=\s*vec4\(color,\s*1\.\);/, `float faraTerrainMask = smoothstep(.46, .54, vUv.y);\n\tcolor = mix(color, vec3(${litRgb('terrainBase', '#020605')}), fortEnergy * faraTerrainMask);\n\tgl_FragColor = vec4(color, 1.);`)
-  if (source.includes('float hills = smoothstep') && source.includes('uLightColor * height')) source = source
-    .replace('vec3 color = uDarkColor;', `vec3 color = vec3(${litRgb('fixedHills', '#081219')});`)
-    .replace('2. * uLightColor * height', `2. * vec3(${litRgb('horizonGlow', '#3e9bb7')}) * height`)
+  if (source.includes('Fort energy stars')) {
+    hit('energyStars')
+    source = step('energyStars/skyMix', source, source
+      .replace(/vec3 color = mix\(uDarkColor, uLightColor \+ \.08 \* homepage, clamp\(value, 0\., 1\.\)\);/, `vec3 color = mix(vec3(${litRgb('skyDark', '#081219')}), vec3(${litRgb('skyLight', '#3e9bb7')}), clamp(value, 0., 1.));`))
+    source = step('energyStars/stars', source, source
+      .replace(/color \+= stars \* \(\.4 \+ uLightColor\) \* fortEnergy;/, `color += stars * vec3(${litRgb('stars', '#ffffff')}) * fortEnergy;`))
+    source = step('energyStars/terrainMask', source, source
+      .replace(/gl_FragColor\s*=\s*vec4\(color,\s*1\.\);/, `float faraTerrainMask = smoothstep(.46, .54, vUv.y);
+	color = mix(color, vec3(${litRgb('terrainBase', '#020605')}), fortEnergy * faraTerrainMask);
+	gl_FragColor = vec4(color, 1.);`))
+  }
+  if (source.includes('float hills = smoothstep') && source.includes('uLightColor * height')) {
+    hit('fixedHills')
+    source = step('fixedHills/base', source, source
+      .replace('vec3 color = uDarkColor;', `vec3 color = vec3(${litRgb('fixedHills', '#081219')});`))
+    source = step('fixedHills/horizonGlow', source, source
+      .replace('2. * uLightColor * height', `2. * vec3(${litRgb('horizonGlow', '#3e9bb7')}) * height`))
+  }
   // Vertical/rising energy ribbons in the center and their reflection.
-  if (source.includes('clamp(factor, 0., 2.5)')) source = source
-    .replace('color = uColor * clamp(factor, 0., 2.5);', `color = vec3(${litRgb('risingLines', '#a1d7ff')}) * clamp(factor, 0., 2.5);`)
+  if (source.includes('clamp(factor, 0., 2.5)')) {
+    hit('risingLines')
+    source = step('risingLines', source, source
+      .replace('color = uColor * clamp(factor, 0., 2.5);', `color = vec3(${litRgb('risingLines', '#a1d7ff')}) * clamp(factor, 0., 2.5);`))
+  }
   // Thin animated power beams.
-  if (source.includes('clamp(brightness + intensity, 0., 1.5)')) source = source
-    .replace('vec3 color = uLightColor * clamp(brightness + intensity, 0., 1.5);', `vec3 color = vec3(${litRgb('powerLines', '#a1d7ff')}) * clamp(brightness + intensity, 0., 1.5);`)
+  if (source.includes('clamp(brightness + intensity, 0., 1.5)')) {
+    hit('powerBeams')
+    source = step('powerBeams', source, source
+      .replace('vec3 color = uLightColor * clamp(brightness + intensity, 0., 1.5);', `vec3 color = vec3(${litRgb('powerLines', '#a1d7ff')}) * clamp(brightness + intensity, 0., 1.5);`))
+  }
   // Large glow behind/under the mountain.
-  if (source.includes('uLightColor * center * 30.')) source = source
-    .replace('vec3 color = uLightColor * center * 30.;', `vec3 color = vec3(${litRgb('mountainBackGlow', '#3e9bb7')}) * center * 30.;`)
+  if (source.includes('uLightColor * center * 30.')) {
+    hit('mountainBackGlow')
+    source = step('mountainBackGlow', source, source
+      .replace('vec3 color = uLightColor * center * 30.;', `vec3 color = vec3(${litRgb('mountainBackGlow', '#3e9bb7')}) * center * 30.;`))
+  }
   // Long path lines and their soft glow on the ground.
-  if (source.includes('vec3 color=uColor*(glow+lines)')) source = source
-    .replace('vec3 color=uColor*(glow+lines)', `vec3 color=vec3(${litRgb('pathLines', '#84d5ff')})*(glow+lines)`)
+  if (source.includes('vec3 color=uColor*(glow+lines)')) {
+    hit('pathLines')
+    source = step('pathLines', source, source
+      .replace('vec3 color=uColor*(glow+lines)', `vec3 color=vec3(${litRgb('pathLines', '#84d5ff')})*(glow+lines)`))
+  }
   // Hologram body and halo.
-  if (source.includes('intensity * mix(uColor, .5 * uGlowColor')) source = source
-    .replace('mix(uColor, .5 * uGlowColor, smoothstep(1., 2., intensity))', `mix(vec3(${litRgb('hologram', '#8fc1e5')}), .5 * vec3(${litRgb('hologramGlow', '#6bfeff')}), smoothstep(1., 2., intensity))`)
+  if (source.includes('intensity * mix(uColor, .5 * uGlowColor')) {
+    hit('hologram')
+    source = step('hologram', source, source
+      .replace('mix(uColor, .5 * uGlowColor, smoothstep(1., 2., intensity))', `mix(vec3(${litRgb('hologram', '#8fc1e5')}), .5 * vec3(${litRgb('hologramGlow', '#6bfeff')}), smoothstep(1., 2., intensity))`))
+  }
   // The right side of this atlas contains only the two ship holograms.
   // Mask that atlas region without changing the grid or any other WebGL layer.
-  if (source.includes('float boats = step(.62, vUv.x);')) source = source
-    .replace(/alpha\s*\*=\s*0\.85\s*;/, match => `${match}\n    alpha *= 1. - boats;`)
+  if (source.includes('float boats = step(.62, vUv.x);')) {
+    hit('boatAtlas')
+    source = step('boatAtlas', source, source
+      .replace(/alpha\s*\*=\s*0\.85\s*;/, match => `${match}
+    alpha *= 1. - boats;`))
+  }
   return source
 }
+/*
+ * Shaders compile lazily and some sentinels belong to chapters the visitor may
+ * not have reached, so "not matched yet" is not automatically a fault. Keep the
+ * counters live for programmatic checks, warn about stragglers once, and reserve
+ * console.error for the unambiguous case: a replace that ran inside a matched
+ * block and changed nothing.
+ */
+const refreshShaderPatchHealth = () => {
+  const debug = window.__FARA_COLOR_DEBUG
+  if (!debug) return []
+  const pending = SENTINELS.filter(name => !patchHits.get(name))
+  debug.shaderSentinels = Object.fromEntries(SENTINELS.map(name => [name, patchHits.get(name) || 0]))
+  debug.shaderFailures = patchFailures.slice()
+  debug.shaderPending = pending
+  debug.shaderHealthy = !patchFailures.length
+  return pending
+}
+let patchWarned = false
+const warnAboutPendingSentinels = () => {
+  if (patchWarned) return
+  patchWarned = true
+  const pending = refreshShaderPatchHealth()
+  if (pending.length) console.warn(`[FARA] shader patch sentinels not matched yet - either their scene was never reached, or the bundle moved and their colors are not applied: ${pending.join(', ')}`)
+}
+window.addEventListener('fara:webgl-ready', refreshShaderPatchHealth)
+setTimeout(warnAboutPendingSentinels, 15000)
+
 const linearChannel = value => value <= .04045 ? value / 12.92 : Math.pow((value + .055) / 1.055, 2.4)
 const channels = hex => {
   const value = hex.slice(1)
@@ -83,15 +168,20 @@ try {
   for (const [pattern, replacement] of replacements) {
     const before = source
     source = source.replace(pattern, replacement)
-    applied.push(before === source ? 0 : 1)
+    const changed = before !== source
+    applied.push(changed ? 1 : 0)
+    if (!changed) console.error(`[FARA] bundle color replacement matched nothing: ${pattern}`)
   }
   window.__FARA_COLOR_DEBUG = { config, applied, skyLight: color('skyLight', '#3e9bb7'), skyDark: color('skyDark', '#081219'), stars: color('stars', '#ffffff') }
   const astroBase = `${window.location.origin}/_astro/`
   source = source.replaceAll('from"./', `from"${astroBase}`).replaceAll('import"./', `import"${astroBase}`)
+  const beforeLineHide = source
   source = source.replace(
     'n.name.startsWith("Line")&&this.lines.push(n)',
     '(n.name==="Line.002"&&(n.visible=!1),n.name.startsWith("Line")&&this.lines.push(n))',
   )
+  if (source === beforeLineHide) console.error('[FARA] bundle patch matched nothing: Line.002 hide')
+  window.__FARA_COLOR_DEBUG.lineHideApplied = source !== beforeLineHide
   module = await import(URL.createObjectURL(new Blob([source], { type: 'text/javascript' })))
 } catch (error) {
   console.warn('Custom WebGL colors failed; using the original background.', error)
