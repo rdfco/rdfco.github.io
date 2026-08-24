@@ -485,14 +485,6 @@ window.addEventListener('message', event => {
   refreshSite()
 })
 
-// Do not allow retired source-brand links to navigate, even inside the sandboxed frame.
-document.addEventListener('click', event => {
-  const link = event.target.closest?.('a[href]')
-  if (!link) return
-  const href = link.getAttribute('href') || ''
-  if (/mont-fort\.com|fortenergy\.com/i.test(href)) event.preventDefault()
-}, true)
-
 setupNavigationEvents()
 prepareLegacyGsap()
 setupWheelScrollFallback()
