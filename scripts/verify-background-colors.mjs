@@ -16,7 +16,7 @@ page.on('pageerror', error => errors.push(error.message))
 
 await page.goto(process.env.SITE_URL || 'http://localhost:4174/', { waitUntil: 'networkidle2', timeout: 60000 })
 await new Promise(resolve => setTimeout(resolve, 4000))
-const frame = page.frames().find(item => item.url().includes('/legacy/fort-energy/index.html'))
+const frame = page.frames().find(item => item.url().includes('/legacy/main/index.html'))
 if (!frame) throw new Error('Legacy WebGL frame was not loaded')
 if (!await frame.$('#canvas-wrapper canvas')) throw new Error('WebGL canvas was not created')
 

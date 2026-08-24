@@ -11,7 +11,7 @@
 
 ## Rendering Pipeline
 
-The React app renders `LegacySite`, which loads `/legacy/fort-energy/index.html` in a sandboxed iframe. The iframe imports copied runtime files from `src/` during dev and from `dist/src/` after build. Production visual behavior is still owned by the legacy runtime; React acts as the route shell and readiness gate.
+The React app renders `LegacySite`, which loads `/legacy/main/index.html` in a sandboxed iframe. The iframe imports copied runtime files from `src/` during dev and from `dist/src/` after build. Production visual behavior is still owned by the legacy runtime; React acts as the route shell and readiness gate.
 
 ## Navigation And Menu Flow
 

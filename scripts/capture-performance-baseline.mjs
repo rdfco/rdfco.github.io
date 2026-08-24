@@ -28,7 +28,7 @@ for (const viewport of [
   const navigationMs = Math.round(performance.now() - startedAt)
   await new Promise(resolve => setTimeout(resolve, 2500))
 
-  const legacyFrame = page.frames().find(frame => frame.url().includes('/legacy/fort-energy/index.html'))
+  const legacyFrame = page.frames().find(frame => frame.url().includes('/legacy/main/index.html'))
   const target = mode === 'legacy' || (mode === 'auto' && legacyFrame) ? legacyFrame : page.mainFrame()
   if (!target) throw new Error(`No measurement target found for ${mode}`)
   if (legacyFrame) await legacyFrame.waitForSelector('html[data-fara-ready="true"]', { timeout: 10_000 })

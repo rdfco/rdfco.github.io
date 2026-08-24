@@ -31,7 +31,7 @@ function copyLegacyRuntime() {
     async closeBundle() {
       const sourceRoot = resolve(process.cwd(), 'src')
       const targetRoot = resolve(process.cwd(), 'dist', 'src')
-      const legacyIndex = resolve(process.cwd(), 'dist', 'legacy', 'fort-energy', 'index.html')
+      const legacyIndex = resolve(process.cwd(), 'dist', 'legacy', 'main', 'index.html')
       const bundledCustomizerPath = '/site-customizer.bundle.js?v=home-load-20260814-visual-1'
       const bundledStylesPath = '/custom.bundle.css?v=home-load-20260814-visual-1'
       mkdirSync(targetRoot, { recursive: true })

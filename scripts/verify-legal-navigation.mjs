@@ -18,7 +18,7 @@ try {
   await page.waitForSelector('iframe.legacy-site[data-status], iframe.legacy-site', { timeout: 10_000 }).catch(() => {})
   await page.waitForFunction(() => document.querySelector('.legacy-shell')?.dataset.status === 'ready', { timeout: 15_000 })
 
-  let frame = page.frames().find(candidate => candidate.url().includes('/legacy/fort-energy/index.html'))
+  let frame = page.frames().find(candidate => candidate.url().includes('/legacy/main/index.html'))
   if (!frame) throw new Error('Legacy site frame was not found')
   await frame.click('#header .menu-cta')
   await frame.waitForSelector('.montfort-menu.active', { timeout: 5_000 })
@@ -43,7 +43,7 @@ try {
 
   await page.goto(`${baseUrl}/`, { waitUntil: 'networkidle0', timeout: 60_000 })
   await page.waitForFunction(() => document.querySelector('.legacy-shell')?.dataset.status === 'ready', { timeout: 15_000 })
-  frame = page.frames().find(candidate => candidate.url().includes('/legacy/fort-energy/index.html'))
+  frame = page.frames().find(candidate => candidate.url().includes('/legacy/main/index.html'))
   await frame.click('#header .menu-cta')
   await frame.waitForSelector('.montfort-menu.active', { timeout: 5_000 })
   await frame.click('.montfort-menu .terms-link a[data-fara-route="/terms-of-use"]')
@@ -56,7 +56,7 @@ try {
 
   await page.goto(`${baseUrl}/news`, { waitUntil: 'networkidle0', timeout: 60_000 })
   await page.waitForFunction(() => document.querySelector('.legacy-shell')?.dataset.status === 'ready', { timeout: 15_000 })
-  const newsFrame = page.frames().find(candidate => candidate.url().includes('/legacy/fort-energy/index.html'))
+  const newsFrame = page.frames().find(candidate => candidate.url().includes('/legacy/main/index.html'))
   await newsFrame.waitForSelector('.fara-news-page', { timeout: 8_000 })
   const firstArticleRoute = await newsFrame.$eval('.fara-news-card', link => link.dataset.faraRoute)
   await newsFrame.click('.fara-news-card')

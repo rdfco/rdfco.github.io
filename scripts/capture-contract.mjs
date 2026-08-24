@@ -13,7 +13,7 @@ for (const viewport of [{name:'desktop',width:1440,height:900},{name:'tablet',wi
   await page.setViewport({ width:viewport.width, height:viewport.height, deviceScaleFactor:1 })
   const errors=[]; page.on('pageerror',error=>errors.push(error.message)); page.on('requestfailed',request=>errors.push(`${request.failure()?.errorText}: ${request.url()}`))
   await page.goto('http://127.0.0.1:4176/',{waitUntil:'networkidle0',timeout:60000})
-  const frame=page.frames().find(candidate=>candidate.url().includes('/legacy/fort-energy/index.html'))
+  const frame=page.frames().find(candidate=>candidate.url().includes('/legacy/main/index.html'))
   if(!frame) throw new Error('Legacy visual frame was not found')
   await frame.waitForSelector('html[data-fara-ready="true"]',{timeout:10000})
   const metrics=await frame.evaluate(()=>({title:document.title,text:document.body.innerText,height:document.documentElement.scrollHeight,width:document.documentElement.scrollWidth,viewport:{width:innerWidth,height:innerHeight},counts:{sections:document.querySelectorAll('main section').length,cards:document.querySelectorAll('.fara-card').length,cases:document.querySelectorAll('.fara-case-item').length}}))

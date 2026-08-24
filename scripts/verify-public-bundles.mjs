@@ -20,7 +20,7 @@ checks.forEach(([label, distPath, publicPath]) => {
   }
 })
 
-const legacyHtml = read('public/legacy/fort-energy/index.html')
+const legacyHtml = read('public/legacy/main/index.html')
 const requiredVersion = 'home-load-20260814-visual-1'
 const requiredReferences = [
   `/custom.bundle.css?v=${requiredVersion}`,

@@ -15,7 +15,7 @@ export const appConfig = {
   },
   legacyRuntime: {
     iframeSource:
-      '/legacy/fort-energy/index.html?v=home-load-20260814-visual-1',
+      '/legacy/main/index.html?v=home-load-20260814-visual-1',
     iframeTitle: 'FARA',
     sandbox: undefined,
     readyTimeoutMs: 5000,
@@ -24,7 +24,7 @@ export const appConfig = {
     routeMessage: 'fara:set-route',
     navigationMessage: 'fara:navigate',
     readyMessage: 'fara:ready',
-    criticalSceneAsset: '/assets/models/fort-energy/energy-chapter.glb',
+    criticalSceneAsset: '/assets/models/energy/energy-chapter.glb',
   },
 } as const
 
