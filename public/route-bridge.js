@@ -59,7 +59,7 @@ window.addEventListener('click', event => {
     )
   }
 
-  if (link.closest('.montfort-menu')) {
+  if (link.closest('.fara-menu')) {
     waitForTransition({
       eventName: 'fara:menu-closed',
       fallbackMs: 1700,

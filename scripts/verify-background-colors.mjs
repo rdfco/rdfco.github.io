@@ -31,7 +31,7 @@ if (result.replacementHits?.some(hit => hit !== 1)) errors.push(`Bundle replacem
 await (await frame.$('.menu-cta')).click()
 await new Promise(resolve => setTimeout(resolve, 500))
 const menu = await frame.evaluate(() => {
-  const panel = document.querySelector('.montfort-menu')
+  const panel = document.querySelector('.fara-menu')
   const link = panel?.querySelector('[data-fara-route="/AI & Tech"]')
   const rect = link?.getBoundingClientRect()
   return {

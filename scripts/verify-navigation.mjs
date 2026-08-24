@@ -37,7 +37,7 @@ await frame.evaluate(() => { window.__faraLongTasks = [] })
 await frame.click('.menu-cta')
 await new Promise(resolve => setTimeout(resolve, 1_000))
 const menuItems = await frame.evaluate(() =>
-  [...document.querySelectorAll('.montfort-menu .grid-nav .nav-link')].map(link => {
+  [...document.querySelectorAll('.fara-menu .grid-nav .nav-link')].map(link => {
     const linkRect = link.getBoundingClientRect()
     const textRect = link.querySelector('.text-content').getBoundingClientRect()
     return {
@@ -48,7 +48,7 @@ const menuItems = await frame.evaluate(() =>
   }),
 )
 const hitboxesMatch = await frame.evaluate(() =>
-  [...document.querySelectorAll('.montfort-menu .grid-nav .nav-link')].filter(link => {
+  [...document.querySelectorAll('.fara-menu .grid-nav .nav-link')].filter(link => {
     const rect = link.getBoundingClientRect()
     return rect.top >= 0 && rect.bottom <= innerHeight
   }).every(link => {
@@ -56,7 +56,7 @@ const hitboxesMatch = await frame.evaluate(() =>
     return document.elementFromPoint(text.left + text.width / 2, text.top + text.height / 2)?.closest('a') === link
   }),
 )
-const homeText = await frame.$('.montfort-menu .nav-link.active .text-content span')
+const homeText = await frame.$('.fara-menu .nav-link.active .text-content span')
 const homeTextRect = await homeText.boundingBox()
 await page.mouse.move(
   homeTextRect.x + homeTextRect.width * 0.25,
@@ -64,19 +64,19 @@ await page.mouse.move(
 )
 await new Promise(resolve => setTimeout(resolve, 700))
 const homeHoverWorks = await frame.evaluate(() => {
-  const link = document.querySelector('.montfort-menu .nav-link.active')
+  const link = document.querySelector('.fara-menu .nav-link.active')
   const text = link.querySelector('.text-content')
   const icon = link.querySelector('.svg-container')
   return link.matches(':hover') && getComputedStyle(text).transform === 'matrix(1, 0, 0, 1, 0, 0)' && getComputedStyle(icon).transform === 'matrix(1, 0, 0, 1, 0, 0)'
 })
 
-await frame.click('.montfort-menu .grid-nav li:nth-child(2) .nav-link')
+await frame.click('.fara-menu .grid-nav li:nth-child(2) .nav-link')
 await page.waitForFunction(() => location.pathname === '/who-we-are')
 await new Promise(resolve => setTimeout(resolve, 1_000))
 frame = getLegacyFrame()
 if (!frame) throw new Error('Legacy frame did not reload after navigation')
 const state = await frame.evaluate(() => ({
-  menuActive: document.querySelector('.montfort-menu').classList.contains('active'),
+  menuActive: document.querySelector('.fara-menu').classList.contains('active'),
   headerOpen: document.querySelector('#header').classList.contains('menu-open'),
   expanded: document.querySelector('.menu-cta').getAttribute('aria-expanded'),
   scrollLocked: document.documentElement.classList.contains('fara-menu-open'),
@@ -100,7 +100,7 @@ const routeCycles = []
 for (const [key, pathname] of routes) {
   await frame.click('.menu-cta')
   await new Promise(resolve => setTimeout(resolve, 150))
-  const link = await frame.$(`.montfort-menu a[data-fara-route="${pathname}"]`)
+  const link = await frame.$(`.fara-menu a[data-fara-route="${pathname}"]`)
   if (!link) throw new Error(`Missing navigation contract link for ${pathname}`)
   await link.evaluate(node => node.click())
   await page.waitForFunction(expected => location.pathname === expected, {}, pathname)
@@ -110,8 +110,8 @@ for (const [key, pathname] of routes) {
   if (key === 'who-we-are') await new Promise(resolve => setTimeout(resolve, 1_000))
   routeCycles.push(await frame.evaluate(expectedKey => ({
     key: expectedKey,
-    menuActive: document.querySelector('.montfort-menu').classList.contains('active'),
-    menuDisplay: getComputedStyle(document.querySelector('.montfort-menu')).display,
+    menuActive: document.querySelector('.fara-menu').classList.contains('active'),
+    menuDisplay: getComputedStyle(document.querySelector('.fara-menu')).display,
     legacyCloseState: document.querySelector('.menu-cta').classList.contains('close'),
     headerOpen: document.querySelector('#header').classList.contains('menu-open'),
     expanded: document.querySelector('.menu-cta').getAttribute('aria-expanded'),

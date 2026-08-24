@@ -40,7 +40,7 @@ const clickMenu = async label => {
   await frame().evaluate(() => document.querySelector('#header .menu-btn, .menu-btn, [class*="burger"]')?.click())
   await wait(1600)
   const ok = await frame().evaluate(text => {
-    const link = [...document.querySelectorAll('.montfort-menu a')]
+    const link = [...document.querySelectorAll('.fara-menu a')]
       .find(a => a.textContent.trim().toLowerCase() === text.toLowerCase())
     if (!link) return false
     link.click()

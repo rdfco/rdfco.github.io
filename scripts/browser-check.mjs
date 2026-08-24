@@ -26,7 +26,7 @@ try {
   }))
   await frame.click('.menu-cta')
   await new Promise(resolve => setTimeout(resolve, 400))
-  const menuOpen = await frame.$eval('.montfort-menu', node => node.classList.contains('active'))
+  const menuOpen = await frame.$eval('.fara-menu', node => node.classList.contains('active'))
   await frame.click('.menu-cta')
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 })
   await new Promise(resolve => setTimeout(resolve, 1_800))

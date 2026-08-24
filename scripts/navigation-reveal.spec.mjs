@@ -47,7 +47,7 @@ const installRecorder = frame => frame.evaluate(() => {
 })
 
 const menuState = frame => frame.evaluate(() => {
-  const menu = document.querySelector('.montfort-menu')
+  const menu = document.querySelector('.fara-menu')
   const header = document.querySelector('#header')
   const items = [...document.querySelectorAll('#header .menu-links-w > ul > li')]
   return {
@@ -101,7 +101,7 @@ test('original close and delayed menu navigation keep the original reveal', asyn
   await frame.click('#header .menu-cta')
   await expect.poll(async () => (await menuState(frame)).menuActive).toBe(true)
   const routeBeforeClick = new URL(page.url()).pathname
-  await frame.click('.montfort-menu a[data-fara-route="/AI & Tech"]')
+  await frame.click('.fara-menu a[data-fara-route="/AI & Tech"]')
   await page.waitForTimeout(250)
   expect(new URL(page.url()).pathname).toBe(routeBeforeClick)
   await expect.poll(() => new URL(page.url()).pathname, { timeout: 5_000 }).toBe('/AI & Tech')

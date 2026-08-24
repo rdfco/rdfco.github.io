@@ -231,7 +231,7 @@ const scrollToSectionRoute = route => {
 }
 
 const waitForMenuClose = shouldClose => new Promise(resolve => {
-  const menu = document.querySelector('.montfort-menu')
+  const menu = document.querySelector('.fara-menu')
   const isOpen = menu?.classList.contains('active') || menu?.classList.contains('is-closing')
   if (!shouldClose || !isOpen) {
     resolve()
@@ -274,7 +274,7 @@ const setupSectionRouteLinks = () => {
     event.preventDefault()
     event.stopImmediatePropagation()
     navigateToSectionRoute(route, {
-      closeMenu: Boolean(link.closest('.montfort-menu')),
+      closeMenu: Boolean(link.closest('.fara-menu')),
     })
   }
 

@@ -194,9 +194,9 @@ export const renderNavigation = (siteData, currentPath = '/') => {
   setupNavbarRouteTransition()
   const headerItems = getHeaderItems(siteData, currentPath)
   ensureItems('#header .menu-links-w > ul', headerItems.length)
-  ensureItems('.montfort-menu nav > ul', siteData.navigation.length)
+  ensureItems('.fara-menu nav > ul', siteData.navigation.length)
   document.querySelectorAll('#header .menu-links-w > ul > li').forEach(item => { item.dataset.configGenerated = 'true' })
-  document.querySelectorAll('.montfort-menu nav > ul > li').forEach(item => { item.dataset.configGenerated = 'true' })
+  document.querySelectorAll('.fara-menu nav > ul > li').forEach(item => { item.dataset.configGenerated = 'true' })
 
   document.querySelectorAll('#header .menu-links-w .nav-link').forEach((link, index) => {
     const item = headerItems[index]
@@ -208,7 +208,7 @@ export const renderNavigation = (siteData, currentPath = '/') => {
     item.enabled === false ? disableLink(link) : link.setAttribute('href', '#')
   })
 
-  document.querySelectorAll('.montfort-menu nav .nav-link').forEach((link, index) => {
+  document.querySelectorAll('.fara-menu nav .nav-link').forEach((link, index) => {
     const item = siteData.navigation[index]
     if (!item) return
     link.querySelector('.text-content span').textContent = item.label
@@ -219,7 +219,7 @@ export const renderNavigation = (siteData, currentPath = '/') => {
     item.enabled === false ? disableLink(link) : link.setAttribute('href', '#')
   })
 
-  document.querySelectorAll('.montfort-menu .terms-link a').forEach(link => {
+  document.querySelectorAll('.fara-menu .terms-link a').forEach(link => {
     if (!configureLegalLink(link) && siteData.menuSettings.enableLegalLinks === false) disableLink(link)
   })
   document.querySelectorAll('#footer .legals-links a').forEach(link => configureLegalLink(link))

@@ -2,7 +2,7 @@ export const setupNavigationEvents = () => {
   if (document.documentElement.dataset.faraNavigationReady === 'true') return
   document.documentElement.dataset.faraNavigationReady = 'true'
 
-  const menu = document.querySelector('.montfort-menu')
+  const menu = document.querySelector('.fara-menu')
   const header = document.querySelector('#header')
   const menuButton = document.querySelector('#header .menu-cta')
   const overlayCloseButton = menuButton?.cloneNode(true)
