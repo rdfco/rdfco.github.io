@@ -21,7 +21,7 @@ checks.forEach(([label, distPath, publicPath]) => {
 })
 
 const legacyHtml = read('public/legacy/main/index.html')
-const requiredVersion = 'home-load-20260814-visual-1'
+const requiredVersion = 'home-load-20260824-brand-1'
 const requiredReferences = [
   `/custom.bundle.css?v=${requiredVersion}`,
   `/site-customizer.bundle.js?v=${requiredVersion}`,

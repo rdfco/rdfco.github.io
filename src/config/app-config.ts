@@ -15,7 +15,7 @@ export const appConfig = {
   },
   legacyRuntime: {
     iframeSource:
-      '/legacy/main/index.html?v=home-load-20260814-visual-1',
+      '/legacy/main/index.html?v=home-load-20260824-brand-1',
     iframeTitle: 'FARA',
     sandbox: undefined,
     readyTimeoutMs: 5000,

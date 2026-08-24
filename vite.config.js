@@ -32,8 +32,8 @@ function copyLegacyRuntime() {
       const sourceRoot = resolve(process.cwd(), 'src')
       const targetRoot = resolve(process.cwd(), 'dist', 'src')
       const legacyIndex = resolve(process.cwd(), 'dist', 'legacy', 'main', 'index.html')
-      const bundledCustomizerPath = '/site-customizer.bundle.js?v=home-load-20260814-visual-1'
-      const bundledStylesPath = '/custom.bundle.css?v=home-load-20260814-visual-1'
+      const bundledCustomizerPath = '/site-customizer.bundle.js?v=home-load-20260824-brand-1'
+      const bundledStylesPath = '/custom.bundle.css?v=home-load-20260824-brand-1'
       mkdirSync(targetRoot, { recursive: true })
       legacyRuntimeFiles.forEach(file => {
         cpSync(resolve(sourceRoot, file), resolve(targetRoot, file), { recursive: true })
@@ -68,7 +68,7 @@ function copyLegacyRuntime() {
         )
         .replace(
           /\/_astro\/WebGL\.astro_astro_type_script_index_0_lang\.ClLv70z8\.js\?v=[^"]+/,
-          '/_astro/WebGL.astro_astro_type_script_index_0_lang.ClLv70z8.js?v=webgl-ready-20260801-1',
+          '/_astro/WebGL.astro_astro_type_script_index_0_lang.ClLv70z8.js?v=webgl-ready-20260824-brand-1',
         )
       writeFileSync(legacyIndex, legacyHtml)
       const appShell = resolve(process.cwd(), 'dist', 'index.html')
