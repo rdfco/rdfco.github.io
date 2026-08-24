@@ -47,15 +47,15 @@ const step = (name, source, next) => {
   return next
 }
 const patchShader = source => {
-  if (source.includes('Fort energy stars')) {
+  if (source.includes('Energy stars')) {
     hit('energyStars')
     source = step('energyStars/skyMix', source, source
       .replace(/vec3 color = mix\(uDarkColor, uLightColor \+ \.08 \* homepage, clamp\(value, 0\., 1\.\)\);/, `vec3 color = mix(vec3(${litRgb('skyDark', '#081219')}), vec3(${litRgb('skyLight', '#3e9bb7')}), clamp(value, 0., 1.));`))
     source = step('energyStars/stars', source, source
-      .replace(/color \+= stars \* \(\.4 \+ uLightColor\) \* fortEnergy;/, `color += stars * vec3(${litRgb('stars', '#ffffff')}) * fortEnergy;`))
+      .replace(/color \+= stars \* \(\.4 \+ uLightColor\) \* energy;/, `color += stars * vec3(${litRgb('stars', '#ffffff')}) * energy;`))
     source = step('energyStars/terrainMask', source, source
       .replace(/gl_FragColor\s*=\s*vec4\(color,\s*1\.\);/, `float faraTerrainMask = smoothstep(.46, .54, vUv.y);
-	color = mix(color, vec3(${litRgb('terrainBase', '#020605')}), fortEnergy * faraTerrainMask);
+	color = mix(color, vec3(${litRgb('terrainBase', '#020605')}), energy * faraTerrainMask);
 	gl_FragColor = vec4(color, 1.);`))
   }
   if (source.includes('float hills = smoothstep') && source.includes('uLightColor * height')) {

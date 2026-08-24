@@ -4,11 +4,11 @@ import"./ScrollTrigger.6qCihK2t.js";
 import"./router.B-sij-_X.js";
 import"./visitedNews.BmN7K1ri.js";
 
-// The mirrored page lives in a nested HTTrack folder, while the original
-// bundle chooses the Three.js scene from `/fort-energy`. Temporarily expose
-// that route during initialisation, then restore the Live Server URL.
+// The page is served from a nested folder, while the WebGL bundle picks its
+// Three.js scene from the `/energy` route. Expose that route for the duration
+// of initialisation, then restore the real URL.
 const localUrl=location.pathname+location.search+location.hash;
-history.replaceState(history.state,"","/fort-energy/");
+history.replaceState(history.state,"","/energy/");
 
 const o=document.querySelector("#canvas-wrapper"),r=o.querySelector("canvas");
 try{
