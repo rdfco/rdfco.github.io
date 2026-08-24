@@ -86,4 +86,7 @@ export default defineConfig({
   plugins: [react(), copyLegacyRuntime()],
   resolve: { alias: { '@': resolve(process.cwd(), 'src') } },
   server: { host: 'localhost', port: 5173, strictPort: true, open: true },
+  // Stated explicitly rather than relied on: a source map would hand the
+  // reader the original sources, which defeats the point of the naming work.
+  build: { sourcemap: false },
 })
