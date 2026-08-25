@@ -1,7 +1,7 @@
 export const renderCurrentPage = page => {
   const pageKey = page.data.key
   const isLegalRoute = pageKey === 'privacy-policy' || pageKey === 'terms-of-use'
-  const isContentRoute = pageKey !== 'home' && !isLegalRoute
+  const isContentRoute = pageKey !== 'home'
   const renderedPage = document.querySelector('.fara-route-page')
   const legacyMain = document.querySelector('body > main')
   document.body.dataset.faraPage = pageKey
