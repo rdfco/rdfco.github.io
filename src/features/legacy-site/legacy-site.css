@@ -133,7 +133,7 @@ body,
   place-items: center;
   padding: 2rem;
   opacity: 1;
-  transition: opacity 420ms ease, visibility 0ms linear 0ms;
+  transition: opacity 0ms linear, visibility 0ms linear 0ms;
   color: #eef2f0;
   background: #080a0b;
   font: 500 1rem/1.5 "FARA Gotham";

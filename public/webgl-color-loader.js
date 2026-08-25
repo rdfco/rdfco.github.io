@@ -161,33 +161,53 @@ for (const Context of [window.WebGLRenderingContext, window.WebGL2RenderingConte
   Context.prototype.uniform3fv = function(location, value, ...rest) { const mapped = value.length === 3 ? remapUniformColor(Array.from(value)) : value; return originalUniform3fv.call(this, location, mapped, ...rest) }
   Context.prototype.__faraColorsInstalled = true
 }
-let module
-try {
-  let source = await fetch(APP, { cache: 'no-store' }).then(response => { if (!response.ok) throw new Error(`WebGL app: ${response.status}`); return response.text() })
-  const applied = []
-  for (const [pattern, replacement] of replacements) {
-    const before = source
-    source = source.replace(pattern, replacement)
-    const changed = before !== source
-    applied.push(changed ? 1 : 0)
-    if (!changed) console.error(`[FARA] bundle color replacement matched nothing: ${pattern}`)
+/*
+ * Two entry scripts import this file under two different URLs - Layout.astro
+ * asks for "/webgl-color-loader.js" and WebGL.astro adds a "?v=" cache-busting
+ * token - and the browser treats those as two unrelated modules. Each one used
+ * to build its own patched Blob copy of the WebGL bundle, so the page ended up
+ * running two independent app singletons: Layout's mounted the DOM components
+ * while WebGL's owned the render ticker. The Cursor component subscribed to
+ * TICK on the first app while the ticks were emitted on the second, so its
+ * transform was never written and the ring stayed parked at 0,0. Sharing one
+ * boot promise on window collapses both URLs back onto a single app.
+ */
+const loadPatchedApp = async () => {
+  let module
+  try {
+    let source = await fetch(APP, { cache: 'no-store' }).then(response => { if (!response.ok) throw new Error(`WebGL app: ${response.status}`); return response.text() })
+    const applied = []
+    for (const [pattern, replacement] of replacements) {
+      const before = source
+      source = source.replace(pattern, replacement)
+      const changed = before !== source
+      applied.push(changed ? 1 : 0)
+      if (!changed) console.error(`[FARA] bundle color replacement matched nothing: ${pattern}`)
+    }
+    window.__FARA_COLOR_DEBUG = { config, applied, skyLight: color('skyLight', '#3e9bb7'), skyDark: color('skyDark', '#081219'), stars: color('stars', '#ffffff') }
+    const astroBase = `${window.location.origin}/_astro/`
+    source = source.replaceAll('from"./', `from"${astroBase}`).replaceAll('import"./', `import"${astroBase}`)
+    const beforeLineHide = source
+    source = source.replace(
+      'n.name.startsWith("Line")&&this.lines.push(n)',
+      '(n.name==="Line.002"&&(n.visible=!1),n.name.startsWith("Line")&&this.lines.push(n))',
+    )
+    if (source === beforeLineHide) console.error('[FARA] bundle patch matched nothing: Line.002 hide')
+    window.__FARA_COLOR_DEBUG.lineHideApplied = source !== beforeLineHide
+    module = await import(URL.createObjectURL(new Blob([source], { type: 'text/javascript' })))
+  } catch (error) {
+    console.warn('Custom WebGL colors failed; using the original background.', error)
+    module = await import(APP)
   }
-  window.__FARA_COLOR_DEBUG = { config, applied, skyLight: color('skyLight', '#3e9bb7'), skyDark: color('skyDark', '#081219'), stars: color('stars', '#ffffff') }
-  const astroBase = `${window.location.origin}/_astro/`
-  source = source.replaceAll('from"./', `from"${astroBase}`).replaceAll('import"./', `import"${astroBase}`)
-  const beforeLineHide = source
-  source = source.replace(
-    'n.name.startsWith("Line")&&this.lines.push(n)',
-    '(n.name==="Line.002"&&(n.visible=!1),n.name.startsWith("Line")&&this.lines.push(n))',
-  )
-  if (source === beforeLineHide) console.error('[FARA] bundle patch matched nothing: Line.002 hide')
-  window.__FARA_COLOR_DEBUG.lineHideApplied = source !== beforeLineHide
-  module = await import(URL.createObjectURL(new Blob([source], { type: 'text/javascript' })))
-} catch (error) {
-  console.warn('Custom WebGL colors failed; using the original background.', error)
-  module = await import(APP)
+  window.__FARA_APP_EXPORTS = module
+  return module
 }
-window.__FARA_APP_EXPORTS = module
+
+// Assigned synchronously, before the first await, so a second evaluation of
+// this module under a different URL always finds the promise already there
+// instead of starting a rival boot.
+window.__FARA_WEBGL_APP_BOOT ||= loadPatchedApp()
+const module = await window.__FARA_WEBGL_APP_BOOT
 export const a = module.a
 export const E = module.E
 export const G = module.G

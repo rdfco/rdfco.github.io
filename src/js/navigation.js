@@ -28,16 +28,11 @@ const ensureItems = (listSelector, count) => {
 
 const homeSectionRoutes = new Set(['/', '/who-we-are', '/how-we-help', '/who-we-serve'])
 
-// Away from the home surface the navbar collapses to the two routes that can
-// actually be reached from a standalone page: back home, and the page itself.
-const contentHeaderKeys = ['home', 'think-together']
-
-const getHeaderItems = (siteData, currentPath) => {
-  if (homeSectionRoutes.has(currentPath)) return siteData.navigation
-  return contentHeaderKeys
-    .map(key => siteData.navigation.find(item => item.key === key))
-    .filter(Boolean)
-}
+// The navbar carries the same entries on every route. A section route stays
+// reachable from a standalone page because the customizer routes back to the
+// home surface first and then scrolls to the section, so there is nothing left
+// for a collapsed navbar to protect against.
+const getHeaderItems = siteData => siteData.navigation
 
 const animateNavbarTo = target => {
   const navList = document.querySelector('#header .menu-links-w')
@@ -192,7 +187,7 @@ const configureLegalLink = link => {
 
 export const renderNavigation = (siteData, currentPath = '/') => {
   setupNavbarRouteTransition()
-  const headerItems = getHeaderItems(siteData, currentPath)
+  const headerItems = getHeaderItems(siteData)
   ensureItems('#header .menu-links-w > ul', headerItems.length)
   ensureItems('.fara-menu nav > ul', siteData.navigation.length)
   document.querySelectorAll('#header .menu-links-w > ul > li').forEach(item => { item.dataset.configGenerated = 'true' })
