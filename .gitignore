@@ -16,8 +16,6 @@ work/
 
 # Redundant duplicate asset trees; the served copies live under public/legacy/
 public/site/
-public/consent.cookiebot.com/
-public/cdn-cgi/
 
 *.log
 .DS_Store
