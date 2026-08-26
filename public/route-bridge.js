@@ -84,6 +84,7 @@ window.addEventListener('click', event => {
     return
   }
 
+  
   waitForTransition({
     fallbackMs: 750,
     navigate,
