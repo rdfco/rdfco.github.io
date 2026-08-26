@@ -14,6 +14,7 @@ export const setupNavigationEvents = () => {
   }
   let overlayHideTimer = 0
   let headerRevealTimer = 0
+  let closeSafetyTimer = 0
   const positionOverlayClose = () => {
     if (!menuButton || !overlayCloseButton) return
     const rect = menuButton.getBoundingClientRect()
@@ -29,7 +30,13 @@ export const setupNavigationEvents = () => {
     if (open) {
       header?.classList.add('menu-cycle-started')
       window.clearTimeout(headerRevealTimer)
+      window.clearTimeout(closeSafetyTimer)
       menu?.classList.remove('is-closing')
+      // The close path parks an inline display:none on the menu. Only the
+      // !important rules on .active and .is-closing were overriding it, so the
+      // menu vanished the instant it held neither class - which is what made a
+      // close look like a cut rather than an animation. Clear it on the way in.
+      menu?.style.removeProperty('display')
       menu?.style.removeProperty('--fara-close-overlay-delay')
       header?.classList.remove('menu-closing', 'menu-revealing')
     }
@@ -56,6 +63,7 @@ export const setupNavigationEvents = () => {
     document.documentElement.classList.toggle('fara-menu-open', open)
   }
   const finishMenuClose = () => {
+    window.clearTimeout(closeSafetyTimer)
     if (!menu?.classList.contains('is-closing')) return
     menu.classList.remove('is-closing')
     menu.style.display = 'none'
@@ -65,13 +73,20 @@ export const setupNavigationEvents = () => {
     window.clearTimeout(headerRevealTimer)
     headerRevealTimer = window.setTimeout(() => header?.classList.remove('menu-revealing'), 1700)
   }
-  const closeMenu = (animate = true) => {
+  // A close is decided by what is actually on screen, not by what the caller
+  // asked for. Every caller used to pass its own animate flag, and the ones
+  // that passed false - a menu link, a route apply - cut the menu out mid-frame
+  // instead of playing the close. Whenever the menu is visible it now plays;
+  // the instant path is only for a menu that is already gone.
+  const closeMenu = () => {
     const menuIsOpen = menu?.classList.contains('active') || menuButton?.classList.contains('close')
     if (!menuIsOpen && !menu?.classList.contains('is-closing')) {
       setMenuOpen(false)
       if (menu) menu.style.display = 'none'
       return
     }
+    // A close already in flight keeps its own animation and its own settle
+    // timer; restarting it here would replay the stagger from the top.
     if (menu?.classList.contains('is-closing')) {
       setMenuOpen(false)
       return
@@ -81,12 +96,6 @@ export const setupNavigationEvents = () => {
       closingViaRoute = true
       menuButton.click()
       closingViaRoute = false
-    }
-    if (!animate) {
-      menu?.classList.remove('is-closing')
-      setMenuOpen(false)
-      if (menu) menu.style.display = 'none'
-      return
     }
     const closingItems = [...(menu?.querySelectorAll('ul li') || [])]
     closingItems.forEach((item, index) => {
@@ -98,11 +107,19 @@ export const setupNavigationEvents = () => {
     header?.classList.add('menu-closing')
     header?.classList.remove('menu-revealing')
     setMenuOpen(false)
+    // finishMenuClose used to hang off the overlay's animationend alone. That
+    // event never arrives if the animation is interrupted or never starts, and
+    // the menu was then stuck in is-closing - mounted, pointer-events:none, and
+    // never dispatching fara:menu-closed, so the next open came up dead and any
+    // navigation waiting on it stalled for its full fallback. The animation is
+    // overlayDelay + 400ms of overlay fade; this settles it either way.
+    window.clearTimeout(closeSafetyTimer)
+    closeSafetyTimer = window.setTimeout(finishMenuClose, overlayDelay + 400 + 120)
   }
   menu?.querySelector('.overlay')?.addEventListener('animationend', event => {
     if (event.animationName === 'fara-menu-close-overlay') finishMenuClose()
   })
-  window.addEventListener('fara:close-menu', event => closeMenu(event.detail?.animate === true))
+  window.addEventListener('fara:close-menu', () => closeMenu())
   overlayCloseButton?.addEventListener('click', event => {
     event.preventDefault()
     event.stopPropagation()
@@ -120,13 +137,21 @@ export const setupNavigationEvents = () => {
         return
       }
       if (menu.classList.contains('active')) {
-        closeMenu(true)
+        closeMenu()
         return
       }
       setMenuOpen(!menu.classList.contains('active'))
     })
     menu.querySelector('.overlay')?.addEventListener('click', closeMenu)
-    menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => closeMenu(false)))
+    // Bound once on the menu itself rather than on each link. renderNavigation
+    // clones and drops the menu's <li>s on every route, so per-link listeners
+    // only ever covered the links that happened to exist at boot - regenerated
+    // entries came back with nothing attached, which is why a menu item would
+    // stop responding after moving between pages.
+    menu.addEventListener('click', event => {
+      if (!event.target.closest?.('a')) return
+      closeMenu()
+    })
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') closeMenu()
     })

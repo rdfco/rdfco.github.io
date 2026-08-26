@@ -76,12 +76,45 @@
   position: relative;
   z-index: 2;
 }
+/* The grid-terms box is a full-width transparent band, so it stays
+   click-through and lets the overlay underneath take the close. Only the row
+   itself is a target. */
 .fara-menu .grid-terms {
   position: relative;
   z-index: 3;
   pointer-events: none;
 }
+/* The nav column already had this guarantee three times over; the terms row
+   had one unweighted rule, so the legacy base rule that keeps .fara-menu at
+   pointer-events:none until it is .active left privacy policy and terms of use
+   dead in every state the nav links survived. */
+.fara-menu.active .grid-terms .terms-w,
+.fara-menu.active .grid-terms ul,
+.fara-menu.active .grid-terms li,
+.fara-menu.active .grid-terms a {
+  pointer-events: auto !important;
+}
 .fara-menu .grid-terms a { pointer-events: auto; }
+/* The roll-up hover lives on the li, but the anchor inside it is an inline box
+   that only covers its own text run - the rest of the row was not a hit target,
+   so the hover only answered on part of the label. */
+.fara-menu .grid-terms .terms-link a {
+  display: block;
+  width: 100%;
+}
+
+/* The sound/scroll-top bar is fixed at z-index 50, directly over the terms row
+   at the bottom of an open menu (z-index 11). It is click-through at rest, but
+   the legacy ScrollTrigger flips #scroll-top to pointer-events:auto once the
+   visitor is more than one viewport down - so opening the menu from mid-page
+   put a live button on top of the terms row and swallowed its clicks and
+   hover. Nothing in that bar should be reachable while the menu is up. */
+html.fara-menu-open .buttons-container,
+html.fara-menu-open .buttons-container *,
+.fara-menu.is-closing ~ .buttons-container,
+.fara-menu.is-closing ~ .buttons-container * {
+  pointer-events: none !important;
+}
 .fara-menu .grid-nav .nav-link {
   pointer-events: auto !important;
   transition: color 400ms linear;
