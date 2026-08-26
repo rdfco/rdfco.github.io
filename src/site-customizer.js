@@ -20,6 +20,11 @@ let programmaticSectionScroll = false
 let pendingSectionRoute = null
 let sceneRunning = true
 let applyingRoute = false
+let homeWebGLWarmed = false
+let homeRendererBudgeted = false
+let topHoldGeneration = 0
+
+const HOME_RENDER_PIXEL_BUDGET = 1_000_000
 
 const sectionRoutes = new Map([
   ['/who-we-are', '.fara-about'],
@@ -208,6 +213,8 @@ const stopSectionScroll = () => {
   syncActiveNavigationWithScroll()
 }
 
+const stopTopHold = () => { topHoldGeneration += 1 }
+
 // Input no longer scrolls the page from here - it only tells the programmatic
 // section scroll to get out of the way, so a visitor who reaches for the wheel
 // mid-navigation takes over immediately. Wheel and touch are left entirely to
@@ -217,11 +224,18 @@ const setupInputHandoff = () => {
   window.addEventListener('wheel', event => {
     if (Math.abs(event.deltaY) < Math.abs(event.deltaX)) return
     if (!getWheelDelta(event)) return
+    stopTopHold()
     stopSectionScroll()
   }, { passive: true })
 
-  window.addEventListener('touchstart', stopSectionScroll, { passive: true })
-  window.addEventListener('keydown', stopSectionScroll, { passive: true })
+  window.addEventListener('touchstart', () => {
+    stopTopHold()
+    stopSectionScroll()
+  }, { passive: true })
+  window.addEventListener('keydown', () => {
+    stopTopHold()
+    stopSectionScroll()
+  }, { passive: true })
 }
 
 // The WebGL scene only exists behind the home surface. Leaving its ticker
@@ -254,10 +268,13 @@ const refreshScrollSystems = () => {
 
 const setupMenuStateSync = () => {
   const root = document.documentElement
-  postMenuState(root.classList.contains('fara-menu-open'))
-  const observer = new MutationObserver(() => {
-    postMenuState(root.classList.contains('fara-menu-open'))
-  })
+  const sync = () => {
+    const menuBusy = root.classList.contains('fara-menu-open')
+      || root.classList.contains('fara-menu-closing')
+    postMenuState(menuBusy)
+  }
+  sync()
+  const observer = new MutationObserver(sync)
   observer.observe(root, { attributes: true, attributeFilter: ['class'] })
 }
 
@@ -467,8 +484,13 @@ const pinSceneToTop = () => {
 // transition - while the shell's gate still covers the frame - means the home
 // page is simply already at the top when it appears.
 const holdAtTop = durationMs => new Promise(resolve => {
+  const generation = ++topHoldGeneration
   const startedAt = performance.now()
   const hold = now => {
+    if (generation !== topHoldGeneration) {
+      resolve()
+      return
+    }
     window.gsap?.killTweensOf?.(window)
     window.gsap?.killTweensOf?.(document.documentElement)
     jumpToTop()
@@ -537,9 +559,113 @@ const waitForHomeAboveFoldReady = () => new Promise(resolve => {
   check()
 })
 
+// The legacy renderer always used the full CSS viewport as its drawing
+// buffer. At 1920x906 that asks the GPU to shade 1.74M pixels on every frame,
+// even though the scene is intentionally soft and motion-heavy. Keep the CSS
+// size unchanged while capping the internal render surface to a stable pixel
+// budget; this frees the compositor to paint menu and scroll frames on laptop
+// GPUs without changing page geometry or animation timing.
+const applyHomeRendererBudget = renderer => {
+  const sync = () => {
+    const viewportPixels = Math.max(1, window.innerWidth * window.innerHeight)
+    const nativeRatio = window.devicePixelRatio || 1
+    const budgetRatio = Math.sqrt(HOME_RENDER_PIXEL_BUDGET / viewportPixels)
+    const ratio = Math.max(0.5, Math.min(nativeRatio, budgetRatio))
+    renderer.setPixelRatio?.(ratio)
+    renderer.setSize?.(window.innerWidth, window.innerHeight, false)
+  }
+
+  sync()
+  if (homeRendererBudgeted) return
+  homeRendererBudgeted = true
+  window.addEventListener('resize', () => window.requestAnimationFrame(sync), { passive: true })
+}
+
+// The legacy ready flag is raised after the first visible canvas frame, but
+// the energy chapter below the fold still has uncompiled shader programs at
+// that point. If compilation is left until the first wheel event, the browser
+// stalls inside that interaction for hundreds of milliseconds. Compile every
+// loaded chapter while the parent loading gate still covers the iframe, then
+// restore the exact visibility state before the page is revealed.
+const warmHomeWebGL = async () => {
+  if (homeWebGLWarmed) return
+  const webgl = window.__FARA_APP_EXPORTS?.a?.webgl
+  const renderer = webgl?.renderer
+  const scene = webgl?.mainScene
+  const camera = webgl?.camera
+  const chapters = webgl?.currentPage?.chaptersArr || []
+  if (!renderer || !scene || !camera || !chapters.length) return
+
+  applyHomeRendererBudget(renderer)
+
+  const visibility = chapters.map(chapter => chapter.visible)
+  try {
+    chapters.forEach(chapter => { chapter.visible = true })
+    scene.updateMatrixWorld?.(true)
+    if (typeof renderer.compileAsync === 'function') {
+      await renderer.compileAsync(scene, camera)
+    } else {
+      renderer.compile?.(scene, camera)
+    }
+
+    // Compilation alone does not initialize scroll-activated render targets
+    // and chapter timelines. Exercise the full current WebGL page in a small
+    // number of deterministic jumps while it is still covered by the loader.
+    const maxScroll = Math.max(
+      0,
+      Math.min(
+        document.documentElement.scrollHeight - window.innerHeight,
+        ...chapters.map(chapter => chapter.scrollRange?.end || 0),
+      ),
+    )
+    const warmPoints = new Set([0, maxScroll])
+    chapters.forEach(chapter => {
+      warmPoints.add(chapter.scrollRange?.start || 0)
+      warmPoints.add(chapter.scrollRange?.end || 0)
+    })
+    for (let index = 1; index < 24; index += 1) warmPoints.add(maxScroll * (index / 24))
+
+    const nextFrame = () => new Promise(resolve => window.requestAnimationFrame(resolve))
+    const sortedWarmPoints = [...warmPoints].sort((a, b) => a - b)
+    // Run both directions. The first real interaction starts at the top and
+    // advances through these timelines, so the final descending pass also
+    // leaves their reverse/update paths initialized instead of ending on a
+    // cold jump from the last chapter back to zero.
+    for (const top of [...sortedWarmPoints, ...sortedWarmPoints.toReversed()]) {
+      getLenis()?.scrollTo?.(top, { immediate: true, force: true })
+      window.ScrollTrigger?.update?.(true)
+      await nextFrame()
+      await nextFrame()
+      await nextFrame()
+    }
+
+    // Immediate jumps prepare the WebGL states, but the user's first wheel
+    // still takes a different path: Lenis begins an interpolated scroll at a
+    // tiny offset and ScrollTrigger enters its active update loop. Exercise
+    // that exact path once under the loader so scrollY 0 -> first chapter does
+    // not pay an initialization frame when the visitor starts scrolling.
+    const lenis = getLenis()
+    lenis?.scrollTo?.(Math.min(240, maxScroll), { duration: 0.45, force: true })
+    for (let frame = 0; frame < 55; frame += 1) await nextFrame()
+    homeWebGLWarmed = true
+  } finally {
+    chapters.forEach((chapter, index) => { chapter.visible = visibility[index] })
+    jumpToTop()
+    pinSceneToTop()
+    window.ScrollTrigger?.update?.(true)
+    // Let the restored top-of-page state fully render before the parent gate
+    // is allowed to uncover the iframe. Otherwise its deferred cleanup lands
+    // in the first user-driven scroll frame even though the shaders are warm.
+    for (let frame = 0; frame < 6; frame += 1) {
+      await new Promise(resolve => window.requestAnimationFrame(resolve))
+    }
+  }
+}
+
 const waitForVisualReadiness = async pageKey => {
   if (pageKey === 'home') {
     await waitForHomeAboveFoldReady()
+    await warmHomeWebGL()
     return
   }
 
@@ -627,8 +753,10 @@ const refreshSite = async () => {
     } else if (queuedSection && queuedSection !== '/') {
       revealThenScrollToSection(queuedSection)
     } else {
-      // A few legacy timelines fire one last scroll tween after the gate lifts.
-      holdAtTop(600).then(syncActiveNavigationWithScroll)
+      // The page has already been stabilized for 900ms before readiness. A
+      // second post-reveal hold used to fight the visitor's first wheel input
+      // for another 600ms, which was the visible top-of-page scroll freeze.
+      syncActiveNavigationWithScroll()
     }
   }
   // A route that arrived mid-render was refused above rather than run on top of

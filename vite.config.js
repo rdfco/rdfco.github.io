@@ -32,8 +32,8 @@ function copyLegacyRuntime() {
       const sourceRoot = resolve(process.cwd(), 'src')
       const targetRoot = resolve(process.cwd(), 'dist', 'src')
       const legacyIndex = resolve(process.cwd(), 'dist', 'legacy', 'main', 'index.html')
-      const bundledCustomizerPath = '/site-customizer.bundle.js?v=home-load-20260824-brand-1'
-      const bundledStylesPath = '/custom.bundle.css?v=home-load-20260824-brand-1'
+      const bundledCustomizerPath = '/site-customizer.bundle.js?v=menu-perf-20260826-3'
+      const bundledStylesPath = '/custom.bundle.css?v=menu-perf-20260826-3'
       mkdirSync(targetRoot, { recursive: true })
       legacyRuntimeFiles.forEach(file => {
         cpSync(resolve(sourceRoot, file), resolve(targetRoot, file), { recursive: true })
@@ -59,11 +59,11 @@ function copyLegacyRuntime() {
       )
       const legacyHtml = readFileSync(legacyIndex, 'utf8')
         .replace(
-          /<script type="module" src="\/src\/site-customizer\.js[^"]*" data-astro-transition-persist="fara-customizer"><\/script>/,
+          /<script type="module" src="\/(?:src\/site-customizer\.js|site-customizer\.bundle\.js\?v=)[^"]*" data-astro-transition-persist="fara-customizer"><\/script>/,
           `<script type="module" src="${bundledCustomizerPath}" data-astro-transition-persist="fara-customizer"></script>`,
         )
         .replace(
-          /<link rel="stylesheet" href="\/src\/custom\.css">/,
+          /<link rel="stylesheet" href="\/(?:src\/custom\.css|custom\.bundle\.css\?v=[^"]+)">/,
           `<link rel="stylesheet" href="${bundledStylesPath}">`,
         )
         .replace(

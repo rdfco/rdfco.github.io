@@ -15,6 +15,9 @@ export const setupNavigationEvents = () => {
   let overlayHideTimer = 0
   let headerRevealTimer = 0
   let closeSafetyTimer = 0
+  const closeItemStaggerMs = 50
+  const closeItemDurationMs = 320
+  const closePanelDurationMs = 400
   const positionOverlayClose = () => {
     if (!menuButton || !overlayCloseButton) return
     const rect = menuButton.getBoundingClientRect()
@@ -25,12 +28,12 @@ export const setupNavigationEvents = () => {
       height: `${rect.height}px`,
     })
   }
-  let closingViaRoute = false
   const setMenuOpen = open => {
     if (open) {
       header?.classList.add('menu-cycle-started')
       window.clearTimeout(headerRevealTimer)
       window.clearTimeout(closeSafetyTimer)
+      document.documentElement.classList.remove('fara-menu-closing')
       menu?.classList.remove('is-closing')
       // The close path parks an inline display:none on the menu. Only the
       // !important rules on .active and .is-closing were overriding it, so the
@@ -69,6 +72,7 @@ export const setupNavigationEvents = () => {
     menu.style.display = 'none'
     header?.classList.remove('menu-closing')
     header?.classList.add('menu-revealing')
+    document.documentElement.classList.remove('fara-menu-closing')
     window.dispatchEvent(new CustomEvent('fara:menu-closed'))
     window.clearTimeout(headerRevealTimer)
     headerRevealTimer = window.setTimeout(() => header?.classList.remove('menu-revealing'), 1700)
@@ -91,12 +95,6 @@ export const setupNavigationEvents = () => {
       setMenuOpen(false)
       return
     }
-    const legacyMenuIsOpen = menuButton?.classList.contains('close')
-    if (legacyMenuIsOpen && !closingViaRoute) {
-      closingViaRoute = true
-      menuButton.click()
-      closingViaRoute = false
-    }
     // 75ms a step over seven items pushed the last two entries out to 450ms
     // before they even started fading, and the overlay waited for all of it
     // before beginning - so the menu sat half empty for about a second with
@@ -104,25 +102,35 @@ export const setupNavigationEvents = () => {
     // the tail of it rather than after it.
     const closingItems = [...(menu?.querySelectorAll('ul li') || [])]
     closingItems.forEach((item, index) => {
-      item.style.setProperty('--fara-close-delay', `${(closingItems.length - index - 1) * 40}ms`)
+      item.style.setProperty('--fara-close-delay', `${(closingItems.length - index - 1) * closeItemStaggerMs}ms`)
     })
-    const overlayDelay = closingItems.length * 40 + 40
+    // The panel must not begin fading until the final (top-most) item has
+    // reached opacity:0. The old overlap started the panel at 320ms while the
+    // item sequence was still running until ~540ms, which visibly cut the last
+    // entries off on the live WebGL home page.
+    const overlayDelay = Math.max(
+      closeItemDurationMs,
+      (closingItems.length - 1) * closeItemStaggerMs + closeItemDurationMs,
+    )
     menu?.style.setProperty('--fara-close-overlay-delay', `${overlayDelay}ms`)
+    document.documentElement.classList.add('fara-menu-closing')
     menu?.classList.add('is-closing')
     header?.classList.add('menu-closing')
     header?.classList.remove('menu-revealing')
     setMenuOpen(false)
-    // finishMenuClose used to hang off the overlay's animationend alone. That
-    // event never arrives if the animation is interrupted or never starts, and
-    // the menu was then stuck in is-closing - mounted, pointer-events:none, and
-    // never dispatching fara:menu-closed, so the next open came up dead and any
-    // navigation waiting on it stalled for its full fallback. The animation is
-    // overlayDelay + 400ms of overlay fade; this settles it either way.
+    // The legacy overlay also emits animation events. Treating one of those as
+    // the lifecycle boundary cut this close off before our delayed fade had
+    // reached its final frame. A single timer now owns the boundary and is
+    // derived from the exact CSS delay and duration.
     window.clearTimeout(closeSafetyTimer)
-    closeSafetyTimer = window.setTimeout(finishMenuClose, overlayDelay + 300 + 80)
+    closeSafetyTimer = window.setTimeout(
+      finishMenuClose,
+      overlayDelay + closePanelDurationMs + 160,
+    )
   }
-  menu?.querySelector('.overlay')?.addEventListener('animationend', event => {
-    if (event.animationName === 'fara-menu-close-overlay') finishMenuClose()
+  menu?.addEventListener('animationend', event => {
+    if (event.target !== menu || event.animationName !== 'fara-menu-close-panel') return
+    finishMenuClose()
   })
   window.addEventListener('fara:close-menu', () => closeMenu())
   overlayCloseButton?.addEventListener('click', event => {
@@ -135,18 +143,18 @@ export const setupNavigationEvents = () => {
     menuButton.setAttribute('aria-controls', 'fara-overlay-menu')
     menuButton.setAttribute('aria-expanded', 'false')
     menu.id = 'fara-overlay-menu'
+    // This control arrives with a legacy GSAP click handler already attached.
+    // Own the click in capture phase so only one state machine writes the menu
+    // classes and item transforms during a cycle.
     menuButton.addEventListener('click', event => {
       event.preventDefault()
-      if (closingViaRoute) {
-        setMenuOpen(false)
-        return
-      }
+      event.stopImmediatePropagation()
       if (menu.classList.contains('active')) {
         closeMenu()
         return
       }
       setMenuOpen(!menu.classList.contains('active'))
-    })
+    }, true)
     menu.querySelector('.overlay')?.addEventListener('click', closeMenu)
     // Bound once on the menu itself rather than on each link. renderNavigation
     // clones and drops the menu's <li>s on every route, so per-link listeners

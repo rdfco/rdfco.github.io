@@ -92,23 +92,21 @@ optgroup,
   background: #fff;
   pointer-events: none !important;
   overflow: hidden;
-  animation: fara-menu-close-panel 300ms linear var(--fara-close-overlay-delay, 1s) both !important;
+  animation: fara-menu-close-panel 400ms linear var(--fara-close-overlay-delay, 1s) both !important;
+  contain: paint;
+  isolation: isolate;
+  transform: translateZ(0);
+  will-change: opacity;
 }
 @keyframes fara-menu-close-panel {
-  from { background-color: #fff; }
-  to { background-color: rgba(255, 255, 255, 0); }
-}
-.fara-menu.is-closing ul li {
-  animation: fara-menu-close-item 300ms linear var(--fara-close-delay, 0ms) both !important;
-}
-.fara-menu.is-closing .overlay {
-  animation: fara-menu-close-overlay 300ms linear var(--fara-close-overlay-delay, 1s) both !important;
-}
-@keyframes fara-menu-close-item {
   from { opacity: 1; }
   to { opacity: 0; }
 }
-@keyframes fara-menu-close-overlay {
+.fara-menu.is-closing ul li {
+  animation: fara-menu-close-item 320ms linear var(--fara-close-delay, 0ms) both !important;
+  will-change: opacity;
+}
+@keyframes fara-menu-close-item {
   from { opacity: 1; }
   to { opacity: 0; }
 }
@@ -157,6 +155,8 @@ optgroup,
    hover. Nothing in that bar should be reachable while the menu is up. */
 html.fara-menu-open .buttons-container,
 html.fara-menu-open .buttons-container *,
+html.fara-menu-closing .buttons-container,
+html.fara-menu-closing .buttons-container *,
 .fara-menu.is-closing ~ .buttons-container,
 .fara-menu.is-closing ~ .buttons-container * {
   pointer-events: none !important;
@@ -204,7 +204,8 @@ html.fara-menu-open .buttons-container *,
 .fara-menu .grid-nav .nav-link:focus-visible { color: #00c878; }
 .fara-menu .grid-nav .nav-link:focus-visible .text-content { transform: translate3d(0, 0, 0); }
 .fara-menu .grid-nav .nav-link:focus-visible .svg-container { transform: scale3d(1, 1, 1); }
-html.fara-menu-open { overflow: hidden; }
+html.fara-menu-open,
+html.fara-menu-closing { overflow: hidden; }
 html.fara-sound-disabled .buttons-container .sound { display: none !important; }
 .fara-overlay-close {
   position: fixed !important;
