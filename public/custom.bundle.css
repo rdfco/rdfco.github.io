@@ -78,18 +78,31 @@ optgroup,
   background: #fff;
   overflow: auto;
 }
+/* .active is what gave the panel its white ground and its place in the stack.
+   Dropping to is-closing took both away on the first frame of the close - the
+   background went straight to transparent and the z-index fell from 11 to the
+   legacy 9 - so the panel blinked out before any of the staggered fade below
+   had a chance to play. It now holds exactly what .active held and fades its
+   ground out on the overlay's schedule instead. */
 .fara-menu.is-closing {
+  z-index: 11;
   display: block !important;
   width: 100%;
   height: 100dvh;
+  background: #fff;
   pointer-events: none !important;
   overflow: hidden;
+  animation: fara-menu-close-panel 300ms linear var(--fara-close-overlay-delay, 1s) both !important;
+}
+@keyframes fara-menu-close-panel {
+  from { background-color: #fff; }
+  to { background-color: rgba(255, 255, 255, 0); }
 }
 .fara-menu.is-closing ul li {
-  animation: fara-menu-close-item 400ms linear var(--fara-close-delay, 0ms) both !important;
+  animation: fara-menu-close-item 300ms linear var(--fara-close-delay, 0ms) both !important;
 }
 .fara-menu.is-closing .overlay {
-  animation: fara-menu-close-overlay 400ms linear var(--fara-close-overlay-delay, 1s) both !important;
+  animation: fara-menu-close-overlay 300ms linear var(--fara-close-overlay-delay, 1s) both !important;
 }
 @keyframes fara-menu-close-item {
   from { opacity: 1; }

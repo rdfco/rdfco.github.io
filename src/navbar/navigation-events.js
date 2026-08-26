@@ -97,11 +97,16 @@ export const setupNavigationEvents = () => {
       menuButton.click()
       closingViaRoute = false
     }
+    // 75ms a step over seven items pushed the last two entries out to 450ms
+    // before they even started fading, and the overlay waited for all of it
+    // before beginning - so the menu sat half empty for about a second with
+    // nothing moving. The stagger is tighter now and the overlay starts under
+    // the tail of it rather than after it.
     const closingItems = [...(menu?.querySelectorAll('ul li') || [])]
     closingItems.forEach((item, index) => {
-      item.style.setProperty('--fara-close-delay', `${(closingItems.length - index - 1) * 75}ms`)
+      item.style.setProperty('--fara-close-delay', `${(closingItems.length - index - 1) * 40}ms`)
     })
-    const overlayDelay = closingItems.length * 75 + 200
+    const overlayDelay = closingItems.length * 40 + 40
     menu?.style.setProperty('--fara-close-overlay-delay', `${overlayDelay}ms`)
     menu?.classList.add('is-closing')
     header?.classList.add('menu-closing')
@@ -114,7 +119,7 @@ export const setupNavigationEvents = () => {
     // navigation waiting on it stalled for its full fallback. The animation is
     // overlayDelay + 400ms of overlay fade; this settles it either way.
     window.clearTimeout(closeSafetyTimer)
-    closeSafetyTimer = window.setTimeout(finishMenuClose, overlayDelay + 400 + 120)
+    closeSafetyTimer = window.setTimeout(finishMenuClose, overlayDelay + 300 + 80)
   }
   menu?.querySelector('.overlay')?.addEventListener('animationend', event => {
     if (event.animationName === 'fara-menu-close-overlay') finishMenuClose()
