@@ -108,6 +108,18 @@ const getLenis = () => {
   return null
 }
 
+// getLenis only resolves once the legacy app has constructed its scroll
+// manager, and everything else here calls it lazily. The shell's scrollbar
+// needs window.lenis from outside the frame, though, so it cannot wait for one
+// of those calls to happen to come first - publish it as soon as it exists.
+const publishLenis = () => {
+  let attempts = 0
+  const timer = window.setInterval(() => {
+    attempts += 1
+    if (getLenis() || attempts >= 60) window.clearInterval(timer)
+  }, 100)
+}
+
 // The shell fades its gate out over 420ms and only then is the top of the home
 // page actually on screen. Nothing used to connect the two sides, so the
 // section scroll started on whichever finished first - which is why the same
@@ -637,6 +649,7 @@ window.addEventListener('message', event => {
 
 setupNavigationEvents()
 prepareLegacyGsap()
+publishLenis()
 setupInputHandoff()
 setupMenuStateSync()
 setupSectionRouteLinks()

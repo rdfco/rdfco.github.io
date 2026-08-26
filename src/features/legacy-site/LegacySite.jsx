@@ -174,6 +174,25 @@ export default function LegacySite() {
     }
   }, [status])
 
+  const easeOutCubic = progress => 1 - ((1 - progress) ** 3)
+
+  // The page scrolls through Lenis, so the bar has to move it through Lenis
+  // too. Writing scrollY behind Lenis's back leaves its own target where it
+  // was, and it eases the page straight back on the next frame.
+  const setFrameScroll = (frameWindow, top, smooth) => {
+    const lenis = frameWindow.lenis
+    if (lenis?.scrollTo) {
+      lenis.scrollTo(top, smooth ? { duration: .55, easing: easeOutCubic, force: true } : { immediate: true, force: true })
+      return
+    }
+    frameWindow.scrollTo({ top, left: 0, behavior: 'auto' })
+  }
+
+  // Pressing the line itself now moves the page. It steps roughly a screen in
+  // the direction of the press rather than travelling to the spot pressed, so
+  // the bar reads like a scrollbar track and not like a seek bar - the thumb is
+  // still there to drag when someone wants to cover a long distance at once.
+  // Before this, only the thumb was live and the line did nothing at all.
   const handleScrollbarPointerDown = event => {
     const frameWindow = frameRef.current?.contentWindow
     const frameDocument = frameRef.current?.contentDocument
@@ -181,17 +200,29 @@ export default function LegacySite() {
     if (!frameWindow || !frameDocument || !thumb) return
 
     event.preventDefault()
-    const startY = event.clientY
-    const startScrollY = frameWindow.scrollY
     const root = frameDocument.documentElement
     const maxScroll = Math.max(1, root.scrollHeight - frameWindow.innerHeight)
+
+    if (!thumb.contains(event.target)) {
+      const thumbRect = thumb.getBoundingClientRect()
+      const direction = event.clientY < thumbRect.top ? -1 : 1
+      // Just under a screen, so the line the visitor stopped reading on is
+      // still there after the step.
+      const step = frameWindow.innerHeight * .85
+      const current = frameWindow.lenis?.targetScroll ?? frameWindow.scrollY
+      setFrameScroll(frameWindow, Math.min(maxScroll, Math.max(0, current + direction * step)), true)
+      return
+    }
+
+    const startY = event.clientY
+    const startScrollY = frameWindow.scrollY
     const thumbHeight = thumb.getBoundingClientRect().height
     const trackTravel = Math.max(1, window.innerHeight - thumbHeight - 28)
     const scrollPerPixel = maxScroll / trackTravel
 
     const handlePointerMove = moveEvent => {
       moveEvent.preventDefault()
-      frameWindow.scrollTo({ top: startScrollY + (moveEvent.clientY - startY) * scrollPerPixel, behavior: 'auto' })
+      setFrameScroll(frameWindow, startScrollY + (moveEvent.clientY - startY) * scrollPerPixel, false)
     }
 
     const stopDragging = () => {
@@ -273,12 +304,12 @@ export default function LegacySite() {
         src={appConfig.legacyRuntime.iframeSource}
         onLoad={onLoad}
       />
-      <div className="fara-scrollbar" aria-hidden="true">
-        <div
-          ref={scrollbarThumbRef}
-          className="fara-scrollbar__thumb"
-          onPointerDown={handleScrollbarPointerDown}
-        />
+      <div
+        className="fara-scrollbar"
+        aria-hidden="true"
+        onPointerDown={handleScrollbarPointerDown}
+      >
+        <div ref={scrollbarThumbRef} className="fara-scrollbar__thumb" />
       </div>
     </div>
   )

@@ -58,14 +58,25 @@ body,
   visibility: visible;
 }
 
+/* The visible rule is a 1px line, which is nothing to aim at. The element
+   itself is the target and is widened to a comfortable strip; the rule and the
+   thumb stay centred inside it, so the bar looks the same and simply became
+   easier to hit. */
 .fara-scrollbar {
   position: fixed;
   z-index: 20;
   top: 1rem;
-  right: .7rem;
+  /* 5.2px + half of 22px puts the rule back on the exact pixel it sat on when
+     the strip was .7rem from the edge and 10px wide. */
+  right: 5.2px;
   bottom: 1rem;
-  width: 10px;
-  pointer-events: none;
+  display: flex;
+  width: 22px;
+  align-items: flex-start;
+  justify-content: center;
+  pointer-events: auto;
+  cursor: pointer;
+  touch-action: none;
   transition: opacity 180ms ease, visibility 180ms ease;
 }
 
@@ -96,7 +107,7 @@ body,
 .fara-scrollbar__thumb {
   width: 5px;
   min-height: 48px;
-  margin-inline: auto;
+  flex: 0 0 auto;
   background: linear-gradient(180deg, #31f7ad, #00c878 48%, #008f5c);
   border-radius: 999px;
   box-shadow:
