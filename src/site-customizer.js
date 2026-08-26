@@ -56,31 +56,56 @@ const prepareLegacyGsap = () => {
   }, 100)
 }
 
-const homeSurfaceIsActive = () => document.body.dataset.faraPage === 'home'
-
 const getWheelDelta = event => {
   if (event.deltaMode === 1) return event.deltaY * 16
   if (event.deltaMode === 2) return event.deltaY * window.innerHeight
   return event.deltaY
 }
 
-const getMaxScroll = () => Math.max(
-  0,
-  document.documentElement.scrollHeight - window.innerHeight,
-)
+// The legacy app already ships Lenis (lerp .055, wheelMultiplier .72) and
+// drives it from its own render loop, so the page has a real smooth-scroll
+// engine. This module used to install a second wheel driver on top of it:
+// both called preventDefault on the same notch and both wrote window.scrollY
+// on the same frame, one lerping at .16 off an integer-rounded read of
+// scrollY. Two engines easing toward two targets is what made the text step
+// up the screen instead of gliding. Lenis owns the wheel now; everything here
+// goes through it.
+let cachedLenis = null
 
-// Every surface scrolls through the same eased wheel driver. A wheel notch is
-// a single large delta, so applying it one-to-one lands as a hard jump per
-// event; accumulating it into a target the page glides toward reads like
-// dragging the scrollbar instead. Trackpads emit many tiny deltas, which this
-// folds into the same continuous glide.
-let smoothTarget = 0
-let smoothFrame = 0
-let smoothRunning = false
+const findLenis = value => {
+  if (!value || typeof value !== 'object') return null
+  const lenis = value.scrollManager?.lenis
+  if (typeof lenis?.raf === 'function' && typeof lenis?.scrollTo === 'function') return lenis
+  return null
+}
 
-const stopSmoothScroll = () => {
-  window.cancelAnimationFrame(smoothFrame)
-  smoothRunning = false
+// The legacy bundle is minified, so the key holding the scroll manager is not
+// stable across builds - look the instance up by shape instead of by name.
+const getLenis = () => {
+  if (cachedLenis) return cachedLenis
+  const direct = window.lenis
+  if (typeof direct?.raf === 'function' && typeof direct?.scrollTo === 'function') {
+    cachedLenis = direct
+    return cachedLenis
+  }
+  const exports = window.__FARA_APP_EXPORTS
+  if (!exports) return null
+  for (const key of Object.keys(exports)) {
+    let candidate
+    try {
+      candidate = exports[key]
+    } catch {
+      continue
+    }
+    const found = findLenis(candidate)
+    if (!found) continue
+    cachedLenis = found
+    // The rest of this module (and anything else on the page) already reaches
+    // for window.lenis; give it something to find.
+    window.lenis = found
+    return cachedLenis
+  }
+  return null
 }
 
 // The shell fades its gate out over 420ms and only then is the top of the home
@@ -163,65 +188,28 @@ const holdAtTopWhile = async task => {
 const stopSectionScroll = () => {
   if (!programmaticSectionScroll) return
   window.cancelAnimationFrame(scrollAnimationFrame)
+  // A Lenis-driven trip has to be cut at its current position, otherwise it
+  // keeps easing toward the section under whatever the visitor does next.
+  const lenis = getLenis()
+  if (lenis) lenis.scrollTo(lenis.animatedScroll ?? window.scrollY, { immediate: true, force: true })
   programmaticSectionScroll = false
   syncActiveNavigationWithScroll()
 }
 
-const runSmoothScroll = () => {
-  const current = window.scrollY
-  const distance = smoothTarget - current
-  if (Math.abs(distance) < .6) {
-    window.scrollTo(0, smoothTarget)
-    smoothRunning = false
-    return
-  }
-  window.scrollTo(0, current + distance * .16)
-  smoothFrame = window.requestAnimationFrame(runSmoothScroll)
-}
-
-const smoothScrollBy = delta => {
-  const max = getMaxScroll()
-  if (!smoothRunning) smoothTarget = window.scrollY
-  smoothTarget = Math.min(max, Math.max(0, smoothTarget + delta))
-  if (smoothRunning) return
-  smoothRunning = true
-  smoothFrame = window.requestAnimationFrame(runSmoothScroll)
-}
-
-const setupWheelScrollFallback = () => {
-  let touchY = 0
-
+// Input no longer scrolls the page from here - it only tells the programmatic
+// section scroll to get out of the way, so a visitor who reaches for the wheel
+// mid-navigation takes over immediately. Wheel and touch are left entirely to
+// Lenis (and, on touch, to the browser's own momentum, which Lenis leaves
+// alone by design).
+const setupInputHandoff = () => {
   window.addEventListener('wheel', event => {
-    if (event.defaultPrevented || Math.abs(event.deltaY) < Math.abs(event.deltaX)) return
-    const delta = getWheelDelta(event)
-    if (!delta) return
-    event.preventDefault()
-    stopSectionScroll()
-    smoothScrollBy(delta)
-  }, { passive: false })
-
-  window.addEventListener('touchstart', event => {
-    touchY = event.touches?.[0]?.clientY ?? 0
-    stopSmoothScroll()
+    if (Math.abs(event.deltaY) < Math.abs(event.deltaX)) return
+    if (!getWheelDelta(event)) return
     stopSectionScroll()
   }, { passive: true })
 
-  // Touch devices already scroll routed pages natively; only the home surface
-  // needs the manual driver.
-  window.addEventListener('touchmove', event => {
-    if (!homeSurfaceIsActive()) return
-    const currentY = event.touches?.[0]?.clientY ?? touchY
-    const deltaY = touchY - currentY
-    touchY = currentY
-    if (!deltaY) return
-    event.preventDefault()
-    window.scrollBy({ top: deltaY, left: 0, behavior: 'auto' })
-  }, { passive: false })
-
-  window.addEventListener('keydown', () => {
-    stopSmoothScroll()
-    stopSectionScroll()
-  }, { passive: true })
+  window.addEventListener('touchstart', stopSectionScroll, { passive: true })
+  window.addEventListener('keydown', stopSectionScroll, { passive: true })
 }
 
 // The WebGL scene only exists behind the home surface. Leaving its ticker
@@ -248,7 +236,7 @@ const refreshScrollSystems = () => {
     window.dispatchEvent(new Event('resize'))
     window.dispatchEvent(new Event('scroll'))
     window.ScrollTrigger?.refresh?.()
-    window.lenis?.resize?.()
+    getLenis()?.resize?.()
   })
 }
 
@@ -291,7 +279,6 @@ const getSectionTargetTop = selector => {
 const scrollToSectionRoute = route => {
   const selector = sectionRoutes.get(route)
   if (!selector && !animatedHomeRoutes.has(route)) return
-  stopSmoothScroll()
   const start = window.scrollY
   const end = animatedHomeRoutes.has(route) ? 0 : getSectionTargetTop(selector)
   const distance = end - start
@@ -301,6 +288,27 @@ const scrollToSectionRoute = route => {
   window.cancelAnimationFrame(scrollAnimationFrame)
   programmaticSectionScroll = true
   setActiveNavigationRoute(route)
+
+  const settle = () => {
+    programmaticSectionScroll = false
+    setActiveNavigationRoute(route)
+    refreshScrollSystems()
+  }
+
+  // Handing the travel to Lenis rather than writing window.scrollY ourselves
+  // keeps a single engine on the scroll position for the whole trip, so the
+  // arrival eases in instead of being handed off between two of them.
+  const lenis = getLenis()
+  if (lenis) {
+    lenis.scrollTo(end, {
+      duration: duration / 1000,
+      easing: easeInOutCubic,
+      force: true,
+      onComplete: settle,
+    })
+    return
+  }
+
   const step = now => {
     const progress = Math.min(1, (now - startedAt) / duration)
     // Legacy timelines keep tweening the window for a while after a route
@@ -312,9 +320,7 @@ const scrollToSectionRoute = route => {
       scrollAnimationFrame = window.requestAnimationFrame(step)
       return
     }
-    programmaticSectionScroll = false
-    setActiveNavigationRoute(route)
-    refreshScrollSystems()
+    settle()
   }
   scrollAnimationFrame = window.requestAnimationFrame(step)
 }
@@ -422,6 +428,9 @@ const normalizePhoneNumbers = () => {
 }
 
 const jumpToTop = () => {
+  // Lenis carries its own target; moving the document without telling it just
+  // gives it something to ease back down to on the next frame.
+  getLenis()?.scrollTo?.(0, { immediate: true, force: true })
   document.documentElement.scrollTop = 0
   document.body.scrollTop = 0
   window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
@@ -462,14 +471,13 @@ const holdAtTop = durationMs => new Promise(resolve => {
 })
 
 const resetHomeScrollState = () => {
-  stopSmoothScroll()
   jumpToTop()
-  window.lenis?.scrollTo?.(0, { immediate: true, force: true })
-  window.lenis?.stop?.()
-  window.lenis?.resize?.()
+  const lenis = getLenis()
+  lenis?.stop?.()
+  lenis?.resize?.()
   window.ScrollTrigger?.refresh?.(true)
   window.ScrollTrigger?.update?.(true)
-  window.lenis?.start?.()
+  lenis?.start?.()
 }
 
 const waitForBodyLoaded = () => new Promise(resolve => {
@@ -573,7 +581,7 @@ const refreshSite = async () => {
   const navigationItem = getNavigationItem(requestedPath || '/')
   const currentPage = await getCurrentPage(requestedPath || '/', navigationItem)
   setSceneRunning(currentPage.data.key === 'home')
-  stopSmoothScroll()
+  stopSectionScroll()
   if (currentPage.data.key === 'home') resetHomeScrollState()
   else jumpToTop()
   await applySiteData(siteData, currentPage)
@@ -629,7 +637,7 @@ window.addEventListener('message', event => {
 
 setupNavigationEvents()
 prepareLegacyGsap()
-setupWheelScrollFallback()
+setupInputHandoff()
 setupMenuStateSync()
 setupSectionRouteLinks()
 window.addEventListener('scroll', syncActiveNavigationWithScroll, { passive: true })
