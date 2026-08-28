@@ -18,6 +18,35 @@ const createSectionHeader = ({ title, subtitle }) => {
   return header
 }
 
+let stageResizeFrame = 0
+
+// The home sections are absolutely positioned over the WebGL stage, so they
+// do not contribute to the legacy grid's natural height. Re-measure whenever
+// their responsive layout changes and whenever Home is restored after a routed
+// page; otherwise the footer can keep an old, shorter offset and appear in the
+// middle of the scene with an empty black document after it.
+export const syncHomeStageHeight = () => {
+  const grid = document.querySelector('main #grid')
+  const sections = grid?.querySelector('.fara-sections')
+  if (!grid || !sections) return
+  const safeFooterGap = 80
+  const contentBottom = sections.getBoundingClientRect().bottom - grid.getBoundingClientRect().top
+  grid.style.minHeight = `${Math.ceil(contentBottom + safeFooterGap)}px`
+}
+
+const scheduleHomeStageSync = () => {
+  window.cancelAnimationFrame(stageResizeFrame)
+  stageResizeFrame = window.requestAnimationFrame(syncHomeStageHeight)
+}
+
+const observeHomeStage = sections => {
+  if (sections.dataset.faraStageObserved === 'true') return
+  sections.dataset.faraStageObserved = 'true'
+  if ('ResizeObserver' in window) new ResizeObserver(scheduleHomeStageSync).observe(sections)
+  window.addEventListener('resize', scheduleHomeStageSync, { passive: true })
+  document.fonts?.ready?.then(scheduleHomeStageSync)
+}
+
 export const renderSections = siteData => {
   const grid = document.querySelector('main #grid')
   const content = siteData.faraSections
@@ -57,15 +86,6 @@ export const renderSections = siteData => {
     if (siteData.sectionVisibility[sectionName] !== false && sectionMap[sectionName]) sections.appendChild(sectionMap[sectionName])
   })
   grid.appendChild(sections)
-  const fitStageToContent = () => {
-    const safeFooterGap = 80
-    const contentBottom = sections.getBoundingClientRect().bottom - grid.getBoundingClientRect().top
-    grid.style.minHeight = `${contentBottom + safeFooterGap}px`
-  }
-  window.requestAnimationFrame(() => {
-    fitStageToContent()
-  })
-  window.setTimeout(() => {
-    fitStageToContent()
-  }, 500)
+  observeHomeStage(sections)
+  syncHomeStageHeight()
 }

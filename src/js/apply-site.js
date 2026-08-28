@@ -1,6 +1,6 @@
 import { setText } from './core/dom.js'
 import { renderHero } from './components/hero.js'
-import { renderSections } from './components/sections.js'
+import { renderSections, syncHomeStageHeight } from './components/sections.js'
 import { renderNavigation } from './navigation.js'
 import { renderFooter } from './components/footer.js'
 
@@ -33,16 +33,16 @@ const updateLegacyContent = siteData => {
 
 const renderHomePage = page => {
   const pageKey = page.data.key
-  const renderedPage = document.querySelector('.fara-route-page')
   const legacyMain = document.querySelector('body > main')
   document.body.dataset.faraPage = pageKey
   document.body.classList.remove('fara-content-route', 'fara-legal-route')
-  renderedPage?.remove()
+  document.querySelectorAll('.fara-route-page').forEach(renderedPage => renderedPage.remove())
   legacyMain?.classList.remove('fara-legacy-main-suspended')
   legacyMain?.removeAttribute('aria-hidden')
   document.querySelector('#canvas-wrapper')?.removeAttribute('aria-hidden')
   document.querySelector('.hero-transition')?.removeAttribute('aria-hidden')
   document.querySelector('.buttons-container')?.removeAttribute('aria-hidden')
+  syncHomeStageHeight()
 }
 
 export const applySiteData = async (siteData, currentPage) => {

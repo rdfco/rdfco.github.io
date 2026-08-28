@@ -15,7 +15,7 @@ export const appConfig = {
   },
   legacyRuntime: {
     iframeSource:
-      '/legacy/main/index.html?v=menu-perf-20260826-3',
+      '/legacy/main/index.html?v=webgl-lifecycle-20260828-1',
     iframeTitle: 'FARA',
     sandbox: undefined,
     readyTimeoutMs: 5000,

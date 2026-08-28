@@ -32,6 +32,8 @@ await page.goto(process.env.SITE_URL || 'http://127.0.0.1:5174/', {
 const getLegacyFrame = () => page.frames().find(candidate => candidate !== page.mainFrame())
 let frame = getLegacyFrame()
 if (!frame) throw new Error('Legacy frame did not load')
+await frame.waitForSelector('html[data-fara-ready="true"]', { timeout: 60_000 })
+await page.waitForFunction(() => document.querySelector('.legacy-shell')?.dataset.status === 'ready', { timeout: 60_000 })
 await frame.evaluate(() => { window.__faraLongTasks = [] })
 
 await frame.click('.menu-cta')
@@ -71,7 +73,11 @@ const homeHoverWorks = await frame.evaluate(() => {
 })
 
 await frame.click('.fara-menu .grid-nav li:nth-child(2) .nav-link')
-await page.waitForFunction(() => location.pathname === '/who-we-are')
+await frame.waitForFunction(() => (
+  document.body.dataset.faraPage === 'home'
+  && document.querySelector('#header .nav-link.active')?.dataset.faraSectionRoute === '/who-we-are'
+  && getComputedStyle(document.querySelector('.fara-menu')).display === 'none'
+))
 await new Promise(resolve => setTimeout(resolve, 1_000))
 frame = getLegacyFrame()
 if (!frame) throw new Error('Legacy frame did not reload after navigation')
@@ -81,34 +87,40 @@ const state = await frame.evaluate(() => ({
   expanded: document.querySelector('.menu-cta').getAttribute('aria-expanded'),
   scrollLocked: document.documentElement.classList.contains('fara-menu-open'),
   activeLabel: document.querySelector('#header .nav-link.active')?.textContent.trim(),
-  pageVisible: Boolean(document.querySelector('.fara-route-page')),
+  pageVisible: document.body.dataset.faraPage === 'home'
+    && !document.querySelector('.fara-route-page')
+    && !document.querySelector('body > main')?.classList.contains('fara-legacy-main-suspended'),
   soundDisabled: document.documentElement.classList.contains('fara-sound-disabled'),
   playingAudio: [...document.querySelectorAll('audio')].some(audio => !audio.paused),
   audioStarts: window.__faraAudioStarts,
 }))
 
 const routes = [
-  ['who-we-are', '/who-we-are'],
-  ['how-we-help', '/how-we-help'],
-  ['who-we-serve', '/who-we-serve'],
-  ['think-together', '/think-together'],
-  ['home', '/'],
-  ['privacy-policy', '/privacy-policy'],
-  ['terms-of-use', '/terms-of-use'],
+  ['who-we-are', '/who-we-are', '/', 'home', '/who-we-are'],
+  ['how-we-help', '/how-we-help', '/', 'home', '/how-we-help'],
+  ['who-we-serve', '/who-we-serve', '/', 'home', '/who-we-serve'],
+  ['think-together', '/think-together', '/think-together', 'think-together', '/think-together'],
+  ['home', '/', '/', 'home', '/'],
+  ['privacy-policy', '/privacy-policy', '/privacy-policy', 'privacy-policy', null],
+  ['terms-of-use', '/terms-of-use', '/terms-of-use', 'terms-of-use', null],
 ]
 const routeCycles = []
-for (const [key, pathname] of routes) {
+for (const [key, route, pathname, expectedPage, expectedActiveRoute] of routes) {
   await frame.click('.menu-cta')
   await new Promise(resolve => setTimeout(resolve, 150))
-  const link = await frame.$(`.fara-menu a[data-fara-route="${pathname}"]`)
-  if (!link) throw new Error(`Missing navigation contract link for ${pathname}`)
+  const link = await frame.$(`.fara-menu a[data-fara-route="${route}"], .fara-menu a[data-fara-section-route="${route}"]`)
+  if (!link) throw new Error(`Missing navigation contract link for ${route}`)
   await link.evaluate(node => node.click())
   await page.waitForFunction(expected => location.pathname === expected, {}, pathname)
-  await new Promise(resolve => setTimeout(resolve, 100))
+  await frame.waitForFunction(pageKey => document.body.dataset.faraPage === pageKey, { timeout: 60_000 }, expectedPage)
+  await page.waitForFunction(() => document.querySelector('.legacy-shell')?.dataset.status === 'ready', { timeout: 60_000 })
+  await new Promise(resolve => setTimeout(resolve, 150))
   frame = getLegacyFrame()
   if (!frame) throw new Error(`Legacy frame did not reload for ${pathname}`)
-  if (key === 'who-we-are') await new Promise(resolve => setTimeout(resolve, 1_000))
-  routeCycles.push(await frame.evaluate(expectedKey => ({
+  routeCycles.push(await frame.evaluate(({ expectedKey, expectedRoute, pageKey }) => {
+    const activeRoute = document.querySelector('#header .nav-link.active')?.dataset.faraRoute
+      || document.querySelector('#header .nav-link.active')?.dataset.faraSectionRoute
+    return ({
     key: expectedKey,
     menuActive: document.querySelector('.fara-menu').classList.contains('active'),
     menuDisplay: getComputedStyle(document.querySelector('.fara-menu')).display,
@@ -116,16 +128,19 @@ for (const [key, pathname] of routes) {
     headerOpen: document.querySelector('#header').classList.contains('menu-open'),
     expanded: document.querySelector('.menu-cta').getAttribute('aria-expanded'),
     scrollLocked: document.documentElement.classList.contains('fara-menu-open'),
-    activeKey: document.querySelector('#header .nav-link.active')?.dataset.faraRoute,
-    pageVisible: expectedKey === 'home'
-      ? !document.querySelector('body > main')?.hidden
-      : Boolean(document.querySelector(`.fara-route-page[data-fara-page="${expectedKey}"]`)),
-  }), key))
+    activeKey: activeRoute,
+    activeExpected: expectedRoute ? activeRoute === expectedRoute : !activeRoute,
+    pageVisible: pageKey === 'home'
+      ? !document.querySelector('.fara-route-page')
+        && !document.querySelector('body > main')?.classList.contains('fara-legacy-main-suspended')
+      : Boolean(document.querySelector(`.fara-route-page[data-fara-page="${pageKey}"]`)),
+    })
+  }, { expectedKey: key, expectedRoute: expectedActiveRoute, pageKey: expectedPage }))
 }
 
 await new Promise(resolve => setTimeout(resolve, 1_200))
 const fullNavbarTransform = await frame.$eval('#header .navbar', node => getComputedStyle(node).transform)
-await frame.hover('#header .menu-links-w .nav-link[data-fara-route="/"]')
+await frame.hover('#header .menu-links-w .nav-link[data-fara-section-route="/"]')
 await new Promise(resolve => setTimeout(resolve, 700))
 const itemNavbarTransform = await frame.$eval('#header .navbar', node => getComputedStyle(node).transform)
 await page.mouse.move(100, 500)
@@ -139,6 +154,7 @@ const routeCyclesPass = routeCycles.every(cycle =>
   !cycle.headerOpen &&
   cycle.expanded === 'false' &&
   !cycle.scrollLocked &&
+  cycle.activeExpected &&
   cycle.pageVisible,
 )
 const longTasks = await frame.evaluate(() => ({

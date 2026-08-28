@@ -21,10 +21,7 @@ let pendingSectionRoute = null
 let sceneRunning = true
 let applyingRoute = false
 let homeWebGLWarmed = false
-let homeRendererBudgeted = false
 let topHoldGeneration = 0
-
-const HOME_RENDER_PIXEL_BUDGET = 1_000_000
 
 const sectionRoutes = new Map([
   ['/who-we-are', '.fara-about'],
@@ -238,15 +235,15 @@ const setupInputHandoff = () => {
   }, { passive: true })
 }
 
-// The WebGL scene only exists behind the home surface. Leaving its ticker
-// running under a routed page costs a full frame budget and is what makes the
-// menu, the navbar rule, and scrolling feel choppy there.
+// Lenis and WebGL share the legacy core ticker. Pausing that ticker on a routed
+// page also pauses Lenis after it has consumed trackpad/wheel input, leaving
+// the document and the custom scrollbar unable to move. Routed-page CSS hides
+// the canvas; keep the shared clock alive so scrolling remains deterministic.
 const setSceneRunning = running => {
   if (sceneRunning === running) return
   const ticker = window.__FARA_APP_EXPORTS?.a?.core?.ticker
-  if (!ticker?.play || !ticker?.pause) return
   sceneRunning = running
-  running ? ticker.play() : ticker.pause()
+  ticker?.play?.()
 }
 
 const normalizeRoute = value => {
@@ -559,28 +556,6 @@ const waitForHomeAboveFoldReady = () => new Promise(resolve => {
   check()
 })
 
-// The legacy renderer always used the full CSS viewport as its drawing
-// buffer. At 1920x906 that asks the GPU to shade 1.74M pixels on every frame,
-// even though the scene is intentionally soft and motion-heavy. Keep the CSS
-// size unchanged while capping the internal render surface to a stable pixel
-// budget; this frees the compositor to paint menu and scroll frames on laptop
-// GPUs without changing page geometry or animation timing.
-const applyHomeRendererBudget = renderer => {
-  const sync = () => {
-    const viewportPixels = Math.max(1, window.innerWidth * window.innerHeight)
-    const nativeRatio = window.devicePixelRatio || 1
-    const budgetRatio = Math.sqrt(HOME_RENDER_PIXEL_BUDGET / viewportPixels)
-    const ratio = Math.max(0.5, Math.min(nativeRatio, budgetRatio))
-    renderer.setPixelRatio?.(ratio)
-    renderer.setSize?.(window.innerWidth, window.innerHeight, false)
-  }
-
-  sync()
-  if (homeRendererBudgeted) return
-  homeRendererBudgeted = true
-  window.addEventListener('resize', () => window.requestAnimationFrame(sync), { passive: true })
-}
-
 // The legacy ready flag is raised after the first visible canvas frame, but
 // the energy chapter below the fold still has uncompiled shader programs at
 // that point. If compilation is left until the first wheel event, the browser
@@ -595,8 +570,6 @@ const warmHomeWebGL = async () => {
   const camera = webgl?.camera
   const chapters = webgl?.currentPage?.chaptersArr || []
   if (!renderer || !scene || !camera || !chapters.length) return
-
-  applyHomeRendererBudget(renderer)
 
   const visibility = chapters.map(chapter => chapter.visible)
   try {

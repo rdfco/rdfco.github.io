@@ -18,6 +18,14 @@ export const setupNavigationEvents = () => {
   const closeItemStaggerMs = 50
   const closeItemDurationMs = 320
   const closePanelDurationMs = 400
+  let menuTickerPaused = false
+  const setMenuTickerPaused = paused => {
+    if (menuTickerPaused === paused) return
+    const ticker = window.__FARA_APP_EXPORTS?.a?.core?.ticker
+    if (!ticker?.play || !ticker?.pause) return
+    menuTickerPaused = paused
+    paused ? ticker.pause() : ticker.play()
+  }
   const positionOverlayClose = () => {
     if (!menuButton || !overlayCloseButton) return
     const rect = menuButton.getBoundingClientRect()
@@ -42,6 +50,7 @@ export const setupNavigationEvents = () => {
       menu?.style.removeProperty('display')
       menu?.style.removeProperty('--fara-close-overlay-delay')
       header?.classList.remove('menu-closing', 'menu-revealing')
+      setMenuTickerPaused(true)
     }
     menu?.classList.toggle('active', open)
     header?.classList.toggle('menu-open', open)
@@ -55,8 +64,10 @@ export const setupNavigationEvents = () => {
         overlayCloseButton.classList.remove('close')
         void overlayCloseButton.offsetWidth
         window.requestAnimationFrame(() => overlayCloseButton.classList.add('close'))
+        overlayCloseButton.style.pointerEvents = 'auto'
       } else {
         overlayCloseButton.classList.remove('close')
+        overlayCloseButton.style.pointerEvents = 'none'
         overlayHideTimer = window.setTimeout(() => { overlayCloseButton.hidden = true }, 650)
       }
     }
@@ -73,6 +84,7 @@ export const setupNavigationEvents = () => {
     header?.classList.remove('menu-closing')
     header?.classList.add('menu-revealing')
     document.documentElement.classList.remove('fara-menu-closing')
+    setMenuTickerPaused(false)
     window.dispatchEvent(new CustomEvent('fara:menu-closed'))
     window.clearTimeout(headerRevealTimer)
     headerRevealTimer = window.setTimeout(() => header?.classList.remove('menu-revealing'), 1700)
@@ -87,6 +99,7 @@ export const setupNavigationEvents = () => {
     if (!menuIsOpen && !menu?.classList.contains('is-closing')) {
       setMenuOpen(false)
       if (menu) menu.style.display = 'none'
+      setMenuTickerPaused(false)
       return
     }
     // A close already in flight keeps its own animation and its own settle
@@ -149,6 +162,7 @@ export const setupNavigationEvents = () => {
     menuButton.addEventListener('click', event => {
       event.preventDefault()
       event.stopImmediatePropagation()
+      if (menu.classList.contains('is-closing')) return
       if (menu.classList.contains('active')) {
         closeMenu()
         return

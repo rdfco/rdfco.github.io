@@ -10,7 +10,7 @@ describe('application configuration', () => {
 
   it('keeps the protected Legacy runtime contract explicit', () => {
     expect(appConfig.legacyRuntime.iframeSource).toBe(
-      '/legacy/main/index.html?v=menu-perf-20260826-3',
+      '/legacy/main/index.html?v=webgl-lifecycle-20260828-1',
     )
     expect(appConfig.legacyRuntime.readyTimeoutMs).toBe(5000)
     expect(appConfig.legacyRuntime.routeMessage).toBe('fara:set-route')
