@@ -1114,8 +1114,11 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
     margin: 3rem auto 0;
   }
   .fara-page-shell {
-    width: min(100% - 2rem, 1180px);
     padding-top: 8rem;
+  }
+  .fara-route-intro h1,
+  .fara-think-shell h1 {
+    font-size: clamp(2.1rem, 10vw, 3.25rem);
   }
   .fara-page-section h2 {
     font-size: clamp(2rem, 12vw, 3.5rem);
@@ -1130,7 +1133,6 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
     grid-template-columns: 1fr;
   }
   .fara-who-shell {
-    width: min(100% - 2rem, 1180px);
     padding-top: 8rem;
   }
   .fara-who-section h2 {
@@ -1332,29 +1334,34 @@ main #grid { min-height: 7400px; }
 .fara-ai > header,
 .fara-industries > header {
   position: relative;
+  width: fit-content;
+}
+.fara-solutions > header h2,
+.fara-ai > header h2,
+.fara-industries > header h2 {
+  position: relative;
   z-index: 1;
   isolation: isolate;
   width: fit-content;
+  max-width: 100%;
 }
-.fara-solutions > header::before,
-.fara-ai > header::before,
-.fara-industries > header::before {
+.fara-industries > header h2 { margin-inline: auto; }
+.fara-solutions > header h2::before,
+.fara-ai > header h2::before,
+.fara-industries > header h2::before {
   position: absolute;
   z-index: -1;
-  top: -2rem;
-  left: -2rem;
-  width: clamp(4.5rem, 6vw, 6.5rem);
+  top: -.58em;
+  left: -.52em;
+  width: 1.5em;
   aspect-ratio: 1;
   content: "";
   background: rgba(0, 200, 120, .82);
   border-radius: 50%;
   box-shadow: 0 0 36px rgba(0, 200, 120, .28);
 }
-.fara-solutions > header h2,
 .fara-solutions > header p,
-.fara-ai > header h2,
 .fara-ai > header p,
-.fara-industries > header h2,
 .fara-industries > header p {
   position: relative;
   z-index: 1;
@@ -1593,6 +1600,20 @@ html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !imp
 }
 
 @media (max-width: 1199px) {
+  .fara-sections {
+    right: clamp(1.5rem, 5vw, 3rem);
+    left: clamp(1.5rem, 5vw, 3rem);
+  }
+  .fara-route-intro,
+  .fara-page-shell,
+  .fara-who-shell,
+  .fara-react-header {
+    width: min(1180px, calc(100% - clamp(3rem, 10vw, 6rem)));
+  }
+  .fara-footer {
+    padding-right: clamp(1.5rem, 5vw, 3rem) !important;
+    padding-left: clamp(1.5rem, 5vw, 3rem) !important;
+  }
   .hero .fara-hero-brand-lockup {
     top: clamp(11.5rem, 44vh, 19rem);
     left: clamp(1.5rem, 4vw, 3rem);
@@ -1609,6 +1630,12 @@ html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !imp
   }
   .fara-about .about-copy {
     max-width: min(100%, 38rem);
+  }
+  .fara-row > header h2 {
+    font-size: clamp(2.25rem, 6vw, 4.5rem);
+  }
+  .fara-row > header p {
+    font-size: clamp(.95rem, 1.8vw, 1.25rem);
   }
 }
 
@@ -1641,13 +1668,12 @@ html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !imp
   .fara-solutions > header,
   .fara-ai > header { width: auto; }
   .fara-industries > header { width: fit-content; }
-  .fara-solutions > header::before,
-  .fara-ai > header::before,
-  .fara-industries > header::before {
-    top: clamp(-1.5rem, -3vw, -.75rem);
-    left: -1rem;
-    width: clamp(3.5rem, 12vw, 5rem);
-
+  .fara-solutions > header h2::before,
+  .fara-ai > header h2::before,
+  .fara-industries > header h2::before {
+    top: -.55em;
+    left: -.48em;
+    width: 1.45em;
   }
   .solutions-grid .fara-card {
     padding-top: 0;
@@ -1670,11 +1696,11 @@ html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !imp
   .hero .fara-hero-copy.logo-dk { display: none !important; }
   .hero .fara-hero-copy.logo-mb { display: flex !important; }
   .hero .fara-hero-copy {
-    padding: 0 1rem !important;
+    padding: 0 1.5rem !important;
   }
   .hero .fara-hero-brand-lockup {
     top: 43%;
-    left: .75rem;
+    left: 1.5rem;
     gap: .8rem;
   }
   .hero .fara-hero-brand-logo { width: clamp(2.3rem, 12vw, 3.2rem); }
@@ -1685,14 +1711,14 @@ html:has(.industries-grid .fara-card.expanded) .cursor { visibility: hidden !imp
   }
   .hero .fara-hero-phrase-wrap {
     width: fit-content;
-    max-width: calc(100% - 2rem);
+    max-width: calc(100% - 3rem);
   }
   .hero .fara-hero-phrase {
     font-size: clamp(.78rem, 3.6vw, 1.05rem);
     white-space: normal;
   }
   main #grid { min-height: 8600px; }
-  .fara-sections { top: 1250px; right: 1.25rem; left: 1.25rem; gap: 600px; }
+  .fara-sections { top: 1250px; gap: 600px; }
   .fara-industries { margin-top: 0; }
   .industries-grid .fara-card > h3,
   .industries-grid .fara-card > p { transform: translateY(-2rem); }
@@ -1945,9 +1971,13 @@ body:not([data-fara-page="home"]) #footer *,
 .fara-article-body p { margin: 0 0 1.6rem; }
 @media (max-width: 64em) {
   .fara-news-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .fara-content-shell { padding-top: 9rem; }
+  .fara-content-shell {
+    width: min(1180px, calc(100% - clamp(3rem, 10vw, 6rem)));
+    padding-top: 9rem;
+  }
 }
 @media (max-width: 42em) {
+  .fara-content-title { font-size: clamp(2.1rem, 10vw, 3.25rem); }
   .fara-news-grid { grid-template-columns: 1fr; }
   .fara-article-layout { grid-template-columns: 1fr; }
   .fara-pagination { flex-wrap: wrap; }

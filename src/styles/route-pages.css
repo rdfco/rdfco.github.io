@@ -637,8 +637,11 @@
     margin: 3rem auto 0;
   }
   .fara-page-shell {
-    width: min(100% - 2rem, 1180px);
     padding-top: 8rem;
+  }
+  .fara-route-intro h1,
+  .fara-think-shell h1 {
+    font-size: clamp(2.1rem, 10vw, 3.25rem);
   }
   .fara-page-section h2 {
     font-size: clamp(2rem, 12vw, 3.5rem);
@@ -653,7 +656,6 @@
     grid-template-columns: 1fr;
   }
   .fara-who-shell {
-    width: min(100% - 2rem, 1180px);
     padding-top: 8rem;
   }
   .fara-who-section h2 {

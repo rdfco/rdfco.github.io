@@ -21,7 +21,7 @@ checks.forEach(([label, distPath, publicPath]) => {
 })
 
 const legacyHtml = read('public/legacy/main/index.html')
-const requiredVersion = 'webgl-lifecycle-20260828-1'
+const requiredVersion = 'responsive-scroll-20260828-1'
 const requiredReferences = [
   `/custom.bundle.css?v=${requiredVersion}`,
   `/site-customizer.bundle.js?v=${requiredVersion}`,

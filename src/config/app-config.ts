@@ -15,7 +15,7 @@ export const appConfig = {
   },
   legacyRuntime: {
     iframeSource:
-      '/legacy/main/index.html?v=webgl-lifecycle-20260828-1',
+      '/legacy/main/index.html?v=responsive-scroll-20260828-1',
     iframeTitle: 'FARA',
     sandbox: undefined,
     readyTimeoutMs: 5000,

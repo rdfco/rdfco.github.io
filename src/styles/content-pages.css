@@ -229,9 +229,13 @@ body:not([data-fara-page="home"]) #footer *,
 .fara-article-body p { margin: 0 0 1.6rem; }
 @media (max-width: 64em) {
   .fara-news-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .fara-content-shell { padding-top: 9rem; }
+  .fara-content-shell {
+    width: min(1180px, calc(100% - clamp(3rem, 10vw, 6rem)));
+    padding-top: 9rem;
+  }
 }
 @media (max-width: 42em) {
+  .fara-content-title { font-size: clamp(2.1rem, 10vw, 3.25rem); }
   .fara-news-grid { grid-template-columns: 1fr; }
   .fara-article-layout { grid-template-columns: 1fr; }
   .fara-pagination { flex-wrap: wrap; }

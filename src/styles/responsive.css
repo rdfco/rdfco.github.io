@@ -1,4 +1,18 @@
 @media (max-width: 1199px) {
+  .fara-sections {
+    right: clamp(1.5rem, 5vw, 3rem);
+    left: clamp(1.5rem, 5vw, 3rem);
+  }
+  .fara-route-intro,
+  .fara-page-shell,
+  .fara-who-shell,
+  .fara-react-header {
+    width: min(1180px, calc(100% - clamp(3rem, 10vw, 6rem)));
+  }
+  .fara-footer {
+    padding-right: clamp(1.5rem, 5vw, 3rem) !important;
+    padding-left: clamp(1.5rem, 5vw, 3rem) !important;
+  }
   .hero .fara-hero-brand-lockup {
     top: clamp(11.5rem, 44vh, 19rem);
     left: clamp(1.5rem, 4vw, 3rem);
@@ -15,6 +29,12 @@
   }
   .fara-about .about-copy {
     max-width: min(100%, 38rem);
+  }
+  .fara-row > header h2 {
+    font-size: clamp(2.25rem, 6vw, 4.5rem);
+  }
+  .fara-row > header p {
+    font-size: clamp(.95rem, 1.8vw, 1.25rem);
   }
 }
 
@@ -47,13 +67,12 @@
   .fara-solutions > header,
   .fara-ai > header { width: auto; }
   .fara-industries > header { width: fit-content; }
-  .fara-solutions > header::before,
-  .fara-ai > header::before,
-  .fara-industries > header::before {
-    top: clamp(-1.5rem, -3vw, -.75rem);
-    left: -1rem;
-    width: clamp(3.5rem, 12vw, 5rem);
-
+  .fara-solutions > header h2::before,
+  .fara-ai > header h2::before,
+  .fara-industries > header h2::before {
+    top: -.55em;
+    left: -.48em;
+    width: 1.45em;
   }
   .solutions-grid .fara-card {
     padding-top: 0;
@@ -76,11 +95,11 @@
   .hero .fara-hero-copy.logo-dk { display: none !important; }
   .hero .fara-hero-copy.logo-mb { display: flex !important; }
   .hero .fara-hero-copy {
-    padding: 0 1rem !important;
+    padding: 0 1.5rem !important;
   }
   .hero .fara-hero-brand-lockup {
     top: 43%;
-    left: .75rem;
+    left: 1.5rem;
     gap: .8rem;
   }
   .hero .fara-hero-brand-logo { width: clamp(2.3rem, 12vw, 3.2rem); }
@@ -91,14 +110,14 @@
   }
   .hero .fara-hero-phrase-wrap {
     width: fit-content;
-    max-width: calc(100% - 2rem);
+    max-width: calc(100% - 3rem);
   }
   .hero .fara-hero-phrase {
     font-size: clamp(.78rem, 3.6vw, 1.05rem);
     white-space: normal;
   }
   main #grid { min-height: 8600px; }
-  .fara-sections { top: 1250px; right: 1.25rem; left: 1.25rem; gap: 600px; }
+  .fara-sections { top: 1250px; gap: 600px; }
   .fara-industries { margin-top: 0; }
   .industries-grid .fara-card > h3,
   .industries-grid .fara-card > p { transform: translateY(-2rem); }

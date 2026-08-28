@@ -154,11 +154,12 @@ export default function LegacySite() {
         const root = frameDocument.documentElement
         const maxScroll = Math.max(1, root.scrollHeight - frameWindow.innerHeight)
         const progress = Math.min(1, Math.max(0, frameWindow.scrollY / maxScroll))
+        const trackHeight = thumb.parentElement?.getBoundingClientRect().height || frameWindow.innerHeight
         // Keep the thumb proportional to the document it belongs to, so a short
         // routed page reads as short instead of matching the home page.
         const visibleRatio = Math.min(1, frameWindow.innerHeight / Math.max(1, root.scrollHeight))
-        const thumbHeight = Math.max(44, Math.min(frameWindow.innerHeight * .62, frameWindow.innerHeight * visibleRatio))
-        const travel = frameWindow.innerHeight - thumbHeight - 28
+        const thumbHeight = Math.max(44, Math.min(trackHeight * .62, trackHeight * visibleRatio))
+        const travel = trackHeight - thumbHeight - 28
         thumb.style.height = `${thumbHeight}px`
         thumb.style.transform = `translate3d(0, ${14 + progress * Math.max(0, travel)}px, 0)`
       })
@@ -202,9 +203,15 @@ export default function LegacySite() {
     event.preventDefault()
     const root = frameDocument.documentElement
     const maxScroll = Math.max(1, root.scrollHeight - frameWindow.innerHeight)
+    const thumbRect = thumb.getBoundingClientRect()
 
-    if (!thumb.contains(event.target)) {
-      const thumbRect = thumb.getBoundingClientRect()
+    // The visible thumb is intentionally narrow, while its track is a wider
+    // hit target. Treat the full track width alongside the thumb as draggable;
+    // otherwise a press one or two pixels beside the green line is mistaken
+    // for a track click and the page appears to move by itself.
+    const pressedThumbBand = event.clientY >= thumbRect.top && event.clientY <= thumbRect.bottom
+
+    if (!pressedThumbBand) {
       const direction = event.clientY < thumbRect.top ? -1 : 1
       // Just under a screen, so the line the visitor stopped reading on is
       // still there after the step.
@@ -214,10 +221,16 @@ export default function LegacySite() {
       return
     }
 
+    // Pointer input happens in the React shell, outside the iframe. Tell the
+    // legacy runtime to cancel any section-navigation scroll before dragging,
+    // so its animation cannot pull the page away from the pointer afterward.
+    frameWindow.dispatchEvent(new frameWindow.CustomEvent('fara:scrollbar-drag-start'))
+
     const startY = event.clientY
-    const startScrollY = frameWindow.scrollY
-    const thumbHeight = thumb.getBoundingClientRect().height
-    const trackTravel = Math.max(1, window.innerHeight - thumbHeight - 28)
+    const startScrollY = frameWindow.lenis?.animatedScroll ?? frameWindow.scrollY
+    const thumbHeight = thumbRect.height
+    const track = event.currentTarget
+    const trackTravel = Math.max(1, track.getBoundingClientRect().height - thumbHeight - 28)
     const scrollPerPixel = maxScroll / trackTravel
 
     const handlePointerMove = moveEvent => {
@@ -227,13 +240,14 @@ export default function LegacySite() {
 
     const stopDragging = () => {
       document.body.classList.remove('fara-scrollbar-dragging')
+      if (track.hasPointerCapture?.(event.pointerId)) track.releasePointerCapture(event.pointerId)
       window.removeEventListener('pointermove', handlePointerMove)
       window.removeEventListener('pointerup', stopDragging)
       window.removeEventListener('pointercancel', stopDragging)
     }
 
     document.body.classList.add('fara-scrollbar-dragging')
-    event.currentTarget.setPointerCapture?.(event.pointerId)
+    track.setPointerCapture?.(event.pointerId)
     window.addEventListener('pointermove', handlePointerMove)
     window.addEventListener('pointerup', stopDragging)
     window.addEventListener('pointercancel', stopDragging)

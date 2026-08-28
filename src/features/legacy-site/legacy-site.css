@@ -136,6 +136,15 @@ body,
   user-select: none;
 }
 
+/* Phones and tablets use their native touch scrolling. Pointer capability is
+   the device distinction that keeps this control on compact laptops while
+   removing it from a same-width tablet. */
+@media (max-width: 1023px), (pointer: coarse) {
+  .fara-scrollbar {
+    display: none;
+  }
+}
+
 .site-gate {
   position: absolute;
   z-index: 2;

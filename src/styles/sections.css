@@ -66,29 +66,34 @@ main #grid { min-height: 7400px; }
 .fara-ai > header,
 .fara-industries > header {
   position: relative;
+  width: fit-content;
+}
+.fara-solutions > header h2,
+.fara-ai > header h2,
+.fara-industries > header h2 {
+  position: relative;
   z-index: 1;
   isolation: isolate;
   width: fit-content;
+  max-width: 100%;
 }
-.fara-solutions > header::before,
-.fara-ai > header::before,
-.fara-industries > header::before {
+.fara-industries > header h2 { margin-inline: auto; }
+.fara-solutions > header h2::before,
+.fara-ai > header h2::before,
+.fara-industries > header h2::before {
   position: absolute;
   z-index: -1;
-  top: -2rem;
-  left: -2rem;
-  width: clamp(4.5rem, 6vw, 6.5rem);
+  top: -.58em;
+  left: -.52em;
+  width: 1.5em;
   aspect-ratio: 1;
   content: "";
   background: rgba(0, 200, 120, .82);
   border-radius: 50%;
   box-shadow: 0 0 36px rgba(0, 200, 120, .28);
 }
-.fara-solutions > header h2,
 .fara-solutions > header p,
-.fara-ai > header h2,
 .fara-ai > header p,
-.fara-industries > header h2,
 .fara-industries > header p {
   position: relative;
   z-index: 1;

@@ -218,6 +218,11 @@ const stopTopHold = () => { topHoldGeneration += 1 }
 // Lenis (and, on touch, to the browser's own momentum, which Lenis leaves
 // alone by design).
 const setupInputHandoff = () => {
+  window.addEventListener('fara:scrollbar-drag-start', () => {
+    stopTopHold()
+    stopSectionScroll()
+  })
+
   window.addEventListener('wheel', event => {
     if (Math.abs(event.deltaY) < Math.abs(event.deltaX)) return
     if (!getWheelDelta(event)) return
