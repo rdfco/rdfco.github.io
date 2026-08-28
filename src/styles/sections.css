@@ -78,9 +78,15 @@ main #grid { min-height: 7400px; }
   max-width: 100%;
 }
 .fara-industries > header h2 { margin-inline: auto; }
-.fara-solutions > header h2::before,
-.fara-ai > header h2::before,
-.fara-industries > header h2::before {
+.fara-title-marker-anchor {
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+  isolation: isolate;
+}
+.fara-solutions > header .fara-title-marker-anchor::before,
+.fara-ai > header .fara-title-marker-anchor::before,
+.fara-industries > header .fara-title-marker-anchor::before {
   position: absolute;
   z-index: -1;
   top: -.58em;

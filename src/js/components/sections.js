@@ -14,7 +14,18 @@ const hideLegacyContent = grid => {
 
 const createSectionHeader = ({ title, subtitle }) => {
   const header = document.createElement('header')
-  header.innerHTML = `<h2>${title}</h2><p>${subtitle}</p>`
+  const heading = document.createElement('h2')
+  const [firstWord = '', ...remainingWords] = title.trim().split(/\s+/)
+  const markerAnchor = createElement('span', {
+    className: 'fara-title-marker-anchor',
+    text: firstWord,
+  })
+  heading.append(markerAnchor)
+  if (remainingWords.length) heading.append(document.createTextNode(` ${remainingWords.join(' ')}`))
+  header.append(
+    heading,
+    createElement('p', { text: subtitle }),
+  )
   return header
 }
 

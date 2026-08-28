@@ -37,7 +37,13 @@ const getHeaderItems = siteData => siteData.navigation
 const animateNavbarTo = target => {
   const navList = document.querySelector('#header .menu-links-w')
   const navbar = document.querySelector('#header nav .navbar')
-  const label = target?.matches?.('span') ? target : target?.querySelector?.('span')
+  const requestedLabel = target?.matches?.('span') ? target : target?.querySelector?.('span')
+  // The compact header intentionally shows only Home. Keep its green rule on
+  // that visible label even while the full desktop navigation continues to
+  // track the current home section above the tablet breakpoint.
+  const label = window.matchMedia('(max-width: 1023px)').matches
+    ? document.querySelector('#header .menu-links-w > ul > li:first-child .nav-link span')
+    : requestedLabel
   if (!navList || !navbar || !label) return
   const labelRect = label.getBoundingClientRect()
   const listRect = navList.getBoundingClientRect()

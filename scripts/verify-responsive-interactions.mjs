@@ -49,16 +49,19 @@ const inspectHome = async (frame, label, minimumGutter, expectedScrollbar) => {
     const circles = selectors.map(selector => {
       const heading = sections.querySelector(selector)
       const headingRect = heading.getBoundingClientRect()
-      const marker = getComputedStyle(heading, '::before')
+      const markerAnchor = heading.querySelector('.fara-title-marker-anchor') || heading
+      const markerAnchorRect = markerAnchor.getBoundingClientRect()
+      const marker = getComputedStyle(markerAnchor, '::before')
       const markerLeft = Number.parseFloat(marker.left)
       const markerWidth = Number.parseFloat(marker.width)
       return {
         selector,
         headingLeft: Math.round(headingRect.left),
+        markerAnchorLeft: Math.round(markerAnchorRect.left),
         fontSize: Number.parseFloat(getComputedStyle(heading).fontSize),
         attached: Number.isFinite(markerLeft)
-          && headingRect.left + markerLeft < headingRect.left
-          && headingRect.left + markerLeft + markerWidth > headingRect.left,
+          && markerAnchorRect.left + markerLeft < markerAnchorRect.left
+          && markerAnchorRect.left + markerLeft + markerWidth > markerAnchorRect.left,
       }
     })
     return {
@@ -69,7 +72,24 @@ const inspectHome = async (frame, label, minimumGutter, expectedScrollbar) => {
     }
   })
 
-  const result = { label, scrollbar, layout }
+  let compactHeaderLabels = null
+  if (expectedScrollbar === 'none') {
+    await frame.evaluate(() => {
+      const target = document.querySelector('.fara-industries')
+      const top = target.getBoundingClientRect().top + window.scrollY
+      window.lenis?.scrollTo?.(top, { immediate: true, force: true })
+      window.scrollTo({ top, behavior: 'auto' })
+      window.dispatchEvent(new Event('scroll'))
+    })
+    await wait(180)
+    compactHeaderLabels = await frame.evaluate(() => (
+      [...document.querySelectorAll('#header .menu-links-w > ul > li')]
+        .filter(item => getComputedStyle(item).display !== 'none' && getComputedStyle(item).visibility !== 'hidden')
+        .map(item => item.textContent.trim())
+    ))
+  }
+
+  const result = { label, scrollbar, layout, compactHeaderLabels }
   results.push(result)
   if (scrollbar !== expectedScrollbar) failures.push(`${label}: custom scrollbar display is ${scrollbar}, expected ${expectedScrollbar}`)
   if (layout.gutterLeft < minimumGutter || layout.gutterRight < minimumGutter) failures.push(`${label}: home text gutter is too small`)
@@ -78,6 +98,9 @@ const inspectHome = async (frame, label, minimumGutter, expectedScrollbar) => {
     if (!circle.attached) failures.push(`${label}: ${circle.selector} marker is detached from its heading`)
     if (circle.headingLeft < minimumGutter) failures.push(`${label}: ${circle.selector} text touches the viewport edge`)
   })
+  if (compactHeaderLabels && (compactHeaderLabels.length !== 1 || compactHeaderLabels[0] !== 'Home')) {
+    failures.push(`${label}: compact header did not stay fixed on Home`)
+  }
 }
 
 const inspectRoute = async (frame, label, selector, minimumGutter) => {
@@ -88,11 +111,19 @@ const inspectRoute = async (frame, label, selector, minimumGutter) => {
       gutterRight: Math.round(innerWidth - rect.right),
       horizontalOverflow: document.documentElement.scrollWidth > innerWidth,
       headingFontSize: Number.parseFloat(getComputedStyle(shell.querySelector('h1')).fontSize),
+      compactHeaderLabels: innerWidth <= 1023
+        ? [...document.querySelectorAll('#header .menu-links-w > ul > li')]
+          .filter(item => getComputedStyle(item).display !== 'none' && getComputedStyle(item).visibility !== 'hidden')
+          .map(item => item.textContent.trim())
+        : null,
     }
   })
   results.push({ label, layout })
   if (layout.gutterLeft < minimumGutter || layout.gutterRight < minimumGutter) failures.push(`${label}: routed-page text gutter is too small`)
   if (layout.horizontalOverflow) failures.push(`${label}: routed page has horizontal overflow`)
+  if (layout.compactHeaderLabels && (layout.compactHeaderLabels.length !== 1 || layout.compactHeaderLabels[0] !== 'Home')) {
+    failures.push(`${label}: compact routed-page header did not stay fixed on Home`)
+  }
 }
 
 const verifyScrollbarDrag = async frame => {
@@ -132,6 +163,9 @@ try {
 
   const tabletFrame = await loadRoute('/', { width: 768, height: 1024 })
   await inspectHome(tabletFrame, 'tablet-home', 37, 'none')
+
+  const compactBoundaryFrame = await loadRoute('/', { width: 462, height: 935 })
+  await inspectHome(compactBoundaryFrame, 'phone-below-463-home', 22, 'none')
 
   const phoneFrame = await loadRoute('/', { width: 390, height: 844 })
   await inspectHome(phoneFrame, 'phone-home', 23, 'none')
