@@ -23,6 +23,11 @@ const pageRoutes = [
   ...Array.from({ length: 21 }, (_, index) => `news/fara-insight-${String(index + 1).padStart(2, '0')}`),
 ]
 
+// Source files may be checked out with CRLF, and the generated bundles are
+// committed, so write them with the LF endings .gitattributes declares for
+// them. Otherwise every checkout reports the bundles as modified.
+const normaliseLineEndings = content => content.split('\r\n').join('\n')
+
 // The protected iframe loads one stylesheet, so the source tree is flattened
 // into it here. Each @import resolves relative to the file that wrote it, the
 // same as a browser would, which lets a stylesheet be split into a folder of
@@ -48,7 +53,9 @@ function copyLegacyRuntime() {
       legacyRuntimeFiles.forEach(file => {
         cpSync(resolve(sourceRoot, file), resolve(targetRoot, file), { recursive: true })
       })
-      const bundledCss = inlineCssImports(resolve(sourceRoot, legacyStylesEntry))
+      // Source files may be checked out with CRLF; the generated bundle is
+      // committed, so write it with the LF endings .gitattributes expects.
+      const bundledCss = normaliseLineEndings(inlineCssImports(resolve(sourceRoot, legacyStylesEntry)))
       writeFileSync(resolve(process.cwd(), 'dist', 'custom.bundle.css'), bundledCss)
       writeFileSync(resolve(process.cwd(), 'public', 'custom.bundle.css'), bundledCss)
       await buildWithEsbuild({
