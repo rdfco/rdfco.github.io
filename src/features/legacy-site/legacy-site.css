@@ -178,13 +178,17 @@ body,
   border: 2px solid rgba(0, 200, 120, .22);
   border-top-color: #00c878;
   border-radius: 50%;
-  animation: fara-loader-spin 800ms linear infinite;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0) rotate(0deg);
+  transform-origin: 50% 50%;
+  will-change: transform;
+  animation: fara-loader-spin 1200ms linear infinite;
 }
 
 @keyframes fara-loader-spin {
-  to { transform: rotate(360deg); }
+  to { transform: translate3d(0, 0, 0) rotate(360deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-loader__spinner { animation-duration: 1600ms; }
+  .site-loader__spinner { animation-duration: 2000ms; }
 }

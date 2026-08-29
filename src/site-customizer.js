@@ -695,6 +695,7 @@ const refreshSite = async () => {
   // tears the page apart - a footer landing in the middle of another page.
   // Whatever arrived during the run is picked up at the end of it.
   if (applyingRoute) return
+  const isFirstApplication = appliedPath === null
   appliedPath = requestedPath
   applyingRoute = true
   window.dispatchEvent(new CustomEvent('fara:close-menu'))
@@ -718,11 +719,11 @@ const refreshSite = async () => {
       refreshScrollSystems()
     })
   })
-  // Held for every arrival, section routes included. A queued section used to
-  // skip the hold, which let the legacy timelines restore the offset the home
-  // surface had before the visitor left it - so the section scroll started
-  // halfway down the page and the trip up to the top was visible.
-  await holdAtTop(900)
+  // Route returns still need the full hold: their legacy timelines can restore
+  // an old offset while the gate is up. The first Home application has no old
+  // route or scroll position to restore, and its WebGL warm-up already ends at
+  // the top with settled frames, so adding another 900ms only extends loading.
+  if (!isFirstApplication || currentPage.data.key !== 'home') await holdAtTop(900)
   applyingRoute = false
   if (requestedPath !== null) {
     document.documentElement.dataset.faraReady = 'true'

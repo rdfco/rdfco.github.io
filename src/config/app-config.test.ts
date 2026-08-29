@@ -10,7 +10,7 @@ describe('application configuration', () => {
 
   it('keeps the protected Legacy runtime contract explicit', () => {
     expect(appConfig.legacyRuntime.iframeSource).toBe(
-      '/legacy/main/index.html?v=compact-header-20260828-1',
+      '/legacy/main/index.html?v=loading-smooth-20260829-1',
     )
     expect(appConfig.legacyRuntime.readyTimeoutMs).toBe(5000)
     expect(appConfig.legacyRuntime.routeMessage).toBe('fara:set-route')

@@ -85,15 +85,19 @@
         border: 2px solid rgba(0, 200, 120, .22);
         border-top-color: #00c878;
         border-radius: 50%;
-        animation: fara-loader-spin 800ms linear infinite;
+        backface-visibility: hidden;
+        transform: translate3d(0, 0, 0) rotate(0deg);
+        transform-origin: 50% 50%;
+        will-change: transform;
+        animation: fara-loader-spin 1200ms linear infinite;
       }
       @keyframes fara-loader-spin {
-        to { transform: rotate(360deg); }
+        to { transform: translate3d(0, 0, 0) rotate(360deg); }
       }
     </style>
   </head>
   <body>
-      <div id="root"><div class="legacy-shell" data-menu-open="false" data-status="loading" data-route-surface="home"><div class="site-gate" role="status"><div class="site-loader" aria-label="Loading"><span class="site-loader__spinner" aria-hidden="true"></span></div></div><iframe class="legacy-site" title="FARA" src="/legacy/main/index.html?v=compact-header-20260828-1"></iframe><div class="fara-scrollbar" aria-hidden="true"><div class="fara-scrollbar__thumb"></div></div></div></div>
+      <div id="root"><div class="legacy-shell" data-menu-open="false" data-status="loading" data-route-surface="home"><div class="site-gate" role="status"><div class="site-loader" aria-label="Loading"><span class="site-loader__spinner" aria-hidden="true"></span></div></div><iframe class="legacy-site" title="FARA" src="/legacy/main/index.html?v=loading-smooth-20260829-1"></iframe><div class="fara-scrollbar" aria-hidden="true"><div class="fara-scrollbar__thumb"></div></div></div></div>
     <script>
       ;(() => {
         const shell = document.querySelector('.legacy-shell')
