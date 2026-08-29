@@ -143,7 +143,7 @@
   .fara-footer { padding-block: 3rem; }
   .fara-footer-shell { gap: 3rem; }
   .fara-footer-navigation { grid-template-columns: 1fr; gap: 1.25rem; }
-  .fara-footer-legal { padding: 1.5rem 0 0 !important; margin-top: .5rem !important; border-top: 1px solid rgba(17, 17, 17, .16); border-left: 0; }
+  .fara-footer-legal { padding: 1.5rem 0 0 !important; margin-top: .5rem !important; border-top: 1px solid rgba(var(--fara-ink-rgb), .16); border-left: 0; }
   .fara-footer-contact { grid-template-columns: 1fr; gap: 2rem; padding-top: 2rem; }
   .fara-footer-bottom { align-items: flex-start; flex-direction: column; }
   .fara-footer-copyright { white-space: normal; }

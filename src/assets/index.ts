@@ -1,2 +1,11 @@
 export { assetRegistryDocument, assets, assetsById, assetsByPath, getAsset } from './asset-registry'
-export type { AssetApproval, AssetKind, AssetLifecycle, AssetRecord, AssetRegistryDocument, AssetScope } from './asset.types'
+export { brand, icons, pinnedAssetPaths, whoWeAreImages, whoWeServeImages } from './catalog'
+export type {
+  AssetApproval,
+  AssetKind,
+  AssetLifecycle,
+  AssetPlacement,
+  AssetRecord,
+  AssetRegistryDocument,
+  AssetScope,
+} from './asset.types'

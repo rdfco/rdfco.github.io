@@ -1,4 +1,4 @@
-import{a as t,E as a}from"/webgl-color-loader.js?v=colors-20260824-brand-1";
+import{a as t,E as a}from"/runtime/webgl-color-loader.js?v=colors-20260824-brand-1";
 import"./index.Brfk6Bdo.js";
 import"./ScrollTrigger.6qCihK2t.js";
 import"./router.B-sij-_X.js";

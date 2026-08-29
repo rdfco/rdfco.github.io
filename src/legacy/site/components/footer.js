@@ -1,4 +1,5 @@
 import { createElement, removeAstroScope } from '../core/dom.js'
+import { brand } from '../../../assets'
 
 const createIcon = (className, pathData) => {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
@@ -81,7 +82,7 @@ export const renderFooter = siteData => {
 
   const bottom = createElement('div', { className: 'fara-footer-bottom' })
   bottom.append(
-    createImage('fara-footer-wordmark', '/assets/logos/fara-en-logo2-black.png', 'FARA'),
+    createImage('fara-footer-wordmark', brand.wordmark, 'FARA'),
     createElement('p', { className: 'fara-footer-copyright', text: siteData.footer.copyright }),
   )
 

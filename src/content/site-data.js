@@ -1,4 +1,4 @@
-import { navigationItems } from '../legacy/navigation/navigation.js'
+import { navigationItems } from '../legacy/navigation/navigation-items.js'
 import heroContent from './hero.json' with { type: 'json' }
 import industriesContent from './industries.json' with { type: 'json' }
 
@@ -8,10 +8,10 @@ export const siteData = {
     groupName: 'FARA',
     divisionName: 'FARA',
     logoText: 'FARA',
-    // فایل لوگو را داخل public/assets/logos بگذارید و مسیرش را اینجا بنویسید.
+    // فایل لوگو را داخل public/assets/brand بگذارید و مسیرش را اینجا بنویسید.
     // خالی بماند، لوگوی SVG اصلی سایت نمایش داده می‌شود.
-    desktopLogo: '', // مثال: '/assets/logos/fara-logo-desktop.svg'
-    mobileLogo: '',  // مثال: '/assets/logos/fara-logo-mobile.svg'
+    desktopLogo: '', // مثال: '/assets/brand/fara-logo-desktop.svg'
+    mobileLogo: '',  // مثال: '/assets/brand/fara-logo-mobile.svg'
   },
 
   navigation: navigationItems,

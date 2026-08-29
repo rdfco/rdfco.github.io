@@ -1,0 +1,5 @@
+# Generated bundles are written by the build with LF endings. Without this,
+# core.autocrlf makes git report them as modified on every checkout even when
+# their content has not changed.
+public/generated/custom.bundle.css text eol=lf
+public/generated/site-customizer.bundle.js text eol=lf

@@ -1,14 +1,17 @@
-import { data } from './data.js'
+import data from './data.json'
+import { whoWeAreImages } from '../../../assets'
+
+const { partners } = whoWeAreImages
 
 const partnerLogos = [
-  { name: 'Sharjah Research Technology and Innovation Park', src: '/assets/who-we-are/partners/Sharjah.svg' },
-  { name: 'ITONICS', src: '/assets/who-we-are/partners/ITONICS.svg' },
-  { name: 'STATISTA', src: '/assets/who-we-are/partners/STATISTA.svg' },
-  { name: 'GARTNER', src: '/assets/who-we-are/partners/GARTNER.svg' },
-  { name: 'LENS.ORG', src: '/assets/who-we-are/partners/LENS-ORG.svg' },
-  { name: 'TREX', src: '/assets/who-we-are/partners/TREX.svg' },
-  { name: 'LEAN', src: '/assets/who-we-are/partners/LEAN.svg' },
-  { name: 'ALLEANTIA', src: '/assets/who-we-are/partners/ALLEANTIA.svg' },
+  { name: 'Sharjah Research Technology and Innovation Park', src: partners.sharjah },
+  { name: 'ITONICS', src: partners.itonics },
+  { name: 'STATISTA', src: partners.statista },
+  { name: 'GARTNER', src: partners.gartner },
+  { name: 'LENS.ORG', src: partners.lensOrg },
+  { name: 'TREX', src: partners.trex },
+  { name: 'LEAN', src: partners.lean },
+  { name: 'ALLEANTIA', src: partners.alleantia },
 ]
 
 const contentBlocks = [
@@ -96,7 +99,7 @@ const createImageSection = document => {
   const section = document.createElement('section')
   section.className = 'fara-who-image-section'
   const img = document.createElement('img')
-  img.src = '/assets/who-we-are/INSIDER-INTELLIGENCE.webp'
+  img.src = whoWeAreImages.insiderIntelligence
   img.alt = 'Insider Intelligence'
   img.loading = 'lazy'
   section.append(img)
@@ -116,7 +119,7 @@ const createHistory = document => {
   const scrollArea = document.createElement('div')
   scrollArea.className = 'fara-who-history-scroll'
   const image = document.createElement('img')
-  image.src = '/assets/who-we-are/history/History-Light.webp'
+  image.src = whoWeAreImages.historyLight
   image.alt = 'FARA history timeline'
   image.draggable = false
   image.loading = 'lazy'

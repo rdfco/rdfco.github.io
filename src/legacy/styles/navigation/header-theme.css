@@ -1,0 +1,28 @@
+.fara-menu .terms-link a[aria-disabled="true"] { cursor: default; }
+#header:not(.top)[data-theme="light"] .nav-link,
+#header:not(.top)[data-theme="light"] .news-w p,
+#header:not(.top)[data-theme="light"] .menu-cta p { color: var(--fara-white); }
+#header.top .nav-link,
+#header.top .news-w p,
+#header.top .menu-cta p { color: var(--fara-ink); }
+#header.top .navbar,
+#header.top .news-w::before,
+#header.top .menu-cta .dot { background: var(--fara-brand-bright); }
+#header.fara-nav-on-panel .nav-link,
+#header.fara-nav-on-panel .news-w p,
+#header.fara-nav-on-panel .menu-cta p {
+  color: var(--fara-ink) !important;
+}
+#header.fara-nav-on-panel .navbar,
+#header.fara-nav-on-panel .news-w::before,
+#header.fara-nav-on-panel .menu-cta .dot {
+  background: var(--fara-brand-bright) !important;
+}
+
+#header .menu-cta .dot,
+.fara-overlay-close .dot,
+.fara-overlay-close.close .dot {
+  background: var(--fara-brand-bright) !important;
+  box-shadow: none !important;
+}
+

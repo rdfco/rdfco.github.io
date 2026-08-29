@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { build as buildWithEsbuild } from 'esbuild'
 import { cpSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { dirname, resolve } from 'node:path'
 
 const legacyRuntimeFiles = [
   'legacy',
@@ -23,6 +23,23 @@ const pageRoutes = [
   ...Array.from({ length: 21 }, (_, index) => `news/fara-insight-${String(index + 1).padStart(2, '0')}`),
 ]
 
+// Source files may be checked out with CRLF, and the generated bundles are
+// committed, so write them with the LF endings .gitattributes declares for
+// them. Otherwise every checkout reports the bundles as modified.
+const normaliseLineEndings = content => content.split('\r\n').join('\n')
+
+// The protected iframe loads one stylesheet, so the source tree is flattened
+// into it here. Each @import resolves relative to the file that wrote it, the
+// same as a browser would, which lets a stylesheet be split into a folder of
+// parts behind a barrel without the entry point knowing about them.
+function inlineCssImports(filePath) {
+  const directory = dirname(filePath)
+  return readFileSync(filePath, 'utf8').replace(
+    /@import\s+['"]([^'"]+)['"];\s*/g,
+    (_, specifier) => `${inlineCssImports(resolve(directory, specifier))}\n`,
+  )
+}
+
 function copyLegacyRuntime() {
   return {
     name: 'copy-legacy-runtime',
@@ -30,38 +47,40 @@ function copyLegacyRuntime() {
       const sourceRoot = resolve(process.cwd(), 'src')
       const targetRoot = resolve(process.cwd(), 'dist', 'src')
       const legacyIndex = resolve(process.cwd(), 'dist', 'legacy', 'main', 'index.html')
-      const bundledCustomizerPath = '/site-customizer.bundle.js?v=loading-smooth-20260829-1'
-      const bundledStylesPath = '/custom.bundle.css?v=loading-smooth-20260829-1'
+      const distGeneratedRoot = resolve(process.cwd(), 'dist', 'generated')
+      const publicGeneratedRoot = resolve(process.cwd(), 'public', 'generated')
+      const bundledCustomizerPath = '/generated/site-customizer.bundle.js?v=loading-smooth-20260829-1'
+      const bundledStylesPath = '/generated/custom.bundle.css?v=loading-smooth-20260829-1'
       mkdirSync(targetRoot, { recursive: true })
+      mkdirSync(distGeneratedRoot, { recursive: true })
+      mkdirSync(publicGeneratedRoot, { recursive: true })
       legacyRuntimeFiles.forEach(file => {
         cpSync(resolve(sourceRoot, file), resolve(targetRoot, file), { recursive: true })
       })
-      const customCss = readFileSync(resolve(sourceRoot, legacyStylesEntry), 'utf8')
-      const bundledCss = customCss.replace(
-        /@import\s+['"]\.\/([^'"]+)['"];\s*/g,
-        (_, file) => `${readFileSync(resolve(sourceRoot, 'legacy', 'styles', file), 'utf8')}\n`,
-      )
-      writeFileSync(resolve(process.cwd(), 'dist', 'custom.bundle.css'), bundledCss)
-      writeFileSync(resolve(process.cwd(), 'public', 'custom.bundle.css'), bundledCss)
+      // Source files may be checked out with CRLF; the generated bundle is
+      // committed, so write it with the LF endings .gitattributes expects.
+      const bundledCss = normaliseLineEndings(inlineCssImports(resolve(sourceRoot, legacyStylesEntry)))
+      writeFileSync(resolve(distGeneratedRoot, 'custom.bundle.css'), bundledCss)
+      writeFileSync(resolve(publicGeneratedRoot, 'custom.bundle.css'), bundledCss)
       await buildWithEsbuild({
         entryPoints: [resolve(sourceRoot, legacyCustomizerEntry)],
         bundle: true,
         format: 'esm',
         target: 'es2020',
         minify: true,
-        outfile: resolve(process.cwd(), 'dist', 'site-customizer.bundle.js'),
+        outfile: resolve(distGeneratedRoot, 'site-customizer.bundle.js'),
       })
       cpSync(
-        resolve(process.cwd(), 'dist', 'site-customizer.bundle.js'),
-        resolve(process.cwd(), 'public', 'site-customizer.bundle.js'),
+        resolve(distGeneratedRoot, 'site-customizer.bundle.js'),
+        resolve(publicGeneratedRoot, 'site-customizer.bundle.js'),
       )
       const legacyHtml = readFileSync(legacyIndex, 'utf8')
         .replace(
-          /<script type="module" src="\/(?:src\/site-customizer\.js|site-customizer\.bundle\.js\?v=)[^"]*" data-astro-transition-persist="fara-customizer"><\/script>/,
+          /<script type="module" src="\/(?:src\/site-customizer\.js|(?:generated\/)?site-customizer\.bundle\.js\?v=)[^"]*" data-astro-transition-persist="fara-customizer"><\/script>/,
           `<script type="module" src="${bundledCustomizerPath}" data-astro-transition-persist="fara-customizer"></script>`,
         )
         .replace(
-          /<link rel="stylesheet" href="\/(?:src\/custom\.css|custom\.bundle\.css\?v=[^"]+)">/,
+          /<link rel="stylesheet" href="\/(?:src\/custom\.css|(?:generated\/)?custom\.bundle\.css\?v=[^"]+)">/,
           `<link rel="stylesheet" href="${bundledStylesPath}">`,
         )
         .replace(

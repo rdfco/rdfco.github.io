@@ -1,4 +1,5 @@
 import { createElement } from '../core/dom.js'
+import { brand } from '../../../assets'
 
 const setPhraseContent = (element, value) => {
   element.dataset.phrase = value
@@ -31,7 +32,7 @@ const createHeroBrandLockup = () => {
   const logo = createElement('img', {
     className: 'fara-hero-brand-logo',
     attributes: {
-      src: '/assets/logos/fara-logo0-white.svg',
+      src: brand.markWhite,
       alt: '',
       'aria-hidden': 'true',
     },

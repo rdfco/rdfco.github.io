@@ -1,7 +1,7 @@
 import { setText } from './core/dom.js'
 import { renderHero } from './components/hero.js'
 import { renderSections, syncHomeStageHeight } from './components/sections.js'
-import { renderNavigation } from './navigation.js'
+import { renderNavigation } from './apply-navigation.js'
 import { renderFooter } from './components/footer.js'
 
 const updateLegacyContent = siteData => {

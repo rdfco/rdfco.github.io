@@ -2,9 +2,9 @@
 .fara-hidden { display: none !important; }
 .hero .logo:not(.fara-hero-copy) { display: none !important; }
 .hero .fara-hero-copy {
-  --fara-accent-green: #00c878;
-  --fara-hero-title-color: #f4f7f5;
-  --fara-hero-subtitle-color: #fff;
+  --fara-accent-green: var(--fara-brand);
+  --fara-hero-title-color: var(--fara-surface-mist);
+  --fara-hero-subtitle-color: var(--fara-white);
   position: absolute !important;
   inset: 0 !important;
   grid-column: 1 / -1 !important;
@@ -46,11 +46,11 @@
   width: 2px;
   height: clamp(2.55rem, 3.8vw, 4.15rem);
   background: var(--fara-accent-green);
-  box-shadow: 0 0 18px rgba(0, 200, 120, .34);
+  box-shadow: 0 0 18px rgba(var(--fara-brand-rgb), .34);
 }
 .hero .fara-hero-brand-text {
   display: block;
-  font-family: "FARA Gotham";
+  font-family: var(--fara-font-display);
   font-size: clamp(2.3rem, 3.25vw, 4rem);
   font-weight: 300;
   line-height: 1;
@@ -84,7 +84,7 @@
   margin: 0 !important;
   padding: 0 !important;
   transform: none;
-  font-family: "FARA Gotham";
+  font-family: var(--fara-font-display);
   font-size: clamp(1.1rem, 1.55vw, 1.55rem);
   line-height: 1.7;
   letter-spacing: .16em;
@@ -99,5 +99,5 @@
   height: 2px;
   margin: .55rem auto 0;
   background: var(--fara-accent-green);
-  box-shadow: 0 0 16px rgba(0, 200, 120, .32);
+  box-shadow: 0 0 16px rgba(var(--fara-brand-rgb), .32);
 }

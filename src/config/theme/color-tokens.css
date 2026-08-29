@@ -1,0 +1,57 @@
+/*
+ * FARA UI colour tokens.
+ *
+ * Every colour used by the site's CSS is declared once here. Change a value
+ * in this file and it changes everywhere that colour is used, in both the
+ * parent shell and the legacy iframe document.
+ *
+ * This file covers the DOM only. The colours of the WebGL background scene
+ * live in `public/theme/background-colors.js`, because that script has to run
+ * before React and is read by the generated WebGL runtime. The two files
+ * share the emerald `#37b478`; keep them in step by hand.
+ *
+ * The `-rgb` tokens hold bare channel triplets so a colour can be reused at
+ * a different alpha, e.g. `rgba(var(--fara-brand-rgb), .34)`.
+ */
+
+:root {
+  /* Brand */
+  --fara-brand: #00c878;
+  --fara-brand-rgb: 0, 200, 120;
+  --fara-brand-bright: #00f08a;
+  --fara-brand-deep: #008f5c;
+  --fara-emerald: #37b478;
+  --fara-emerald-rgb: 55, 180, 120;
+  --fara-mint: #31f7ad;
+  --fara-teal: #5bd6bd;
+  --fara-teal-deep: #0a635b;
+
+  /* Ink and surface */
+  --fara-ink: #111;
+  --fara-ink-rgb: 17, 17, 17;
+  --fara-black: #000;
+  --fara-white: #fff;
+  --fara-shell: #080a0b;
+  --fara-shell-deep: #07151a;
+  --fara-surface-mist: #f4f7f5;
+  --fara-surface-grey: #f4f4f4;
+  --fara-surface-pale: #eef2f0;
+  --fara-hairline: #d9d9d9;
+  --fara-frost: #d9fff5;
+  --fara-frost-rgb: 217, 255, 245;
+
+  /* Blues */
+  --fara-blue: #2d628c;
+  --fara-blue-rgb: 45, 98, 140;
+  --fara-blue-deep: #163e60;
+  --fara-blue-mid: #668eae;
+  --fara-blue-soft: #78a0bf;
+  --fara-blue-muted: #77a2c3;
+  --fara-blue-dusty: #86a3bb;
+  --fara-blue-pale: #b8c7d3;
+  --fara-blue-mist: #c8d9e7;
+  --fara-blue-haze-rgb: 140, 180, 213;
+
+  /* Typography */
+  --fara-font-display: 'FARA Gotham';
+}
