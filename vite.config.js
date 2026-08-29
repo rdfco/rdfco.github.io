@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { build as buildWithEsbuild } from 'esbuild'
 import { cpSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { dirname, resolve } from 'node:path'
 
 const legacyRuntimeFiles = [
   'legacy',
@@ -23,6 +23,18 @@ const pageRoutes = [
   ...Array.from({ length: 21 }, (_, index) => `news/fara-insight-${String(index + 1).padStart(2, '0')}`),
 ]
 
+// The protected iframe loads one stylesheet, so the source tree is flattened
+// into it here. Each @import resolves relative to the file that wrote it, the
+// same as a browser would, which lets a stylesheet be split into a folder of
+// parts behind a barrel without the entry point knowing about them.
+function inlineCssImports(filePath) {
+  const directory = dirname(filePath)
+  return readFileSync(filePath, 'utf8').replace(
+    /@import\s+['"]([^'"]+)['"];\s*/g,
+    (_, specifier) => `${inlineCssImports(resolve(directory, specifier))}\n`,
+  )
+}
+
 function copyLegacyRuntime() {
   return {
     name: 'copy-legacy-runtime',
@@ -36,11 +48,7 @@ function copyLegacyRuntime() {
       legacyRuntimeFiles.forEach(file => {
         cpSync(resolve(sourceRoot, file), resolve(targetRoot, file), { recursive: true })
       })
-      const customCss = readFileSync(resolve(sourceRoot, legacyStylesEntry), 'utf8')
-      const bundledCss = customCss.replace(
-        /@import\s+['"]([^'"]+)['"];\s*/g,
-        (_, file) => `${readFileSync(resolve(sourceRoot, 'legacy', 'styles', file), 'utf8')}\n`,
-      )
+      const bundledCss = inlineCssImports(resolve(sourceRoot, legacyStylesEntry))
       writeFileSync(resolve(process.cwd(), 'dist', 'custom.bundle.css'), bundledCss)
       writeFileSync(resolve(process.cwd(), 'public', 'custom.bundle.css'), bundledCss)
       await buildWithEsbuild({

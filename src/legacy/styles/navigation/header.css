@@ -1,0 +1,37 @@
+/* Header and overlay-menu states. */
+#header .nav-link,
+#header .news-w p,
+#header .menu-cta p { transition: color 300ms linear; }
+#header .menu-links-w .nav-link,
+#header .menu-cta p {
+  font-size: clamp(.72rem, .78vw, .9rem);
+  letter-spacing: .025rem;
+}
+#header .menu-links-w {
+  display: flex;
+  gap: clamp(1.15rem, 1.8vw, 2.35rem);
+  align-items: center;
+}
+#header .menu-links-w > ul {
+  gap: clamp(1.05rem, 1.65vw, 2.1rem);
+  align-items: center;
+}
+#header nav .navbar {
+  height: .14rem;
+  min-width: clamp(2.65rem, 3.7vw, 4.05rem);
+  background: var(--fara-brand-bright) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+#header .menu-w {
+  transform: scale(1.08);
+  transform-origin: center right;
+}
+#header .menu-links-w .navbar {
+  transform: var(--fara-navbar-transform) !important;
+}
+#header .news-w { display: none !important; }
+#header .nav-link.is-disabled,
+.fara-menu .nav-link.is-disabled { cursor: default; }

@@ -3,16 +3,16 @@
 ## Source ownership
 
 - `src/app`: React entry shell, routing, error boundary, and shell stylesheet.
-- `src/features/legacy-site`: iframe host, readiness gate, parent/iframe messages, and the custom scrollbar.
+- `src/features/legacy-site`: iframe host, split into the component, the route/readiness message bridge, the custom scrollbar, and the footer fixups.
 - `src/content`: canonical shared copy plus content validation and schemas.
-- `src/config`: parent application routes and runtime contract values.
+- `src/config`: parent application routes, runtime contract values, and the route normalisation both sides share.
 - `src/config/theme`: the colour and typography tokens every stylesheet references.
 - `src/assets`: the registry for every public model, texture, image, font, sound, and environment asset.
 - `src/legacy/runtime`: iframe-side orchestration for route, readiness, scroll, and WebGL lifecycle, one module per responsibility behind the `site-customizer.js` entry point.
 - `src/legacy/navigation`: navigation data and the menu interaction lifecycle.
 - `src/legacy/pages`: route-owned renderers and route-specific data.
 - `src/legacy/site`: DOM customization for the legacy Home document.
-- `src/legacy/styles`: source styles used to generate `/custom.bundle.css`.
+- `src/legacy/styles`: source styles used to generate `/custom.bundle.css`; the larger sheets are folders of parts behind a barrel whose import order is the cascade order.
 
 Generated or protected public files are not source modules:
 

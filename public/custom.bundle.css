@@ -89,6 +89,10 @@ optgroup,
   font-synthesis: none;
 }
 
+/*
+ * Header, menu overlay and cursor styles for the legacy document.
+ * Split by concern; the import order is the cascade order, so keep it.
+ */
 /* Header and overlay-menu states. */
 #header .nav-link,
 #header .news-w p,
@@ -126,6 +130,7 @@ optgroup,
 #header .news-w { display: none !important; }
 #header .nav-link.is-disabled,
 .fara-menu .nav-link.is-disabled { cursor: default; }
+
 .fara-menu .fara-menu-hidden { display: none !important; }
 .fara-menu.active {
   z-index: 11;
@@ -321,6 +326,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
 .fara-overlay-close.close .dot:nth-child(2) { top: 0; left: 50%; transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1); }
 .fara-overlay-close.close .dot:nth-child(4) { top: 100%; left: 50%; transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1); }
 
+
 /* The legacy GSAP timeline only captures the five server-rendered items.
    Drive every item from one shared animation so dynamically added entries
    inherit the same menu behaviour automatically. */
@@ -374,6 +380,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
   }
   .fara-menu.active .grid-nav nav::-webkit-scrollbar-thumb { background: var(--fara-brand); }
 }
+
 @keyframes fara-header-item-in {
   from { opacity: 0; visibility: hidden; transform: translate3d(-8px, 0, 0); }
   to { opacity: 1; visibility: visible; transform: translate3d(0, 0, 0); }
@@ -450,6 +457,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
 #header:not(.menu-open) .menu-links-w > ul > li:nth-child(5) { animation-delay: 800ms; }
 #header:not(.menu-open) .menu-links-w > ul > li:nth-child(6) { animation-delay: 900ms; }
 #header:not(.menu-open) .menu-links-w > ul > li:nth-child(7) { animation-delay: 1000ms; }
+
 .fara-menu .terms-link a[aria-disabled="true"] { cursor: default; }
 #header:not(.top)[data-theme="light"] .nav-link,
 #header:not(.top)[data-theme="light"] .news-w p,
@@ -477,6 +485,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
   background: var(--fara-brand-bright) !important;
   box-shadow: none !important;
 }
+
 
 .cursor .circle {
   border-color: var(--fara-brand) !important;
@@ -533,6 +542,11 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
   transform: translateX(-50%);
 }
 
+
+/*
+ * Styles for the standalone route pages rendered inside the legacy document.
+ * Split by surface; the import order is the cascade order, so keep it.
+ */
 .fara-route-page {
   position: relative;
   z-index: 1;
@@ -654,6 +668,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
   height: 1.05rem;
   fill: currentColor;
 }
+
 .fara-route-intro {
   width: min(1180px, calc(100% - 3rem));
   padding: clamp(11rem, 18vw, 17rem) 0 clamp(7rem, 12vw, 12rem);
@@ -677,6 +692,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
   font-size: clamp(.95rem, 1.15vw, 1.1rem);
   line-height: 1.85;
 }
+
 
 .fara-who-page {
   color: var(--fara-ink);
@@ -795,6 +811,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
   height: auto;
   background: var(--fara-white);
 }
+
 .fara-think-page {
   color: var(--fara-ink);
   background: var(--fara-white);
@@ -921,6 +938,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
   font-size: clamp(1rem, 1.2vw, 1.15rem);
   line-height: 1.65;
 }
+
 .fara-who-shell {
   width: min(1180px, calc(100% - 3rem));
   padding: clamp(10rem, 15vw, 15rem) 0 clamp(6rem, 10vw, 10rem);
@@ -1139,6 +1157,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
   border-radius: 50%;
   box-shadow: 0 0 16px rgba(var(--fara-emerald-rgb), .45);
 }
+
 @media (max-width: 74em) {
   .fara-who-partner-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1219,6 +1238,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
     grid-template-columns: 1fr;
   }
 }
+
 
 .hero .configurable-logo { object-fit: contain; }
 .fara-hidden { display: none !important; }

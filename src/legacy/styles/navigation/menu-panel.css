@@ -1,0 +1,194 @@
+.fara-menu .fara-menu-hidden { display: none !important; }
+.fara-menu.active {
+  z-index: 11;
+  display: block !important;
+  width: 100%;
+  height: 100dvh;
+  pointer-events: auto !important;
+  background: var(--fara-white);
+  overflow: auto;
+}
+/* .active is what gave the panel its white ground and its place in the stack.
+   Dropping to is-closing took both away on the first frame of the close - the
+   background went straight to transparent and the z-index fell from 11 to the
+   legacy 9 - so the panel blinked out before any of the staggered fade below
+   had a chance to play. It now holds exactly what .active held and fades its
+   ground out on the overlay's schedule instead. */
+.fara-menu.is-closing {
+  z-index: 11;
+  display: block !important;
+  width: 100%;
+  height: 100dvh;
+  background: var(--fara-white);
+  pointer-events: none !important;
+  overflow: hidden;
+  animation: fara-menu-close-panel 400ms linear var(--fara-close-overlay-delay, 1s) both !important;
+  contain: paint;
+  isolation: isolate;
+  transform: translateZ(0);
+  will-change: opacity;
+}
+@keyframes fara-menu-close-panel {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+.fara-menu.is-closing ul li {
+  animation: fara-menu-close-item 320ms linear var(--fara-close-delay, 0ms) both !important;
+  will-change: opacity;
+}
+@keyframes fara-menu-close-item {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+.fara-menu.active .grid-nav,
+.fara-menu.active .grid-nav nav,
+.fara-menu.active .grid-nav nav ul,
+.fara-menu.active .grid-nav nav a {
+  pointer-events: auto !important;
+}
+.fara-menu .grid-nav {
+  position: relative;
+  z-index: 2;
+}
+/* The grid-terms box is a full-width transparent band, so it stays
+   click-through and lets the overlay underneath take the close. Only the row
+   itself is a target. */
+.fara-menu .grid-terms {
+  position: relative;
+  z-index: 3;
+  pointer-events: none;
+}
+/* The nav column already had this guarantee three times over; the terms row
+   had one unweighted rule, so the legacy base rule that keeps .fara-menu at
+   pointer-events:none until it is .active left privacy policy and terms of use
+   dead in every state the nav links survived. */
+.fara-menu.active .grid-terms .terms-w,
+.fara-menu.active .grid-terms ul,
+.fara-menu.active .grid-terms li,
+.fara-menu.active .grid-terms a {
+  pointer-events: auto !important;
+}
+.fara-menu .grid-terms a { pointer-events: auto; }
+/* The roll-up hover lives on the li, but the anchor inside it is an inline box
+   that only covers its own text run - the rest of the row was not a hit target,
+   so the hover only answered on part of the label. */
+.fara-menu .grid-terms .terms-link a {
+  display: block;
+  width: 100%;
+}
+
+/* The sound/scroll-top bar is fixed at z-index 50, directly over the terms row
+   at the bottom of an open menu (z-index 11). It is click-through at rest, but
+   the legacy ScrollTrigger flips #scroll-top to pointer-events:auto once the
+   visitor is more than one viewport down - so opening the menu from mid-page
+   put a live button on top of the terms row and swallowed its clicks and
+   hover. Nothing in that bar should be reachable while the menu is up. */
+html.fara-menu-open .buttons-container,
+html.fara-menu-open .buttons-container *,
+html.fara-menu-closing .buttons-container,
+html.fara-menu-closing .buttons-container *,
+.fara-menu.is-closing ~ .buttons-container,
+.fara-menu.is-closing ~ .buttons-container * {
+  pointer-events: none !important;
+}
+.fara-menu .grid-nav .nav-link {
+  pointer-events: auto !important;
+  transition: color 400ms linear;
+}
+.fara-menu .grid-nav .nav-link .text-content,
+.fara-menu .grid-nav .nav-link .text-content *,
+.fara-menu .grid-nav .nav-link .svg-container {
+  pointer-events: none;
+}
+.fara-menu .grid-nav .nav-link.active {
+  pointer-events: auto;
+}
+.fara-menu .grid-nav .nav-link .text-content {
+  position: relative;
+  transition: transform 600ms cubic-bezier(.4, 0, .1, 1);
+}
+.fara-menu .grid-nav .nav-link .text-content::before {
+  background: var(--fara-brand) !important;
+}
+.fara-menu .grid-nav .nav-link .svg-container {
+  color: var(--fara-brand) !important;
+  border-color: var(--fara-brand) !important;
+  transition: background 400ms linear, color 400ms linear, transform 400ms cubic-bezier(.4, 0, .1, 1);
+}
+.fara-menu .grid-nav .nav-link .svg-container svg,
+.fara-menu .grid-nav .nav-link .svg-container path {
+  color: var(--fara-brand) !important;
+  fill: var(--fara-brand) !important;
+}
+.fara-menu .grid-nav .nav-link .text-content {
+  text-decoration-color: var(--fara-brand) !important;
+}
+.fara-menu .grid-nav .nav-link .text-content::after,
+.fara-menu .grid-nav .nav-link::after {
+  background: var(--fara-brand) !important;
+  border-color: var(--fara-brand) !important;
+}
+.fara-menu .grid-nav .nav-link:hover { color: var(--fara-brand); }
+.fara-menu .grid-nav .nav-link:hover .text-content { transform: translate3d(0, 0, 0) !important; }
+.fara-menu .grid-nav .nav-link:hover .svg-container { transform: scale3d(1, 1, 1) !important; }
+.fara-menu .grid-nav .nav-link:focus-visible { color: var(--fara-brand); }
+.fara-menu .grid-nav .nav-link:focus-visible .text-content { transform: translate3d(0, 0, 0); }
+.fara-menu .grid-nav .nav-link:focus-visible .svg-container { transform: scale3d(1, 1, 1); }
+html.fara-menu-open,
+html.fara-menu-closing { overflow: hidden; }
+html.fara-sound-disabled .buttons-container .sound { display: none !important; }
+.fara-overlay-close {
+  position: fixed !important;
+  z-index: 13 !important;
+  display: flex !important;
+  align-items: center;
+  padding: 0;
+  pointer-events: auto !important;
+  color: var(--fara-blue);
+  background: transparent;
+  border: 0;
+}
+.fara-overlay-close[hidden] { display: none !important; }
+.fara-overlay-close p {
+  position: relative;
+  width: 4rem;
+  margin: 0;
+  overflow: hidden;
+  color: var(--fara-blue);
+  font-family: var(--fara-font-display);
+  font-size: .75rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: .025rem;
+  text-align: left;
+  text-transform: uppercase;
+}
+.fara-overlay-close p span {
+  display: inline-block;
+  transition: transform 400ms cubic-bezier(.4, 0, .1, 1);
+}
+.fara-overlay-close p span:last-of-type {
+  position: absolute;
+  bottom: -100%;
+  left: 0;
+}
+.fara-overlay-close:hover p span { transform: translate3d(0, -100%, 0); }
+.fara-overlay-close .dots-w {
+  position: relative;
+  width: .75rem;
+  height: .75rem;
+}
+.fara-overlay-close .dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--fara-brand-bright);
+  border-radius: 50%;
+  transition: top 600ms cubic-bezier(.32, .94, .6, 1), left 600ms cubic-bezier(.32, .94, .6, 1), transform 600ms cubic-bezier(.32, .94, .6, 1);
+}
+.fara-overlay-close .dot:nth-child(1) { top: 50%; left: 0; transform: translate3d(-50%, -50%, 0); }
+.fara-overlay-close .dot:nth-child(2) { top: 50%; left: 0; transform: translate3d(-50%, -50%, 0) scale3d(0, 0, 1); }
+.fara-overlay-close .dot:nth-child(3) { top: 50%; left: 100%; transform: translate3d(-50%, -50%, 0); }
+.fara-overlay-close .dot:nth-child(4) { top: 50%; left: 100%; transform: translate3d(-50%, -50%, 0) scale3d(0, 0, 1); }
+.fara-overlay-close.close .dot:nth-child(2) { top: 0; left: 50%; transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1); }
+.fara-overlay-close.close .dot:nth-child(4) { top: 100%; left: 50%; transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1); }
