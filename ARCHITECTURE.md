@@ -7,7 +7,7 @@
 - `src/content`: canonical shared copy plus content validation and schemas.
 - `src/config`: parent application routes, runtime contract values, and the route normalisation both sides share.
 - `src/config/theme`: the colour and typography tokens every stylesheet references.
-- `src/assets`: the registry for every public model, texture, image, font, sound, and environment asset.
+- `src/assets`: the registry for every public asset, plus the named catalog our code loads them through.
 - `src/legacy/runtime`: iframe-side orchestration for route, readiness, scroll, and WebGL lifecycle, one module per responsibility behind the `site-customizer.js` entry point.
 - `src/legacy/navigation`: navigation data and the menu interaction lifecycle.
 - `src/legacy/pages`: route-owned renderers and route-specific data.
@@ -20,7 +20,7 @@ Generated or protected public files are not source modules:
 - `public/legacy/main/index.html`: protected iframe entry document.
 - `public/custom.bundle.css`: generated from `src/legacy/styles/index.css`.
 - `public/site-customizer.bundle.js`: generated from `src/legacy/runtime/site-customizer.js`.
-- `public/background-colors.js`: hand-edited WebGL scene colours; its URL is a runtime contract.
+- `public/theme/background-colors.js`: hand-edited WebGL scene colours; its URL is a runtime contract.
 
 ## Rendering pipeline
 
@@ -40,14 +40,16 @@ The generated legacy runtime owns the production renderer, camera, GSAP timeline
 
 ## Asset pipeline
 
-Every public asset path must be registered in `src/assets/asset-registry.json`. Existing legacy-protected paths are runtime contracts even when their public folder placement appears flat. New source-owned consumers should resolve assets through `src/assets`; direct legacy URLs remain protected until their owning runtime is migrated.
+Every public asset path must be registered in `src/assets/asset-registry.json`. Each record carries a `placement`: `pinned` when a generated or protected file addresses the asset by URL, `movable` when only our own source names it. `npm.cmd run assets:validate` recomputes placement from the real consumers and fails when the registry disagrees, so the boundary cannot go stale.
+
+33 assets are pinned, all of them WebGL inputs under `models/`, `textures/`, `sounds/` and the two top-level webfont families. The other 34 are organised by purpose under `brand/`, `icons/`, `pages/<route>/` and `fonts/gotham/`, and code reaches them by name through `src/assets` rather than by URL. See `public/assets/README.md` and `src/assets/README.md`.
 
 ## Theme
 
 DOM colours and the display font live in `src/config/theme/color-tokens.css`; every
 stylesheet references a token instead of a literal, and `npm.cmd run theme:validate`
 fails the build on any raw colour under `src/**/*.css`. WebGL scene colours stay in
-`public/background-colors.js` because that script must run before React. See
+`public/theme/background-colors.js` because that script must run before React. See
 `src/config/theme/README.md`.
 
 ## Validation gates

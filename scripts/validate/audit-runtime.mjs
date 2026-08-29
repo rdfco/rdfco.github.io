@@ -17,7 +17,7 @@ const assetPaths = new Set()
 for (const file of files) {
   const source = (await readFile(file, 'utf8')).replace(/\/\/.*$/gm, '')
   for (const match of source.matchAll(/https?:\/\/[^\s'"`)]+/g)) violations.push(`${relative('.', file)}: external URL ${match[0]}`)
-  for (const match of source.matchAll(/\/assets\/[^'"`)\s]+|\/Fara-Logo0Small\.png(?:\?[^'"`)\s]+)?/g)) {
+  for (const match of source.matchAll(/\/assets\/[^'"`)\s]+/g)) {
     assetPaths.add(match[0].split('?')[0])
   }
 }

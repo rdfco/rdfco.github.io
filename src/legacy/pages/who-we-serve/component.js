@@ -1,3 +1,5 @@
+import { whoWeServeImages } from '../../../assets'
+
 const approach = [
   'FARA has a collaborative approach to Technology Development. What truly distinguishes FARA is our philosophy of partnership in execution. We do not deliver strategies from a distance and leave implementation to others.',
   'From the very first diagnostic to the final deployment, we work alongside your teams, co-creating, co-developing, and co-owning the journey.',
@@ -125,9 +127,9 @@ const render = document => {
   shell.append(
     createHero(document),
     createIndustries(document),
-    createImage(document, '/assets/who-we-serve/who-we-serve-fara-proven-impact.webp', 'FARA proven impact'),
+    createImage(document, whoWeServeImages.provenImpact, 'FARA proven impact'),
     createBusiness(document),
-    createImage(document, '/assets/who-we-serve/who-we-serve-business-segmentation.webp', 'FARA business segmentation'),
+    createImage(document, whoWeServeImages.businessSegmentation, 'FARA business segmentation'),
   )
   page.append(shell)
   return page

@@ -7,7 +7,7 @@ belong to different systems.
 | File | Controls | Read by |
 | --- | --- | --- |
 | `src/config/theme/color-tokens.css` | every DOM colour and the display font | the parent shell and the legacy iframe stylesheet |
-| `public/background-colors.js` | every WebGL scene colour and its brightness | the generated WebGL runtime, before React boots |
+| `public/theme/background-colors.js` | every WebGL scene colour and its brightness | the generated WebGL runtime, before React boots |
 
 ## Changing a DOM colour
 
@@ -22,9 +22,9 @@ once as a bare channel triplet, so they can be reused as
 
 ## Changing a WebGL colour
 
-Edit `public/background-colors.js`. It stays in `public/` on purpose: the
+Edit `public/theme/background-colors.js`. It stays in `public/` on purpose: the
 generated WebGL runtime reads `window.FARA_BACKGROUND_COLORS`, and the script
-has to be served from the stable `/background-colors.js` URL and execute before
+has to be served from the stable `/theme/background-colors.js` URL and execute before
 React mounts. Moving it would change a runtime contract.
 
 ## The shared colour

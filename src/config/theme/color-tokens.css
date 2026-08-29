@@ -6,7 +6,7 @@
  * parent shell and the legacy iframe document.
  *
  * This file covers the DOM only. The colours of the WebGL background scene
- * live in `public/background-colors.js`, because that script has to run
+ * live in `public/theme/background-colors.js`, because that script has to run
  * before React and is read by the generated WebGL runtime. The two files
  * share the emerald `#37b478`; keep them in step by hand.
  *

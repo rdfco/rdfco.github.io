@@ -78,7 +78,7 @@ No GLB or texture deferral was applied. The generated runtime already marks `ene
 
 ```text
 index.html
--> /background-colors.js
+-> /theme/background-colors.js
 -> React bundle
 -> LegacySite iframe
 -> /legacy/main/index.html
