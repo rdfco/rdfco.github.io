@@ -1,5 +1,5 @@
-import { siteData } from '../compat/siteData.js'
-import { validateSiteData } from '../compat/validateSiteData.js'
+import { siteData } from '../../content/site-data.js'
+import { validateSiteData } from '../../content/validate-site-content.js'
 import { applySiteData } from '../site/apply-site.js'
 import { getNavigationItem } from '../navigation/navigation.js'
 import { setupNavigationEvents } from '../navigation/navigation-events.js'

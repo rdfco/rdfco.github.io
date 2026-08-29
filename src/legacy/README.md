@@ -7,6 +7,5 @@ This directory contains source-owned code that customizes or coordinates the pro
 - `pages/`: route-specific page renderers and data.
 - `site/`: customization of the legacy Home DOM.
 - `styles/`: source of the generated public CSS bundle.
-- `compat/`: temporary compatibility exports; do not add new consumers.
 
 The public URLs `/site-customizer.bundle.js` and `/custom.bundle.css` are stable runtime contracts. `vite.config.js` generates them from this directory. The protected files in `public/_astro` and the legacy WebGL asset URLs are outside the scope of source-only organization.

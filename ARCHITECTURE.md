@@ -12,7 +12,6 @@
 - `src/legacy/pages`: route-owned renderers and route-specific data.
 - `src/legacy/site`: DOM customization for the legacy Home document.
 - `src/legacy/styles`: source styles used to generate `/custom.bundle.css`.
-- `src/legacy/compat`: compatibility exports retained while older imports are phased out.
 
 Generated or protected public files are not source modules:
 
