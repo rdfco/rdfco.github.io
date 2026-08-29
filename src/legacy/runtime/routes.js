@@ -1,4 +1,4 @@
-export { normalizeRoute } from '../../config/normalize-route.js'
+export { normalizeRoute } from '../../config/normalize-route'
 
 // Route tables shared by the scroll, navigation and section-link modules.
 

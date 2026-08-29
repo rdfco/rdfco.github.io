@@ -30,9 +30,11 @@ The build copies `src/legacy` and `src/content` to `dist/src` for traceable runt
 
 ## Navigation and pages
 
-Navigation labels come from `src/legacy/navigation/navigation.js`. DOM application is under `src/legacy/site/navigation.js`, while menu lifecycle is isolated in `src/legacy/navigation/navigation-events.js`.
+Menu lifecycle is isolated in `src/legacy/navigation/navigation-events.js`.
 
-Route renderers and route-specific content stay under `src/legacy/pages/<route>`. Shared legal and news rendering stays under `src/legacy/pages/content`; shared page primitives stay under `src/legacy/pages/shared`.
+Navigation labels come from `src/legacy/navigation/navigation-items.js`; `src/legacy/site/apply-navigation.js` writes them into the legacy DOM.
+
+Every route page is a folder holding its renderer and its data: `src/legacy/pages/<route>/component.js` beside `data.json`. The two document-driven groups follow the same shape - `pages/legal/` and `pages/news/` each hold their renderers and their data. Shared page primitives stay in `pages/shared/`, and all route resolution, including the legal and news routes, lives in `pages/registry.js`.
 
 ## Scroll, camera, and WebGL
 

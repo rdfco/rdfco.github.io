@@ -11,7 +11,10 @@ This directory contains source-owned code that customizes or coordinates the pro
   - `readiness.js`: per-surface readiness, including the WebGL warm-up.
   - `scene.js`, `lenis.js`, `legacy-gsap.js`, `shell-signals.js`, `menu-bridge.js`: the seams onto the generated runtime and the shell.
 - `navigation/`: menu data and interaction lifecycle.
-- `pages/`: route-specific page renderers and data.
+- `pages/`: one folder per route, each holding its renderer and its data.
+  - `<route>/component.js` + `<route>/data.json` for the five route pages.
+  - `legal/` and `news/` for the document-driven routes.
+  - `shared/` for page primitives, `registry.js` for all route resolution.
 - `site/`: customization of the legacy Home DOM.
 - `styles/`: source of the generated public CSS bundle.
 

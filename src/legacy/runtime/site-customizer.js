@@ -1,7 +1,7 @@
 import { siteData } from '../../content/site-data.js'
 import { validateSiteData } from '../../content/validate-site-content.js'
 import { applySiteData } from '../site/apply-site.js'
-import { getNavigationItem } from '../navigation/navigation.js'
+import { getNavigationItem } from '../navigation/navigation-items.js'
 import { setupNavigationEvents } from '../navigation/navigation-events.js'
 import { prepareLegacyGsap, silenceLegacyGsapTargetWarnings } from './legacy-gsap.js'
 import { publishLenis } from './lenis.js'

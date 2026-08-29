@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { appConfig } from '../../config'
-import { normalizeRoute } from '../../config/normalize-route.js'
+import { normalizeRoute } from '../../config/normalize-route'
 
 // The whole conversation between the shell and the legacy iframe: which route
 // the frame should render, when it may be uncovered, and whether its menu is

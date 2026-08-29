@@ -1,4 +1,4 @@
-import { create, createFaraMark } from './elements.js'
+import { create, createFaraMark } from '../shared/elements.js'
 
 const arrow = direction => direction === 'next' ? '→' : '←'
 

@@ -1,4 +1,7 @@
-# BOOT_AFTER
+# Startup optimisation
+
+A record of what was changed to make the site boot faster, and what was
+deliberately left alone. Kept because the constraints it describes still hold.
 
 ## Summary
 

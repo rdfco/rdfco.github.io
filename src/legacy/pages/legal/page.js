@@ -1,4 +1,4 @@
-import { create } from './elements.js'
+import { create } from '../shared/elements.js'
 
 export const renderLegalPage = (document, data) => {
   const shell = create(document, 'section', 'fara-content-shell fara-legal-page')

@@ -24,7 +24,7 @@
       ]
     },
     {
-      "path": "src/legacy/navigation/navigation.js",
+      "path": "src/legacy/navigation/navigation-items.js",
       "ownership": "legacy-protected",
       "consumers": [
         "legacy-runtime",
@@ -67,14 +67,14 @@
       ]
     },
     {
-      "path": "src/legacy/pages/content/data/legal-data.js",
+      "path": "src/legacy/pages/legal/data.js",
       "ownership": "legacy-protected",
       "consumers": [
         "legacy-legal-routes"
       ]
     },
     {
-      "path": "src/legacy/pages/content/data/news-data.js",
+      "path": "src/legacy/pages/news/data.js",
       "ownership": "legacy-protected",
       "consumers": [
         "legacy-news-routes"
