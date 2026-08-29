@@ -18,4 +18,4 @@ This directory contains source-owned code that customizes or coordinates the pro
 - `site/`: customization of the legacy Home DOM.
 - `styles/`: source of the generated public CSS bundle.
 
-The public URLs `/site-customizer.bundle.js` and `/custom.bundle.css` are stable runtime contracts. `vite.config.js` generates them from this directory. The protected files in `public/_astro` and the legacy WebGL asset URLs are outside the scope of source-only organization.
+The public URLs `/generated/site-customizer.bundle.js` and `/generated/custom.bundle.css` are runtime contracts. `vite.config.js` generates them from this directory. The protected files in `public/_astro` and the legacy WebGL asset URLs remain outside source-only organization.

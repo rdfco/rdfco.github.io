@@ -163,7 +163,7 @@ for (const Context of [window.WebGLRenderingContext, window.WebGL2RenderingConte
 }
 /*
  * Two entry scripts import this file under two different URLs - Layout.astro
- * asks for "/webgl-color-loader.js" and WebGL.astro adds a "?v=" cache-busting
+ * asks for "/runtime/webgl-color-loader.js" and WebGL.astro adds a "?v=" cache-busting
  * token - and the browser treats those as two unrelated modules. Each one used
  * to build its own patched Blob copy of the WebGL bundle, so the page ended up
  * running two independent app singletons: Layout's mounted the DOM components

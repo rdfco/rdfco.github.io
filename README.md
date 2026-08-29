@@ -22,7 +22,7 @@ The local site is available at `http://localhost:5173/`.
 - `src/config/`: application and runtime contract configuration.
 - `src/assets/`: typed public-asset registry.
 - `src/legacy/`: source-owned iframe runtime, navigation, pages, DOM customization, and styles.
-- `public/`: everything served from the site root; see `public/README.md` for which files are generated, which are protected, and why.
+- `public/`: folder-only distribution; see `docs/public-runtime.md` for generated, protected, runtime, theme, and asset ownership.
 - `public/assets/`: fonts, models, textures, images and audio; see `public/assets/README.md`.
 - `scripts/`: production validation, browser contracts, visual baselines and archived probes; see `scripts/README.md`.
 - `docs/`: notes that record why something is the way it is.
@@ -31,4 +31,4 @@ Each of those folders carries its own README where the rules are not obvious
 from the code: `public/`, `public/assets/`, `src/assets/`, `src/config/theme/`,
 `src/legacy/`, `src/legacy/navigation/` and `scripts/`.
 
-Do not hand-edit generated files in `public/_astro/`, `public/custom.bundle.css`, `public/site-customizer.bundle.js`, or `dist/`. Change their source-owned entries and run `npm.cmd run verify` to regenerate synchronized outputs.
+Do not hand-edit generated files in `public/_astro/`, `public/generated/`, or `dist/`. Change their source-owned entries and run `npm.cmd run verify` to regenerate synchronized outputs.

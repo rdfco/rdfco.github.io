@@ -6,8 +6,8 @@ const root = process.cwd()
 const read = path => readFileSync(resolve(root, path), 'utf8')
 
 const checks = [
-  ['custom CSS bundle', 'dist/custom.bundle.css', 'public/custom.bundle.css'],
-  ['site customizer bundle', 'dist/site-customizer.bundle.js', 'public/site-customizer.bundle.js'],
+  ['custom CSS bundle', 'dist/generated/custom.bundle.css', 'public/generated/custom.bundle.css'],
+  ['site customizer bundle', 'dist/generated/site-customizer.bundle.js', 'public/generated/site-customizer.bundle.js'],
 ]
 
 const failures = []
@@ -23,8 +23,8 @@ checks.forEach(([label, distPath, publicPath]) => {
 const legacyHtml = read('public/legacy/main/index.html')
 const requiredVersion = 'loading-smooth-20260829-1'
 const requiredReferences = [
-  `/custom.bundle.css?v=${requiredVersion}`,
-  `/site-customizer.bundle.js?v=${requiredVersion}`,
+  `/generated/custom.bundle.css?v=${requiredVersion}`,
+  `/generated/site-customizer.bundle.js?v=${requiredVersion}`,
 ]
 
 requiredReferences.forEach(reference => {

@@ -12,14 +12,15 @@
 - `src/legacy/navigation`: navigation data and the menu interaction lifecycle.
 - `src/legacy/pages`: route-owned renderers and route-specific data.
 - `src/legacy/site`: DOM customization for the legacy Home document.
-- `src/legacy/styles`: source styles used to generate `/custom.bundle.css`; the larger sheets are folders of parts behind a barrel whose import order is the cascade order.
+- `src/legacy/styles`: source styles used to generate `/generated/custom.bundle.css`; the larger sheets are folders of parts behind a barrel whose import order is the cascade order.
 
 Generated or protected public files are not source modules:
 
 - `public/_astro`: protected generated Astro/WebGL runtime.
 - `public/legacy/main/index.html`: protected iframe entry document.
-- `public/custom.bundle.css`: generated from `src/legacy/styles/index.css`.
-- `public/site-customizer.bundle.js`: generated from `src/legacy/runtime/site-customizer.js`.
+- `public/generated/custom.bundle.css`: generated from `src/legacy/styles/index.css`.
+- `public/generated/site-customizer.bundle.js`: generated from `src/legacy/runtime/site-customizer.js`.
+- `public/runtime`: source-owned loaders used by the protected iframe and generated WebGL modules.
 - `public/theme/background-colors.js`: hand-edited WebGL scene colours; its URL is a runtime contract.
 
 ## Rendering pipeline

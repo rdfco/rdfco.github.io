@@ -27,7 +27,7 @@ No WebGL shaders, GSAP timelines, camera curves, scroll calculations, GLB transf
   - The 5 second timer no longer marks the iframe as failed while route sync is still alive.
   - Readiness still depends on the real `fara:ready` message from the iframe.
 
-- `public/route-bridge.js`
+- `public/runtime/route-bridge.js`
   - Added a missing route fallback for menu links when `fara:menu-closed` is not emitted.
   - Ensures the menu final state is closed before posting `fara:navigate`.
 
@@ -85,7 +85,7 @@ index.html
 -> React bundle
 -> LegacySite iframe
 -> /legacy/main/index.html
--> /route-bridge.js
+-> /runtime/route-bridge.js
 -> legacy CSS
 -> /_astro/WebGL...
 -> /_astro/GlobalApp...
@@ -137,4 +137,3 @@ These were audited but not changed:
 - Shared WebP textures: used by shader/material paths active in the first WebGL scene.
 - `hero.glb`: required by the first energy scene.
 - `energy-chapter.glb`: below-fold/lazy chapter asset, but deferring it further can create visible fast-scroll/chapter pop-in.
-

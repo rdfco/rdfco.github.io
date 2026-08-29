@@ -77,8 +77,8 @@ const readAll = async files => {
 const pinnedConsumers = await readAll([
   ...(await walk('public/_astro', name => /\.(?:js|css)$/.test(name))),
   'public/legacy/main/index.html',
-  'public/webgl-color-loader.js',
-  'public/route-bridge.js',
+  'public/runtime/webgl-color-loader.js',
+  'public/runtime/route-bridge.js',
 ])
 
 for (const asset of registry.assets) {

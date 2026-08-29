@@ -1,9 +1,10 @@
 # public/
 
 Everything here is served from the site root: `public/x/y.png` is `/x/y.png`.
-That makes a file's **path its public URL**, which is why most of this folder
-cannot be reorganised — the URLs are referenced from generated files that are
-not ours to edit.
+That makes a file's **path its public URL**. Reorganising this folder therefore
+requires an atomic URL migration: move the file, update every generated and
+source-owned reference, rebuild, and pass the network/browser contracts in the
+same change.
 
 Three kinds of thing live here. Only one of them is yours to change.
 
@@ -18,8 +19,8 @@ Three kinds of thing live here. Only one of them is yours to change.
 
 | Path | Generated from |
 | --- | --- |
-| `custom.bundle.css` | `src/legacy/styles/index.css` and everything it imports |
-| `site-customizer.bundle.js` | `src/legacy/runtime/site-customizer.js` and everything it imports |
+| `generated/custom.bundle.css` | `src/legacy/styles/index.css` and everything it imports |
+| `generated/site-customizer.bundle.js` | `src/legacy/runtime/site-customizer.js` and everything it imports |
 
 `vite.config.js` writes both, to `dist/` and to here, on every build.
 `npm run public:bundles` fails if the two copies drift apart.
@@ -30,12 +31,13 @@ Three kinds of thing live here. Only one of them is yours to change.
 | --- | --- |
 | `_astro/` | the generated WebGL runtime. The protected iframe document imports these files by their exact hashed filenames. |
 | `legacy/main/index.html` | the iframe entry document. Its URL is in `src/config/app-config.ts`, and the build rewrites two of its tags in `dist/`. |
-| `webgl-color-loader.js` | hand-written, but `_astro/Layout.astro…js` and `_astro/WebGL.astro…js` import it as `/webgl-color-loader.js`. |
-| `route-bridge.js` | hand-written, but `legacy/main/index.html` loads it as `/route-bridge.js` before the Astro runtime. |
+| `runtime/webgl-color-loader.js` | hand-written; the two generated WebGL entry modules import it by this stable URL. |
+| `runtime/route-bridge.js` | hand-written; `legacy/main/index.html` loads it before the Astro runtime. |
 
-Both loaders are real source you may need to read or change — just never rename
-or move them. Changing what is inside them is fine; changing where they are is
-not.
+The root of `public/` intentionally contains folders only: `_astro`, `assets`,
+`generated`, `legacy`, `runtime`, and `theme`. Runtime paths must still be
+updated through their owning HTML/generated entry references, never by moving
+a file in isolation.
 
 ## Adding a file
 
