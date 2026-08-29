@@ -1,4 +1,4 @@
-import { navigationItems } from '../navbar/navigation.js'
+import { navigationItems } from '../legacy/navigation/navigation.js'
 import heroContent from './hero.json' with { type: 'json' }
 import industriesContent from './industries.json' with { type: 'json' }
 

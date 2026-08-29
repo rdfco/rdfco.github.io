@@ -1,8 +1,6 @@
 # FARA website
 
-The production FARA website runs from the repository root with React and Vite.
-Public routes render the protected legacy FARA experience through `LegacySite`,
-with source-owned navigation, content customization, and the car-scene overlay.
+The production FARA website runs from the repository root with React and Vite. Public routes render the protected legacy FARA WebGL experience through `LegacySite`, with source-owned routing, content, navigation, and loading coordination.
 
 ## Local development
 
@@ -18,14 +16,14 @@ The local site is available at `http://localhost:5173/`.
 
 ## Active code
 
-- `src/app/`: application entry, routing, and error boundary.
-- `src/features/legacy-site/`: production iframe bridge and route sync.
-- `src/features/car-scene/`: production Three.js car overlay, configuration, and styles.
+- `src/app/`: application entry, routing, error boundary, and shell styles.
+- `src/features/legacy-site/`: iframe bridge, loading gate, route sync, and parent scrollbar.
 - `src/content/`: validated shared site content.
-- `src/js/`, `src/navbar/`, `src/styles/`: source-owned legacy customization.
-- `public/legacy/`, `public/_astro/`: protected legacy runtime.
-- `public/assets/`: production fonts, models, textures, and audio.
-- `scripts/`: production validation and browser checks.
+- `src/config/`: application and runtime contract configuration.
+- `src/assets/`: typed public-asset registry.
+- `src/legacy/`: source-owned iframe runtime, navigation, pages, DOM customization, and styles.
+- `public/legacy/`, `public/_astro/`: protected legacy distribution.
+- `public/assets/`: production fonts, models, textures, images, and audio.
+- `scripts/`: production validation and browser contracts.
 
-Do not hand-edit generated files in `public/_astro/` or `dist/`. Run
-`npm.cmd run verify` and the browser contract after production changes.
+Do not hand-edit generated files in `public/_astro/`, `public/custom.bundle.css`, `public/site-customizer.bundle.js`, or `dist/`. Change their source-owned entries and run `npm.cmd run verify` to regenerate synchronized outputs.

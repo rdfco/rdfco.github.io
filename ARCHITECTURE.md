@@ -1,51 +1,54 @@
 # FARA Runtime Architecture
 
-## Folder Structure
+## Source ownership
 
-- `src/app`: React shell, routing, and error boundary.
-- `src/features/legacy-site`: production iframe host for the legacy WebGL runtime.
-- `src/site-customizer.js`: iframe-side route, content, scroll, and runtime refresh bridge.
-- `src/navbar`: navigation data, routed page renderers, menu and navbar interaction lifecycle.
-- `src/features/car-scene`: isolated React Three Fiber overlay feature, kept separate from the production legacy WebGL scene.
-- `src/assets`: centralized registry for local models, textures, fonts, sounds, and environment assets.
+- `src/app`: React entry shell, routing, error boundary, and shell stylesheet.
+- `src/features/legacy-site`: iframe host, readiness gate, parent/iframe messages, and the custom scrollbar.
+- `src/content`: canonical shared copy plus content validation and schemas.
+- `src/config`: parent application routes and runtime contract values.
+- `src/assets`: the registry for every public model, texture, image, font, sound, and environment asset.
+- `src/legacy/runtime`: iframe-side orchestration for route, readiness, scroll, and WebGL lifecycle.
+- `src/legacy/navigation`: navigation data and the menu interaction lifecycle.
+- `src/legacy/pages`: route-owned renderers and route-specific data.
+- `src/legacy/site`: DOM customization for the legacy Home document.
+- `src/legacy/styles`: source styles used to generate `/custom.bundle.css`.
+- `src/legacy/compat`: compatibility exports retained while older imports are phased out.
 
-## Rendering Pipeline
+Generated or protected public files are not source modules:
 
-The React app renders `LegacySite`, which loads `/legacy/main/index.html` in a sandboxed iframe. The iframe imports copied runtime files from `src/` during dev and from `dist/src/` after build. Production visual behavior is still owned by the legacy runtime; React acts as the route shell and readiness gate.
+- `public/_astro`: protected generated Astro/WebGL runtime.
+- `public/legacy/main/index.html`: protected iframe entry document.
+- `public/custom.bundle.css`: generated from `src/legacy/styles/index.css`.
+- `public/site-customizer.bundle.js`: generated from `src/legacy/runtime/site-customizer.js`.
 
-## Navigation And Menu Flow
+## Rendering pipeline
 
-Navigation labels come from `src/navbar/navigation.js` and are applied through `src/js/navigation.js`. Menu and navbar interaction state is centralized in `src/navbar/navigation-events.js`.
+The React app renders `LegacySite`, which loads `/legacy/main/index.html` in an iframe. The parent owns application routing and the loading gate. The iframe owns the production legacy DOM, WebGL renderer, Lenis instance, menu animation, and route-page rendering.
 
-The menu state machine prevents duplicate route requests and overlapping animations:
+The build copies `src/legacy` and `src/content` to `dist/src` for traceable runtime sources. It also bundles the runtime and styles to the stable public URLs expected by the protected iframe. Reorganizing source files must not change those public URLs.
 
-- `closed`: menu can open.
-- `opening`: menu is entering the open state.
-- `open`: menu links can request navigation.
-- `closing`: close animation is running; repeated clicks are ignored.
-- `revealing`: navbar items are revealing after close; opening is blocked.
-- `navigating`: route message has been sent to the React shell.
+## Navigation and pages
 
-Menu route clicks call the existing close animation first. Navigation is posted only after the close and navbar reveal lifecycle completes.
+Navigation labels come from `src/legacy/navigation/navigation.js`. DOM application is under `src/legacy/site/navigation.js`, while menu lifecycle is isolated in `src/legacy/navigation/navigation-events.js`.
 
-## Scroll And Camera Flow
+Route renderers and route-specific content stay under `src/legacy/pages/<route>`. Shared legal and news rendering stays under `src/legacy/pages/content`; shared page primitives stay under `src/legacy/pages/shared`.
 
-The production WebGL scroll and camera logic remains inside the legacy runtime. React-side 3D overlay scroll sampling is isolated in `src/features/car-scene/scroll`, while camera presets and transitions live in `src/features/car-scene/camera` and `src/features/car-scene/config`.
+## Scroll, camera, and WebGL
 
-## GSAP Flow
+The generated legacy runtime owns the production renderer, camera, GSAP timelines, and Lenis scroll engine. Source organization work must not add another scroll driver, pause the shared ticker, rename generated `_astro` files, or move protected WebGL assets without a separately validated URL migration.
 
-Legacy GSAP timelines remain in the legacy runtime and generated assets. Custom menu/navbar coordination uses CSS animation events in `src/navbar/navigation-events.js` so the app does not duplicate GSAP timeline code or guess route timing.
+## Asset pipeline
 
-## Model Loading Pipeline
+Every public asset path must be registered in `src/assets/asset-registry.json`. Existing legacy-protected paths are runtime contracts even when their public folder placement appears flat. New source-owned consumers should resolve assets through `src/assets`; direct legacy URLs remain protected until their owning runtime is migrated.
 
-All asset paths must be registered in `src/assets/asset-registry.json`. Feature modules import assets by id through `src/assets`, then pass paths through local config. New models should be added to the registry first, then referenced from the owning feature config.
+## Validation gates
 
-## Extending Chapters
+After any runtime or organization change, run:
 
-Future chapters should add configuration before behavior:
+1. `npm.cmd run verify`
+2. `npm.cmd run browser:contract`
+3. `npm.cmd run browser:home-lifecycle`
+4. `npm.cmd run browser:menu-performance`
+5. `npm.cmd run browser:responsive-interactions`
 
-- Register assets in `src/assets/asset-registry.json`.
-- Add camera presets under the owning feature `camera/`.
-- Add scroll ranges under `scroll/` or `config/scroll.js`.
-- Add material and light presets under `materials/` and `lights/`.
-- Keep debug helpers behind the feature debug flag.
+Visual or performance evidence must be written outside the repository.

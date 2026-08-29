@@ -5,14 +5,12 @@ import { cpSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 const legacyRuntimeFiles = [
-  'site-customizer.js',
-  'custom.css',
-  'data',
+  'legacy',
   'content',
-  'js',
-  'styles',
-  'navbar',
 ]
+
+const legacyCustomizerEntry = 'legacy/runtime/site-customizer.js'
+const legacyStylesEntry = 'legacy/styles/index.css'
 
 const pageRoutes = [
   'knowing-fara',
@@ -38,15 +36,15 @@ function copyLegacyRuntime() {
       legacyRuntimeFiles.forEach(file => {
         cpSync(resolve(sourceRoot, file), resolve(targetRoot, file), { recursive: true })
       })
-      const customCss = readFileSync(resolve(sourceRoot, 'custom.css'), 'utf8')
+      const customCss = readFileSync(resolve(sourceRoot, legacyStylesEntry), 'utf8')
       const bundledCss = customCss.replace(
-        /@import\s+['"]\.\/styles\/([^'"]+)['"];\s*/g,
-        (_, file) => `${readFileSync(resolve(sourceRoot, 'styles', file), 'utf8')}\n`,
+        /@import\s+['"]\.\/([^'"]+)['"];\s*/g,
+        (_, file) => `${readFileSync(resolve(sourceRoot, 'legacy', 'styles', file), 'utf8')}\n`,
       )
       writeFileSync(resolve(process.cwd(), 'dist', 'custom.bundle.css'), bundledCss)
       writeFileSync(resolve(process.cwd(), 'public', 'custom.bundle.css'), bundledCss)
       await buildWithEsbuild({
-        entryPoints: [resolve(sourceRoot, 'site-customizer.js')],
+        entryPoints: [resolve(sourceRoot, legacyCustomizerEntry)],
         bundle: true,
         format: 'esm',
         target: 'es2020',

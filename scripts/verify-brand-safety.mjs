@@ -12,8 +12,8 @@ import { extname, join } from 'node:path'
 
 const required = [
   ['dist/index.html', /src="\/assets\/index-[^"]+\.js"/],
-  ['dist/src/site-customizer.js', /dataset\.faraReady = 'true'/],
-  ['dist/src/custom.css', /html:not\(\[data-fara-ready='true'\]\) body/],
+  ['dist/src/legacy/runtime/site-customizer.js', /dataset\.faraReady = 'true'/],
+  ['dist/src/legacy/styles/index.css', /html:not\(\[data-fara-ready='true'\]\) body/],
 ]
 
 for (const [file, pattern] of required) {

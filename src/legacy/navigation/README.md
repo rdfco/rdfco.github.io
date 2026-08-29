@@ -14,4 +14,4 @@ This folder owns route labels, routed page lookup, and the iframe-side menu/navb
 
 ## How To Modify
 
-Add navigation items in `navigation.js`; `src/js/navigation.js` applies labels and animation order variables to the legacy DOM. Keep animation timing in CSS and lifecycle coordination in `navigation-events.js`.
+Add navigation items in `navigation.js`; `src/legacy/site/navigation.js` applies labels and animation order variables to the legacy DOM. Keep animation timing in `src/legacy/styles/navigation.css` and lifecycle coordination in `navigation-events.js`.

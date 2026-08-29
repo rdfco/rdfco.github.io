@@ -24,7 +24,7 @@
       ]
     },
     {
-      "path": "src/navbar/navigation.js",
+      "path": "src/legacy/navigation/navigation.js",
       "ownership": "legacy-protected",
       "consumers": [
         "legacy-runtime",
@@ -32,49 +32,49 @@
       ]
     },
     {
-      "path": "src/navbar/pages/home/data.json",
+      "path": "src/legacy/pages/home/data.json",
       "ownership": "legacy-protected",
       "consumers": [
         "legacy-home-route"
       ]
     },
     {
-      "path": "src/navbar/pages/who-we-are/data.json",
+      "path": "src/legacy/pages/who-we-are/data.json",
       "ownership": "legacy-protected",
       "consumers": [
         "who-we-are-route"
       ]
     },
     {
-      "path": "src/navbar/pages/how-we-help/data.json",
+      "path": "src/legacy/pages/how-we-help/data.json",
       "ownership": "legacy-protected",
       "consumers": [
         "legacy-consulting-route"
       ]
     },
     {
-      "path": "src/navbar/pages/who-we-serve/data.json",
+      "path": "src/legacy/pages/who-we-serve/data.json",
       "ownership": "legacy-protected",
       "consumers": [
         "legacy-industries-route"
       ]
     },
     {
-      "path": "src/navbar/pages/think-together/data.json",
+      "path": "src/legacy/pages/think-together/data.json",
       "ownership": "legacy-protected",
       "consumers": [
         "legacy-think-together-route"
       ]
     },
     {
-      "path": "src/navbar/pages/content/data/legal-data.js",
+      "path": "src/legacy/pages/content/data/legal-data.js",
       "ownership": "legacy-protected",
       "consumers": [
         "legacy-legal-routes"
       ]
     },
     {
-      "path": "src/navbar/pages/content/data/news-data.js",
+      "path": "src/legacy/pages/content/data/news-data.js",
       "ownership": "legacy-protected",
       "consumers": [
         "legacy-news-routes"

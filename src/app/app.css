@@ -1,0 +1,10 @@
+@import '../legacy/styles/fonts.css';
+@import '../legacy/styles/route-pages.css';
+@import '../legacy/styles/content-pages.css';
+@import '../features/legacy-site/legacy-site.css';
+
+html,
+body,
+#root {
+  background: #080a0b;
+}

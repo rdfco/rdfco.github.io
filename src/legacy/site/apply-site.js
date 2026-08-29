@@ -63,7 +63,7 @@ export const applySiteData = async (siteData, currentPage) => {
   if (currentPage.data.key === 'home') {
     renderHomePage(currentPage)
   } else {
-    const { renderCurrentPage } = await import('../navbar/pages/render-page.js')
+    const { renderCurrentPage } = await import('../pages/render-page.js')
     renderCurrentPage(currentPage)
   }
   // Keep the legacy footer layout intact; it is customized separately.

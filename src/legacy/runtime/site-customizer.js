@@ -1,10 +1,10 @@
-import { siteData } from './data/siteData.js'
-import { validateSiteData } from './data/validateSiteData.js'
-import { applySiteData } from './js/apply-site.js'
-import { getNavigationItem } from './navbar/navigation.js'
-import { setupNavigationEvents } from './navbar/navigation-events.js'
-import './styles/route-pages.css'
-import './styles/content-pages.css'
+import { siteData } from '../compat/siteData.js'
+import { validateSiteData } from '../compat/validateSiteData.js'
+import { applySiteData } from '../site/apply-site.js'
+import { getNavigationItem } from '../navigation/navigation.js'
+import { setupNavigationEvents } from '../navigation/navigation-events.js'
+import '../styles/route-pages.css'
+import '../styles/content-pages.css'
 
 validateSiteData(siteData)
 
@@ -665,7 +665,7 @@ const getCurrentPage = async (path, navigationItem) => {
     }
   }
 
-  const { getPageForPath } = await import('./navbar/pages/registry.js')
+  const { getPageForPath } = await import('../pages/registry.js')
   const currentPage = getPageForPath(path, navigationItem.key)
   currentPage.data.href ||= navigationItem.href
   return currentPage
