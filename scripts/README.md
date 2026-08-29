@@ -29,6 +29,7 @@ first and point `SITE_URL` at it if it is not on the script's default port.
 | `verify-home-lifecycle.mjs` | `browser:home-lifecycle` |
 | `verify-menu-performance.mjs` | `browser:menu-performance` |
 | `verify-responsive-interactions.mjs` | `browser:responsive-interactions` |
+| `verify-network.mjs` | `browser:network` |
 
 `verify-legal-navigation.mjs`, `verify-background-colors.mjs` and
 `navigation-reveal.spec.mjs` are run by hand when their area changes.

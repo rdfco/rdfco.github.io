@@ -59,5 +59,6 @@ After any runtime or organization change, run:
 3. `npm.cmd run browser:home-lifecycle`
 4. `npm.cmd run browser:menu-performance`
 5. `npm.cmd run browser:responsive-interactions`
+6. `npm.cmd run browser:network`
 
 Visual or performance evidence must be written outside the repository.

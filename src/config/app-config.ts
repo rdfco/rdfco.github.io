@@ -11,6 +11,19 @@ export const appConfig = {
       '/news',
       '/news/:slug',
     ],
+    // Older public URLs, and the three section labels that used to be pages of
+    // their own. Followed as a chain: /knowing-fara -> /who-we-are -> /. The
+    // router redirects these, and `resolveInitialRoute` follows the same chain
+    // before the first render so a deep link never hydrates against markup the
+    // router is about to replace.
+    redirects: {
+      '/knowing-fara': '/who-we-are',
+      '/consulting': '/how-we-help',
+      '/industries': '/who-we-serve',
+      '/who-we-are': '/',
+      '/how-we-help': '/',
+      '/who-we-serve': '/',
+    },
     fallback: '/',
   },
   legacyRuntime: {

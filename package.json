@@ -24,6 +24,7 @@
     "browser:menu-performance": "node scripts/browser/verify-menu-performance.mjs",
     "browser:home-lifecycle": "node scripts/browser/verify-home-lifecycle.mjs",
     "browser:responsive-interactions": "node scripts/browser/verify-responsive-interactions.mjs",
+    "browser:network": "node scripts/browser/verify-network.mjs",
     "visual:baseline": "node scripts/visual/capture-baseline.mjs",
     "visual:compare": "node scripts/visual/compare-baseline.mjs",
     "visual:contract": "npm run build && node scripts/visual/capture-contract.mjs",
