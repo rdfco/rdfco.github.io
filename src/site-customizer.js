@@ -587,8 +587,11 @@ const warmHomeWebGL = async () => {
     }
 
     // Compilation alone does not initialize scroll-activated render targets
-    // and chapter timelines. Exercise the full current WebGL page in a small
-    // number of deterministic jumps while it is still covered by the loader.
+    // and chapter timelines. Exercise each real chapter start, midpoint and
+    // end in both directions while the loader still covers the frame. The old
+    // global fractional sweep added 23 stops regardless of chapter ownership;
+    // chapter-owned samples warm the same states without holding the first
+    // reveal for hundreds of redundant frames.
     const maxScroll = Math.max(
       0,
       Math.min(
@@ -598,10 +601,12 @@ const warmHomeWebGL = async () => {
     )
     const warmPoints = new Set([0, maxScroll])
     chapters.forEach(chapter => {
-      warmPoints.add(chapter.scrollRange?.start || 0)
-      warmPoints.add(chapter.scrollRange?.end || 0)
+      const start = chapter.scrollRange?.start || 0
+      const end = chapter.scrollRange?.end || 0
+      warmPoints.add(start)
+      warmPoints.add(start + (end - start) / 2)
+      warmPoints.add(end)
     })
-    for (let index = 1; index < 24; index += 1) warmPoints.add(maxScroll * (index / 24))
 
     const nextFrame = () => new Promise(resolve => window.requestAnimationFrame(resolve))
     const sortedWarmPoints = [...warmPoints].sort((a, b) => a - b)
@@ -612,7 +617,6 @@ const warmHomeWebGL = async () => {
     for (const top of [...sortedWarmPoints, ...sortedWarmPoints.toReversed()]) {
       getLenis()?.scrollTo?.(top, { immediate: true, force: true })
       window.ScrollTrigger?.update?.(true)
-      await nextFrame()
       await nextFrame()
       await nextFrame()
     }
