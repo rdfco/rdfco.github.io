@@ -23,6 +23,6 @@ select,
 textarea,
 optgroup,
 * {
-  font-family: "FARA Gotham" !important;
+  font-family: var(--fara-font-display) !important;
   font-synthesis: none;
 }

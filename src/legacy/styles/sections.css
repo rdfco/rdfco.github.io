@@ -9,7 +9,7 @@ main #grid { min-height: 7400px; }
   display: flex;
   flex-direction: column;
   gap: 620px;
-  color: #fff;
+  color: var(--fara-white);
 }
 .fara-row { width: 100%; }
 .fara-about {
@@ -22,8 +22,8 @@ main #grid { min-height: 7400px; }
   position: relative;
   z-index: 1;
   isolation: isolate;
-  color: #fff;
-  font-family: "FARA Gotham";
+  color: var(--fara-white);
+  font-family: var(--fara-font-display);
   font-size: clamp(4.1rem, 5.2vw, 6.1rem);
   font-weight: 300;
   line-height: 1.02;
@@ -39,9 +39,9 @@ main #grid { min-height: 7400px; }
   width: 1.5em;
   aspect-ratio: 1;
   content: "";
-  background: rgba(0, 200, 120, .82);
+  background: rgba(var(--fara-brand-rgb), .82);
   border-radius: 50%;
-  box-shadow: 0 0 36px rgba(0, 200, 120, .28);
+  box-shadow: 0 0 36px rgba(var(--fara-brand-rgb), .28);
 }
 .fara-about .about-copy {
   min-height: 13rem;
@@ -51,14 +51,14 @@ main #grid { min-height: 7400px; }
 .fara-row > header { margin-bottom: 3.5rem; }
 .fara-row > header h2,
 .fara-card h3 {
-  color: #fff;
-  font-family: "FARA Gotham";
+  color: var(--fara-white);
+  font-family: var(--fara-font-display);
   font-weight: 300;
 }
 .fara-row > header h2 { font-size: clamp(2.25rem, 4vw, 4.5rem); line-height: 1; }
 .fara-row > header p {
   margin-top: .8rem;
-  font-family: "FARA Gotham";
+  font-family: var(--fara-font-display);
   font-size: clamp(1rem, 1.6vw, 1.5rem);
   line-height: 1.5;
 }
@@ -94,9 +94,9 @@ main #grid { min-height: 7400px; }
   width: 1.5em;
   aspect-ratio: 1;
   content: "";
-  background: rgba(0, 200, 120, .82);
+  background: rgba(var(--fara-brand-rgb), .82);
   border-radius: 50%;
-  box-shadow: 0 0 36px rgba(0, 200, 120, .28);
+  box-shadow: 0 0 36px rgba(var(--fara-brand-rgb), .28);
 }
 .fara-solutions > header p,
 .fara-ai > header p,
@@ -147,7 +147,7 @@ main #grid { min-height: 7400px; }
   width: calc(100% - clamp(2.55rem, 3.2vw, 3.45rem));
   height: 2px;
   content: "";
-  background: rgba(140, 180, 213, .7);
+  background: rgba(var(--fara-blue-haze-rgb), .7);
 }
 .solutions-grid .fara-card p { font-size: clamp(.78rem, .88vw, .92rem); line-height: 1.65; }
 .fara-ai {

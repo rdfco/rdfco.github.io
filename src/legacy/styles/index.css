@@ -2,6 +2,7 @@
  * FARA site styles entry point.
  * Keep this import order: later files contain intentional responsive overrides.
  */
+@import '../../config/theme/color-tokens.css';
 @import './fonts.css';
 @import './navigation.css';
 @import './route-pages.css';

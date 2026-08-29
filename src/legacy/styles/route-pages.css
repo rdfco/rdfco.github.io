@@ -2,12 +2,12 @@
   position: relative;
   z-index: 1;
   min-height: 100vh;
-  background: #d9d9d9;
+  background: var(--fara-hairline);
 }
 .fara-react-shell {
   min-height: 100vh;
-  color: #111;
-  background: #fff;
+  color: var(--fara-ink);
+  background: var(--fara-white);
 }
 .fara-react-header {
   position: fixed;
@@ -18,8 +18,8 @@
   width: min(1180px, calc(100% - 3rem));
   align-items: center;
   justify-content: space-between;
-  color: #111;
-  font-family: "FARA Gotham";
+  color: var(--fara-ink);
+  font-family: var(--fara-font-display);
   transform: translateX(-50%);
 }
 .fara-react-header nav {
@@ -27,18 +27,18 @@
   gap: clamp(1rem, 2.4vw, 2.4rem);
   align-items: center;
   padding-bottom: 1.55rem;
-  border-bottom: 2px solid #111;
+  border-bottom: 2px solid var(--fara-ink);
 }
 .fara-react-header a,
 .fara-react-menu-button {
-  color: #111;
-  font: 500 .8rem/1 "FARA Gotham";
+  color: var(--fara-ink);
+  font: 500 .8rem/1 var(--fara-font-display);
   letter-spacing: .08em;
   text-decoration: none;
   text-transform: uppercase;
 }
 .fara-react-header a:not(.is-active) {
-  color: rgba(17, 17, 17, .38);
+  color: rgba(var(--fara-ink-rgb), .38);
 }
 .fara-react-menu-button {
   display: flex;
@@ -55,7 +55,7 @@
   display: block;
   width: 4px;
   height: 4px;
-  background: #111;
+  background: var(--fara-ink);
   border-radius: 50%;
   content: '';
 }
@@ -77,9 +77,9 @@
   grid-template-columns: minmax(0, 1fr);
   align-content: center;
   padding: clamp(2rem, 8vw, 6rem);
-  color: #111;
-  background: #f4f4f4;
-  font-family: "FARA Gotham";
+  color: var(--fara-ink);
+  background: var(--fara-surface-grey);
+  font-family: var(--fara-font-display);
 }
 .fara-react-menu nav {
   display: grid;
@@ -88,7 +88,7 @@
   margin: 0 auto;
 }
 .fara-react-menu nav a {
-  color: #111;
+  color: var(--fara-ink);
   font-size: clamp(2rem, 4.5vw, 4.5rem);
   font-weight: 300;
   letter-spacing: .08em;
@@ -107,7 +107,7 @@
   display: inline-flex;
   gap: .55rem;
   align-items: center;
-  color: #111;
+  color: var(--fara-ink);
   font-size: .82rem;
   letter-spacing: .06em;
   text-decoration: none;
@@ -123,13 +123,13 @@
   width: min(1180px, calc(100% - 3rem));
   padding: clamp(11rem, 18vw, 17rem) 0 clamp(7rem, 12vw, 12rem);
   margin: 0 auto;
-  color: #111;
-  font-family: "FARA Gotham";
+  color: var(--fara-ink);
+  font-family: var(--fara-font-display);
 }
 .fara-route-intro h1 {
   max-width: 62rem;
   margin: 0;
-  font-family: "FARA Gotham";
+  font-family: var(--fara-font-display);
   font-size: clamp(2.75rem, 5.3vw, 5.5rem);
   font-weight: 300;
   line-height: 1.04;
@@ -144,19 +144,19 @@
 }
 
 .fara-who-page {
-  color: #111;
-  background: #fff;
+  color: var(--fara-ink);
+  background: var(--fara-white);
 }
 .fara-how-page,
 .fara-serve-page {
-  color: #111;
-  background: #fff;
+  color: var(--fara-ink);
+  background: var(--fara-white);
 }
 .fara-page-shell {
   width: min(1180px, calc(100% - 3rem));
   padding: clamp(10rem, 15vw, 15rem) 0 clamp(6rem, 10vw, 10rem);
   margin: 0 auto;
-  font-family: "FARA Gotham";
+  font-family: var(--fara-font-display);
 }
 .fara-page-section {
   padding: clamp(4.5rem, 8vw, 8rem) 0;
@@ -166,7 +166,7 @@
 }
 .fara-page-kicker {
   margin: 0 0 1.4rem;
-  color: #111;
+  color: var(--fara-ink);
   font-size: clamp(.8rem, .95vw, .95rem);
   font-weight: 500;
   letter-spacing: .18em;
@@ -177,7 +177,7 @@
   flex-direction: column;
   gap: .28em;
   margin: 0;
-  color: #111;
+  color: var(--fara-ink);
   font-size: clamp(2.15rem, 5.2vw, 5.25rem);
   font-weight: 300;
   line-height: 1.04;
@@ -186,7 +186,7 @@
 .fara-route-copy {
   width: min(760px, 100%);
   margin: clamp(2rem, 4.4vw, 4.8rem) 0 0 auto;
-  color: #111;
+  color: var(--fara-ink);
   font-size: clamp(.98rem, 1.18vw, 1.12rem);
   font-weight: 300;
   line-height: 1.86;
@@ -209,11 +209,11 @@
   align-items: center;
   justify-content: center;
   padding: 1.4rem;
-  color: #111;
+  color: var(--fara-ink);
   font-size: clamp(1rem, 1.4vw, 1.25rem);
   line-height: 1.35;
   text-align: center;
-  border: 1px solid rgba(17, 17, 17, .35);
+  border: 1px solid rgba(var(--fara-ink-rgb), .35);
   border-radius: 8px;
 }
 .fara-solution-grid,
@@ -226,14 +226,14 @@
 .fara-solution-card,
 .fara-serve-card {
   padding: clamp(1.4rem, 2vw, 1.9rem);
-  color: #111;
-  border: 1px solid rgba(17, 17, 17, .28);
+  color: var(--fara-ink);
+  border: 1px solid rgba(var(--fara-ink-rgb), .28);
   border-radius: 8px;
 }
 .fara-solution-card h3,
 .fara-serve-card h3 {
   margin: 0 0 1.1rem;
-  color: #111;
+  color: var(--fara-ink);
   font-size: clamp(1.05rem, 1.5vw, 1.35rem);
   font-weight: 500;
   line-height: 1.25;
@@ -242,7 +242,7 @@
 .fara-solution-card p,
 .fara-serve-card p {
   margin: 0;
-  color: #111;
+  color: var(--fara-ink);
   font-size: clamp(.92rem, 1vw, 1rem);
   font-weight: 300;
   line-height: 1.72;
@@ -258,16 +258,16 @@
   display: block;
   width: 100%;
   height: auto;
-  background: #fff;
+  background: var(--fara-white);
 }
 .fara-think-page {
-  color: #111;
-  background: #fff;
+  color: var(--fara-ink);
+  background: var(--fara-white);
 }
 .fara-think-shell h1 {
   max-width: 900px;
   margin: 0 0 clamp(3rem, 6vw, 5rem);
-  color: #111;
+  color: var(--fara-ink);
   font-size: clamp(2.8rem, 6vw, 6rem);
   font-weight: 300;
   line-height: 1.04;
@@ -289,7 +289,7 @@
 .fara-inquiry-fieldset legend,
 .fara-form-field span {
   margin-bottom: .85rem;
-  color: #111;
+  color: var(--fara-ink);
   font-size: .86rem;
   font-weight: 500;
   letter-spacing: .08em;
@@ -299,7 +299,7 @@
   display: grid;
   grid-template-columns: 1.1rem minmax(0, 1fr);
   gap: .9rem;
-  color: #111;
+  color: var(--fara-ink);
   font-size: clamp(.95rem, 1.08vw, 1.05rem);
   line-height: 1.55;
 }
@@ -307,7 +307,7 @@
   width: 1rem;
   height: 1rem;
   margin-top: .2rem;
-  accent-color: #111;
+  accent-color: var(--fara-ink);
 }
 .fara-form-grid {
   display: grid;
@@ -327,11 +327,11 @@
   width: 100%;
   box-sizing: border-box;
   padding: 1rem 0;
-  color: #111;
-  font: 300 1rem/1.5 "FARA Gotham";
+  color: var(--fara-ink);
+  font: 300 1rem/1.5 var(--fara-font-display);
   background: transparent;
   border: 0;
-  border-bottom: 1px solid rgba(17, 17, 17, .42);
+  border-bottom: 1px solid rgba(var(--fara-ink-rgb), .42);
   border-radius: 0;
   outline: 0;
 }
@@ -346,18 +346,18 @@
   min-width: 9rem;
   min-height: 3rem;
   padding: 1rem 1.6rem;
-  color: #fff;
-  font: 500 .85rem/1 "FARA Gotham", Arial, sans-serif;
+  color: var(--fara-white);
+  font: 500 .85rem/1 var(--fara-font-display), Arial, sans-serif;
   letter-spacing: .12em;
   text-transform: uppercase;
   cursor: default;
-  background: #111;
-  border: 1px solid #111;
+  background: var(--fara-ink);
+  border: 1px solid var(--fara-ink);
   border-radius: 999px;
 }
 .fara-think-form button[type='submit'] span {
   display: block;
-  color: #fff !important;
+  color: var(--fara-white) !important;
   line-height: 1;
 }
 .fara-think-contact {
@@ -367,14 +367,14 @@
   width: min(920px, 100%);
   margin: clamp(4rem, 8vw, 7rem) 0 0 auto;
   padding-top: clamp(2rem, 4vw, 3rem);
-  border-top: 1px solid rgba(17, 17, 17, .2);
+  border-top: 1px solid rgba(var(--fara-ink-rgb), .2);
 }
 .fara-think-contact h2 {
   display: flex;
   gap: .65rem;
   align-items: center;
   margin: 0 0 1rem;
-  color: #111;
+  color: var(--fara-ink);
   font-size: .9rem;
   font-weight: 500;
   letter-spacing: .08em;
@@ -382,7 +382,7 @@
 }
 .fara-think-contact p {
   margin: 0;
-  color: #111;
+  color: var(--fara-ink);
   font-size: clamp(1rem, 1.2vw, 1.15rem);
   line-height: 1.65;
 }
@@ -390,7 +390,7 @@
   width: min(1180px, calc(100% - 3rem));
   padding: clamp(10rem, 15vw, 15rem) 0 clamp(6rem, 10vw, 10rem);
   margin: 0 auto;
-  font-family: "FARA Gotham";
+  font-family: var(--fara-font-display);
 }
 .fara-who-section {
   padding: clamp(4.5rem, 8vw, 8rem) 0;
@@ -400,7 +400,7 @@
 }
 .fara-who-kicker {
   margin: 0 0 1.4rem;
-  color: #111;
+  color: var(--fara-ink);
   font-size: clamp(.8rem, .95vw, .95rem);
   font-weight: 500;
   letter-spacing: .18em;
@@ -411,7 +411,7 @@
   flex-direction: column;
   gap: .28em;
   margin: 0;
-  color: #111;
+  color: var(--fara-ink);
   font-size: clamp(2.15rem, 5.2vw, 5.25rem);
   font-weight: 300;
   line-height: 1.04;
@@ -420,7 +420,7 @@
 .fara-who-copy {
   width: min(760px, 100%);
   margin: clamp(2rem, 4.4vw, 4.8rem) 0 0 auto;
-  color: #111;
+  color: var(--fara-ink);
   font-size: clamp(.98rem, 1.18vw, 1.12rem);
   font-weight: 300;
   line-height: 1.86;
@@ -436,7 +436,7 @@
 }
 .fara-who-partners h2 {
   margin: 0 0 clamp(1.4rem, 3vw, 2.4rem);
-  color: #111;
+  color: var(--fara-ink);
   font-size: clamp(1.45rem, 2.7vw, 2.35rem);
   font-weight: 700;
   letter-spacing: 0;
@@ -456,8 +456,8 @@
   overflow: hidden;
   padding: .9rem 1.1rem;
   cursor: default;
-  background: #fff;
-  border: 1px solid rgba(17, 17, 17, .5);
+  background: var(--fara-white);
+  border: 1px solid rgba(var(--fara-ink-rgb), .5);
   border-radius: 16px;
   transition: border-color 260ms ease, box-shadow 260ms ease, transform 260ms ease;
 }
@@ -467,8 +467,8 @@
   display: grid;
   width: 44px;
   place-items: center;
-  color: #fff;
-  background: #37B478;
+  color: var(--fara-white);
+  background: var(--fara-emerald);
   content: '›';
   font-size: 1.85rem;
   line-height: 1;
@@ -476,8 +476,8 @@
 }
 .fara-who-partner-card:hover,
 .fara-who-partner-card:focus-visible {
-  border-color: #37B478;
-  box-shadow: 0 18px 45px -34px rgba(55, 180, 120, .85);
+  border-color: var(--fara-emerald);
+  box-shadow: 0 18px 45px -34px rgba(var(--fara-emerald-rgb), .85);
   transform: translateY(-2px);
 }
 .fara-who-partner-card:hover::after,
@@ -508,15 +508,15 @@
   margin: 0 auto;
   object-fit: cover;
   object-position: center center;
-  background: #000;
+  background: var(--fara-black);
 }
 .fara-who-history {
   width: calc(100vw - 1px);
   margin: clamp(3rem, 6vw, 6rem) 0 clamp(5rem, 9vw, 9rem) calc(50% - 50vw);
   padding: clamp(3rem, 6vw, 5rem) 0 clamp(2rem, 5vw, 4rem);
   overflow: hidden;
-  color: #111;
-  background: #fff;
+  color: var(--fara-ink);
+  background: var(--fara-white);
 }
 .fara-who-history header {
   display: flex;
@@ -530,12 +530,12 @@
 .fara-who-history header span {
   width: 24px;
   height: 24px;
-  background: #37B478;
+  background: var(--fara-emerald);
   border-radius: 50%;
 }
 .fara-who-history h2 {
   margin: 0;
-  color: #111;
+  color: var(--fara-ink);
   font-size: clamp(2rem, 4vw, 2.4rem);
   font-weight: 700;
   text-transform: uppercase;
@@ -579,7 +579,7 @@
 }
 .fara-who-history-range::-webkit-slider-runnable-track {
   height: 2px;
-  background: #37B478;
+  background: var(--fara-emerald);
   border-radius: 999px;
 }
 .fara-who-history-range::-webkit-slider-thumb {
@@ -587,22 +587,22 @@
   height: 30px;
   margin-top: -14px;
   appearance: none;
-  background: #37B478;
+  background: var(--fara-emerald);
   border-radius: 50%;
-  box-shadow: 0 0 16px rgba(55, 180, 120, .45);
+  box-shadow: 0 0 16px rgba(var(--fara-emerald-rgb), .45);
 }
 .fara-who-history-range::-moz-range-track {
   height: 2px;
-  background: #37B478;
+  background: var(--fara-emerald);
   border-radius: 999px;
 }
 .fara-who-history-range::-moz-range-thumb {
   width: 30px;
   height: 30px;
-  background: #37B478;
+  background: var(--fara-emerald);
   border: 0;
   border-radius: 50%;
-  box-shadow: 0 0 16px rgba(55, 180, 120, .45);
+  box-shadow: 0 0 16px rgba(var(--fara-emerald-rgb), .45);
 }
 @media (max-width: 74em) {
   .fara-who-partner-grid {

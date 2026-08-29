@@ -19,7 +19,7 @@
 #header nav .navbar {
   height: .14rem;
   min-width: clamp(2.65rem, 3.7vw, 4.05rem);
-  background: #00f08a !important;
+  background: var(--fara-brand-bright) !important;
   border-radius: 0 !important;
   box-shadow: none !important;
   filter: none !important;
@@ -42,7 +42,7 @@
   width: 100%;
   height: 100dvh;
   pointer-events: auto !important;
-  background: #fff;
+  background: var(--fara-white);
   overflow: auto;
 }
 /* .active is what gave the panel its white ground and its place in the stack.
@@ -56,7 +56,7 @@
   display: block !important;
   width: 100%;
   height: 100dvh;
-  background: #fff;
+  background: var(--fara-white);
   pointer-events: none !important;
   overflow: hidden;
   animation: fara-menu-close-panel 400ms linear var(--fara-close-overlay-delay, 1s) both !important;
@@ -145,30 +145,30 @@ html.fara-menu-closing .buttons-container *,
   transition: transform 600ms cubic-bezier(.4, 0, .1, 1);
 }
 .fara-menu .grid-nav .nav-link .text-content::before {
-  background: #00c878 !important;
+  background: var(--fara-brand) !important;
 }
 .fara-menu .grid-nav .nav-link .svg-container {
-  color: #00c878 !important;
-  border-color: #00c878 !important;
+  color: var(--fara-brand) !important;
+  border-color: var(--fara-brand) !important;
   transition: background 400ms linear, color 400ms linear, transform 400ms cubic-bezier(.4, 0, .1, 1);
 }
 .fara-menu .grid-nav .nav-link .svg-container svg,
 .fara-menu .grid-nav .nav-link .svg-container path {
-  color: #00c878 !important;
-  fill: #00c878 !important;
+  color: var(--fara-brand) !important;
+  fill: var(--fara-brand) !important;
 }
 .fara-menu .grid-nav .nav-link .text-content {
-  text-decoration-color: #00c878 !important;
+  text-decoration-color: var(--fara-brand) !important;
 }
 .fara-menu .grid-nav .nav-link .text-content::after,
 .fara-menu .grid-nav .nav-link::after {
-  background: #00c878 !important;
-  border-color: #00c878 !important;
+  background: var(--fara-brand) !important;
+  border-color: var(--fara-brand) !important;
 }
-.fara-menu .grid-nav .nav-link:hover { color: #00c878; }
+.fara-menu .grid-nav .nav-link:hover { color: var(--fara-brand); }
 .fara-menu .grid-nav .nav-link:hover .text-content { transform: translate3d(0, 0, 0) !important; }
 .fara-menu .grid-nav .nav-link:hover .svg-container { transform: scale3d(1, 1, 1) !important; }
-.fara-menu .grid-nav .nav-link:focus-visible { color: #00c878; }
+.fara-menu .grid-nav .nav-link:focus-visible { color: var(--fara-brand); }
 .fara-menu .grid-nav .nav-link:focus-visible .text-content { transform: translate3d(0, 0, 0); }
 .fara-menu .grid-nav .nav-link:focus-visible .svg-container { transform: scale3d(1, 1, 1); }
 html.fara-menu-open,
@@ -181,7 +181,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
   align-items: center;
   padding: 0;
   pointer-events: auto !important;
-  color: #2d628c;
+  color: var(--fara-blue);
   background: transparent;
   border: 0;
 }
@@ -191,8 +191,8 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
   width: 4rem;
   margin: 0;
   overflow: hidden;
-  color: #2d628c;
-  font-family: "FARA Gotham";
+  color: var(--fara-blue);
+  font-family: var(--fara-font-display);
   font-size: .75rem;
   font-weight: 400;
   line-height: 1.2;
@@ -219,7 +219,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
   position: absolute;
   width: 4px;
   height: 4px;
-  background: #00f08a;
+  background: var(--fara-brand-bright);
   border-radius: 50%;
   transition: top 600ms cubic-bezier(.32, .94, .6, 1), left 600ms cubic-bezier(.32, .94, .6, 1), transform 600ms cubic-bezier(.32, .94, .6, 1);
 }
@@ -273,7 +273,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
   }
-  .fara-menu.active .grid-nav nav { scrollbar-color: #00c878 transparent; }
+  .fara-menu.active .grid-nav nav { scrollbar-color: var(--fara-brand) transparent; }
   .fara-menu .grid-nav nav::-webkit-scrollbar { width: 4px; }
   .fara-menu .grid-nav nav::-webkit-scrollbar-track { background: transparent; }
   .fara-menu .grid-nav nav::-webkit-scrollbar-thumb {
@@ -281,7 +281,7 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
     border-radius: 999px;
     transition: background-color 300ms linear 500ms;
   }
-  .fara-menu.active .grid-nav nav::-webkit-scrollbar-thumb { background: #00c878; }
+  .fara-menu.active .grid-nav nav::-webkit-scrollbar-thumb { background: var(--fara-brand); }
 }
 @keyframes fara-header-item-in {
   from { opacity: 0; visibility: hidden; transform: translate3d(-8px, 0, 0); }
@@ -362,42 +362,42 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
 .fara-menu .terms-link a[aria-disabled="true"] { cursor: default; }
 #header:not(.top)[data-theme="light"] .nav-link,
 #header:not(.top)[data-theme="light"] .news-w p,
-#header:not(.top)[data-theme="light"] .menu-cta p { color: #fff; }
+#header:not(.top)[data-theme="light"] .menu-cta p { color: var(--fara-white); }
 #header.top .nav-link,
 #header.top .news-w p,
-#header.top .menu-cta p { color: #111; }
+#header.top .menu-cta p { color: var(--fara-ink); }
 #header.top .navbar,
 #header.top .news-w::before,
-#header.top .menu-cta .dot { background: #00f08a; }
+#header.top .menu-cta .dot { background: var(--fara-brand-bright); }
 #header.fara-nav-on-panel .nav-link,
 #header.fara-nav-on-panel .news-w p,
 #header.fara-nav-on-panel .menu-cta p {
-  color: #111 !important;
+  color: var(--fara-ink) !important;
 }
 #header.fara-nav-on-panel .navbar,
 #header.fara-nav-on-panel .news-w::before,
 #header.fara-nav-on-panel .menu-cta .dot {
-  background: #00f08a !important;
+  background: var(--fara-brand-bright) !important;
 }
 
 #header .menu-cta .dot,
 .fara-overlay-close .dot,
 .fara-overlay-close.close .dot {
-  background: #00f08a !important;
+  background: var(--fara-brand-bright) !important;
   box-shadow: none !important;
 }
 
 .cursor .circle {
-  border-color: #00c878 !important;
+  border-color: var(--fara-brand) !important;
 }
 
 .cursor .middle-dot,
 .cursor .dots,
 .cursor .dots::before,
 .cursor .dots::after {
-  background: #00c878 !important;
-  border-color: #00c878 !important;
-  box-shadow: 0 0 12px rgba(0, 200, 120, .34);
+  background: var(--fara-brand) !important;
+  border-color: var(--fara-brand) !important;
+  box-shadow: 0 0 12px rgba(var(--fara-brand-rgb), .34);
 }
 
 #scroll-top {
@@ -405,10 +405,10 @@ html.fara-sound-disabled .buttons-container .sound { display: none !important; }
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  border-color: rgba(0, 200, 120, .72) !important;
-  background: rgba(0, 200, 120, .16) !important;
-  color: #00c878 !important;
-  box-shadow: 0 0 22px rgba(0, 200, 120, .28) !important;
+  border-color: rgba(var(--fara-brand-rgb), .72) !important;
+  background: rgba(var(--fara-brand-rgb), .16) !important;
+  color: var(--fara-brand) !important;
+  box-shadow: 0 0 22px rgba(var(--fara-brand-rgb), .28) !important;
 }
 
 #scroll-top svg {

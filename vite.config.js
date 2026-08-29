@@ -38,7 +38,7 @@ function copyLegacyRuntime() {
       })
       const customCss = readFileSync(resolve(sourceRoot, legacyStylesEntry), 'utf8')
       const bundledCss = customCss.replace(
-        /@import\s+['"]\.\/([^'"]+)['"];\s*/g,
+        /@import\s+['"]([^'"]+)['"];\s*/g,
         (_, file) => `${readFileSync(resolve(sourceRoot, 'legacy', 'styles', file), 'utf8')}\n`,
       )
       writeFileSync(resolve(process.cwd(), 'dist', 'custom.bundle.css'), bundledCss)
