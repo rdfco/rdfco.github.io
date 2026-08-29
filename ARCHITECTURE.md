@@ -8,7 +8,7 @@
 - `src/config`: parent application routes and runtime contract values.
 - `src/config/theme`: the colour and typography tokens every stylesheet references.
 - `src/assets`: the registry for every public model, texture, image, font, sound, and environment asset.
-- `src/legacy/runtime`: iframe-side orchestration for route, readiness, scroll, and WebGL lifecycle.
+- `src/legacy/runtime`: iframe-side orchestration for route, readiness, scroll, and WebGL lifecycle, one module per responsibility behind the `site-customizer.js` entry point.
 - `src/legacy/navigation`: navigation data and the menu interaction lifecycle.
 - `src/legacy/pages`: route-owned renderers and route-specific data.
 - `src/legacy/site`: DOM customization for the legacy Home document.
