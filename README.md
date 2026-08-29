@@ -24,6 +24,6 @@ The local site is available at `http://localhost:5173/`.
 - `src/legacy/`: source-owned iframe runtime, navigation, pages, DOM customization, and styles.
 - `public/legacy/`, `public/_astro/`: protected legacy distribution.
 - `public/assets/`: production fonts, models, textures, images, and audio.
-- `scripts/`: production validation and browser contracts.
+- `scripts/`: production validation, browser contracts, visual baselines and archived probes; see `scripts/README.md`.
 
 Do not hand-edit generated files in `public/_astro/`, `public/custom.bundle.css`, `public/site-customizer.bundle.js`, or `dist/`. Change their source-owned entries and run `npm.cmd run verify` to regenerate synchronized outputs.
