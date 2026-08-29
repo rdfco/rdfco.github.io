@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "policy": "Shared FARA copy is canonical under src/content. Route-specific Legacy content remains protected until its owning route migrates.",
+  "sources": [
+    {
+      "path": "src/content/site-data.js",
+      "ownership": "canonical-shared",
+      "consumers": [
+        "legacy-runtime"
+      ]
+    },
+    {
+      "path": "src/content/hero.json",
+      "ownership": "canonical-shared",
+      "consumers": [
+        "legacy-home-hero"
+      ]
+    },
+    {
+      "path": "src/content/industries.json",
+      "ownership": "canonical-shared",
+      "consumers": [
+        "legacy-home-industries"
+      ]
+    },
+    {
+      "path": "src/legacy/navigation/navigation-items.js",
+      "ownership": "legacy-protected",
+      "consumers": [
+        "legacy-runtime",
+        "shared-site-content"
+      ]
+    },
+    {
+      "path": "src/legacy/pages/home/data.json",
+      "ownership": "legacy-protected",
+      "consumers": [
+        "legacy-home-route"
+      ]
+    },
+    {
+      "path": "src/legacy/pages/who-we-are/data.json",
+      "ownership": "legacy-protected",
+      "consumers": [
+        "who-we-are-route"
+      ]
+    },
+    {
+      "path": "src/legacy/pages/how-we-help/data.json",
+      "ownership": "legacy-protected",
+      "consumers": [
+        "legacy-consulting-route"
+      ]
+    },
+    {
+      "path": "src/legacy/pages/who-we-serve/data.json",
+      "ownership": "legacy-protected",
+      "consumers": [
+        "legacy-industries-route"
+      ]
+    },
+    {
+      "path": "src/legacy/pages/think-together/data.json",
+      "ownership": "legacy-protected",
+      "consumers": [
+        "legacy-think-together-route"
+      ]
+    },
+    {
+      "path": "src/legacy/pages/legal/data.js",
+      "ownership": "legacy-protected",
+      "consumers": [
+        "legacy-legal-routes"
+      ]
+    },
+    {
+      "path": "src/legacy/pages/news/data.js",
+      "ownership": "legacy-protected",
+      "consumers": [
+        "legacy-news-routes"
+      ]
+    }
+  ]
+}

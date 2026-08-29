@@ -1,0 +1,10 @@
+/*
+ * Header, menu overlay and cursor styles for the legacy document.
+ * Split by concern; the import order is the cascade order, so keep it.
+ */
+@import './navigation/header.css';
+@import './navigation/menu-panel.css';
+@import './navigation/menu-animation.css';
+@import './navigation/header-animation.css';
+@import './navigation/header-theme.css';
+@import './navigation/cursor-and-controls.css';

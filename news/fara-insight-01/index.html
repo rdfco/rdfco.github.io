@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/assets/brand/fara-favicon.png?v=2" />
+    <title>FARA</title>
+    <style>
+      html,
+      body,
+      #root,
+      .legacy-shell,
+      .legacy-site {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+      html,
+      body,
+      #root,
+      .legacy-shell {
+        max-width: 100%;
+        overflow-x: hidden;
+        scrollbar-width: none;
+      }
+      html::-webkit-scrollbar,
+      body::-webkit-scrollbar,
+      .legacy-site::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+      html,
+      body,
+      .legacy-site {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .legacy-shell {
+        position: relative;
+        overflow: hidden;
+        background: #080a0b;
+      }
+      .legacy-shell[data-route-surface='content'] {
+        background: #fff;
+      }
+      .legacy-site {
+        display: block;
+        border: 0;
+        opacity: 0;
+        overflow: auto;
+        visibility: hidden;
+        -webkit-overflow-scrolling: touch;
+      }
+      .legacy-shell[data-status='ready'] .legacy-site {
+        opacity: 1;
+        visibility: visible;
+      }
+      .site-gate {
+        position: absolute;
+        z-index: 2;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 2rem;
+        opacity: 1;
+        transition: opacity 0ms linear, visibility 0ms linear 0ms;
+        color: #eef2f0;
+        background: #080a0b;
+        font: 500 1rem/1.5 sans-serif;
+        text-align: center;
+      }
+      .legacy-shell[data-status='ready'] .site-gate {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 420ms ease, visibility 0ms linear 420ms;
+      }
+      .site-loader {
+        display: grid;
+        place-items: center;
+      }
+      .site-loader__spinner {
+        width: 3rem;
+        height: 3rem;
+        border: 2px solid rgba(0, 200, 120, .22);
+        border-top-color: #00c878;
+        border-radius: 50%;
+        backface-visibility: hidden;
+        transform: translate3d(0, 0, 0) rotate(0deg);
+        transform-origin: 50% 50%;
+        will-change: transform;
+        animation: fara-loader-spin 1200ms linear infinite;
+      }
+      @keyframes fara-loader-spin {
+        to { transform: translate3d(0, 0, 0) rotate(360deg); }
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/index-CswA5MUK.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DK_gD4fY.css">
+  </head>
+  <body>
+      <div id="root"><div class="legacy-shell" data-menu-open="false" data-status="loading" data-route-surface="home"><div class="site-gate" role="status"><div class="site-loader" aria-label="Loading"><span class="site-loader__spinner" aria-hidden="true"></span></div></div><iframe class="legacy-site" title="FARA" src="/legacy/main/index.html?v=loading-smooth-20260829-1"></iframe><div class="fara-scrollbar" aria-hidden="true"><div class="fara-scrollbar__thumb"></div></div></div></div>
+    <script>
+      ;(() => {
+        const shell = document.querySelector('.legacy-shell')
+        if (!shell) return
+        shell.dataset.routeSurface = window.location.pathname === '/' ? 'home' : 'content'
+      })()
+    </script>
+    <!-- Edit this file to recolor the WebGL background. It must load before React. -->
+    <script src="/theme/background-colors.js"></script>
+  </body>
+</html>

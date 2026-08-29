@@ -1,0 +1,218 @@
+.fara-who-shell {
+  width: min(1180px, calc(100% - 3rem));
+  padding: clamp(10rem, 15vw, 15rem) 0 clamp(6rem, 10vw, 10rem);
+  margin: 0 auto;
+  font-family: var(--fara-font-display);
+}
+.fara-who-section {
+  padding: clamp(4.5rem, 8vw, 8rem) 0;
+}
+.fara-who-section--hero {
+  padding-top: 0;
+}
+.fara-who-kicker {
+  margin: 0 0 1.4rem;
+  color: var(--fara-ink);
+  font-size: clamp(.8rem, .95vw, .95rem);
+  font-weight: 500;
+  letter-spacing: .18em;
+}
+.fara-who-section h2 {
+  display: flex;
+  max-width: 820px;
+  flex-direction: column;
+  gap: .28em;
+  margin: 0;
+  color: var(--fara-ink);
+  font-size: clamp(2.15rem, 5.2vw, 5.25rem);
+  font-weight: 300;
+  line-height: 1.04;
+  letter-spacing: .02em;
+}
+.fara-who-copy {
+  width: min(760px, 100%);
+  margin: clamp(2rem, 4.4vw, 4.8rem) 0 0 auto;
+  color: var(--fara-ink);
+  font-size: clamp(.98rem, 1.18vw, 1.12rem);
+  font-weight: 300;
+  line-height: 1.86;
+}
+.fara-who-copy p {
+  margin: 0;
+}
+.fara-who-copy p + p {
+  margin-top: 1.55rem;
+}
+.fara-who-partners {
+  padding: clamp(3rem, 6vw, 6rem) 0 clamp(4.5rem, 8vw, 8rem);
+}
+.fara-who-partners h2 {
+  margin: 0 0 clamp(1.4rem, 3vw, 2.4rem);
+  color: var(--fara-ink);
+  font-size: clamp(1.45rem, 2.7vw, 2.35rem);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.fara-who-partner-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(.9rem, 1.7vw, 1.45rem);
+}
+.fara-who-partner-card {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 76px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: .9rem 1.1rem;
+  cursor: default;
+  background: var(--fara-white);
+  border: 1px solid rgba(var(--fara-ink-rgb), .5);
+  border-radius: 16px;
+  transition: border-color 260ms ease, box-shadow 260ms ease, transform 260ms ease;
+}
+.fara-who-partner-card::after {
+  position: absolute;
+  inset: 0 auto 0 100%;
+  display: grid;
+  width: 44px;
+  place-items: center;
+  color: var(--fara-white);
+  background: var(--fara-emerald);
+  content: '›';
+  font-size: 1.85rem;
+  line-height: 1;
+  transition: transform 260ms ease;
+}
+.fara-who-partner-card:hover,
+.fara-who-partner-card:focus-visible {
+  border-color: var(--fara-emerald);
+  box-shadow: 0 18px 45px -34px rgba(var(--fara-emerald-rgb), .85);
+  transform: translateY(-2px);
+}
+.fara-who-partner-card:hover::after,
+.fara-who-partner-card:focus-visible::after {
+  transform: translateX(-44px);
+}
+.fara-who-partner-card img {
+  display: block;
+  max-width: 78%;
+  max-height: 48px;
+  object-fit: contain;
+  transition: transform 260ms ease;
+}
+.fara-who-partner-card:hover img,
+.fara-who-partner-card:focus-visible img {
+  transform: translateX(-14px) scale(.92);
+}
+.fara-who-image-section {
+  width: calc(100vw - 1px);
+  margin-left: calc(50% - 50vw);
+  padding: clamp(2.5rem, 6vw, 6rem) 0 clamp(4.5rem, 8vw, 8rem);
+  overflow: hidden;
+}
+.fara-who-image-section img {
+  display: block;
+  width: 100%;
+  height: clamp(360px, 56vw, 760px);
+  margin: 0 auto;
+  object-fit: cover;
+  object-position: center center;
+  background: var(--fara-black);
+}
+.fara-who-history {
+  width: calc(100vw - 1px);
+  margin: clamp(3rem, 6vw, 6rem) 0 clamp(5rem, 9vw, 9rem) calc(50% - 50vw);
+  padding: clamp(3rem, 6vw, 5rem) 0 clamp(2rem, 5vw, 4rem);
+  overflow: hidden;
+  color: var(--fara-ink);
+  background: var(--fara-white);
+}
+.fara-who-history header {
+  display: flex;
+  width: min(1180px, calc(100% - 3rem));
+  flex-direction: column;
+  align-items: center;
+  gap: .7rem;
+  margin: 0 auto 2.5rem;
+  text-align: center;
+}
+.fara-who-history header span {
+  width: 24px;
+  height: 24px;
+  background: var(--fara-emerald);
+  border-radius: 50%;
+}
+.fara-who-history h2 {
+  margin: 0;
+  color: var(--fara-ink);
+  font-size: clamp(2rem, 4vw, 2.4rem);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.fara-who-history-scroll {
+  width: 100%;
+  height: clamp(360px, 48vw, 770px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  scrollbar-width: none;
+  user-select: none;
+}
+.fara-who-history-scroll::-webkit-scrollbar {
+  display: none;
+}
+.fara-who-history-scroll.is-dragging {
+  cursor: grabbing;
+}
+.fara-who-history-scroll img {
+  display: block;
+  width: 2500px;
+  height: 100%;
+  max-width: none;
+  object-fit: fill;
+  pointer-events: none;
+}
+.fara-who-history-range-wrap {
+  width: min(1180px, calc(100% - 3rem));
+  margin: clamp(1.5rem, 3vw, 2.5rem) auto 0;
+}
+.fara-who-history-range {
+  width: 100%;
+  height: 24px;
+  cursor: grab;
+  appearance: none;
+  background: transparent;
+}
+.fara-who-history-range:active {
+  cursor: grabbing;
+}
+.fara-who-history-range::-webkit-slider-runnable-track {
+  height: 2px;
+  background: var(--fara-emerald);
+  border-radius: 999px;
+}
+.fara-who-history-range::-webkit-slider-thumb {
+  width: 30px;
+  height: 30px;
+  margin-top: -14px;
+  appearance: none;
+  background: var(--fara-emerald);
+  border-radius: 50%;
+  box-shadow: 0 0 16px rgba(var(--fara-emerald-rgb), .45);
+}
+.fara-who-history-range::-moz-range-track {
+  height: 2px;
+  background: var(--fara-emerald);
+  border-radius: 999px;
+}
+.fara-who-history-range::-moz-range-thumb {
+  width: 30px;
+  height: 30px;
+  background: var(--fara-emerald);
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 16px rgba(var(--fara-emerald-rgb), .45);
+}

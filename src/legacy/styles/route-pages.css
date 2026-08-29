@@ -1,0 +1,10 @@
+/*
+ * Styles for the standalone route pages rendered inside the legacy document.
+ * Split by surface; the import order is the cascade order, so keep it.
+ */
+@import './route-pages/shell.css';
+@import './route-pages/intro.css';
+@import './route-pages/page-layout.css';
+@import './route-pages/think-together.css';
+@import './route-pages/who-we-are.css';
+@import './route-pages/responsive.css';

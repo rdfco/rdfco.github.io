@@ -1,0 +1,121 @@
+.fara-route-page {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  background: var(--fara-hairline);
+}
+.fara-react-shell {
+  min-height: 100vh;
+  color: var(--fara-ink);
+  background: var(--fara-white);
+}
+.fara-react-header {
+  position: fixed;
+  z-index: 20;
+  top: clamp(2rem, 7vw, 5rem);
+  left: 50%;
+  display: flex;
+  width: min(1180px, calc(100% - 3rem));
+  align-items: center;
+  justify-content: space-between;
+  color: var(--fara-ink);
+  font-family: var(--fara-font-display);
+  transform: translateX(-50%);
+}
+.fara-react-header nav {
+  display: flex;
+  gap: clamp(1rem, 2.4vw, 2.4rem);
+  align-items: center;
+  padding-bottom: 1.55rem;
+  border-bottom: 2px solid var(--fara-ink);
+}
+.fara-react-header a,
+.fara-react-menu-button {
+  color: var(--fara-ink);
+  font: 500 .8rem/1 var(--fara-font-display);
+  letter-spacing: .08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.fara-react-header a:not(.is-active) {
+  color: rgba(var(--fara-ink-rgb), .38);
+}
+.fara-react-menu-button {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+}
+.fara-react-menu-button i,
+.fara-react-menu-button i::before,
+.fara-react-menu-button i::after {
+  display: block;
+  width: 4px;
+  height: 4px;
+  background: var(--fara-ink);
+  border-radius: 50%;
+  content: '';
+}
+.fara-react-menu-button i {
+  position: relative;
+}
+.fara-react-menu-button i::before,
+.fara-react-menu-button i::after {
+  position: absolute;
+  top: 0;
+}
+.fara-react-menu-button i::before { left: 10px; }
+.fara-react-menu-button i::after { left: 20px; }
+.fara-react-menu {
+  position: fixed;
+  z-index: 30;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  padding: clamp(2rem, 8vw, 6rem);
+  color: var(--fara-ink);
+  background: var(--fara-surface-grey);
+  font-family: var(--fara-font-display);
+}
+.fara-react-menu nav {
+  display: grid;
+  width: min(760px, 100%);
+  gap: clamp(1.7rem, 4vw, 3rem);
+  margin: 0 auto;
+}
+.fara-react-menu nav a {
+  color: var(--fara-ink);
+  font-size: clamp(2rem, 4.5vw, 4.5rem);
+  font-weight: 300;
+  letter-spacing: .08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.fara-react-menu-links {
+  position: absolute;
+  right: clamp(2rem, 8vw, 6rem);
+  bottom: clamp(2rem, 7vw, 5rem);
+  display: flex;
+  gap: 1.8rem;
+  align-items: center;
+}
+.fara-react-menu-links a {
+  display: inline-flex;
+  gap: .55rem;
+  align-items: center;
+  color: var(--fara-ink);
+  font-size: .82rem;
+  letter-spacing: .06em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.fara-contact-link svg,
+.fara-think-contact svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  fill: currentColor;
+}

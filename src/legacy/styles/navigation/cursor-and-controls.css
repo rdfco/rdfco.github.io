@@ -1,0 +1,54 @@
+.cursor .circle {
+  border-color: var(--fara-brand) !important;
+}
+
+.cursor .middle-dot,
+.cursor .dots,
+.cursor .dots::before,
+.cursor .dots::after {
+  background: var(--fara-brand) !important;
+  border-color: var(--fara-brand) !important;
+  box-shadow: 0 0 12px rgba(var(--fara-brand-rgb), .34);
+}
+
+#scroll-top {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-color: rgba(var(--fara-brand-rgb), .72) !important;
+  background: rgba(var(--fara-brand-rgb), .16) !important;
+  color: var(--fara-brand) !important;
+  box-shadow: 0 0 22px rgba(var(--fara-brand-rgb), .28) !important;
+}
+
+#scroll-top svg {
+  display: none !important;
+}
+
+#scroll-top::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  width: 13px;
+  height: 20px;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+}
+
+#scroll-top::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(50% - 5px);
+  display: block;
+  width: 3px;
+  height: 6px;
+  border-radius: 999px;
+  background: currentColor;
+  transform: translateX(-50%);
+}

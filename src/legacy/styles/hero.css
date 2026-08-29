@@ -1,0 +1,103 @@
+.hero .configurable-logo { object-fit: contain; }
+.fara-hidden { display: none !important; }
+.hero .logo:not(.fara-hero-copy) { display: none !important; }
+.hero .fara-hero-copy {
+  --fara-accent-green: var(--fara-brand);
+  --fara-hero-title-color: var(--fara-surface-mist);
+  --fara-hero-subtitle-color: var(--fara-white);
+  position: absolute !important;
+  inset: 0 !important;
+  grid-column: 1 / -1 !important;
+  display: none !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  padding: 0 2rem !important;
+  overflow: hidden;
+  color: var(--fara-hero-title-color);
+  text-align: center;
+}
+.hero .fara-hero-copy.logo-dk { display: flex !important; }
+.hero .fara-hero-copy h1 { display: none !important; }
+.hero .fara-hero-brand-lockup {
+  position: absolute;
+  z-index: 1;
+  top: clamp(12.5rem, 47vh, 21rem);
+  left: clamp(3rem, 7vw, 7rem);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(1rem, 1.45vw, 1.5rem);
+  transform: translateY(-50%);
+  color: var(--fara-hero-title-color);
+  pointer-events: none;
+}
+.hero .fara-hero-brand-logo {
+  display: block;
+  width: clamp(3.1rem, 4.5vw, 5.15rem);
+  height: auto;
+  object-fit: contain;
+}
+.hero .fara-hero-brand-divider {
+  display: block;
+  width: 2px;
+  height: clamp(2.55rem, 3.8vw, 4.15rem);
+  background: var(--fara-accent-green);
+  box-shadow: 0 0 18px rgba(var(--fara-brand-rgb), .34);
+}
+.hero .fara-hero-brand-text {
+  display: block;
+  font-family: var(--fara-font-display);
+  font-size: clamp(2.3rem, 3.25vw, 4rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.hero .fara-hero-phrase-wrap {
+  position: absolute;
+  z-index: 1;
+  top: 73%;
+  left: 0;
+  right: 0;
+  display: block;
+  width: fit-content;
+  max-width: calc(100% - 3rem);
+  min-width: 0;
+  padding-left: 0;
+  box-sizing: border-box;
+  color: var(--fara-hero-subtitle-color);
+  margin: 0 auto;
+  will-change: opacity, transform;
+}
+.hero .fara-hero-phrase {
+  position: static !important;
+  inset: auto !important;
+  display: block !important;
+  width: auto;
+  max-width: 100%;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none;
+  font-family: var(--fara-font-display);
+  font-size: clamp(1.1rem, 1.55vw, 1.55rem);
+  line-height: 1.7;
+  letter-spacing: .16em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.hero .fara-hero-phrase-rule {
+  position: static !important;
+  display: block !important;
+  width: 100%;
+  height: 2px;
+  margin: .55rem auto 0;
+  background: var(--fara-accent-green);
+  box-shadow: 0 0 16px rgba(var(--fara-brand-rgb), .32);
+}

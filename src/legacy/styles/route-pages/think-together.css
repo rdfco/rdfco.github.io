@@ -1,0 +1,126 @@
+.fara-think-page {
+  color: var(--fara-ink);
+  background: var(--fara-white);
+}
+.fara-think-shell h1 {
+  max-width: 900px;
+  margin: 0 0 clamp(3rem, 6vw, 5rem);
+  color: var(--fara-ink);
+  font-size: clamp(2.8rem, 6vw, 6rem);
+  font-weight: 300;
+  line-height: 1.04;
+  letter-spacing: .02em;
+}
+.fara-think-form {
+  display: grid;
+  width: min(920px, 100%);
+  gap: clamp(2rem, 4vw, 3.5rem);
+  margin-left: auto;
+}
+.fara-inquiry-fieldset {
+  display: grid;
+  gap: 1rem;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+.fara-inquiry-fieldset legend,
+.fara-form-field span {
+  margin-bottom: .85rem;
+  color: var(--fara-ink);
+  font-size: .86rem;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.fara-inquiry-fieldset label {
+  display: grid;
+  grid-template-columns: 1.1rem minmax(0, 1fr);
+  gap: .9rem;
+  color: var(--fara-ink);
+  font-size: clamp(.95rem, 1.08vw, 1.05rem);
+  line-height: 1.55;
+}
+.fara-inquiry-fieldset input {
+  width: 1rem;
+  height: 1rem;
+  margin-top: .2rem;
+  accent-color: var(--fara-ink);
+}
+.fara-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem clamp(1.2rem, 2.5vw, 2rem);
+}
+.fara-form-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+.fara-form-field--wide {
+  width: 100%;
+}
+.fara-form-field input,
+.fara-form-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem 0;
+  color: var(--fara-ink);
+  font: 300 1rem/1.5 var(--fara-font-display);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(var(--fara-ink-rgb), .42);
+  border-radius: 0;
+  outline: 0;
+}
+.fara-form-field textarea {
+  resize: vertical;
+}
+.fara-think-form button[type='submit'] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: start;
+  min-width: 9rem;
+  min-height: 3rem;
+  padding: 1rem 1.6rem;
+  color: var(--fara-white);
+  font: 500 .85rem/1 var(--fara-font-display), Arial, sans-serif;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: default;
+  background: var(--fara-ink);
+  border: 1px solid var(--fara-ink);
+  border-radius: 999px;
+}
+.fara-think-form button[type='submit'] span {
+  display: block;
+  color: var(--fara-white) !important;
+  line-height: 1;
+}
+.fara-think-contact {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.5rem, 4vw, 4rem);
+  width: min(920px, 100%);
+  margin: clamp(4rem, 8vw, 7rem) 0 0 auto;
+  padding-top: clamp(2rem, 4vw, 3rem);
+  border-top: 1px solid rgba(var(--fara-ink-rgb), .2);
+}
+.fara-think-contact h2 {
+  display: flex;
+  gap: .65rem;
+  align-items: center;
+  margin: 0 0 1rem;
+  color: var(--fara-ink);
+  font-size: .9rem;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.fara-think-contact p {
+  margin: 0;
+  color: var(--fara-ink);
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  line-height: 1.65;
+}

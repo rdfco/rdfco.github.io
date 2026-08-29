@@ -1,0 +1,14 @@
+.fara-industries > header { margin-bottom: clamp(7rem, 10vw, 10rem); text-align: center; }
+.fara-industries { margin-top: 0; }
+.industries-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: start;
+}
+.industries-grid .fara-card { align-self: start; border-bottom: 0; }
+.industries-grid .fara-card > h3,
+.industries-grid .fara-card > p {
+  transform: translateY(-5.5rem);
+}
+.industries-grid .fara-card > .fara-expand { transform: translate(-50%, -5.5rem); }
+.industries-grid .fara-card:nth-child(-n + 3) { grid-column: span 2; }
+.industries-grid .fara-card:nth-child(n + 4) { grid-column: span 3; margin-top: 3rem; }
