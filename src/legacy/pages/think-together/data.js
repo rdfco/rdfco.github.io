@@ -1,1 +1,0 @@
-export const data = {"key":"think-together","title":"Think together","introduction":"This page is ready for future collaboration, contact and call-to-action sections.","sections":[]}

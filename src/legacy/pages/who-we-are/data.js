@@ -1,1 +1,4 @@
-export const data = {"key":"who-we-are","title":"Who we are","introduction":"This page is ready for future company, team, mission and capability sections.","sections":[]}
+// Generated view of the canonical route data. Edit data.json, not this file.
+import data from './data.json'
+
+export { data }

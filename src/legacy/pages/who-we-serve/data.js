@@ -1,1 +1,0 @@
-export const data = {"key":"who-we-serve","title":"Who we serve","introduction":"This page is ready for future industry-specific sections and case data.","sections":[]}

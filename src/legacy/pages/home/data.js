@@ -1,1 +1,4 @@
-export const data = {"key":"home","title":"Home","introduction":"FARA home page.","sections":[]}
+// Generated view of the canonical route data. Edit data.json, not this file.
+import data from './data.json'
+
+export { data }
